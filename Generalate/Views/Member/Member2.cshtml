@@ -1,0 +1,400 @@
+﻿
+@{
+    /**/
+
+    ViewBag.Title = "Member";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .overflow-daily_membertbl {
+        overflow-y: auto;
+        padding-top: 10px;
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:89px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                @*<div class="panel-heading" style="background-color:#29b2e1"> Add Multi Language</div>*@
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Members</h3>
+                                </div>
+
+
+                                @*dropdown code*@
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label><span>Province Name</span></label>
+                                            <select class="form-control" id="DioProvince1" style="width:595px !important;" name="ProvinceName"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*end dropdown code*@
+
+
+                                <div class="row">
+                                    <div class="col-sm-10" style="text-align:right">
+                                        @*<div class="form-group">
+                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-print pull-right" id="btnPrintMemData"></i></button>
+                                            </div>*@
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 10px;" id="Memdatatbl1">
+                                    <div class="col-sm-12 overflow-daily_membertbl">
+                                        <table class="table table-bordered" id="Memdatatbl">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Name</th>
+                                                    <th>surname</th>
+                                                    <th>ProvinceName</th>
+                                                    <th>File No.</th>
+                                                    <th>View Profile</th>
+                                                    <th>Add Profile</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            @*<tbody id="ViewProfileDetails"></tbody>*@
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 10px;display:none" id="Memdatatbl2">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered" id="Memdatatbl02">
+                                            <thead>
+                                                <tr>
+                                                    <th>S.No</th>
+                                                    <th>Name</th>
+                                                    <th>File No.</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="ViewProfileDetails1"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-top: 10px;display:none" id="Memdatatbl3">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered" id="Memdatatbl03">
+                                            <thead>
+                                                <tr>
+                                                    @*<th>S.No</th>*@
+                                                    <th>Province Name</th>
+                                                    <th>Name</th>
+                                                    <th>File No.</th>
+                                                    <th>View Profile</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                            @*<tbody id="ViewProfileDetails2"></tbody>*@
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+
+    <script>
+        $('#btnPrintMemData').on("click", function () {
+            PrintMemberDetails("0");
+            $('#Memdatatbl02').printThis();
+            $("#Memdatatbl2").css("display", "block");
+            $("#Memdatatbl1").css("display", "none");
+        });
+        function PrintMemberDetails(province) {
+            $.ajax({
+                url: "/Home/GetAllPrileViewData?province=" + province,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                async: false,
+                success: function (response) {
+                    //debugger;
+                    // $('#ViewProfileDetails').html("");
+                    $('#ViewProfileDetails1').html("");
+                    //$('#ViewProfileDetails2').html("");
+                    if (response != null) {
+                        var i = 1;
+                        var html = "";
+                        var dataResponce = response.aaData;                        
+                        dataResponce.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    // url = "/Home/MemberDetails?id=" + data.MemberId;
+                                    url = "/Member/MemberFullData1?id=" + data.MemberId
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                var row1 = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td></tr>";
+                                //  html += "<tr><td>" + i + "</td><td>" + data.ProvinceName + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                html += "<tr><td>" + i + "</td><td>" + data.ProvinceName + "</td><td><a href=/Member/MemberInfoById?memberId=" + data.MemberId + "&Name=&SirName='> " + data.Name + "</a></td><td>" + data.FileNo + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+
+
+                                //$('#ViewProfileDetails').append(row);
+                                $('#ViewProfileDetails1').append(row1);
+                                i = i + 1;
+                            }
+                        });
+                        //$('#Memdatatbl03').DataTable().destroy();
+                        //$('#Memdatatbl03').find('tbody').html('');
+                        //$('#Memdatatbl03').find('tbody').append(html);
+                        //$('#Memdatatbl03').DataTable().draw();
+
+                        //$("#myModal2").modal('show');
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            //call method for dropdown
+            GetAllProvince();
+            GetAllPrileViewData("0");
+
+            //$("#Memdatatbl2").css("display", "none");
+            //$("#Memdatatbl1").css("display", "none");
+        });
+
+        //dropdown change and bind table again
+        $("#DioProvince1").on("change", function () {
+            var selectedVal = $("#DioProvince1 option:selected").val();
+            GetAllPrileViewData();
+        });
+
+        function GetAllPrileViewData() {            
+            $('#Memdatatbl').DataTable().destroy();
+            // $('#Memdatatbl03').DataTable().destroy();
+            var province = $("#DioProvince1").val();
+            datatable = $('#Memdatatbl')
+                .DataTable({
+                    "sAjaxSource": "/Member/GetAllPrileViewData?province=" + province,
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": false,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                        var oSettings = this.fnSettings();
+                        $("td:first", nRow).html(oSettings._iDisplayStart + iDisplayIndex + 1);
+                        return nRow;
+                    },
+                    "columns": [
+                        {
+                            "defaultContent": ""
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Sirname",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "ProvinceName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "FileNo",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "MemberId",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a href=/Home/MemberDetails?id=' + data + '>View Details</a>';
+                                }
+                                else {
+                                    return '<a target="_blank" href="#">No Profile</a>';
+                                }
+                            }
+                        },
+                        {
+                            "data": "MemberId",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a href=/Member/MemberInfoById?memberId=' + data + '>Add Details</a>';
+                                }
+                                else {
+                                    return '<a target="_blank" href="#">Add Details</a>';
+                                }
+                            }
+                        },
+
+
+
+                    ]
+                });
+            if (false) {
+                datatable = $('#Memdatatbl03')
+                    .DataTable({
+                        "sAjaxSource": "/Member/GetAllPrileViewData?province=" + province,
+                        "retrieve": true,
+                        "bServerSide": true,
+                        "bProcessing": true,
+                        "bSearchable": false,
+                        "order": [[1, 'asc']],
+                        "autoWidth": false,
+                        "columns": [
+                            {
+                                "data": "ProvinceName",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "Name",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "render": function (data, type, row) {
+                                    if (data != null && data != '') {
+                                        return '<a href=/Member/MemberInfoById?id=' + row.MemberId + '>' + data + '</a>';
+                                    }
+                                    else {
+                                        return '<a target="_blank" href="#">No Profile</a>';
+                                    }
+                                }
+                            },
+                            {
+                                "data": "FileNo",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "MemberId",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "render": function (data, type, row) {
+                                    if (data != null && data != '') {
+                                        return '<a href=/Member/MemberInfoById?memberId=' + data + '&Name=&SirName=>View Details</a>';
+                                    }
+                                    else {
+                                        return '<a target="_blank" href="#">No Profile</a>';
+                                    }
+                                }
+                            },
+
+
+
+                        ]
+                    });
+
+            }
+            //$.ajax({
+            //    url: "/Home/GetAllPrileViewData?province=" + province,
+            //    type: "GET",
+            //    contentType: "application/json;charset=utf-8",
+            //    dataType: "json",
+            //    success: function (response) {
+            //        //debugger;
+            //        $('#ViewProfileDetails').html("");
+            //        $('#ViewProfileDetails1').html("");
+            //        $('#ViewProfileDetails2').html("");
+            //        if (response != null) {
+            //            var i = 1;
+            //            var html = "";
+            //            response.forEach(function (data) {
+            //                if (data != null) {
+            //                    var url = "";
+            //                    var isView = "No Profile";
+            //                    if (data.MemberId != null && data.MemberId != "") {
+            //                       // url = "/Home/MemberDetails?id=" + data.MemberId;
+            //                        url = "/Member/MemberFullData1?id=" + data.MemberId
+            //                        isView = "View Details";
+            //                    } else {
+            //                        url = "#";
+            //                        isView = "No Profile";
+            //                    }
+            //                    var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+            //                    var row1 = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td></tr>";
+            //                    //  html += "<tr><td>" + i + "</td><td>" + data.ProvinceName + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+            //                    html += "<tr><td>" + i + "</td><td>" + data.ProvinceName + "</td><td><a href=/Member/MemberInfoById?memberId=" + data.MemberId + "&Name=&SirName='> " + data.Name + "</a></td><td>" + data.FileNo + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+
+
+            //                    $('#ViewProfileDetails').append(row);
+            //                    $('#ViewProfileDetails1').append(row1);
+            //                    i = i + 1;
+            //                }
+            //            });
+            //            $('#Memdatatbl03').DataTable().destroy();
+            //            $('#Memdatatbl03').find('tbody').html('');
+            //            $('#Memdatatbl03').find('tbody').append(html);
+            //            $('#Memdatatbl03').DataTable().draw();
+
+            //            $("#myModal2").modal('show');
+            //        }
+            //    },
+            //    error: function (er) {
+            //    }
+            //});
+        }
+
+        //dropdown bind method
+        function GetAllProvince() {
+            $.ajax({
+                url: "/Home/GetAllProvince",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#DioProvince1').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#DioProvince1").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,645 @@
+﻿
+@using Generalate.Controllers;
+@{
+    ViewBag.Title = "ArchiveNo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var viewpermissions = Session["ViewPagePermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:89px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="col-sm-3">
+                                <select class="form-control" style="width:300px !important;" id="ProvinceNameGFN123"></select>
+                            </div>
+
+                            @{
+                                var ispermissionedit = viewpermissions.Where(x => x.Editpermission == true && x.PageName == "Archieve" && x.ParentId == 18 ).FirstOrDefault();
+                                if (ispermissionedit != null)
+                                {
+                                    <div class="col-sm-9">
+                                        @*<asp:Label ID="lblEternal" Text="Eternal:" runat="server">Count Check</asp:Label>*@
+                                        <button type="submit" class="btn btn-info pull-right" id="btnmanage"><span>@{@HomeController.GetControlTextByControlId("Manage");}</span></button>
+                                    </div>
+                                }
+                            }
+
+
+                            <br />
+                            <br />
+
+                            @{
+                                var ispermissionview = viewpermissions.Where(x => x.Viewpermission == true && x.PageName == "Archieve" && x.ParentId == 18).FirstOrDefault();
+                                if (ispermissionview != null)
+                                {
+                                    <div class="col-md-push-12">
+                                        @*<asp:Label ID="lblEternal" Text="Eternal:" runat="server">Count Check</asp:Label>*@
+                                        <button type="submit" class="btn btn-info pull-right" id="btnview"><span>@{@HomeController.GetControlTextByControlId("view");}</span></button>
+                                    </div>
+                                }
+                            }
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        @*<div class="col-sm-12 table-responsive brd-panel overflow-daily" style="height:400px;">*@
+                        <div class="col-sm-12 table-responsive brd-panel " style="height:auto;">
+                            <table class="table table-bordered" id="MyTableArchiveData" style="margin-top:20px;">
+                                <thead>
+                                    <tr>
+                                        <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                        <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                                        <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("MemberId");}</span></th>
+                                        <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                        <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                                        <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("Archive_No");}</span></th>
+                                        @*<th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("Select");}</span><input type="checkbox" Id="Mycheckforall" style="margin-left:18px;" /></th>*@
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+
+                            @{ 
+                                var ispermissioncreate = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Archieve");
+                                if(ispermissioncreate != null)
+                                {
+
+                            <button style="margin-right: 50px; margin-bottom: 20px;" type="button" class="btn btn-success pull-right" id="btnsaveArchiveFN"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                }
+                            }
+
+                        </div>
+                    </div>
+
+
+                    <div class="row" style="display:none">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Archive No</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-6">
+                                                <select class="form-control" style="width:300px !important;" id="ProvinceName4Rene"></select>
+
+                                            </div>
+                                            @*<div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <button type="button" class="fa fa-print pull-right" style="height:30px;width:60px;" id="btnPrintVows">&times;</button>
+                                                    </div>
+                                                </div>*@
+                                        </div>
+                                    </div>
+                                    <div id="ArchiveDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>Archive FileNo</span></h4>
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered" id="filenoTbl1">
+                                                <thead>
+                                                    <tr style="background-color:#001f6b; color:white">
+                                                        <th> <span>S_No</span> </th>
+                                                        <th> <span>MemberId</span></th>
+                                                        <th> <span>Name</span></th>
+                                                        <th> <span>FileNo</span></th>
+                                                        <th> <span>ArchiveNo</span> </th>
+                                                        @*<th> <span>Action</span></th>*@
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal22" style="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:60px;">
+        <div class="modal-content" style="width:900px;">
+            <div class="modal-header">
+                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("ArchiveNo");}</span></h4>
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="col-sm-6">
+                            <select class="form-control" style="width:300px !important;" id="ProvinceNamemanage"></select>
+
+                        </div>
+                        @*<div class="col-sm-6">
+                                <div class="form-group">
+                                    <button type="button" class="fa fa-print pull-right" style="height:30px;width:60px;" id="btnPrintVows">&times;</button>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 overflow-daily" style="height:600px; margin-top:20px;">
+                        <table class="table table-bordered" id="MyTableArchiveDatamanage" style="margin-top:20px;">
+                            <thead>
+                                <tr>
+                                    <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                    <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("ProvinceName");}</span></th>
+                                    <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("MemberId");}</span></th>
+                                    <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                    <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                                    <th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("ArchiveNo");}</span></th>
+                                    <th style="color: #FFFFFF;background-color: #41BDE2;"><span>Action</span></th>
+
+                                    @*<th style="color: #FFFFFF;background-color: #41BDE2;"><span>@{@HomeController.GetControlTextByControlId("Select");}</span><input type="checkbox" Id="Mycheckforall" style="margin-left:18px;" /></th>*@
+                                </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+                        @*<table class="table table-bordered" id="filenoTbl">
+                                <thead>
+                                    <tr style="background-color:#001f6b; color:white">
+                                        <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                        <th> <span>@{@HomeController.GetControlTextByControlId("ProvinceName");}</span></th>
+                                        <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                        <th> <span>@{@HomeController.GetControlTextByControlId("FileNo");}</span></th>
+                                        <th> <span>@{@HomeController.GetControlTextByControlId("ArchiveNo");}</span> </th>
+                                        <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody">
+                                    @{
+                                        int Ls = 1;
+                                        foreach (var item in @ViewBag.ArchiveFileNoData as IEnumerable<Generalate.Models.tbl_Archive>)
+                                        {
+                                            <tr>
+                                                <td>@Ls</td>
+                                                <td>@item.ProvinceName</td>
+                                                <td>@item.Name</td>
+                                                <td>@item.FileNo</td>
+                                                <td>@item.ArchiveNo</td>
+                                                <td>
+                                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit GenFileEdit"></i></button>
+                                                </td>
+                                            </tr>
+                                            Ls++;
+                                        }
+                                    }
+                                </tbody>
+                            </table>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="myModal24" style="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:60px;">
+        <div class="modal-content" style="width:900px;">
+            <div class="modal-header">
+                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("ArchiveNo");}</span></h4>
+                <div>
+                    <h5 class="modal-title" style="font:bold">Eternal Life Count @{@ViewBag.DeathArchiveCount;} &nbsp; &nbsp; || &nbsp; &nbsp; Separated Count @{@ViewBag.SeparationArchiveCount;}</h5>
+
+
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-12 overflow-daily" style="height:600px; margin-top:20px;">
+                        <table class="table table-bordered" id="filenoTbl2">
+                            <thead>
+                                <tr style="background-color:#001f6b; color:white">
+                                    <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                    <th> <span>@{@HomeController.GetControlTextByControlId("ProvinceName");}</span></th>
+                                    <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                    <th> <span>@{@HomeController.GetControlTextByControlId("FileNo");}</span></th>
+                                    <th> <span>@{@HomeController.GetControlTextByControlId("ArchiveNo");}</span> </th>
+                                    @*<th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>*@
+                                </tr>
+                            </thead>
+                            <tbody class="tbody">
+                                @{
+                                    int Ls1 = 1;
+                                    foreach (var item in @ViewBag.ArchiveFileNoData as IEnumerable<Generalate.Models.tbl_Archive>)
+                                    {
+                                        <tr>
+                                            <td>@Ls1</td>
+                                            <td>@item.ProvinceName</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.FileNo</td>
+                                            <td>@item.ArchiveNo</td>
+                                            @*<td>
+                                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit GenFileEdit"></i></button>
+                                                </td>*@
+                                        </tr>
+                                        Ls1++;
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="MyModal23" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:60px;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Edit Member File No.</h4>
+            </div>
+            <div class="modal-body" id="MyModalBody">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <form id="MyDataForm" method="post" enctype="multipart/form-data">
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-3 control-label">Gen. File No. :</label>
+                                    <div class="col-sm-6">
+                                        <input type="hidden" id="IdGen" name="Id" class="form-control" />
+                                        <input type="hidden" id="Name" name="Name" class="form-control" />
+                                        <input type="hidden" id="FileNo" name="FileNo" class="form-control" />
+                                        <input type="hidden" id="MemberId" name="MemberId" class="form-control" />
+                                        <input type="hidden" id="ProvinceName" name="ProvinceName" readonly class="form-control">
+                                        <input type="text" id="ArchiveNo" name="ArchiveNo" class="form-control" />
+                                    </div>
+                                    <button type="submit" class="btn btn-success pull-right" id="btnSaveGenfile">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#Memdatatbl2").css("display", "none");
+            $("#Memdatatbl1").css("display", "none");
+            $("#Insttbl1").css("display", "none");
+            $("#Insttbl2").css("display", "none");
+            $("#tblParishes1").css("display", "none");
+            $("#tblParishes2").css("display", "none");
+            $("#tblcomdata1").css("display", "none");
+            $("#tblcomdata2").css("display", "none");
+            $("#tblSocData1").css("display", "none");
+            $("#tblSocData2").css("display", "none");
+            $("#tblOrdindata2").css("display", "none");
+            $("#tblRetire2").css("display", "none");
+            $("#deathdatatbl2").css("display", "none");
+            $("#departdatatbl2").css("display", "none");
+            $("#NovPPdatatbl2").css("display", "none");
+            $("#EnterToNovdatatbl2").css("display", "none");
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            GetAllProvinceRenewal();
+            GetManageArchiveFileNo('');
+           // GetArchiveDeathSeparationCount();
+            //function GetArchiveDeathSeparationCount() {
+            //    $.ajax({
+            //        url: "/Home/GetArchiveDeathSeparationCount",
+            //        type: "GET",
+            //        contentType: "application/json;charset=utf-8",
+            //        dataType: "json",
+            //        success: function (data) {
+            //            debugger;
+            //            if (data.length > 0) {
+            //                $('#item1 span').text(data);
+            //            }
+            //        },
+            //        error: function (er) {
+            //        }
+            //    });
+            //}
+
+            // GetGeneralateFileNo("0");
+        });
+        $("#ProvinceName4Rene").on("change", function () {
+            var ProvinceName4Rene = $("#ProvinceName4Rene option:selected").val();
+            GetGeneralateFileNo(ProvinceName4Rene);
+        });
+                            $("#ProvinceNamemanage").on("change", function () {
+                                var ProvinceNamemanage = $("#ProvinceNamemanage option:selected").val();
+                                GetManageArchiveFileNo(ProvinceNamemanage);
+                            });
+
+//Load Province
+        function GetAllProvinceRenewal() {
+
+            $.ajax({
+                url: "/Home/GetAllProvinceRenewal",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceName4Rene').html('').select2({ data: [{ id: '', text: '' }] });
+                        $('#ProvinceNamemanage').html('').select2({ data: [{ id: '', text: '' }] });
+
+                        allDate2.push({ id: '0', text: '@{ @HomeController.GetControlTextByControlId("Select_Province_Name") ;}' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#ProvinceName4Rene").html('').select2({
+                            data: allDate2
+                        });
+                        $("#ProvinceNamemanage").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+
+
+        //function GetArchiveDeathSeparationCount1() {
+        //    debugger;
+        //    $.ajax({
+        //        url: "/Home/GetArchiveDeathSeparationCount",
+        //        type: "GET",
+        //        contentType: "application/json;charset=utf-8",
+        //        dataType: "json",
+        //        success: function (response) {
+        //            if (response != null) {
+        //                if (data != null) {
+        //                    debugger;
+        //                    alert("check");
+        //                    $('#item1 span').text(data);
+        //                    //$('#lblEternal').text(data);
+        //                    //$("lblEternal").html(data);
+
+        //                    //// html += "<tr><td>" + i + "</td><td>" + data.MemberId + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td>" + data.sArchiveNos + "</td></tr>";
+        //                    //html += "<tr><td>" + i + "</td><td>" + data.ProvinceName + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td>" + data.sArchiveNos + "</td></tr>";
+        //                    ////$('#ViewreneData').append(row);
+        //                    //i = i + 1;
+        //                    //$('#filenoTbl').append(html);
+        //                }
+        //                //$('#tblreneVows').DataTable().destroy();
+        //                //$('#tblreneVows').find('tbody').html('');
+        //                //$('#tblreneVows').find('tbody').append(html);
+        //                //$('#tblreneVows').DataTable().draw();
+        //            }
+        //        },
+        //        error: function (er) {
+        //        }
+        //    });
+        //}
+
+
+        function GetManageArchiveFileNo(province) {
+            $.ajax({
+                url: "/Home/GetManageArchiveFileNo?province=" + province,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //
+                    $("#MyTableArchiveDatamanage tbody").html("");
+                    $("#MyTableArchiveDatamanage tbody").html(response);
+                },
+                error: function (er) {
+                }
+            });
+
+
+
+            //$.ajax({
+            //    url: "/Home/GetGeneralateFileNo?province=" + province,
+            //    type: "GET",
+            //    contentType: "application/json;charset=utf-8",
+            //    dataType: "json",
+            //    success: function (response) {
+            //        //alert("te")
+
+            //        //$('#filenoTbl').html("");
+            //        if (response != null) {
+            //            var i = 1;
+            //            var html = "";
+            //            response.forEach(function (data) {
+
+            //                if (data != null) {
+
+            //                    // html += "<tr><td>" + i + "</td><td>" + data.MemberId + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td>" + data.sArchiveNos + "</td></tr>";
+            //                    html += "<tr><td>" + i + "</td><td>" + data.ProvinceName + "</td><td>" + data.Name + "</td><td>" + data.FileNo + "</td><td>" + data.sArchiveNos + "</td></tr>";
+            //                    //$('#ViewreneData').append(row);
+            //                    i = i + 1;
+            //                    $('#filenoTbl').append(html);
+            //                    $('#filenoTbl2').append(html);
+            //                }
+            //                else {
+            //                    $('#filenoTbl').DataTable().destroy();
+            //                    $('#filenoTbl').DataTable().draw();
+            //                }
+            //                //$('#tblreneVows').DataTable().destroy();
+            //                //$('#tblreneVows').find('tbody').html('');
+            //                //$('#tblreneVows').find('tbody').append(html);
+            //                //$('#tblreneVows').DataTable().draw();
+            //            });
+            //        }
+            //    },
+            //    error: function (er) {
+            //    }
+            //});
+        }
+
+
+
+        GetAllProvinceGenFile();
+
+        function GetAllProvinceGenFile() {
+            $.ajax({
+                url: "/Home/GetAllProvinceGenFile",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceNameGFN123').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '@{ @HomeController.GetControlTextByControlId("Province Name") ;}' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName });
+                        }
+                        $("#ProvinceNameGFN123").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        $("#ProvinceNameGFN123").on("change", function () {
+            var province = $("#ProvinceNameGFN123 option:selected").val();
+            GetArchiveNoByProvince(province);
+            // GetGeneralateFileNo(province);
+        });
+        function GetArchiveNoByProvince(province) {
+
+            $.ajax({
+                url: "/Home/GetArchiveNoByProvince?province=" + province,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    //
+                    $("#MyTableArchiveData tbody").html("");
+                    $("#MyTableArchiveData tbody").html(response);
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        $("#btnsaveArchiveFN").on("click", function () {
+            //
+            var result = {};
+            var datalist = [];
+            $("#MyTableArchiveData tbody tr").each(function () {
+                var object = {};
+                var formData = new FormData();
+                //
+                var checkBox = $(this).find('input[type="checkbox"]').is(':checked');
+                var fileno = $(this).find('td').eq(5).find('input[type="text"]').val();
+                // if (checkBox == true) {
+                if (fileno != "") {
+                    var data = new FormData();
+                    data.append('ProvinceName', $(this).find('td').eq(1).html());
+                    data.append('MemberId', $(this).find('td').eq(2).html());
+                    data.append('Name', $(this).find('td').eq(3).html());
+                    data.append('FileNo', $(this).find('td').eq(4).html());
+                    data.append('ArchiveNo', $(this).find('td').eq(5).find('input[type="text"]').val());
+                    data.append('IsChecked', 'yes');
+                    $.ajax({
+                        url: "/Home/AddArchiveNo",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        success: function (response) {
+                        },
+                        error: function (er) {
+                        }
+                    });
+                }
+            });
+            alert("Record Save Successfully !");
+            window.location.reload();
+        });
+
+        $('#btnmanage').on("click", function () {
+            $('#myModal22').modal('show');
+            $('#MyTableArchiveDatamanage').DataTable();
+            $('#MyTableArchiveDatamanage').DataTable().draw();
+            //$('#filenoTbl').DataTable();
+            //$('#filenoTbl').DataTable().draw();
+        });
+
+        $('#btnview').on("click", function () {
+            $('#myModal24').modal('show');
+            $('#filenoTbl2').DataTable();
+            $('#filenoTbl2').DataTable().draw();
+        });
+
+        $("#Mycheckforall").change(function () {
+            var checked = $(this).is(':checked');
+            if (checked) {
+                $(".checkbox").each(function () {
+                    $(this).prop("checked", true);
+                });
+            } else {
+                $(".checkbox").each(function () {
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+
+
+        $(".GenFileEdit").on("click", function () {
+
+            var id = $(this).attr("data-val");
+            var url = "/Home/GetArchiveNo1?id=" + id;
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (result) {
+
+                    $("#IdGen").val(result.Id);
+                    $("#Name").val(result.Name);
+                    $("#FileNo").val(result.FileNo);
+                    $("#MemberId").val(result.MemberId);
+                    $("#ProvinceName").val(result.ProvinceName);
+                    $("#ArchiveNo").val(result.ArchiveNo);
+
+                    $('#MyModal23').modal('show');
+                    $("#btnSaveGenfile").text("Update");
+                    $('#MyDataForm').attr('action', '/Home/UpdateArchiveFileNo');
+                }
+            })
+        });
+
+
+        //Manage Archive Edit
+        function showEdit(id) {
+        //    var id = $(this).attr("data-val");
+            var url = "/Home/GetArchiveNo1?id=" + id;
+            $.ajax({
+                type: "GET",
+                url: url,
+                success: function (result) {
+
+                    $("#IdGen").val(result.Id);
+                    $("#Name").val(result.Name);
+                    $("#FileNo").val(result.FileNo);
+                    $("#MemberId").val(result.MemberId);
+                    $("#ProvinceName").val(result.ProvinceName);
+                    $("#ArchiveNo").val(result.ArchiveNo);
+
+                    $('#MyModal23').modal('show');
+                    $("#btnSaveGenfile").text("Update");
+                    $('#MyDataForm').attr('action', '/Home/UpdateArchiveFileNo');
+                }
+            })
+        }
+    </script>
+}

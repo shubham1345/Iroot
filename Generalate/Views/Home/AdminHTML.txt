@@ -1,0 +1,406 @@
+﻿@model Generalate.Models.tbl_Jubilee
+
+<head>
+    @*<style>
+            .dataTables_filter
+            {
+                visibility: hidden;
+
+            }
+        </style>*@
+    @*<link href="~/css/css1/theme-default.css" rel="stylesheet" />*@
+    <link href="~/css/css1/AdminCss.css" rel="stylesheet" />
+</head>
+
+@*@using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.JubileeID, new { htmlAttributes = new { @class = "form-control" } })*@
+
+
+<div class="form-horizontal">
+
+    <div class="" style="margin-left:30px; margin-right:30px;">
+        <div class="form-horizontal">
+            <div class="panel-group">
+                <div class="panel panel-primary" style="margin-top:10px; background-color:#fff; height:700px;">
+                    <div class="tab panel-heading" style="background-color:#001f6b">
+                        <a style="color:white;">Dash Board</a>
+                    </div>
+
+                    <div class="" style="margin-left:20px; margin-right:20px;">
+                        <div class="form-horizontal">
+                            <br />
+                            <div class="row">
+                                <div class="col-sm-12 pad-no" style="margin-bottom: 10px;">
+                                    <div class="col-sm-3">
+                                        <div id="custom-search-input">
+                                            <div class="col-md-12">
+                                                <br />
+                                                <input type="text" class="form-control input-sm" placeholder="Search By Person Name" id="searchByPersonName">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div id="custom-search-input">
+                                            <div class="col-md-12">
+                                                <br />
+                                                <input type="text" class="form-control input-sm" placeholder="Search by mobile" id="searchByMobile"><br />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div id="custom-search-input">
+                                            <div class="col-md-12">
+                                                <br />
+                                                <input type="text" class="form-control input-sm" placeholder="Search by email" id="SearchByEmail">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div id="custom-search-input">
+                                            <div class="col-md-12">
+                                                <br />
+                                                <button class="btn btn-info btn-sm" type="button" id="btnSearch">
+                                                    <i class="glyphicon glyphicon-search"></i> Search
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                @*<div class="col-sm-4">
+                                        <div style="margin-top:10px;">
+                                            <h4>First Profession</h4>
+                                            <table class="table table-striped  table-hover" id="jublieetbl" style="border:solid; border-color:#009be1; lin;">
+                                                <thead>
+                                                    <tr style="background-color:#009be1; color:white; height:20px;">
+                                                        <th hidden="hidden"> Id </th>
+                                                        <th> Member ID </th>
+                                                        <th> Name </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody"> </tbody>
+                                            </table>
+                                        </div>
+                                    </div>*@
+                                <div class="col-sm-6" style="margin-top:10px;">
+                                    <div class="col-sm-12 pad-no">
+                                        <div class="col-sm-12 pad-no bord-rgt">
+                                            <h4 class="bg-success-2 pad-all-fifteen mar-btm-no text-center">
+                                                Total Members
+                                            </h4>
+                                            <h4 class="bg-success-1 pad-all-fifteen mar-btm-no text-center"><span id="totalMember"></span></h4>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12 pad-no">
+                                        <div class="col-sm-12 pad-no bord-rgt">
+                                            <h4 class="bg-info-2 pad-all-fifteen mar-btm-no text-center">Total Defaulters</h4>
+                                            <h4 class="bg-info-1 pad-all-fifteen mar-btm-no text-center clr-white">3</h4>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="col-sm-12 pad-no">
+                                        <div class="col-sm-12 pad-no bord-rgt">
+                                            <h4 class="bg-pink-dark pad-all-fifteen mar-btm-no text-center">Total Placed</h4>
+                                            <h4 class="bg-pink-dark-1 pad-all-fifteen mar-btm-no text-center">75</h4>
+                                        </div>
+
+                                    </div>
+                                    <div class="clearfix"></div>
+                                    <button class="btn btn-success btn-block pad-all mar-top-twelve text-bold bg-blue-bacup">Back Up</button>
+
+                                </div>
+                                <div class="col-sm-6" style="margin-top:10px;">
+                                    <div class="col-sm-12 pad-no">
+                                        <h4 class="daily-report"><a href="/PersonalDetails/PersonalDetail" class="clr-white">Daily Report</a></h4>
+                                        <div class="col-sm-12 overflow-daily" id="todayBirthday">
+                                            <h4>Today Birthdays</h4>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 pad-no">
+                                        <h4 class="daily-report"><a href="#" class="clr-white">Events</a></h4>
+                                        <div class="col-sm-12 overflow-daily">
+                                            <p>Placement of IBS on 25 August</p>
+                                            <p>dummy</p>
+                                            <p>dummy</p>
+                                            <p>dummy</p>
+                                            <p>dummy</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12 pad-no">
+                                        <h4 class="daily-report"><a href="#" class="clr-white">This Month Jubly</a></h4>
+                                        <div class="col-sm-12 overflow-daily" id="thisMonthJubly">
+                                            @*<p>Placement of IBS on 25 August</p>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="col-sm-2" style="margin-top:80px; margin-left:70px;">
+                                        <div style="margin-bottom:30px; color:#001f6b; margin-left:20px;">
+                                            <h2>
+                                                Jubilarians
+                                            </h2>
+                                        </div>
+                                        <img src="" id="img1" />
+
+                                    </div>*@
+
+                                @*<div class="col-sm-4" style="margin-top:10px; margin-left:10px; margin-right:100px;">
+                                        <div style="text-align:end;">
+                                            <img src="~/Images/flower.png" height="550" width="550" />
+                                        </div>
+                                    </div>*@
+
+                                @*<div class="col-sm-3">
+                                        <h4>Final Profession</h4>
+                                        <table class="table table-striped  table-hover" id="jublieetbl" style="border:solid; border-color:#044244">
+                                            <thead>
+                                                <tr style="background-color:#044244; color:white">
+                                                    <th hidden="hidden"> Id </th>
+                                                    <th> Member ID </th>
+                                                    <th> Name </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody"> </tbody>
+                                        </table>
+                                    </div>*@
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div class="modal" id="myModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Filter Records</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <table class="table table-striped" id="tblPersons">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Mobile</th>
+                                <th scope="col">Email</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbody"></tbody>
+                    </table>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*}*@
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        
+        GetAllMembers();
+        GetAllTodayBirthday();
+        ThisMonthGetAllJubly();
+        $.getJSON("GetAll", function (json) {
+            var tr;
+            $("#jublieetbl").find('tbody').empty(); //add this line
+
+
+            for (var i = 0; i < json.length; i++) {
+                tr = $('<tr />');
+                tr.append("<td hidden='hidden'>" + json[i].JubileeID + "</td>");
+                tr.append('<td><a href="#" onclick="DispImg(\'' + json[i].MemberID + '\')">' + json[i].MemberID + '</a>')
+                tr.append("<td>" + json[i].Name + "</td>");
+
+                $('table').append(tr);
+
+            }
+
+            $('#jublieetbl').DataTable();
+        });
+
+        $('#jublieetbl').DataTable({
+            "paging": false,
+            "ordering": false,
+            "info": false,
+            "bFilter": false,
+            "bLengthChange": false,
+            "bPaginate": false,
+            "bSort": false,
+            "bInfo": false,
+            "oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
+
+        });
+
+
+        $('#btnSearch').on("click", function () {
+            FilterMembers();
+            
+        });
+
+        //$('#printbtn').click(function () {
+        //    window.open('../Jubilee/JubileeReport');
+        //});
+
+    });
+
+    function DispImg(MemberID) {
+        
+        document.getElementById("img1").src = "http://localhost:8089/Images/" + MemberID + ".jpg";
+        //document.getElementById("img1").src = "http://localhost/Generalate/Images/" + MemberID + ".jpg";
+    }
+    function GetAllTodayBirthday() {
+        $.ajax({
+            url: "/PersonalDetails/GetAllTodayBirthday",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            //data : { "DlistName"},
+            dataType: "json",
+            success: function (response) {
+                
+                if (response.length > 0) {
+                    
+                    var allDate = "";
+                    for (var i = 0; i < response.length; i++) {
+                        allDate = allDate + "<p>" + response[i].DOB + " <b>" + response[i].Name + " " + response[i].SirName + "</b>" + "</p>";
+                    }
+                    $("#todayBirthday").append(allDate);
+                }
+
+                //code after success
+                $("#Spare3").val(response);
+            },
+            error: function (er) {
+                
+                //alert(er);
+            }
+
+        });
+    }
+    function ThisMonthGetAllJubly() {
+        $.ajax({
+            url: "/User_Jublie/ThisMonthGetAllJubly",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            //data : { "DlistName"},
+            dataType: "json",
+            success: function (response) {
+                
+                if (response.length > 0) {
+                    
+                    var allDate = "";
+                    for (var i = 0; i < response.length; i++) {
+                        allDate = allDate + "<p>" + response[i].GoldenJubilee + " <b>" + response[i].Name + " " + response[i].SirName + "</b>" + "</p>";
+                    }
+                    $("#thisMonthJubly").append(allDate);
+                }
+
+                //code after success
+                $("#Spare3").val(response);
+            },
+            error: function (er) {
+                
+                //alert(er);
+            }
+
+        });
+    }
+    function GetAllMembers() {
+        $.ajax({
+            url: "/PersonalDetails/CountOfAllPersion",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            //data : { "DlistName"},
+            dataType: "json",
+            success: function (response) {
+                
+
+                $("#totalMember").append(response);
+
+
+                //code after success
+            },
+            error: function (er) {
+                
+                //alert(er);
+            }
+
+        });
+    }
+
+    function FilterMembers() {
+        
+        var filterPersions = {
+            Name: $('#searchByPersonName').val(),
+            Mobile: $('#searchByMobile').val(),
+            Email: $('#SearchByEmail').val()
+        }
+        $.ajax({
+            url: "/PersonalDetails/FilterPerson",
+            type: "Post",
+            contentType: "application/json;charset=utf-8",
+            data: JSON.stringify({ 'filterPersions': filterPersions }),
+            dataType: "json",
+            success: function (json) {
+                
+                var tr;
+                $("#tblPersons").find('tbody').empty(); //add this line
+
+
+                for (var i = 0; i < json.length; i++) {
+                    tr = $('<tr />');
+
+                    tr.append("<td>" + i+1 + "</td>");
+                    tr.append("<td>" + json[i].Name + "</td>");
+                    tr.append("<td>" + json[i].Mobile + "</td>");
+                    tr.append("<td>" + json[i].EmailID + "</td>");
+
+                    $('table').append(tr);
+
+                }
+                $('#myModal').modal({
+                  show: "true"
+               });
+
+
+                //code after success
+            },
+            error: function (er) {
+                
+                //alert(er);
+            }
+
+        });
+    }
+</script>
+
+

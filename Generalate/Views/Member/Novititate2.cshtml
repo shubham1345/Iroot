@@ -1,0 +1,304 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "Novititate2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .overflow-daily_NovPPdatatbl {
+        overflow-y: auto;
+        padding-top: 10px;
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:89px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                @*<div class="panel-heading" style="background-color:#29b2e1"> Add Multi Language</div>*@
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">@{@HomeController.GetControlTextByControlId("Novitiate");}</h3>
+                                </div>
+
+                                @*dropdown code*@
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></label>
+                                            <select class="form-control" id="DioProvince1" style="width:595px !important;" name="ProvinceName"></select>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*end dropdown code*@
+
+                                @*<div class="row">
+                                        <div class="col-sm-10" style="text-align:right">
+                                            <div class="form-group">
+                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-print pull-right" id="btnPrintNovPP"></i></button>
+                                            </div>
+                                        </div>
+
+                                    </div>*@ @*<div class="row">
+                                        <div class="col-sm-10" style="text-align:right">
+                                            <div class="form-group">
+                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-print pull-right" id="btnPrintNovPP"></i></button>
+                                            </div>
+                                        </div>
+
+                                    </div>*@
+
+                                    <div class="row" style="margin-top: 10px;" id="NovPPdatatbl1">
+                                        <div class="col-sm-12 overflow-daily_NovPPdatatbl">
+                                            <table class="table table-bordered" id="NovPPdatatbl">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@{@HomeController.GetControlTextByControlId("S.No");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Surname");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Province_Name");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("View_Profile");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Primary_Details");} </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                @*<tbody id="ViewNovandPPDetails"></tbody>*@
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top: 10px;" id="NovPPdatatbl2">
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.No</th>
+                                                        <th>Name</th>
+                                                        <th>Province</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody id="ViewNovandPPDetails1"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    @section scripts{
+        <script src="~/Content/multiple-select.min.js"></script>
+        <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+
+        <script>
+            $(document).ready(function () {
+                GetAllProvince();
+                $("#Memdatatbl2").css("display", "none");
+                $("#Memdatatbl1").css("display", "none");
+                $("#Insttbl1").css("display", "none");
+                $("#Insttbl2").css("display", "none");
+                $("#tblParishes1").css("display", "none");
+                $("#tblParishes2").css("display", "none");
+                $("#tblcomdata1").css("display", "none");
+                $("#tblcomdata2").css("display", "none");
+                $("#tblSocData1").css("display", "none");
+                $("#tblSocData2").css("display", "none");
+                $("#tblOrdindata2").css("display", "none");
+                $("#tblRetire2").css("display", "none");
+                $("#deathdatatbl2").css("display", "none");
+                $("#departdatatbl2").css("display", "none");
+                //$("#NovPPdatatbl2").css("display", "none");
+                $("#EnterToNovdatatbl2").css("display", "none");
+                $("#NovPPdatatbl2").css("display", "none");
+            });
+        </script>
+
+        <script>
+            $('#btnPrintNovPP').on("click", function () {
+                $('#NovPPdatatbl2').printThis();
+                $("#NovPPdatatbl2").css("display", "block");
+                $("#NovPPdatatbl1").css("display", "none");
+            });
+        </script>
+
+        <script>
+
+            GetNovandPP("0");
+
+            $("#DioProvince1").on("change", function () {
+                var selectedVal = $("#DioProvince1 option:selected").val();
+                GetNovandPP();
+            })
+            function GetNovandPP() {
+                $('#NovPPdatatbl').DataTable().destroy();
+                var province = $("#DioProvince1").val();
+                datatable = $('#NovPPdatatbl')
+                    .DataTable({
+                        "sAjaxSource": "/Member/GetAllNovandPP?province=" + province,
+                        "retrieve": true,
+                        "bServerSide": true,
+                        "bProcessing": true,
+                        "bSearchable": false,
+                        "order": [[1, 'asc']],
+                        "autoWidth": false,
+                        "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                            var oSettings = this.fnSettings();
+                            $("td:first", nRow).html(oSettings._iDisplayStart + iDisplayIndex + 1);
+                            return nRow;
+                        },
+                        "columns": [
+                            {
+                                "defaultContent": ""
+                            },
+                            {
+                                "data": "Name",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "SurName",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "ProvinceName",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "MemberId",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "render": function (data, type, row) {
+                                    if (data != null && data != '') {
+                                        return '<a href=/Home/MemberDetails?id=' + data + '>View Details</a>';
+                                        // return '<a href=/Member/MemberFullData1?id=' + data + '>View Details</a>';
+                                    }
+                                    else {
+
+                                        return '<a target="_blank" href="#">No Profile</a>';
+                                    }
+                                }
+                            },
+                            {
+                                "data": "MemberId",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "render": function (data, type, row) {
+                                    if (data != null && data != '') {
+                                        return '<a href=/Member/MemberInfoById?memberId=' + data + '>Add Details</a>';
+                                    }
+                                    else {
+                                        return '<a target="_blank" href="#">Add Details</a>';
+                                    }
+                                }
+                            },
+
+
+
+                        ]
+                    });
+            }
+
+
+
+
+            function GetAllNovandPP(province) {
+                $.ajax({
+                    url: "/Home/GetAllNovandPP?province=" + province,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        //debugger;
+                        $('#ViewNovandPPDetails').html("");
+                        $('#ViewNovandPPDetails1').html("");
+                        if (response.length > 0) {
+                            var i = 1;
+                            var html = "";
+                            response.forEach(function (data) {
+                                if (data != null) {
+                                    var url = "";
+                                    var url2 = "";
+                                    var isView = "No Profile";
+                                    var isView2 = "No Profile";
+                                    if (data.MemberId != null && data.MemberId != "") {
+                                        //if (url = "/Member/MemberFullData1?id=" + data.MemberId) {
+                                        if (url = "/Home/MemberDetails?id=" + data.MemberId) {
+                                            isView = "View Details";
+                                        }
+
+                                        if (url2 = "/Member/MemberInfoById?memberId=" + data.MemberId) {
+                                            isView2 = "Add Details";
+                                        }
+
+                                    } else {
+                                        url = "#";
+                                        isView = "No Profile";
+
+                                        url2 = "#";
+                                        isView2 = "Add Details";
+                                    }
+                                    //  html += "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.ProvinceName + "</td><td><a href='" + url + "'>" + isView + "</a></td><td><a href='" + url2 + "'>" + isView2 + "</a></td></tr>";
+                                    html += "<tr><td>" + i + "</td><td><a href='/Member/MemberInfoById?memberId=" + data.MemberId + "&Name=&SirName='>" + data.Name + "</a></td><td>" + data.ProvinceName + "</td><td><a href='" + url + "'>" + isView + "</a></td><td><a href='" + url2 + "'>" + isView2 + "</a></td></tr>";
+                                    var row1 = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.ProvinceName + "</td></tr>";
+                                    // $('#ViewNovandPPDetails').append(row);
+                                    $('#ViewNovandPPDetails1').append(row1);
+                                    i = i + 1;
+                                }
+                                // $('#NovPPdatatbl').DataTable().destroy();
+                                // $('#NovPPdatatbl').find('tbody').html('');
+                                // $('#NovPPdatatbl').find('tbody').append(html);
+                                // $('#NovPPdatatbl').DataTable().draw();
+                                $("#myModal15").modal('show');
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+
+            //dropdown bind method
+            function GetAllProvince() {
+                $.ajax({
+                    url: "/Home/GetAllProvince",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioProvince1').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- @{@HomeController.GetControlTextByControlId("Select_Province_Name");} --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                            }
+                            $("#DioProvince1").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+    }
+

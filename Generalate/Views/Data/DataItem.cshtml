@@ -1,0 +1,1928 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "DataItem";
+}
+
+
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
+@*<ul class="breadcrumb" style="margin-top:80px;">
+        <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+    </ul>*@
+@{
+    var tabPermissions = Session["tabPermissionList"] as List<Generalate.Models.TabPermissions>;
+}
+
+
+@{
+    var viewpermissions = Session["ViewPagePermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+<div class="page-content-wrap" style="margin-top:100px">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    @{
+                                        var isPermissionDataItemView = tabPermissions.FirstOrDefault(x => x.TabName == "DataItemView");
+                                        if (isPermissionDataItemView != null)
+                                        {
+                                            <li class="active"><a data-toggle="tab" href="#dataitem" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Data_Item");}</span></a></li>
+                                        }
+                                        var isPermissionDataItemDetailView = tabPermissions.FirstOrDefault(x => x.TabName == "DataItemDetailView");
+                                        if (isPermissionDataItemDetailView != null)
+                                        {
+                                            <li><a data-toggle="tab" href="#dataitemdetail" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span></a></li>
+                                        }
+                                        var isPermissionDataItemProfessionView = tabPermissions.FirstOrDefault(x => x.TabName == "DataItemDetailView");
+                                        if (isPermissionDataItemProfessionView != null)
+                                        {
+                                            <li><a data-toggle="tab" href="#professiondetail" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Profession");}</span></a></li>
+                                        }
+                                        isPermissionDataItemProfessionView = tabPermissions.FirstOrDefault(x => x.TabName == "DataItemDetailView");
+                                        if (isPermissionDataItemProfessionView != null)
+                                        {
+                                            <li><a data-toggle="tab" href="#CommunityAppointmentdetail" class="sis_tab_a click"><span>Community Appointment</span></a></li>
+                                        }
+                                        isPermissionDataItemProfessionView = tabPermissions.FirstOrDefault(x => x.TabName == "DataItemDetailView");
+                                        if (isPermissionDataItemProfessionView != null)
+                                        {
+                                            <li><a data-toggle="tab" href="#InstitutionAppointmentdetail" class="sis_tab_a click"><span>Institution Appointment</span></a></li>
+                                        }
+                                        <li><a data-toggle="tab" href="#CommissionsDesignation" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Designation");}</span></a></li>
+                                        <li><a data-toggle="tab" href="#CommunityDetail" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Commmunity");}  </span></a></li>
+                                        <li><a data-toggle="tab" href="#ProfessionPlaceDetail" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Profession Place");}</span></a></li>
+                                        <li><a data-toggle="tab" href="#Documenttype" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Document Type");}</span></a></li>
+                                        <li><a data-toggle="tab" href="#AverageAge" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Average Age");}</span></a></li>
+                                    }
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="dataitem" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Data_Item");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Data_Item");}</span> </h3>
+                                                                    </div>
+                                                                    <form class="form-horizontal" id="MainDtaItem" action="/Data/DataItemSave" method="post" enctype="multipart/form-data">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-6" style="padding-left:20px">
+                                                                                    <div class="form-group">
+                                                                                        <label for="inputPassword3" class="col-sm-2 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                        <div class="col-sm-6">
+                                                                                            <input type="text" style="display:none" class="form-control" name="Id" id="IdMain" value="0">
+                                                                                            <input type="text" class="form-control" name="name" id="nameMain" required placeholder="">
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <label for="inputPassword3" class="col-sm-2 control-label"><span>@{@HomeController.GetControlTextByControlId("Name(French)");}</span></label>
+
+                                                                                        <div class="col-sm-6">
+                                                                                            <input type="text" class="form-control" name="name_French" id="nameMain_F" required placeholder="">
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-sm-6 col-sm-offset-2">
+                                                                                            @{
+                                                                                                var ispermissionadd = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                if(ispermissionadd != null)
+                                                                                                {
+                                                                                                    <input type="submit" id="saveMain" class="btn btn-success" value="@{@HomeController.GetControlTextByControlId("Save");}">
+
+                                                                                                    <button style="display:none" type="button" id="MainClear" onclick="return MainClearfn();" class="btn btn-success">@{@HomeController.GetControlTextByControlId("Clear");}</button>
+                                                                                                }
+
+                                                                                               
+                                                                                            }
+
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-right:10px;">
+                                                            <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                <table class="table table-striped table-bordered table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                                    <thead>
+                                                                        <tr style="background-color:#001f6b; color:white">
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="tbody">
+                                                                        @{
+                                                                            int L1 = 1;
+                                                                            foreach (var item in @ViewBag.allDataListItems as IEnumerable<Generalate.Models.DataLists>)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td>@L1</td>
+                                                                                    <td>@item.Name</td>
+                                                                                    <td>
+                                                                                        @{
+                                                                                            var ispermissioneditlan = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                            if (ispermissioneditlan != null)
+                                                                                            {
+                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" onclick="DatalistEditMain('@item.Id','@item.Name','@item.Name_French')" data-val="@item.Id" class="fa fa-edit DatalistEditMain"></i></button>
+
+                                                                                            }
+                                                                                            var ispermissiondelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                            if (ispermissiondelete != null)
+                                                                                            {
+
+                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DatalistDeleteMain"></i></button>
+                                                                                            }
+
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                L1++;
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="dataitemdetail" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("AddDataItem");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <select class="form-control" name="DataListName" id="DataListName">
+                                                                                                    @foreach (var item in @ViewBag.allDataListItems)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name</option>
+                                                                                                    }
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="DataName" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="DataId" name="Id">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name(French)");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name_French" id="Name_French" required placeholder="">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="Continent" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <select type="text" class="form-control" name="Continent" id="Continent" placeholder="">
+                                                                                                    <option value="0">@{@HomeController.GetControlTextByControlId("Select_Continent");}</option>
+                                                                                                    @{ string lang = Convert.ToString(HttpContext.Current.Session["CurrentLang"]);}
+                                                                                                    @foreach (var item in @ViewBag.Continents as IEnumerable<Generalate.Models.tblContinentMst>)
+                                                                                                    {
+                                                                                                        //var selected = ViewBag.MotherTongue != null && ViewBag.MotherTongue.Equals(item.Name) ? "selected" : "";
+                                                                                                        if (lang == "FN")
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName_French</option>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName</option>
+                                                                                                        }
+
+                                                                                                    }
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="FormationId" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("FormationId");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="FormationId" id="Formationid">
+                                                                                            </div>
+                                                                                            <div class="col-sm-3">
+                                                                                                <input type="button" id="formationid" class="btn btn-primary btn-sm btndatalistSave" value="View Id" />
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+
+                                                                                            @{ 
+                                                                                                var ispermissioncreate = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                if(ispermissioncreate != null)
+                                                                                                {
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="submit" class="btn btn-success pull-right btndatalistSave" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+
+                                                                                            </div>
+                                                                                                }
+                                                                                            }
+                                                                                              <input type="submit" class="btn btn-success pull-right btndatalistSave" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl1" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Data_Item");}</span></th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("French Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                int L = 1;
+                                                                                                foreach (var item in ViewBag.allDataList as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.DataListName</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>@item.Name_French</td>
+                                                                                                        <td>
+                                                                                                            @{
+                                                                                                                if (item.DataListName == "StageOfFormation")
+                                                                                                                {
+
+                                                                                                                    var ispermissionedit1 = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if(ispermissionedit1 != null)
+                                                                                                                    {
+
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit DatalistEdit"></i></button>
+                                                                                                                    }
+
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit1 = viewpermissions.FirstOrDefault(x =>x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit1 != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit DatalistEdit"></i></button>
+                                                                                                                    }
+                                                                                                                    var isPermissionDataItemDetailDelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailDelete != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DatalistDelete"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="professiondetail" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Profession");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/ProfessionDetailSave" id="DataitemFormProfession" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="ProfessionName" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="DataIdProfession" name="Id">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name(French)");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name_French" id="ProfessionName_French" required placeholder="">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group" id="Continent" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <select type="text" class="form-control" name="Continent" id="Continent" placeholder="">
+
+                                                                                                    @foreach (var item in @ViewBag.Continents as IEnumerable<Generalate.Models.tblContinentMst>)
+                                                                                                    {
+                                                                                                        <option value="0">@{@HomeController.GetControlTextByControlId("Select_Continent");}</option>
+                                                                                                        //var selected = ViewBag.MotherTongue != null && ViewBag.MotherTongue.Equals(item.Name) ? "selected" : "";
+                                                                                                        if (lang == "FN")
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName_French</option>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName</option>
+                                                                                                        }
+
+                                                                                                    }
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="FormationIdProfession" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("FormationId");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="FormationId" id="FormationIdProfession">
+                                                                                            </div>
+                                                                                            <div class="col-sm-3">
+                                                                                                <input type="button" id="FormationIdProfession" class="btn btn-primary btn-sm btndatalistSave" value="View Id" />
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6">
+
+                                                                                                @{ 
+                                                                                                    var ispermissionsavedatalist = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                    if(ispermissionsavedatalist != null)
+                                                                                                    {
+                                                                                                <input type="submit" class="btn btn-success pull-right btndatalistSave2" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+
+                                                                                                    }
+                                                                                                }
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl2" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in @ViewBag.allDataListItems2 as IEnumerable<Generalate.Models.Tbl_ProfessionDetails>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>
+                                                                                                            @{
+                                                                                                                if (item.DataListName == "StageOfFormation")
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit ProfessionEdit"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit1 = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit1 != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit ProfessionEdit"></i></button>
+                                                                                                                    }
+                                                                                                                    var isPermissionDataItemDetailDelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailDelete != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DatalistDeleteProfession"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div id="CommunityAppointmentdetail" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Community_Appointment");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/CommunityAppointmentDetailSave" id="DataitemFormCommunityAppointment" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="CommunityAppointmentName" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="DataIdCommunityAppointment" name="Id">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name(French)");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name_French" id="CommunityAppointmentName_French" required placeholder="">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="Continent" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <select type="text" class="form-control" name="Continent" id="Continent" placeholder="">
+
+                                                                                                    @foreach (var item in @ViewBag.Continents as IEnumerable<Generalate.Models.tblContinentMst>)
+                                                                                                    {
+                                                                                                        <option value="0">@{@HomeController.GetControlTextByControlId("Select_Continent");}</option>
+                                                                                                        //var selected = ViewBag.MotherTongue != null && ViewBag.MotherTongue.Equals(item.Name) ? "selected" : "";
+                                                                                                        if (lang == "FN")
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName_French</option>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName</option>
+                                                                                                        }
+
+                                                                                                    }
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="FormationIdProfession" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("FormationId");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="FormationId" id="FormationIdProfession">
+                                                                                            </div>
+                                                                                            <div class="col-sm-3">
+                                                                                                <input type="button" id="CommunityAppointmentIdProfession" class="btn btn-primary btn-sm btndatalistSave" value="View Id" />
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6">
+                                                                                                @{ 
+                                                                                                    var ispermissionedit = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                    if(ispermissionedit != null)
+                                                                                                    {
+
+                                                                                                <input type="submit" class="btn btn-success pull-right btndatalistSave3" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl3" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in @ViewBag.allDataListItems3 as IEnumerable<Generalate.Models.Tbl_CommunityAppointmentDetails>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>
+                                                                                                            @{
+                                                                                                                if (item.DataListName == "StageOfFormation")
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit CommunityAppointmentEdit"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit1 = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit1 != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit CommunityAppointmentEdit"></i></button>
+                                                                                                                    }
+                                                                                                                    var isPermissionDataItemDetailDelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailDelete != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DatalistDeleteCommunityAppointment"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="InstitutionAppointmentdetail" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Institution_Appointment");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/InstitutionAppointmentDetailSave" id="DataitemFormInstitutionAppointment" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="InstitutionAppointmentName" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="DataIdInstitutionAppointment" name="Id">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name(French)");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name_French" id="InstitutionAppointmentName_French" required placeholder="">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="Continent" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <select type="text" class="form-control" name="Continent" id="Continent" placeholder="">
+                                                                                                    <option value="0">@{@HomeController.GetControlTextByControlId("Select_Continent");}</option>
+
+                                                                                                    @foreach (var item in @ViewBag.Continents as IEnumerable<Generalate.Models.tblContinentMst>)
+                                                                                                    {
+                                                                                                        //var selected = ViewBag.MotherTongue != null && ViewBag.MotherTongue.Equals(item.Name) ? "selected" : "";
+                                                                                                        if (lang == "FN")
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName_French</option>
+                                                                                                        }
+                                                                                                        else
+                                                                                                        {
+                                                                                                            <option value="@item.ContinentName">@item.ContinentName</option>
+                                                                                                        }
+
+                                                                                                    }
+
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="FormationIdInstitutionAppointment" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("FormationId");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="FormationId" id="FormationIdProfession">
+                                                                                            </div>
+                                                                                            <div class="col-sm-3">
+                                                                                                <input type="button" id="InstitutionAppointmentIdProfession" class="btn btn-primary btn-sm btndatalistSave" value="View Id" />
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6">
+                                                                                                @{ 
+                                                                                                    var ispermissioneditformation = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                    if(ispermissioneditformation != null)
+                                                                                                    {
+
+                                                                                                <input type="submit" class="btn btn-success pull-right btndatalistSave4" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl4" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in @ViewBag.allDataListItems4 as IEnumerable<Generalate.Models.Tbl_InstitutionAppointmentDetails>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>
+                                                                                                            @{
+                                                                                                                if (item.DataListName == "StageOfFormation")
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit InstitutionAppointmentEdit"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit1 = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "");
+                                                                                                                    if (isPermissionDataItemDetailEdit1 != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit InstitutionAppointmentEdit"></i></button>
+                                                                                                                    }
+                                                                                                                    var isPermissionDataItemDetailDelete = tabPermissions.FirstOrDefault(x => x.TabName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailDelete != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DatalistDeleteInstitutionAppointment"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="CommissionsDesignation" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Designation");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/DesignationDetailSave" id="CommissionsDesignationPage" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="form-group" id="" style="">
+                                                                                            <label for="inputPassword13" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Designation_For");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <select type="text" id="DesignationType" class="form-control" name="DesignationType" placeholder="">
+                                                                                                    <option value="0">---@{@HomeController.GetControlTextByControlId("Select");}---</option>
+                                                                                                    <option value="Commission">@{@HomeController.GetControlTextByControlId("Commission");}</option>
+                                                                                                    <option value="Council">@{@HomeController.GetControlTextByControlId("Council");}</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group" id="" style="">
+                                                                                            <label for="inputPassword12" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Select_Type");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <select type="text" id="DataListNameType" class="form-control" name="DataListName" placeholder="">
+                                                                                                    <option value="0">---@{@HomeController.GetControlTextByControlId("Select_Designation");}---</option>
+                                                                                                    <option value="Provience Designation">@{@HomeController.GetControlTextByControlId("Provience_Designation");}</option>
+                                                                                                    <option value="General Designation">@{@HomeController.GetControlTextByControlId("General_Designation");}</option>
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="InstitutionAppointmentName2" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="DataIdInstitutionAppointment2" name="Id">
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name(French)");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name_French" id="InstitutionAppointmentName2_French" required placeholder="">
+                                                                                            </div>
+                                                                                        </div>
+
+
+
+                                                                                        <div class="form-group" id="FormationIdInstitutionAppointment11" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("FormationId");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="FormationId" id="FormationIdProfession">
+                                                                                            </div>
+                                                                                            <div class="col-sm-3">
+                                                                                                <input type="button" id="InstitutionAppointmentIdProfession" class="btn btn-primary btn-sm btndatalistSave" value="View Id" />
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6"> 
+                                                                                                @{ 
+                                                                                                    var ispermissiondesignation = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                    if(ispermissiondesignation != null)
+                                                                                                    {
+
+                                                                                                <input type="submit" class="btn btn-success pull-right  btndatalistSave5" onclick=" return Validdata()" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl5" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Designation_For");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Designation_Type");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in @ViewBag.allDataListItems5 as IEnumerable<Generalate.Models.Tbl_DesignationDetails>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.DesignationType</td>
+                                                                                                        <td>@item.DataListName</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>
+                                                                                                            @{
+                                                                                                                if (item.DataListName == "StageOfFormation")
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit DesignationEdit"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                                else
+                                                                                                                {
+                                                                                                                    var isPermissionDataItemDetailEdit1 = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailEdit1 != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit DesignationEdit"></i></button>
+                                                                                                                    }
+                                                                                                                    var isPermissionDataItemDetailDelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                                                    if (isPermissionDataItemDetailDelete != null)
+                                                                                                                    {
+                                                                                                                        <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DatalistDeleteDesignation"></i></button>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal fade" id="MyModal" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog" style="margin-top:60px;">
+                                            <div class="modal-content" style="width:900px;">
+                                                <div class="modal-header">
+                                                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                    <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Formation");}</span></h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-sm-12">
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="margin-top:40px;">
+                                                                    <table class="table table-striped table-bordered table-hover" id="TblDiocese" style="margin-top:20px;">
+                                                                        <thead>
+                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span>  </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Formation Name");}</span> </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Formation Id");}</span> </th>
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="tbody">
+                                                                            <tr>
+                                                                                <td>1</td>
+                                                                                <td>Candidacy</td>
+                                                                                <td>11</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>2</td>
+                                                                                <td>Postulancy</td>
+                                                                                <td>12</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>3</td>
+                                                                                <td>Novitiate1stY</td>
+                                                                                <td>13</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>4</td>
+                                                                                <td>Novitiate2ndY</td>
+                                                                                <td>14</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>5</td>
+                                                                                <td>1stProfession</td>
+                                                                                <td>15</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>6</td>
+                                                                                <td>DetainedPeriod</td>
+                                                                                <td>16</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>7</td>
+                                                                                <td>PerpetualProfession</td>
+                                                                                <td>17</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>8</td>
+                                                                                <td>Diaconate</td>
+                                                                                <td>18</td>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <td>9</td>
+                                                                                <td>Ordination</td>
+                                                                                <td>19</td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="ProfessionPlaceDetail" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Profession_Place");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/ProfessionPlaceUpdate" id="CommunityPage" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="ProfessionPlaceName" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="ProPlaceId" name="Id">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name(French)");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="frenchName" id="ProfessionPlaceNameFrench" required placeholder="">
+
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="FormationIdInstitutionAppointment11" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("FormationId");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="I1d" id="Id">
+                                                                                            </div>
+                                                                                            <div class="col-sm-3">
+                                                                                                <input type="button" id="InstitutionAppointmentIdProfession" class="btn btn-primary btn-sm btndatalistSave" value="View Id" />
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6">
+                                                                                                @{ 
+                                                                                                    var ispermissionprofession = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                    if(ispermissionprofession != null)
+                                                                                                    {
+
+                                                                                                <input type="Submit" class="btn btn-success pull-right  btndatalistSave7" onclick="" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl5" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name_French");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in @ViewBag.professionPlace as IEnumerable<Generalate.Models.Tbl_ProfessionPlace>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>@item.Name_French</td>
+                                                                                                        <td>
+                                                                                                            @{
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit ProfPlaceEdit"></i></button>
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DeleteProfesionPlace"></i></button>
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="CommunityDetail" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Community");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/CommunityDetailUpdate" id="CommunityPage" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="CommunityName" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="CommunityId" name="Id">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group" id="FormationIdInstitutionAppointment11" style="display:none;">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("FormationId");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="I1d" id="Id">
+                                                                                            </div>
+                                                                                            <div class="col-sm-3">
+                                                                                                <input type="button" id="InstitutionAppointmentIdProfession" class="btn btn-primary btn-sm btndatalistSave" value="View Id" />
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6">
+                                                                                                @{ 
+                                                                                                    var ispermissioncommunityedit = viewpermissions.FirstOrDefault(x => x.Createpermission
+                                                                                                     == true && x.PageName == "Data List");
+                                                                                                    if(ispermissioncommunityedit != null)
+                                                                                                    {
+
+                                                                                                <input type="Submit" id="CommunityUpdat1e" class="btn btn-success pull-right  btndatalistSave6" onclick="" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl5" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in @ViewBag.allcommunityData as IEnumerable<Generalate.Models.tblAddExtraCommunity>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>
+                                                                                                            @{
+                                                                                                                var ispermissioneditcomm = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                if(ispermissioneditcomm != null)
+                                                                                                                {
+
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.EntryId" class="fa fa-edit CommunityEdit"></i></button>
+                                                                                                                }
+
+                                                                                                                var ispermissiondelcomm = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                                                if(ispermissiondelcomm != null)
+                                                                                                                {
+
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.EntryId" class="fa fa-trash DeleteCommunity"></i></button>
+                                                                                                                }
+
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="Documenttype" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span></div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Document_Type");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/Data/DocumentTypeSave" id="DocumentTypePage" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Name" id="DocumentTypeName" required placeholder="">
+                                                                                                <input type="hidden" class="form-control" id="DocumentTypeId" name="Id" required>
+                                                                                            </div>
+                                                                                        </div>
+
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6">
+                                                                                                @{ 
+                                                                                                    var ispermissioneditdoc = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                    if(ispermissioneditdoc != null)
+                                                                                                    {
+
+                                                                                                <input type="Submit" id="DocumentTypeUpdat1e" class="btn btn-success pull-right  btndatalistSave6" onclick="" value="@{@HomeController.GetControlTextByControlId("Save");}" />
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-right:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody">
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in @ViewBag.allDocumentData as IEnumerable<Generalate.Models.tbl_DocumentType>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.Name</td>
+                                                                                                        <td>
+                                                                                                            @{
+
+                                                                                                                var ispermssioneditdoc = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                if(ispermissioneditdoc != null)
+                                                                                                                {
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit CommunityEditDDD"></i></button>
+
+                                                                                                                }
+
+                                                                                                                var ispermissiondeldoc = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                                                if(ispermissiondeldoc != null)
+                                                                                                                {
+
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DeleteCommunityDDD"></i></button>
+                                                                                                                }
+
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*Average Age*@
+                                    <div id="AverageAge" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1">
+                                                        <span>@{@HomeController.GetControlTextByControlId("Dataitem_Detail");}</span>
+                                                        <span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Average_Age");}</span></h3>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <form action="/Data/AgeSave" class="form-horizontal" id="AgeForm" method="post" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-12">
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Age Average");}</span></label>
+                                                                                            <div class="col-sm-6">
+                                                                                                <input type="text" class="form-control" name="Average_Age" id="Average_Age" required placeholder="Average Age" />
+                                                                                                <input type="hidden" class="form-control" id="Age_ID" name="Age_ID" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-6">
+                                                                                                @{ 
+                                                                                                    var ispermissionsaveage = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Data List");
+                                                                                                    if(ispermissionsaveage != null)
+                                                                                                    {
+
+                                                                                                 <input type="submit" id="SaveAge" class="btn btn-success pull-right BtnSaveAge" />
+                                                                                                    }
+                                                                                                }
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+                                                                            <div class="row" style="margin-top:10px;">
+                                                                                <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                                    <table class="table table-striped table-bordered table-hover" id="" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Average Age");}</span> </th>
+                                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody>
+                                                                                            @{
+                                                                                                L = 1;
+                                                                                                foreach (var item in ViewBag.AgeList as IEnumerable<Generalate.Models.Tbl_AverageAge>)
+                                                                                                {
+                                                                                                    <tr>
+                                                                                                        <td>@L</td>
+                                                                                                        <td>@item.Average_Age</td>
+                                                                                                        <td>
+                                                                                                            @{
+
+                                                                                                                var ispermissioneditage = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Data List");
+                                                                                                                if(ispermissioneditage != null)
+                                                                                                                {
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Age_ID" class="fa fa-edit "></i></button>
+
+                                                                                                                }
+                                                                                                                var ispermissiondelage = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Data List");
+                                                                                                                if(ispermissiondelage != null)
+                                                                                                                {
+
+                                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Age_ID" class="fa fa-trash "></i></button>
+                                                                                                                }
+
+                                                                                                            }
+                                                                                                        </td>
+                                                                                                    </tr>
+                                                                                                    L++;
+                                                                                                }
+                                                                                            }
+                                                                                        </tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts {
+
+    <script>
+
+        $(".circleimage").mouseover(function () {
+            $(".circleimage").text("Back");
+        });
+        $(".circleimage").mouseout(function () {
+            $(".circleimage").text("");
+        });
+
+        $("#formationid").on('click', function () {
+            //debugger;
+            $("#MyModal").modal('show');
+        });
+        $(document).ready(function () {
+            //debugger;
+            $('#FormationTbl').DataTable();
+            $("#FormationTbl1").dataTable();
+            $('#FormationTbl2').DataTable();
+            $('#FormationTbl3').DataTable();
+            $('#FormationTbl4').DataTable();
+            $('#FormationTbl5').DataTable();
+        });
+
+        $("#DataListName").change(function () {
+            //debugger;
+            var name = $("#DataListName option:selected").val();
+            hideFeature(name);
+            hideFeature1(name);
+        });
+
+        function hideFeature(name) {
+            if (name == "Country") {
+                $("#Continent").css("display", "block");
+            }
+            else {
+                $("#Continent").css("display", "none");
+            }
+        }
+        function hideFeature1(name) {
+            if (name == "StageOfFormation") {
+                $("#FormationId").css("display", "block");
+                $("#DatalistDelete").css("display", "none");
+            }
+            else {
+                $("#FormationId").css("display", "none");
+            }
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                localStorage.setItem('activeTab', $(this).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+        function Validdata() {
+            var valu1 = $("#DesignationType").val();
+            if (valu1 == '0') {
+                alert("@{@HomeController.GetControlTextByControlId("Please_Select_Designation_Type");}");
+                return false;
+            }
+            var valu2 = $("#DataListNameType").val();
+            if (valu2 == '0') {
+                alert("@{@HomeController.GetControlTextByControlId("Please_Select_Type");}");
+                return false;
+            }
+            var valu2 = $("#InstitutionAppointmentName2").val();
+            if (valu2 == '') {
+                alert("@{@HomeController.GetControlTextByControlId("Please_Enter_Name");}");
+                return false;
+            }
+        }
+    </script>
+    <script>
+        $(".DatalistEdit").on("click", function () {
+            $('#DataitemForm').attr('action', '/Data/DataListItemUpdate');
+            var DataID = $(this).attr("data-val")
+            alert(DataID);
+            $(".btndatalistSave").val("Update")
+            GetDataitemById(DataID);
+        });
+        $(".ProfessionEdit").on("click", function () {
+            $('#DataitemFormProfession').attr('action', '/Data/ProfessionUpdate');
+            var DataID = $(this).attr("data-val")
+            $(".btndatalistSave2").val("Update")
+            GetDataitemByIdProfession(DataID);
+        });
+        $(".CommunityAppointmentEdit").on("click", function () {
+            $('#DataitemFormCommunityAppointment').attr('action', '/Data/CommunityAppointmentUpdate');
+            var DataID = $(this).attr("data-val")
+            $(".btndatalistSave3").val("Update")
+            GetDataitemByIdCommunityAppointment(DataID);
+        });
+        $(".InstitutionAppointmentEdit").on("click", function () {
+            $('#DataitemFormInstitutionAppointment').attr('action', '/Data/InstitutionAppointmentUpdate');
+            var DataID = $(this).attr("data-val")
+            $(".btndatalistSave4").val("Update")
+            GetDataitemByIdInstitutionAppointment(DataID);
+        });
+        $(".DesignationEdit").on("click", function () {
+            $('#CommissionsDesignationPage').attr('action', '/Data/DesignationDetailUpdate');
+            var DataID = $(this).attr("data-val")
+            $(".btndatalistSave5").val("Update")
+            GetDataitemByIdDesignation(DataID);
+        });
+
+        $(".CommunityEdit").on("click", function () {
+
+            var DataID = $(this).attr("data-val");
+            $("#btndatalistSave6").val("Update");
+            GetDataitemByIdCommunity(DataID);
+        });
+        $(".CommunityEditDDD").on("click", function () {
+
+            $('#DocumentTypePage').attr('action', '/Data/DocumentTypeUpdate');
+            var DataID = $(this).attr("data-val")
+            $("#DocumentTypeUpdat1e").val("Update")
+            GetDataitemByIdDocumentType(DataID);
+        });
+
+        $(".ProfPlaceEdit").on("click", function () {
+
+            var DataID = $(this).attr("data-val")
+            $(".btndatalistSave7").val("Update")
+            GetDataitemByIdProfPlace(DataID);
+        });
+        function DatalistEditMain(id, name,Fname) {
+
+            $('#MainDtaItem').attr('action', '/Data/DataItemUpdate');
+            $('#nameMain').val(name);
+            $('#nameMain_F').val(Fname);
+            $('#IdMain').val(id);
+            $('#saveMain').val('@{@HomeController.GetControlTextByControlId("Update");}');
+            $('#MainClear').show();
+            //alert($('#IdMain').val());
+        }
+        function MainClearfn() {
+            $('#MainDtaItem').attr('action', '/Data/DataItemSave');
+            $('#nameMain').val('');
+            $('#nameMain_F').val('');
+            $('#IdMain').val('0');
+            $('#saveMain').val('@{@HomeController.GetControlTextByControlId("Save");}');
+            $('#MainClear').hide();
+        }
+        function GetDataitemByIdCommunity(DataID) {
+            $.ajax({
+                url: "/Data/GetDataitemByIdCommunity?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+                        $("#CommunityName").val(result.Name);
+                        $("#CommunityId").val(result.EntryId);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        function GetDataitemByIdProfPlace(DataID) {
+            $.ajax({
+                url: "/Data/GetDataitemByIdProfPlace?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+                        $("#ProfessionPlaceNameFrench").val(result.Name_French);
+                        $("#ProfessionPlaceName").val(result.Name);
+                        $("#ProPlaceId").val(result.Id);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        $("#CommunityUpdate").on("click", function () {
+            UpdateCommunity();
+        });
+        function UpdateCommunity() {
+            var name = $("#CommunityName").val();
+            var id = $("#CommunityId").val();
+            $.ajax({
+                url: "/Data/CommunityDetailUpdate?name=" + name + "&id=" + id,
+
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function GetDataitemById(DataID) {
+            $.ajax({
+                url: "/Data/GetDataitemById?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+                        $("#Formationid").val(result.FormationId);
+                       $("#Formationid").attr("readonly", true);
+                        //$("#Formationid").attr("desabled", true);
+                        $("#DataId").val(result.Id);
+                        $("#DataName").val(result.Name);
+                        $("#Name_French").val(result.Name_French);
+                        $('#Continent option[value="' + result.Continent + '"]').attr("selected", "selected");
+                        $('#Continent').val(result.Continent).change();
+                        $('#DataListName option[value="' + result.DataListName + '"]').attr("selected", "selected");
+                        $('#DataListName').val(result.DataListName).change();
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function GetDataitemByIdProfession(DataID) {
+            $.ajax({
+                url: "/Data/GetDataitemByIdProfession?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+                        $("#FormationIdProfession").val(result.FormationId);
+                        $("#FormationIdProfession").attr("readonly", true);
+                        //$("#Formationid").attr("desabled", true);
+                        $("#DataIdProfession").val(result.Id);
+                        $("#ProfessionName").val(result.Name);
+                        $("#ProfessionName_French").val(result.Name_French);
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function GetDataitemByIdCommunityAppointment(DataID) {
+            $.ajax({
+                url: "/Data/GetDataitemByIdCommunityAppointment?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+                        $("#FormationIdCommunityAppointment").val(result.FormationId);
+                        $("#FormationIdCommunityAppointment").attr("readonly", true);
+                        //$("#Formationid").attr("desabled", true);
+                        $("#DataIdCommunityAppointment").val(result.Id);
+                        $("#CommunityAppointmentName").val(result.Name);
+                        $("#CommunityAppointmentName_French").val(result.Name_French);
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function GetDataitemByIdInstitutionAppointment(DataID) {
+            $.ajax({
+                url: "/Data/GetDataitemByIdInstitutionAppointment?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result != null) {
+                        $("#FormationIdInstitutionAppointment").val(result.FormationId);
+                        $("#FormationIdInstitutionAppointment").attr("readonly", true);
+                        //$("#Formationid").attr("desabled", true);
+                        $("#DataIdInstitutionAppointment").val(result.Id);
+                        $("#InstitutionAppointmentName").val(result.Name);
+                        $("#InstitutionAppointmentName_French").val(result.Name_French);
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function GetDataitemByIdDocumentType(DataID) {
+            $.ajax({
+                url: "/Data/GetDocumentTypById?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (result != null) {
+                        $("#DocumentTypeId").val(result.Id);
+                        $("#DocumentTypeName").val(result.Name);
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        function GetDataitemByIdDesignation(DataID) {
+            $.ajax({
+                url: "/Data/GetDataitemByIdDesignation?id=" + DataID,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    debugger;
+                    if (result != null) {
+                        $("#FormationIdInstitutionAppointment11").val(result.FormationId);
+                        $("#FormationIdInstitutionAppointment11").attr("readonly", true);
+                        //$("#Formationid").attr("desabled", true);
+                        $("#DataIdInstitutionAppointment2").val(result.Id);
+                        $("#InstitutionAppointmentName2").val(result.Name);
+                        $("#DesignationType").val(result.DesignationType);
+                        $("#DataListNameType").val(result.DataListName);
+                        $("#InstitutionAppointmentName2_French").val(result.Name_French);
+
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        $(".DatalistDelete").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/DatalistDelete?id=" + DataID;
+            }
+        });
+        $(".DatalistDeleteDesignation").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/DatalistDeleteDesignation?id=" + DataID;
+            }
+        });
+        $(".DeleteCommunity").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/CommunityDelete?id=" + DataID;
+            }
+        });
+        $(".DeleteCommunityDDD").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/DocumentTypeDelete?id=" + DataID;
+            }
+        });
+
+        $(".DeleteProfesionPlace").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/ProfessionPlaceDelete?id=" + DataID;
+            }
+        });
+        $(".DatalistDeleteProfession").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/DatalistDeleteProfession?id=" + DataID;
+            }
+        });
+        $(".DatalistDeleteCommunityAppointment").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/DatalistDeleteCommunityAppointment?id=" + DataID;
+            }
+        });
+        $(".DatalistDeleteInstitutionAppointment").on('click', function () {
+            var DataID = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Data/DatalistDeleteInstitutionAppointment?id=" + DataID;
+            }
+        });
+    </script>
+
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "200") {
+            $("#mymessage").html("<b>Data saved successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "204") {
+            $("#mymessage").html("<b>Some Error Occured !</b>");
+            $("#mymessage").css("color", "red");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "201") {
+            $("#mymessage").html("<b>Data Updated Successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "202") {
+            $("#mymessage").html("<b>Data Deleted Successfully !</b>");
+            $("#mymessage").css("color", "blue");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+
+
+    @*<script>
+            $(document).ready(function () {
+                initDataTable();
+            });
+
+            function initDataTable() {
+                $("#FormationTbl11").DataTable().destroy();
+
+                datatable = $("#FormationTbl11")
+                    .DataTable({
+                        "sAjaxSource": "/Data/GetLanguageTable",
+                        "retrieve": true,
+                        "bServerSide": true,
+                        "bProcessing": true,
+                        "bSearchable": true,
+                        "order": [[1, 'asc']],
+                        "autoWidth": false,
+                        "columns": [
+                            {
+                                "defaultContent": ""
+                            },
+                            {
+                                "data": "DataListName",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "Name",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "Name_French",
+                                "autoWidth": false,
+                                "width": "200px",
+                                "searchable": true
+                            },
+                            {
+                                "data": "Id",
+                                "render": function (data, type, row) {
+                                    return '<button><i style="font-size:15px; color:#29b2e1; cursor=pointer;" data-val="' + data + '" class="fa fa-edit DatalistEdit"></i></button><button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="' + data + '" class="fa fa-trash DatalistDelete"></i></button>'
+
+                                    //if (data != null && data != "") {
+                                    //    return '<a href="/Member/MemberFullData1?id=' + data + '">View Details';
+                                    //}
+                                    //else {
+
+                                    //    return '<a href="#">No Details</a>';
+                                    //}
+                                }
+
+                            },
+                        ]
+                    })
+            }
+        </script>*@
+
+}
+

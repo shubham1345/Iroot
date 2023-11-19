@@ -1,0 +1,205 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "ObituryNotice";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/DeathRecord?id=@ViewBag.Id"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="col-sm-12" style="margin-top:30px;">
+                    <b>Select Language :</b>
+                    <label class="radio-inline"><input type="radio" checked id="RDenglish"><b>English</b></label>
+                    <label class="radio-inline"><input type="radio" id="RDfrench"><b>French</b></label>
+                    <label class="radio-inline"><input type="radio" id="RDboth"><b>Both</b></label>
+
+                    <input type="button" class="btn btn-success pull-right" style="margin-right:30px; margin-top:20px;" value="Print" id="btnPrint1" />
+                    <input type="button" class="btn btn-success pull-right" style="margin-right:30px; margin-top:20px; display:none;" value="Print" id="btnPrint2" />
+                    <input type="button" class="btn btn-success pull-right" style="margin-right:30px; margin-top:20px; display:none;" value="Print" id="btnPrint3" />
+                </div>
+                <div class="row" id="ObituryDivfinal">
+                    <div id="englishPanel">
+                        <div class="row" style="margin-left:30px;margin-right:30px;">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <h4 style="text-align:center;" id="lngenglish"><b>English</b></h4>
+                                <div class="row" id="ObituryDiv">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-6" style="margin-left:80px; text-align:left;">
+                                            <p><b>@ViewBag.CongName</b></p>
+                                            <p><b>@ViewBag.CongAddress</b></p>
+                                            <p>Phone:@ViewBag.CongTel</p>
+                                            <p>Fax:@ViewBag.CongFax</p>
+                                        </div>
+                                        <div class="col-sm-4" style="" align="right">
+                                            <img alt="" src="~/Image/Primarydetails/@ViewBag.Photo" style="height:100px; width:100px;" id="uploadimage" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="text-align:center;">
+                                        <p><b>OBITURY NOTICE</b></p>
+                                    </div>
+
+                                    <div class="page-content-wrap">
+                                        <div class="row" style="margin-right:250px;margin-left:250px;">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                                                <div class="row">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                                                            <p>The Superior General,</p>
+                                                                            <p>The Provincial Superior,</p>
+                                                                            <p>And the Brothers of the<b> @ViewBag.ProvinceName,</b></p>
+                                                                            <p>recommend to our prayers the soul of</p>
+                                                                            <p><b>@ViewBag.name @ViewBag.sirname</b></p>
+                                                                            <p>Who passed away on <b>@ViewBag.Date</b> at <b>@ViewBag.LastPlaceRites (@ViewBag.Country)</b> .</p>
+                                                                            <p>He was <b>@ViewBag.Age</b> years old and has been in the religious life for <b>@ViewBag.Year</b> years.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                        <p><b>“He who believes in me, though he dies, will live”</b></p>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-6" style="margin-top:30px; margin-left:80px; text-align:left;">
+                                            <p><b>@System.DateTime.Now.ToString("dd-MM-yyyy")</b></p>
+                                            <p><b>The Secretary General</b></p>
+                                            <p>@ViewBag.SecretaryGeneral</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="panel-body panel" style="display:none;" id="frenchPanel">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <h4 style="text-align:center;" id="lngfrench"><b>French</b></h4>
+                                @*<div class="panel panel-primary">*@
+                                <div class="row" id="ObituryDiv1">
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-6" style="margin-left:80px; text-align:left;">
+                                            <p><b>@ViewBag.CongName</b></p>
+                                            <p><b>@ViewBag.CongAddress</b></p>
+                                            <p>Phone:@ViewBag.CongTel</p>
+                                            <p>Fax:@ViewBag.CongFax</p>
+                                        </div>
+                                        <div class="col-sm-4" style="" align="right">
+                                            <img alt="" src="~/Image/Primarydetails/@ViewBag.Photo" style="height:100px; width:100px;" id="uploadimage" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="text-align:center;">
+                                        <p><b>AVIS DE DÉCÈS</b></p>
+                                    </div>
+
+                                    <div class="page-content-wrap">
+                                        <div class="row" style="margin-right:250px;margin-left:250px;">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                                                <div class="row" id="ObituryDiv">
+                                                                    <div class="col-sm-12">
+                                                                        <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                                                            <p>Le Supérieur général,</p>
+                                                                            <p>le Supérieur provincial,</p>
+                                                                            <p>et les Frères de la province de<b> @ViewBag.ProvinceName,</b></p>
+                                                                            <p>recommandent à nos prières le repos de l'âme du</p>
+                                                                            <p><b>@ViewBag.name @ViewBag.sirname</b></p>
+                                                                            <p>décédé le <b>@ViewBag.Date</b> à La <b>@ViewBag.LastPlaceRites (@ViewBag.Country)</b> .</p>
+                                                                            <p>Il était âgé de<b>@ViewBag.Age</b> ans, dont <b>@ViewBag.Year</b>ans de vie religieuse.</p>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                        <p><b>"Celui qui croit en moi, même s'il meurt, vivra".</b></p>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <div class="col-sm-10" style="margin-top:30px; text-align:right;">
+                                            <p><b>Rome, le @System.DateTime.Now.ToString("dd-MM-yyyy")</b></p>
+                                            <p><b>Le Secrétaire général </b></p>
+                                            <p>@ViewBag.SecretaryGeneral</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*</div>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script>
+        $('#btnPrint1').on("click", function () {
+            $('#ObituryDiv').printThis();
+        });
+        $('#btnPrint2').on("click", function () {
+            $('#ObituryDiv1').printThis();
+        });
+        $('#btnPrint3').on("click", function () {
+            $('#ObituryDivfinal').printThis();
+            $("#lngfrench").css("display", "none");
+            $("#lngenglish").css("display", "none");
+        });
+    </script>
+    <script>
+        $('#RDenglish').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#RDfrench").attr("checked", false);
+                $("#RDboth").attr("checked", false);
+                $("#englishPanel").css("display", "block");
+                $("#frenchPanel").css("display", "none");
+                $("#btnPrint1").css("display", "block");
+                $("#btnPrint2").css("display", "none");
+                $("#btnPrint3").css("display", "none");
+            }
+        });
+        $('#RDfrench').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#RDenglish").attr("checked", false);
+                $("#RDboth").attr("checked", false);
+                $("#frenchPanel").css("display", "block");
+                $("#englishPanel").css("display", "none");
+                $("#btnPrint1").css("display", "none");
+                $("#btnPrint2").css("display", "block");
+                $("#btnPrint3").css("display", "none");
+            }
+        });
+        $('#RDboth').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#RDfrench").attr("checked", false);
+                $("#RDenglish").attr("checked", false);
+                $("#frenchPanel").css("display", "block");
+                $("#englishPanel").css("display", "block");
+                $("#btnPrint1").css("display", "none");
+                $("#btnPrint2").css("display", "none");
+                $("#btnPrint3").css("display", "block");
+            }
+        });
+    </script>
+}
+

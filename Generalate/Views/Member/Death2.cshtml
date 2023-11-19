@@ -1,0 +1,345 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "Death2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:89px">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">@{@HomeController.GetControlTextByControlId("Eternal_Life");}</h3>
+                                </div>
+                                @*dropdown code*@
+                                @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></label>
+                                                <select class="form-control" id="DioProvince1" style="width:595px !important;" name="ProvinceName"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @*end dropdown code*@
+
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-10" style="text-align:right">
+                                            <div class="form-group">
+                                                @*<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-print pull-right" hidden="hidden" id="btnPrint"></i></button>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12" style="margin-top:20px;">
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-5 control-label">
+                                                    @*<input type="checkbox" hidden="hidden" id="BeforeProfess"><span>Before Profess</span>*@
+                                                </label>
+                                                <label for="inputPassword3" class="col-sm-3 control-label">
+                                                    @*<input type="checkbox" hidden="hidden" id="AfterProfess"><span>After Profession</span>*@
+                                                    @*  *@
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top: 10px; " id="deathdatatbl1">
+                                        <div class="col-sm-12 overflow-daily" style="height:400px;">
+                                            <table class="table table-bordered" id="deathdatatbl">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@{@HomeController.GetControlTextByControlId("S.No");}</th>
+                                                        @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                                                        {
+                                                        <th>@{@HomeController.GetControlTextByControlId("Province_Name");}</th>
+                                                        }
+                                                        <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Surname");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("View_Details");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Add_Profile");}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                @*<tbody class="tbody" id="ViewDeathrecData123"></tbody>*@
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top: 10px;" id="deathdatatbl2">
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@{@HomeController.GetControlTextByControlId("S.No");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Surname");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("View_Details");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Add_Profile");}</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody" id="ViewDeathrecData1234"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script>
+          var page = '@ViewBag.Page';
+        $('#BeforeProfess').click(function () {
+            if ($(this).prop("checked") == true) {
+                GetAllbeforprofess();
+            }
+        });
+        function GetAllbeforprofess() {
+            $.ajax({
+                url: "/Home/GetAllbeforprofess",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ViewDeathrecData123').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberID != null && data.MemberID != "") {
+                                    url = "/Home/DeathRecord?id=" + data.MemberID;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.SirName + "</td><td>" + data.CurrentStatusFor + "</td><td><a href='" + url + "'>" + isView + "</a></td><td><a href='" + viewProfile + "'>Add Profile</a></td></tr>";
+                                $('#ViewDeathrecData123').append(row);
+                                i = i + 1;
+                            }
+                        });
+                        $("#Deathlbl").text("Before Total Member: " + (i - 1));
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#Memdatatbl2").css("display", "none");
+            $("#Memdatatbl1").css("display", "none");
+            $("#Insttbl1").css("display", "none");
+            $("#Insttbl2").css("display", "none");
+            $("#tblParishes1").css("display", "none");
+            $("#tblParishes2").css("display", "none");
+            $("#tblcomdata1").css("display", "none");
+            $("#tblcomdata2").css("display", "none");
+            $("#tblSocData1").css("display", "none");
+            $("#tblSocData2").css("display", "none");
+            $("#tblOrdindata2").css("display", "none");
+            $("#tblRetire2").css("display", "none");
+            $("#deathdatatbl2").css("display", "none");
+            $("#departdatatbl2").css("display", "none");
+            $("#NovPPdatatbl2").css("display", "none");
+            $("#EnterToNovdatatbl2").css("display", "none");
+        });
+
+        $('#BeforeProfess').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#AfterProfess").attr("checked", false);
+            }
+        });
+        $('#AfterProfess').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#BeforeProfess").attr("checked", false);
+            }
+        });
+
+        $('#btnPrintdeath').on("click", function () {
+            $('#deathdatatbl2').printThis();
+            $("#deathdatatbl2").css("display", "block");
+            $("#deathdatatbl1").css("display", "none");
+        });
+       // GetAllEternalViewData1("0");
+        GetEthernalViewData1("0");
+        GetAllProvince();
+
+
+        function GetEthernalViewData1(province) {
+
+            var province = $("#DioProvince1").val();
+            $('#deathdatatbl').DataTable().destroy();
+            // $('#EnterToNovdatatbl1').DataTable().destroy();
+            datatable = $('#deathdatatbl')
+                .DataTable({
+                    "sAjaxSource": "/Member/GetAllEternalViewData1?province=" + province,
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": false,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                        var oSettings = this.fnSettings();
+                        $("td:first", nRow).html(oSettings._iDisplayStart + iDisplayIndex + 1);
+                        return nRow;
+                    },
+                    "columns": [
+                        {
+                            "defaultContent": ""
+                        },
+                        @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                        {
+
+                        <text>
+                        {
+                            "data": "ProvinceName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        </text>
+                        }
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "SurName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "MemberID",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                return '<a href=/Home/DeathRecord?id=' + data + '>View Details</a>';
+                                //if (data != null && data != '') {
+                                //    return '<a href=/Home/DeathRecord?id=' + data + '>View Details</a>';
+                                //}
+                                //else {
+                                //    return '<a target="_blank" href="#">No Profile</a>';
+                                //}
+                            }
+                        },
+                        {
+                            "data": "MemberID",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                return '<a href=/Member/MemberInfoById?memberId=' + data + '>Add profile</a>';
+                                //if (data != null && data != '') {
+                                //    return '<a href=/Home/DeathRecord?id=' + data + '>View Details</a>';
+                                //}
+                                //else {
+                                //    return '<a target="_blank" href="#">No Profile</a>';
+                                //}
+                            }
+                        },
+                    ]
+                });
+        }
+
+
+        //function GetAllEternalViewData1(province) {
+        //    $.ajax({
+        //        url: "/Member/GetAllEternalViewData1?province=" + province,
+        //        type: "GET",
+        //        contentType: "application/json;charset=utf-8",
+        //        dataType: "json",
+        //        success: function (response) {
+        //            $('#ViewDeathrecData123').html("");
+        //            $('#ViewDeathrecData1234').html("");
+        //            if (response != null) {
+        //                var i = 1;
+        //                var html = "";
+        //                response.forEach(function (data) {
+        //                   // if (data != null) {
+        //                        var url = "";
+        //                        var isView = "No Profile";
+        //                        if (data.MemberID != null && data.MemberID != "") {
+        //                            url = "/Home/DeathRecord?id=" + data.MemberID;
+        //                            isView = "View Details";
+        //                        } else {
+        //                            url = "#";
+        //                            isView = "No Profile";
+        //                        }
+        //                        html += "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.SirName + "</td><td><a href='" + url + "'>" + isView + "</a></td><td><a href='" + viewProfile + "'>Add Profile</a></td></tr>";
+        //                        var row1 = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.SirName + "</td><td><a href='" + viewProfile + "'>Add Profile</a></td><td><a href='" + viewProfile + "'>Add Profile</a></td></tr>";
+        //                        // $('#ViewDeathrecData123').append(row);
+        //                        $('#ViewDeathrecData1234').append(row1);
+        //                        i = i + 1;
+        //                    //}
+        //                    $('#deathdatatbl').DataTable().destroy();
+        //                    $('#deathdatatbl').find('tbody').html('');
+        //                    $('#deathdatatbl').find('tbody').append(html);
+        //                    $('#deathdatatbl').DataTable().draw();
+        //                    //$("#myModal13").modal('show');
+        //                });
+        //            }
+        //        },
+        //        error: function (er) {
+        //        }
+        //    });
+        //}
+
+        //dropdown change and bind table again
+        $("#DioProvince1").on("change", function () {
+            var selectedVal = $("#DioProvince1 option:selected").val();
+            //GetAllEternalViewData1(selectedVal);
+            GetEthernalViewData1(selectedVal);
+        });
+
+        //dropdown bind method
+        function GetAllProvince() {
+            $.ajax({
+                url: "/Home/GetAllProvince",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#DioProvince1').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- @{@HomeController.GetControlTextByControlId("Select_Province_Name");} --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#DioProvince1").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+}
+
+

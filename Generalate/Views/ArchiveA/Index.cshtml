@@ -1,0 +1,718 @@
+﻿@using Generalate.Models;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/additional/ArchiveA.js"></script>
+
+
+<br />
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+<div id="tabs" class="col-md-12">
+    <ul>
+        <li><a href="#tabs-1">Land documents</a></li>
+        <li><a href="#tabs-2">Personal documents </a></li>
+    </ul>
+    <div id="tabs-1">
+        <div class="form-horizontal  col-md-6">
+            @if (ViewBag.ArchiveField != null)
+            {
+                foreach (ArchiveField d in ViewBag.ArchiveField as List<ArchiveField>)
+                {
+
+                    <div class="form-group">
+
+                        @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label col-md-4 " })
+
+                        <div class="col-md-8">
+                            @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control" })
+                            @Html.ValidationMessage(d.FieldName, "", new { @class = "text-danger" })
+
+                        </div>
+                    </div>
+                }
+            }
+
+            <div style="padding-bottom:40px;">
+                <input type="submit" id="idUpdateField" value="Update Field" class="btn col-md-12" />
+            </div>
+            <div style="padding-bottom:40px;">
+                <input type="submit" id="idAddDocument" value="Add Document" class="btn btn-success col-md-12" />
+            </div>
+        </div>
+        <div class="form-horizontal  col-md-6">
+            <div class="col-md-8">
+                <div style="padding-bottom:40px;">
+                    <input type="submit" id="idSerchDocument" value="Search Document" class="btn btn-primary col-md-12" />
+                </div>
+
+            </div>
+            <div class="row">
+
+            </div>
+            <br />
+            @if (ViewBag.ddata != null)
+            {
+                <div class="" style="margin-left:20px; margin-right:20px;">
+                    <div class="form-horizontal">
+                        <br />
+                        <table class="table table-striped  table-hover" id="EmailInfo" style="border:solid; border-color:#044244">
+                            <thead>
+                                <tr style="background-color:#044244; color:white">
+                                    <th hidden="hidden"> Id </th>
+                                    <th> Filename </th>
+                                    <th> Action </th>
+                                </tr>
+                            </thead>
+                            @if (ViewBag.ddata != null)
+                            {
+                                <tbody class="tbody">
+                                    @foreach (var message in ((List<DocumentContent>)ViewBag.ddata))
+                                    {
+                                        <tr>
+
+                                            <td>@message.Filename</td>
+                                            <td><a href="#" onclick="return GetDataByLandId(@message.ID)">View</a> | <a href="#" onclick="delele(@message.ID)">Delete</a></td>
+
+                                        </tr>
+                                    }
+                                </tbody>
+                            }
+                            else
+                            {
+                                <tbody class="tbody">
+                                    <tr><td colspan="2">Record is not available</td></tr>
+                                </tbody>
+                            }
+                        </table>
+                    </div>
+                </div>
+            }
+
+            <div id="imageviewer">
+  <div align="center">
+                    @using (Html.BeginForm("ViewPDF", "Archive", FormMethod.Post))
+    {
+        <a href="javascript:;" onclick="document.forms[0].submit();">View PDF</a>
+
+                    <div align="center">
+                        @Html.Raw(TempData["Embed"])
+
+                    </div>
+                    }
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="modal fade" id="myAddFieldModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999;top:300px">
+            <div class="modal-dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Add Field</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group">
+
+                                    <div class="col-md-10">
+                                        @Html.Editor("FieldValueNew", new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="submit" id="idAdd" value="Add" class="btn" />
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myAddFieldModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999;top:300px">
+            <div class="modal-dialog">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Add Field</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="form-group">
+
+                                    <div class="col-md-10">
+                                        @Html.Editor("FieldValueNew", new { htmlAttributes = new { @class = "form-control" } })
+                                    </div>
+                                    <div class="col-md-2">
+                                        <input type="submit" id="idAdd" value="Add" class="btn" />
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            @Html.Label("FieldName", htmlAttributes: new { @class = "control-label col-md-2 " })
+                            <div class="col-md-6">
+                                @Html.DropDownList("FieldName", (SelectList)ViewData["FieldName"], new { @class = "form-control" })
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" id="idLoad" value="Load" class="btn" />
+                            </div>
+                        </div>
+                        <br />
+                        <div class="col-md-6">
+                            <div></div>
+                        </div>
+                        <div class="row col-md-pull-12">
+                            <div class="col-md-1"><img src="~/icons/save.png" id="idsave" /></div>
+                            <div class="col-md-1">
+                                <img src="~/icons/Edit.png" id="idedit" /> >
+                            </div>
+                            <div class="col-md-1">
+                                <img src="~/icons/cancel.png" id="idcancel" />
+                            </div>
+                        </div>
+
+
+                        <div class="row">
+                            <table id="fieldvalues" class="table table-striped  table-hover">
+                                <thead>
+                                    <tr style="background-color:#044244; color:white">
+                                        <th>FieldValue</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tbody" id="fieldvaluesbody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm("SearchDocument", "Archive", FormMethod.Post, new { id = "emailform", enctype = "multipart/form-data" }))
+        {
+            <div class="modal fade" id="mySerachDocumentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Search Document</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <br />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @foreach (ArchiveField d in ViewBag.ArchiveField as List<ArchiveField>)
+                                {
+                                    <div class="form-group">
+
+                                        @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label col-md-4 " })
+
+                                        <div class="col-md-8">
+                                            @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control" })
+                                            @Html.ValidationMessage(d.FieldName, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                }
+                                @Html.Label("Filename", htmlAttributes: new { @class = "control-label col-md-2 " })
+                                <div class="col-md-8">
+                                    @Html.Editor("Filename", new { htmlAttributes = new { @class = "form-control" } })
+                                </div>
+                                <div class="col-md-2">
+                                    <input type="submit" id="idsearch" value="Search" class="btn btn-success" />
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @using (Html.BeginForm("UploadFiles", "Archive", FormMethod.Post, new { id = "emailform", enctype = "multipart/form-data" }))
+        {
+            <div class="modal fade" id="myAddFileModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999;">
+
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title" id="myModalLabel">Add Document</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+
+
+
+                                <br />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @if (ViewBag.ArchiveField != null)
+                                {
+                                    foreach (ArchiveField d in ViewBag.ArchiveField as List<ArchiveField>)
+                                    {
+                                        <div class="form-group">
+
+                                            @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label col-md-4 " })
+
+                                            <div class="col-md-8">
+                                                @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control" })
+                                                @Html.ValidationMessage(d.FieldName, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                    }
+                                    <div class="form-group">
+                                        @Html.Label("File", htmlAttributes: new { @class = "control-label col-md-4 " })
+                                    </div>
+                                    <div class="col-md-8">
+                                        @Html.TextBox("files", "", new { type = "file", @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.Hidden("FileHidden")
+                                    </div>
+                                    <div class="col-md-8">
+                                        <input type="submit" id="btnSubmit" value="Submit" class="btn-success" />
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+        }
+    </div>
+    <div id="tabs-2">
+
+        <div class="form-horizontal  col-md-6">
+
+            @if (ViewBag.PArchiveField != null)
+            {
+                foreach (PArchiveField d in ViewBag.PArchiveField as List<PArchiveField>)
+                {
+
+                    <div class="form-group">
+
+                        @if (d.FieldName == "MemberID")
+                        {
+                            @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+                            <div class="col-md-8">
+                                @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control" })
+                            </div>
+                        }
+                        else if (d.FieldName == "Name")
+                        {
+                            @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+                            <div class="col-md-8">
+
+                                @Html.TextBox(d.FieldName, null, htmlAttributes: new { @class = "form-control" })
+                            </div>
+                        }
+                        @if (d.FieldName != "MemberID" && d.FieldName != "Name")
+                        {
+                            @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+
+                            <div class="col-md-8">
+                                @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control" })
+                                @Html.ValidationMessage(d.FieldName, "", new { @class = "text-danger" })
+
+                            </div>
+                        }
+
+                    </div>
+                }
+            }
+            else
+            {
+                <div>
+                    Record is not available
+                </div>
+            }
+            <div style="padding-bottom:40px;">
+                <input type="submit" id="pidUpdateField" value="Update Field" class="btn col-md-12" />
+            </div>
+            <div style="padding-bottom:40px;">
+                <input type="submit" id="pidAddDocument" value="Add Document" class="btn btn-success col-md-12" />
+            </div>
+        </div>
+        <div class="form-horizontal  col-md-6">
+            <div class="col-md-8">
+                <div style="padding-bottom:40px;">
+                    <input type="submit" id="pidSerchDocument" value="Search Document" class="btn btn-primary col-md-12" />
+                </div>
+
+            </div>
+            <div class="row">
+
+            </div>
+            <br />
+
+        </div>
+
+        @if (ViewBag.pddata != null)
+        {
+            <div class="" style="margin-left:20px; margin-right:20px;">
+                <div class="form-horizontal">
+                    <br />
+                    <table class="table table-striped  table-hover" id="EmailInfo" style="border:solid; border-color:#044244">
+                        <thead>
+                            <tr style="background-color:#044244; color:white">
+                                <th hidden="hidden"> Id </th>
+                                <th> Filename </th>
+                                <th> Action </th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody">
+                            @foreach (var message in ((List<PersonalDocumentContent>)ViewBag.pddata))
+                            {
+                                <tr>
+
+                                    <td>@message.Filename</td>
+                                    <td><a href="#" onclick="return GetDataByPId(@message.ID)">View</a> | <a href="#" onclick="delele(@message.ID)">Delete</a></td>
+
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        <div id="pimageviewer">
+
+        </div>
+
+    </div>
+
+
+
+</div>
+<div class="modal fade" id="pmyAddFieldModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999;top:300px">
+    <div class="modal-dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Field</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-10">
+                                @Html.Editor("FieldValueNewP", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" id="pidAdd" value="Add" class="btn" />
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="pmyAddFieldModal" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999;top:300px">
+    <div class="modal-dialog">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Field</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="form-group">
+
+                            <div class="col-md-10">
+                                @Html.Editor("FieldValueNewP", new { htmlAttributes = new { @class = "form-control" } })
+                            </div>
+                            <div class="col-md-2">
+                                <input type="submit" id="pidAdd" value="Add" class="btn" />
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="pmyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" id="pmanageClose" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    @Html.Label("PFieldName", htmlAttributes: new { @class = "control-label col-md-2 " })
+                    <div class="col-md-6">
+                        @Html.DropDownList("PFieldName", (SelectList)ViewData["PFieldName"], new { @class = "form-control" })
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" id="pidLoad" value="Load" class="btn" />
+                    </div>
+                </div>
+                <br />
+                <div class="col-md-6">
+                    <div></div>
+                </div>
+                <div class="row col-md-pull-12">
+                    <div class="col-md-1"><img src="~/icons/save.png" id="pidsave" /></div>
+                    <div class="col-md-1">
+                        <img src="~/icons/Edit.png" id="pidedit" /> >
+                    </div>
+                    <div class="col-md-1">
+                        <img src="~/icons/cancel.png" id="pidcancel" />
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <table id="fieldvalues" class="table table-striped  table-hover">
+                        <thead>
+                            <tr style="background-color:#044244; color:white">
+                                <th>FieldValue</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody" id="pfieldvaluesbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@using (Html.BeginForm("PSearchDocument", "Archive", FormMethod.Post, new { id = "pemailform", enctype = "multipart/form-data" }))
+{
+    <div class="modal fade" id="pmySerachDocumentModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Search Document</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <br />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @foreach (PArchiveField d in ViewBag.PArchiveField as List<PArchiveField>)
+                        {
+                            <div class="form-group">
+
+                                @if (d.FieldName == "MemberID")
+                                {
+                                    @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+                                    <div class="col-md-8">
+                                        @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control susrid" })
+                                        @Html.Hidden(d.FieldName + "hdns", null, htmlAttributes: new { @class = "susrnamehdn" })
+                                    </div>
+                                }
+                                else if (d.FieldName == "Name")
+                                {
+                                    @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+                                    <div class="col-md-8">
+
+                                        @Html.TextBox(d.FieldName, null, htmlAttributes: new { @class = "form-control susrname" })
+                                    </div>
+                                }
+                                @if (d.FieldName != "MemberID" && d.FieldName != "Name")
+                                {
+                                    @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+
+                                    <div class="col-md-8">
+                                        @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control" })
+                                        @Html.ValidationMessage(d.FieldName, "", new { @class = "text-danger" })
+
+                                    </div>
+                                }
+
+                            </div>
+                        }
+                        @Html.Label("Filename", htmlAttributes: new { @class = "control-label col-md-2 " })
+                        <div class="col-md-8">
+                            @Html.Editor("Filename", new { htmlAttributes = new { @class = "form-control" } })
+                        </div>
+                        <div class="col-md-2">
+                            <input type="submit" id="pidsearch" value="Search" class="btn btn-success" />
+                        </div>
+                    </div>
+
+
+
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+
+
+
+
+
+
+@using (Html.BeginForm("PUploadFiles", "Archive", FormMethod.Post, new { id = "emailform", enctype = "multipart/form-data" }))
+{
+
+
+    <div class="modal fade" id="pmyAddFileModal" role="dialog" aria-labelledby="pmyModalLabel" aria-hidden="true" style="z-index:9999;">
+
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Add Document</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+
+
+
+                        <br />
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        @foreach (PArchiveField d in ViewBag.PArchiveField as List<PArchiveField>)
+                        {
+                            <div class="form-group">
+                                @if (d.FieldName == "MemberID")
+                                {
+                                    @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+                                    <div class="col-md-8">
+                                        @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control myaddusr" })
+                                        @Html.Hidden(d.FieldName + "hdn", null, htmlAttributes: new { @class = "usrhidden" })
+                                    </div>
+                                }
+                                else if (d.FieldName == "Name")
+                                {
+                                    @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label  col-md-4 " })
+                                    <div class="col-md-8">
+
+                                        @Html.TextBox(d.FieldName, null, htmlAttributes: new { @class = "form-control myaddusrname" })
+                                    </div>
+                                }
+                                @if (d.FieldName != "MemberID" && d.FieldName != "Name")
+                                {
+
+
+                                    @Html.Label(d.DisplayName, htmlAttributes: new { @class = "control-label col-md-4 " })
+
+                                    <div class="col-md-8">
+                                        @Html.DropDownList(d.FieldName, (SelectList)ViewData[d.FieldName], new { @class = "form-control" })
+                                        @Html.ValidationMessage(d.FieldName, "", new { @class = "text-danger" })
+
+                                    </div>
+                                }
+                            </div>
+                        }
+                        <div class="form-group">
+                            @Html.Label("File", htmlAttributes: new { @class = "control-label col-md-4 " })
+                        </div>
+                        <div class="col-md-8">
+                            @Html.TextBox("files", "", new { type = "file", @class = "form-control" })
+                        </div>
+                        <div class="form-group">
+                            @Html.Hidden("FileHidden")
+                        </div>
+                        <div class="col-md-8">
+                            <input type="submit" id="btnSubmit" value="Submit" class="btn-success" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+}
+
+
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<link rel="stylesheet" href="/resources/demos/style.css">*@
+<link href="~/css/Inboxlogin.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<script>
+    $(function () {
+
+        $("#tabs").tabs();
+        var data = '@ViewBag.secondtab';
+        if (data.length != 0) {
+
+            $("#tabs").tabs({ active: 1 });
+
+        }
+        var Name = $('#MemberID option:selected').val();
+        $("#Name").val(Name);
+        $("#MemberID").change(function () {
+            Name = $('#MemberID option:selected').val();
+            $("#Name").val(Name);
+        });
+        var dusername = $('.myaddusr option:selected').val();
+        var memberid = $('.myaddusr option:selected').text();
+        $(".usrhidden").val(memberid);
+        $(".myaddusrname").val(dusername);
+        $(".myaddusr").change(function () {
+            var dusername = $('.myaddusr option:selected').val();
+            var memberid = $('.myaddusr option:selected').text();
+            $(".usrhidden").val(memberid);
+            $(".myaddusrname").val(dusername);
+        });
+
+        var susername = $('.susrid option:selected').val();
+        var smemberid = $('.susrid option:selected').text();
+
+        $(".susrname").val(susername);
+        $(".susrnamehdn").val(smemberid);
+        $(".susrid").change(function () {
+            var susername = $('.susrid option:selected').val();
+            var smemberid = $('.susrid option:selected').text();
+            $(".susrnamehdn").val(smemberid);
+            $(".susrname").val(susername);
+        });
+    });
+</script>

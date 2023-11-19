@@ -1,0 +1,905 @@
+﻿@using Generalate.EnumData;
+@using Generalate.Models;
+@using Generalate.Controllers;
+<html>
+<head>
+    <!-- META SECTION -->
+    <title>Montfort Brothers</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/css/IconsCSS/icon.css" rel="stylesheet" />
+
+    <link rel="icon" href="img/fevicon.png" type="image/x-icon" />
+    <link href="~/Plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/css/Dashboard/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/Dashboard/css/theme-default.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/multiple-select.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/assets/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/magnific-popup/magnific-popup.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/morris/morris.css" />
+    <style>
+        .dropdown-ul {
+            list-style-type: none;
+            margin: 0;
+            padding-right: 150px !important;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .dropdown-li {
+            float: left;
+        }
+
+        li a, .dropbtn {
+            display: inline-block;
+            color: white;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+            li a:hover, .dropdown:hover .dropbtn {
+                color: black;
+            }
+
+        li.dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: white;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+                background-color: #001f6b;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #009be1;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        body .btn-primary {
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #0088cc;
+            border-color: #0088cc;
+        }
+    </style>
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-submenu > a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #ccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+
+            .dropdown-submenu:hover > a:after {
+                border-left-color: #fff;
+            }
+
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+
+                .dropdown-submenu.pull-left > .dropdown-menu {
+                    left: -100%;
+                    margin-left: 10px;
+                    -webkit-border-radius: 6px 0 6px 6px;
+                    -moz-border-radius: 6px 0 6px 6px;
+                    border-radius: 6px 0 6px 6px;
+                }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="modal fade" id="myalertbox" style="margin-top:20%;" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close closemodel" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Message</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="mymessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default closemodel" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <div class="page-navigation-top-fixed">
+
+            <div class="page-content">
+                <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                    <li class="xn-icon-button">
+                        <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                    </li>
+                    <div>
+                        <ul class="nav site-nav mytopmenu" style="margin-right:350px;">
+                            <li id="CongregationOpen">
+                                <a href="javascript:;" class="active data">Congregation</a>
+                                <div class="bottom_menu active">
+                                    <ul>
+                                        <li id="CongGenOffMeet">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=meeting"><img src="/Image/NavListImg/OfficialMeeting.png" /><br>Official Meeting & minutes</a>
+                                        </li>
+                                        <li id="CongGenCouncil">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=council"><img src="/Image/NavListImg/council.png" /><br>ADC</a>
+                                        </li>
+                                        <li id="CongGenCommis">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=commission"><img src="/Image/NavListImg/commission.png" /><br>DOSSIERS</a>
+                                        </li>
+                                        <li id="CongGenComm">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=community"><img src="/Image/NavListImg/community2.png" /><br>Community</a>
+                                        </li>
+                                        <li id="CongGenInst">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=Institute"><img src="/Image/NavListImg/institution2.png" /><br>Institute</a>
+                                        </li>
+                                        <li id="CongGenSociety">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=society"><img src="/Image/NavListImg/society.png" /><br>Legal Registration</a>
+                                        </li>
+                                        @*
+                                        <li id="CongGenTrust">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=Trust"><img src="/Image/NavListImg/trust.png" /><br>Trust</a>
+                                        </li>*@
+                                        <li id="CongGenStaff">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=staff"><img src="/Image/NavListImg/staff.png" /><br>Staff</a>
+                                        </li>
+                                        <li id="CongGenCalender">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=calender"><img src="/Image/NavListImg/calendar.png" /><br>Calender</a>
+                                        </li>
+
+                                        <li id="CongCouncilCount">
+                                            <a class="icon_img" href="/Home/CongrationList2?page=ConCountCount"><img class="icon_img" src="/Image/NavListImg/novpezprof.png" /><br>Council Members</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li id="ProvinceOpen">
+                                <a href="javascript:;" class="data">Province</a>
+                                <div class="bottom_menu ProvinceOpen1">
+                                    <ul>
+                                        <li id="ProOffMeetPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Mannites"><img class="icon_img" src="/Image/NavListImg/OfficialMeeting.png" /><br>Mannites </a>
+                                        </li>
+                                        <li id="ProCounPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Council"><img class="icon_img" src="/Image/NavListImg/Council.png" /><br>Council</a>
+                                        </li>
+                                        <li id="ProCommiPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Commission"><img class="icon_img" src="/Image/NavListImg/Commission.png" /><br>Commission</a>
+                                        </li>
+                                        <li id="ProVowsPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=VowsRemewal"><img class="icon_img" src="/Image/NavListImg/vowsrenewal.png" /><br>Vows Renewal</a>
+                                        </li>
+                                        <li id="ProHVisitPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=H-VisitAndLive"><img class="icon_img" src="/Image/NavListImg/housevisit.png" /><br>H-visit & Live</a>
+                                        </li>
+                                        @*
+                                        <li id="ProTransPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Transfer"><img class="icon_img" src="/Image/NavListImg/transferdetails.png" /><br>Transfer</a>
+                                        </li>*@
+                                        <li id="ProComPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Community"><img class="icon_img" src="/Image/NavListImg/Community2.png" /><br>Community</a>
+                                        </li>
+                                        <li id="ProInstPro">
+                                            @*<a class="icon_img" href="/Home/ProvinceList2?page=Institution"><img class="icon_img" src="/Image/NavListImg/Institution2.png" /><br>Institution</a>*@
+                                            <a class="icon_img" href="/Institution/ProvinceInstitution"><img class="icon_img" src="/Image/NavListImg/Institution2.png" /><br>Institution</a>
+
+                                        </li>
+                                        <li id="ProSocPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Society"><img class="icon_img" src="/Image/NavListImg/Society.png" /><br>Legal Registration</a>
+                                        </li>
+                                        @*
+                                        <li id="ProTrustPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Trust"><img class="icon_img" src="/Image/NavListImg/Trust.png" /><br>Trust</a>
+                                        </li>*@
+                                        <li id="ProStaffPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=Staff"><img class="icon_img" src="/Image/NavListImg/staff.png" /><br>Staff</a>
+                                        </li>
+                                        <li id="ProCouncilCountPro">
+                                            <a class="icon_img" href="/Home/ProvinceList2?page=CouncilCount"><img class="icon_img" src="/Image/NavListImg/novpezprof.png" /><br>Council Members</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li id="MembersOpen">
+                                <a href="javascript:;"> Members</a>
+                                <div class="bottom_menu  MembersOpen1 ">
+                                    <ul>
+                                        <li id="TotalMember">
+                                            <a class="icon_img" href="/Member/Member2?page=Member2"><img src="/Image/NavListImg/members1.png" /><br>Members</a>
+                                        </li>
+                                        <li id="TotalEnterToNov">
+                                            <a class="icon_img" href="/Member/Candidates2?page=Candidates2"><img src="/Image/NavListImg/novices.png" /><br>Candidates</a>
+                                        </li>
+                                        <li id="TotalNovandPP">
+                                            <a class="icon_img" href="/Member/Novititate2?page=Novititate2"><img src="/Image/NavListImg/novpezprof.png" /><br>Novitiate</a>
+                                        </li>
+                                        <li id="TotalOrdination">
+                                            <a class="icon_img" href="/Member/Profession2?page=Profession2"><img src="/Image/NavListImg/profession.png" /><br>Profession</a>
+                                        </li>
+                                        <li id="TotalDeath">
+                                            <a class="icon_img" href="/Member/Death2?page=Death2"><img src="/Image/NavListImg/death.png" /><br>Death</a>
+                                        </li>
+                                        <li id="TotalDepart">
+                                            <a class="icon_img" href="/Member/Departed2?page=Departed2"><img src="/Image/NavListImg/departed.png" /><br>Departed</a>
+                                        </li>
+                                        <li id="TotalVowsRenewal">
+                                            <a class="icon_img" href="/Member/VowsRenewal2?page=VowsRenewal2"><img src="/Image/NavListImg/vowsrenewal.png" /><br>Vows Renewal</a>
+                                        </li>
+
+                                        <li id="GeneralateFileNo">
+                                            <a class="icon_img" href="/Member/GeneralateFileNo?page=GeneralateFileNo"><img src="/Image/NavListImg/vowsrenewal.png" /><br>Generalate FileNo</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li id="CommunityOpen">
+                                <a href="javascript:;">Community</a>
+                                <div class="bottom_menu CommunityOpen">
+                                    <ul>
+                                        <li id="TotalMeetingComm">
+                                            <a class="icon_img" href="/Home/CongDetail2?page=CongDetail2"><img src="/Image/NavListImg/OfficialMeeting.png" /> <br>Meeting</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li id="InstitutionOpen">
+                                <a href="javascript:;">Institution</a>
+                                <div class="bottom_menu">
+                                    <ul>
+                                        <li id="TotalMeetingInst">
+                                            <a class="icon_img" href="/Institution/InstitutionList?page=InstitutionList2"><img src="/Image/NavListImg/OfficialMeeting.png" /> <br>Meeting</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li id="ReportsOpen">
+                                <a href="javascript:;">Reports</a>
+                                <div class="bottom_menu ReportsOpen">
+                                    <ul>
+                                        <li id="MemberReport">
+                                            <a class="icon_img" href="/Member/MemberReport?page=MemberReport"><img src="/Image/NavListImg/memberreports.png" /> <br>Member Reports</a>
+                                        </li>
+                                        <li id="InstitutionReport">
+                                            <a class="icon_img" href="/SocInsCommPage/SocInsCommPage?page=SocInsCommPage"><img src="/Image/NavListImg/institutionreports.png" /><br>Institution Reports</a>
+                                        </li>
+                                        <li id="AppointmentSGStatistics">
+                                            <a class="icon_img" href="/Appointment/Appointment?page=Appointment"><img src="/Image/NavListImg/appointmentstatistics.png" /> <br>Appointment & SG-Statistics</a>
+                                        </li>
+
+                                        <li id="ProvinceDataReports">
+                                            <a class="icon_img" href="/AllProvinceData/AllProvinceData?page=AllProvinceData"><img src="/Image/NavListImg/provincestatistics.png" /> <br>Province Data Reports</a>
+                                        </li>
+
+                                        <li id="ProvinceStatistics">
+                                            <a class="icon_img" href="/AllProvinceReports/AllProvinceReports?page=AllProvinceReports"><img src="/Image/NavListImg/provincestatistics.png" /> <br>Province Statistics</a>
+                                        </li>
+                                        <li id="Prostatistics">
+                                            <a class="icon_img" href="/SaprateProData/SaprateProData?page=SaprateProData"><img src="/Image/NavListImg/prostatistics.png" /> <br>Pro-statistics</a>
+                                        </li>
+                                        <li id="ProvinceDirector">
+                                            <a class="icon_img" href="/DirectoryData/DirectoryData?page=DirectoryData"><img src="/Image/NavListImg/provincedirector.png" /> <br>Province Director</a>
+                                        </li>
+                                        <li id="SGDirectory">
+                                            <a class="icon_img" href="/Directory2/Directory2?page=Directory2"><img src="/Image/NavListImg/sgdirectory.png" /> <br>SGDirectory</a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </li>
+
+                            <li id="UtilitiesOpen">
+                                <a href="javascript:;">Utilities</a>
+
+
+                                <div class="bottom_menu UtilitiesOpen1">
+                                    <ul>
+                                        <li id="DataList">
+                                            <a class="icon_img" href="/Data/DataItem?page=DataItem"><img src="/Image/NavListImg/dataList.png" /><br>DataList</a>
+                                        </li>
+                                        <li id="Backup">
+                                            <a class="icon_img" href="/Member/GetBackupFiles?page=GetBackupFiles"><img src="/Image/NavListImg/backup.png" /><br>Backup</a>
+                                        </li>
+                                        <li id="Permissions">
+                                            <a class="icon_img" href="/RolePermission/RolePermission?page=RolePermission"><img src="/Image/NavListImg/permissions.png" /><br>Permissions</a>
+                                        </li>
+                                        <li id="Creatingthepassword">
+                                            <a class="icon_img" href="/Data2/ChangePassword?page=ChangePassword"><img src="/Image/NavListImg/creatingpassword.png" /><br>Creating the password</a>
+                                        </li>
+                                        <li id="Changingpassword">
+                                            <a class="icon_img" href="/Data2/ChangesPassword2?page=ChangesPassword2"><img src="/Image/NavListImg/changingpassword.png" /><br>Changing password</a>
+                                        </li>
+                                        <li id="MultipleLanguage">
+                                            <a class="icon_img" href="/RolePermission/MultiLanguage?page=MultiLanguage"><img src="/Image/NavListImg/multiplelanguage.png" /><br>Multiple Language</a>
+                                        </li>
+                                        <li id="ImportExcelsheet">
+                                            <a class="icon_img" href="/Utilities/Utilities?page=Utilities"><img src="/Image/NavListImg/uploadexcelsheet.png" /><br>Import Excel sheet</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div>
+                        <li class="xn-icon-button pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                {@HomeController.GetControlTextByControlId("Logout");}
+                                <span class="fa fa-sign-out "></span>
+                            </a>
+                        </li>
+                        <li class="xn-icon-button pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                <span class="fa fa-question-circle mar-rgt-no font-size-18"></span>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                <span class="fa fa-home mar-rgt-no font-size-18"></span>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                <span class="fa fa-envelope mar-rgt-no font-size-18"></span>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a id="#datetimepicker1" href="#" class="mb-control size_1" data-box="">
+                                <span class="fa fa-calendar-o mar-rgt-no font-size-18"></span>
+                            </a>
+
+                        </li>
+                    </div>
+                </ul>
+                @RenderBody()
+            </div>
+
+            <section class="page-navigation-bottom-fixed">
+                <div class="container-fluid">
+                    <p style="text-align:center;padding:10px;color:#fff;"> Copyright &copy; 2020 - Institute of the Brothers of St. Gabriel (Montfort Brothers) Designed by <a href="http://www.iroots.in/">Iroots</a></p>
+                </div>
+            </section>
+        </div>
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out"></span> Log <strong>Out</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to log out?</p>
+                        <p>Press No if youwant to continue work. Press Yes to logout current user.</p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="/Home/Login?logout=True" class="btn btn-success btn-lg">Yes</a>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="~/css/css1/js/plugins/jquery/jquery.min.js"></script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                function add() {
+                    // alert("zvzv");
+                }
+                $('#userregistration').click(function () {
+                    window.location.href = '../Home/UserRegistration'
+
+                });
+
+                $('#visitors').click(function () {
+                    window.location.href = '../Visitors/VisitorsEntry'
+                });
+
+                $('#flatowner').click(function () {
+                    window.location.href = '../FlatOwner/CreateFlatOwners'
+                });
+
+                $('#flatresident').click(function () {
+                    window.location.href = '../FlatResident/CreateFlatResident'
+                });
+
+                $('#registerstaff').click(function () {
+                    window.location.href = '../StaffRegistration/Staff'
+                });
+
+                $('#attendance').click(function () {
+                    window.location.href = '../StaffRegistration/Staff'
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('a[class="data"]').on('click', function (e) {
+                    localStorage.setItem('activeTab', $(this).attr('href'));
+                });
+                var activeTab = localStorage.getItem('activeTab');
+                if (activeTab) {
+                    $('#mytopmenu a[href="' + activeTab + '"]').tab('show');
+                }
+            });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $("#ProOffMeetPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').show();
+                    $("#ProOffMeetProUnique2 a").click();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+
+                $("#ProCounPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $("#ProCounProUnique2 a").click();
+                    $(".nav-tabs").find('#ProCounProUnique2').show();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProCommiPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').show();
+                    $("#ProCommiProUnique2 a").click();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProVowsPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').show();
+                    $("#ProVowsProUnique2 a").click();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+
+                });
+                $("#ProHVisitPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').show();
+                    $("#ProHVisitProUnique2 a").click();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProTransPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').show();
+                    $("#ProTransProUnique2 a").click();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProComPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').show();
+                    $("#ProComProUnique2 a").click();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProInstPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').show();
+                    $("#ProInstProUnique2 a").click();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProSocPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').show();
+                    $("#ProSocProUnique2 a").click();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProTrustPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').show();
+                    $("#ProTrustProUnique2 a").click();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProStaffPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').show();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                    $("#ProStaffProUnique2 a").click();
+
+                });
+
+                $("#ProCouncilCountPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').show();
+                    $("#ProCouncilCountProUnique2 a").click();
+                });
+
+
+            });
+        </script>
+        <script>
+
+            $(document).ready(function () {
+                $("#CongGenOffMeet").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').show();
+                    $("#GeneralateUnique1 a").click();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenCouncil").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $("#CouncilUnique1 a").click();
+                    $(".nav-tabs").find('#CouncilUnique1').show();
+                    // $("#CouncilUnique1").attr('active', true);
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenCommis").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').show();
+                    $("#CommissionUnique1 a").click();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenComm").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').show();
+                    $("#CommUnique1 a").click();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenInst").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').show();
+                    $("#add1Unique1 a").click();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenSociety").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').show();
+                    $("#SocietyUnique1 a").click();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenTrust").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').show();
+                    $("#addUnique1 a").click();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenStaff").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').show();
+                    $("#StaffUnique1 a").click();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenCalender").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').show();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+                    $("#CalenderUnique1 a").click();
+                });
+
+                $("#CongCouncilCount").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').show();
+                    $("#CouncilCountUnique1 a").click();
+                });
+
+            });
+
+
+        </script>
+        <script src="~/css/assets/vendor/jquery/jquery.js"></script>
+        <script src="~/css/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+        <script src="~/css/assets/vendor/bootstrap/js/bootstrap.js"></script>
+        <script src="~/css/assets/vendor/nanoscroller/nanoscroller.js"></script>
+        <script src="~/css/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="~/css/assets/vendor/magnific-popup/magnific-popup.js"></script>
+        <script src="~/css/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+        @*
+        <script src="~/css/assets/javascripts/theme.js"></script>*@
+        <script src="~/css/assets/javascripts/theme.custom.js"></script>
+        <script src="~/css/assets/javascripts/theme.init.js"></script>
+        <script src="~/css/assets/javascripts/ui-elements/examples.modals.js"></script>
+        <script src="~/Content/Js/jquery-1.10.2.js"></script>
+        <script src="~/Content/Js/jquery-ui.js"></script>
+        <script src="~/css/Dashboard/js/plugins/jquery/jquery-ui.min.js"></script>
+        <script src="~/css/Dashboard/js/plugins/bootstrap/bootstrap.min.js"></script>
+        <script src="~/css/Dashboard/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+        <script src="~/css/Dashboard/js/plugins.js"></script>
+        <script src="~/css/Dashboard/js/actions.js"></script>
+        <script src="~/Content/jquery.dataTables.min.js"></script>
+        <script src="~/Content/dataTables.bootstrap.min.js"></script>
+        <script src="~/Content/jquery-ui.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <script src="~/js/jquery.nicescroll.js"></script>
+        <script src="~/Scripts/Topmenujs.js"></script>
+        <script>
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results == null) {
+                    return null;
+                }
+                return decodeURI(results[1]) || 0;
+            }
+            $('[data-toggle="tooltip"]').tooltip();
+        </script>
+        <script>
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy",
+                yearRange: '1900:2070'
+            });
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('.site-nav > li').click(function () {
+                    $('.site-nav > li > a').removeClass('active');
+                    $('.site-nav > li .bottom_menu').removeClass('active');
+                    $(this).find('a').addClass('active');
+                    $(this).find('a').next().addClass('active');
+                })
+            });
+        </script>
+
+        <script>
+
+            function myFunction() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+            window.onclick = function (event) {
+
+                if (event.target.matches != undefined)
+                    if (!event.target.matches('.dropbtn')) {
+                        var dropdowns = document.getElementsByClassName("dropdown-content");
+                        var i;
+                        for (i = 0; i < dropdowns.length; i++) {
+                            var openDropdown = dropdowns[i];
+                            if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                            }
+                        }
+                    }
+            }
+        </script>
+        @*
+        <script>
+            var pageURL = $(location).attr("href");
+            if (pageURL.includes("ProvinceList2")) {
+
+                $("#CongregationOpen a").removeClass("active");
+                // add class to the one we clicked
+                $("#ProvinceOpen a").addClass("active");
+            }
+        </script>*@
+
+        @RenderSection("scripts", required: false);
+        @RenderSection("scripts1", required: false);
+        <style>
+            .mandatoryStar {
+                color: red
+            }
+        </style>
+</body>
+</html>

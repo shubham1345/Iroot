@@ -1,0 +1,898 @@
+﻿@model IEnumerable<Generalate.Models.CounCircCommi>
+@{
+    /**/
+
+    ViewBag.Title = "Administrator";
+}
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<ul class="breadcrumb">
+    <li><a href="#">Dashboard</a></li>
+    <li><a href="index.html">Id Generator</a></li>
+</ul>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-sm-4">
+                                    <h3><span id="PName">@TempData["Name"]</span> <span id="PSirName">@TempData["SirName"]</span>(<span id="PMemberId">@TempData["MemberId"]</span>)</h3>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a href="#"><i class="fa fa-window-close fa-lg pull-right" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- row started -->
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <!-- col-msx-12 started -->
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a data-toggle="tab" href="#add" class="sis_tab_a click">Formation</a></li>
+                                    <li><a data-toggle="tab" href="#add1" class="sis_tab_a">Accadamic</a></li>
+                                    <li><a data-toggle="tab" href="#add2" class="sis_tab_a">Appoinment</a></li>
+                                    <li><a data-toggle="tab" href="#add3" class="sis_tab_a">Complains</a></li>
+                                    <li><a data-toggle="tab" href="#Summary" class="sis_tab_a">Summary</a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="add" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form"> Formation Details</h4>
+                                                <form action="/EntryLife/AddFormationDetail" id="formFormationDetails" method="post" enctype="multipart/form-data">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            <label>Stage Of Formation : </label>
+                                                            <select class="form-control" id="Drp_StageOfFormation" name="StageOfFormation">
+                                                                @foreach (var item in @ViewBag.FormationTypes as IEnumerable<Generalate.Models.Tbl_FormationTypes>)
+                                                                {
+                                                                    <option value="@item.Id">@item.FortmationType</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <!-- col-sm-6 started -->
+                                                        <div class="form-group">
+                                                            <label>Date : </label>
+                                                            <input type="hidden" id="MemberId" name="MemberId" class="form-control" value="@TempData["MemberId"]" readonly>
+                                                            <input type="text" id="Date" name="Date" class="form-control" readonly>
+                                                            <input type="hidden" id="Id" name="Id" class="form-control">
+
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Title : </label>
+                                                            <input type="text" id="Title" name="Title" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group" id="InstitutionDiv">
+                                                            <label>Institution : </label>
+                                                            <input type="text" id="Institution" name="Institution" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group" id="SuperiorDiv">
+                                                            <label>Superior : </label>
+                                                            <input type="text" id="Superior" name="Superior" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group" id="FormatorsDiv">
+                                                            <label>Formators : </label>
+                                                            <input type="text" id="Formators" name="Formators" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group" id="NovisemasterDiv">
+                                                            <label>Novise master : </label>
+                                                            <input type="text" id="Novisemaster" name="Novisemaster" class="form-control">
+                                                        </div>
+                                                        <div class="form-group" id="PlaceDiv">
+                                                            <label>Place : </label>
+                                                            <textarea id="Place" class="form-control" name="Place" rows="2"> </textarea>
+                                                        </div>
+
+                                                    </div><!-- col-sm-6 closed -->
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group" id="ReceivedbyDiv">
+                                                            <label>Received by : </label>
+                                                            <input type="text" id="Receivedby" name="Receivedby" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group" id="ConferredbyDiv">
+                                                            <label>Conferred by : </label>
+                                                            <input type="text" id="Conferredby" name="Conferredby" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group" id="VocationFacilitatorDiv">
+                                                            <label>VocationFacilitator : </label>
+                                                            <input type="text" id="VocationFacilitator" name="VocationFacilitator" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group" id="VocationFacilitatorDiv">
+                                                            <label>Upload Document : </label>
+                                                            <input type="file" id="FileName" name="FileName" class="form-control" accept=".png,.jpg,.jpeg,.pdf,.doc">
+                                                        </div>
+                                                        <div class="form-group" id="DescriptionDiv">
+                                                            <label>Description/Remarks : </label>
+                                                            <textarea type="text" id="Description" name="Description" rows="10" class="form-control"></textarea>
+                                                        </div>
+                                                        @*<h4 class="std_head well-sm jss_form"> Father Details</h4>*@
+                                                        <button class="btn btn-danger pull-right" id="btnClear"> Clear</button>
+                                                        <button type="submit" class="btn btn-success pull-right" id="btnFormationDetailSave">Save</button>
+                                                        @*<button class="btn btn-success" id="btnFormationUpdate" data-val=""> Update</button>*@
+                                                    </div>
+                                                </form>
+                                            </div><!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="FormationTbl1" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            <th> S.No. </th>
+                                                            <th> Stage Of Formation</th>
+                                                            <th> Title </th>
+                                                            <th> Date</th>
+                                                            <th> Document</th>
+                                                            <th> Description</th>
+                                                            <th> Action</th>
+                                                            @*<th> View Pdf </th>*@
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @{
+                                                            int i = 1;
+                                                            foreach (var item in Model as IEnumerable<Generalate.Models.ViewModels.FormationViewModel>)
+                                                            {
+                                                                <tr>
+                                                                    <td>@i</td>
+                                                                    <td>@item.StageofFormation</td>
+                                                                    <td>@item.Title</td>
+                                                                    <td>@item.Date</td>
+                                                                    <td>
+                                                                        @{
+                                                                            if (!string.IsNullOrWhiteSpace(@item.file))
+                                                                            {
+                                                                                <a target="_blank" href="~/Image/Formation/@item.file">View</a>
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a target="_blank" href="~/Image/No-data-found.png">View</a>
+
+                                                                            }
+                                                                        }
+                                                                    </td>
+                                                                    <td>@item.Description</td>
+                                                                    <td>
+                                                                        <button class="btn btn-success EditFormation" data-val="@item.Id">Edit</button>
+                                                                        <button class="btn btn-danger Delete" data-val="@item.Id">Delete</button>
+                                                                    </td>
+                                                                </tr>
+                                                                i++;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                    <div id="add1" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form"> Academics</h4>
+                                                <form action="/EntryLife/AddAcademyDetail" id="AcademyForm" method="post" enctype="multipart/form-data">
+                                                    <div class="col-sm-6" style="border-right: 1px solid #eee;">
+                                                        <div class="form-group">
+                                                            <label>Member ID :</label>
+                                                            <input type="text" id="MemberId" name="MemberId" class="form-control" value="@TempData["MemberId"]" readonly>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Course :</label>
+                                                            <input type="text" id="Course" name="course" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Title :</label>
+                                                            <input type="text" id="title" name="title" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Degree Obtained :</label>
+                                                            <input type="text" id="degree" name="degree" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>University :</label>
+                                                            <input type="text" id="university" name="university" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>From Date :</label>
+                                                            <input type="text" id="fromdate" name="fromdate" class="form-control" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>To Date :</label>
+                                                            <input type="text" id="todate" name="todate" class="form-control" readonly>
+                                                        </div>
+                                                    </div><!-- col-sm-6 closed -->
+                                                    <div class="col-sm-6">
+                                                        <!-- col-sm-6 started -->
+                                                        <div class="form-group">
+                                                            <label>Class Obtained :</label>
+                                                            <input type="text" id="classo" name="classo" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Medium :</label>
+                                                            <input type="text" id="medium" name="medium" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Address : </label>
+                                                            <input type="text" id="adress" name="adress" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Remarks : </label>
+                                                            <input type="text" id="remark" name="remark" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Upload Doccument : </label>
+
+                                                            <input type="file" name="file" id="Academyfile">
+
+                                                        </div>
+                                                        @*<h4 class="std_head well-sm jss_form"> Father Details</h4>*@
+                                                        @*<button class="btn btn-success" id="btnFormationSave1" onclick="return Adds();"> Save</button>*@
+                                                        <button type="submit" class="btn btn-primary" id="btnAcademySave" style="background-color:#001f6b">Save</button>
+
+                                                        <button class="btn btn-danger pull-right" id="btnClear"> Clear</button>
+                                                    </div>
+                                                </form>
+                                                <!-- col-sm-6 closed -->
+                                            </div><!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped table-hover" id="AcademicTbl" style="margin-top:40px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            <th> S.No. </th>
+                                                            <th> Course </th>
+                                                            <th> Title</th>
+                                                            <th> DegreeObtained</th>
+                                                            <th>Univercity</th>
+                                                            <th> Fromdate</th>
+                                                            <th> ToDate</th>
+                                                            <th> ClassObtained</th>
+                                                            <th> Medium</th>
+                                                            <th> Address</th>
+                                                            <th> Remarks</th>
+                                                            <th> file</th>
+                                                            <th> Action</th>
+                                                            @*<th> View Pdf </th>*@
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @{
+                                                            int m = 1;
+                                                            foreach (var item in @ViewBag.allAcedemy as IEnumerable<Generalate.Models.tbl_Academy>)
+                                                            {
+                                                                <tr>
+                                                                    <td>@m</td>
+                                                                    <td>@item.course</td>
+                                                                    <td>@item.title</td>
+                                                                    <td>@item.degree</td>
+                                                                    <td>@item.university</td>
+                                                                    <td>@item.fromdate</td>
+                                                                    <td>@item.todate</td>
+                                                                    <td>@item.classo</td>
+                                                                    <td>@item.medium</td>
+                                                                    <td>@item.adress</td>
+                                                                    <td>@item.remark</td>
+                                                                    <td>
+                                                                        @{
+                                                                            if (!string.IsNullOrWhiteSpace(@item.doc))
+                                                                            {
+                                                                                <a target="_blank" href="~/Image/Academy/@item.doc">View</a>
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a target="_blank" href="~/Image/No-data-found.png">View</a>
+
+                                                                            }
+                                                                        }
+
+                                                                    </td>
+
+                                                                    <td>
+                                                                        <button class="btn btn-success btn-sm EditAcademy" data-val="@item.acaid">Edit</button>
+                                                                        <button class="btn btn-danger btn-sm DeleteAcademy" data-val="@item.acaid">Delete</button>
+                                                                    </td>
+                                                                </tr>
+                                                                m++;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                    <div id="add2" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form">Appointment</h4>
+                                                <form action="/EntryLife/SaveAppoinment" id="AppointmentForm" method="post" enctype="multipart/form-data">
+                                                    <div class="col-sm-6" style="border-right: 1px solid #eee;">
+                                                        <div class="form-group">
+                                                            <label>Title :</label>
+                                                            <input type="hidden" name="MemberId" id="AppMemberId" value="@TempData["MemberId"]" />
+                                                            <input type="hidden" name="Id" id="AppId" value="" />
+                                                            <input type="text" id="AppTitle" name="Title" class="form-control" placeholder="Title" required>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Date :</label>
+                                                            <input type="text" id="Date2" name="Date" class="form-control" placeholder="Date" readonly>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Effected Date : </label>
+                                                            <input type="text" id="EffectedDate" readonly name="EffectedDate" class="form-control" placeholder="Effected Date">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>ToDate : </label>
+                                                            <input type="text" id="AppToDate" readonly name="ToDate" class="form-control" placeholder="">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Upload Doccument : </label>
+                                                            <input class="form-control" type="file" id="file1" multiple accept=".jpg,.png,.jpeg,.png,.doc" max="5">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Description : </label>
+                                                            <textarea rows="6" name="Description" required class="form-control" id="AppDescription" placeholder="Enter Description"></textarea>
+                                                        </div>
+                                                    </div><!-- col-sm-6 closed -->
+                                                    <div class="col-sm-6" style="border-right: 1px solid #eee;">
+                                                        @*<div class="form-group">
+                                                                <label>Appointment Type :</label>
+                                                                <select class="form-control" name="AppointmentType" id="AppointmentType" >
+                                                                    <option value="0">Select Type</option>
+
+                                                                    @foreach (var item in @ViewBag.AppointmentType)
+                                                                    {
+                                                                        <option value="@item.Name">@item.Name</option>
+
+                                                                    }
+                                                                </select>
+                                                            </div>*@
+
+
+
+                                                        @*<div class="form-group">
+                                                                <label> Type :</label>
+                                                                <select id='purpose'>
+                                                                    <option value="0">Designation</option>
+                                                                    <option value="1">Institution</option>
+                                                                    <option value="2">Community</option>
+                                                                </select>
+                                                            </div>*@
+
+                                                        @*<div class="form-group">
+                                                                <label>Name :</label>
+                                                                <select id="select" class="dropdown" multiple="multiple">
+                                                                    <select class="form-control" name="drpNameType" id="drpNameType">
+                                                                    @foreach (var item in @ViewBag.DataListItems)
+                                                                    {
+                                                                        <option value="@item.Name">@item.Name</option>
+                                                                    }
+                                                                </select>
+                                                            </div>*@
+
+                                                        @*<label>Select Members : </label>
+                                                            <select id="select" class="dropdown" multiple="multiple">
+
+                                                                @foreach (var item in @ViewBag.AllMembers as IEnumerable<Generalate.Models.tbl_PersonalDetails>)
+                                                                {
+                                                                    <option value="@item.Name @item.SirName">@item.Name @item.SirName</option>
+                                                                }
+                                                            </select><br />*@
+
+                                                        @*<label>Involved In : </label>*@
+                                                        @*<div class="form-group">
+                                                                <label>Designation :</label>
+                                                                <input type="hidden" id="DesignationType" name="DesignationType" />
+                                                                <select class="dropdown" multiple="multiple" name="DrpDesignationType" id="DrpDesignationType">
+                                                                    @foreach (var item in @ViewBag.DataListItems)
+                                                                    {
+                                                                        <option value="@item.Name">@item.Designation</option>
+                                                                    }
+                                                                </select>
+                                                            </div>*@
+                                                        <label>Designation : </label>
+                                                        <div class="form-group">
+                                                            @*<select id="select" class="dropdown" multiple="multiple">*@
+                                                            <select class="dropdown" id="DrpDesignationType" name="StageOfFormation">
+                                                                @foreach (var item in @ViewBag.DesignationType as IEnumerable<Generalate.Models.DataListItems>)
+                                                                {
+                                                                    <option value="@item.Id">@item.Name</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <label>Institution : </label>
+                                                        <div class="form-group">
+                                                            @*<select id="select" class="dropdown" multiple="multiple">*@
+                                                            <select class="dropdown" id="DrpInstitutionType">
+                                                                @foreach (var item in @ViewBag.InstitutionType as IEnumerable<Generalate.Models.Tbl_ParisInstitutionDetails>)
+                                                                {
+                                                                    <option value="@item.Id">@item.Name</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <label>Trust: </label>
+                                                        <div class="form-group">
+                                                            @*<select id="select" class="dropdown" multiple="multiple">*@
+                                                            <select class="dropdown" id="DrpParishType" name="StageOfFormation">
+                                                                @foreach (var item in @ViewBag.ParishType as IEnumerable<Generalate.Models.Tbl_Paris>)
+                                                                {
+                                                                    <option value="@item.Id">@item.ParisName</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <label>Community : </label>
+                                                        <div class="form-group">
+
+                                                            @*<select id="select" class="dropdown" multiple="multiple">*@
+                                                            <select class="dropdown" id="DrpCommunityType" name="StageOfFormation">
+
+                                                                @foreach (var item in @ViewBag.CommunityType as IEnumerable<Generalate.Models.tbl_CommunitiesSocialCentresDoc>)
+                                                                {
+                                                                    <option value="@item.CommunityId">@item.CommunityName</option>
+
+                                                                }
+                                                            </select>
+                                                        </div>
+
+                                                        @*<div class="form-group">
+                                                                <label>Superior :</label>
+                                                                <input type="text" name="Superior" id="APPSuperior" class="form-control" />
+                                                            </div>
+
+                                                            <div class="form-group" id="Address">
+                                                                <label>Address :</label>
+                                                                <input type="text" name="Superior" id="Address" class="form-control" />
+                                                            </div>
+
+                                                            <div class="form-group" id="Telephoneno">
+                                                                <label>Telephone no :</label>
+                                                                <input type="text" name="Superior" id="Telephoneno" class="form-control" />
+                                                            </div>
+                                                            <div class="form-group" id="Website">
+                                                                <label>Website :</label>
+                                                                <input type="text" name="Superior" id="Website" class="form-control" />
+                                                            </div>*@
+                                                        <div class="form-group">
+                                                            <input type="submit" class="btn btn-success btnAppoinmentSave" value="Save" />
+                                                            <input type="button" class="btn btn-danger" value="Clear" />
+                                                        </div>
+
+                                                    </div>
+                                                </form>
+
+                                            </div><!-- col-sm-12 closed -->
+
+                                        </div><!-- row closed -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            <th> S.No. </th>
+                                                            <th> Title </th>
+                                                            <th> Date</th>
+                                                            <th>ToDate</th>
+                                                            <th> Description</th>
+
+                                                            <th> Designation</th>
+                                                            <th> Institution</th>
+                                                            <th> Community</th>
+
+                                                            <th> Action</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @{
+                                                            int L = 1;
+                                                            foreach (var item in @ViewBag.allApoinments as IEnumerable<Generalate.Models.Appointments>)
+                                                            {
+                                                                <tr>
+                                                                    <td>@L</td>
+                                                                    <td>@item.Title</td>
+                                                                    <td>@item.Date</td>
+                                                                    <td>@item.ToDate</td>
+                                                                    <td>@item.Description</td>
+
+                                                                    <td>@item.DesignationType</td>
+                                                                    <td>@item.InstitutionType</td>
+                                                                    <td>@item.CommunityType</td>
+
+                                                                    <td>
+                                                                        <button class="btn btn-success btn-sm AppoinmentEdit" data-val="@item.Id">Edit</button>
+                                                                        <button class="btn btn-danger btn-sm AppoinmentDelete" data-val="@item.Id">Delete</button>
+                                                                    </td>
+                                                                </tr>
+                                                                L++;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                    <div id="add3" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="row">
+                                                <!-- col-sm-12 started -->
+                                                <div class="col-sm-12">
+                                                    <!-- col-sm-12 started -->
+                                                    <h4 class="std_head well-sm jss_form"> Complain Details</h4>
+                                                    <form id="FormComplain" action="/Comlain/AddComplain" method="post" enctype="multipart/form-data">
+                                                        <input type="hidden" id="ID" name="Id" value="" />
+                                                        <input type="hidden" id="MemberId" name="MemberId" value="@TempData["MemberId"]" class="form-control">
+                                                        <input type="hidden" id="MemberName" name="MemberName" value="@TempData["Name"] @TempData["SirName"]" class="form-control">
+                                                        <div class="col-sm-6" style="border-right: 1px solid #eee">
+                                                            <!-- col-sm-6 started -->
+                                                            <div class="form-group">
+                                                                <label>Date :</label>
+                                                                <input type="text" id="Date1" name="Date" class="form-control" placeholder="Choose Date" readonly>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Title :</label>
+                                                                <input type="text" id="Title" name="Title" placeholder="Enter Title" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Discription :</label>
+                                                                <textarea id="Discription" placeholder="Enter Some Discription" name="Discription" class="form-control" rows="5"></textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Nature of The Complaint :</label>
+                                                                <input type="text" id="NatureofTheComplaint" placeholder="Nature of The Complaint" name="NatureofTheComplaint" class="form-control">
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Complaint Received From :</label>
+                                                                <input type="text" id="ComplaintReceived" placeholder="Complaint Received From" name="ComplaintReceived" class="form-control">
+                                                            </div>
+                                                        </div><!-- col-sm-6 closed -->
+                                                        <div class="col-sm-6">
+                                                            <!-- col-sm-6 started -->
+                                                            <div class="form-group">
+                                                                <label>Decision : </label>
+                                                                <textarea id="Decision" name="Decision" class="form-control" rows="3" maxlength="300"></textarea>
+                                                            </div>
+
+                                                            <div class="form-group">
+                                                                <label>Select Members : </label>
+                                                                <select id="select" class="dropdown" multiple="multiple">
+
+                                                                    @foreach (var item in @ViewBag.AllMembers as IEnumerable<Generalate.Models.tbl_PersonalDetails>)
+                                                                    {
+                                                                        <option value="@item.Name @item.SirName">@item.Name @item.SirName</option>
+                                                                    }
+                                                                </select><br />
+
+                                                                <label>Involved In : </label>
+                                                                <textarea style="color:black;" id="InvolvedIn" name="InvolvedIn" class="form-control" rows="3" readonly></textarea>
+                                                                @*<input type="text" id="InvolvedIn" name="InvolvedIn" class="form-control" readonly />*@
+
+
+
+
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>File : </label>
+                                                                <input type="file" id="file" class="form-control" name="file" accept=".docx,.png,.jpg,.pdf,.jpeg">
+                                                            </div>
+
+                                                            @*<h4 class="std_head well-sm jss_form"> Father Details</h4>*@
+                                                            <button type="submit" class="btn btn-success" id="btnCompainSave" @*onclick="return Add();" *@> Save</button>
+                                                            @*<button type="submit" class="btn btn-success" id="btnUpdate1" data-val=""> Update</button>*@
+
+                                                            <button type="button" class="btn btn-danger pull-right" onclick="clearall();" id="btnClear"> Clear</button>
+                                                        </div><!-- col-sm-6 closed -->
+                                                    </form>
+                                                </div><!-- col-sm-12 closed -->
+                                            </div><!-- row closed -->
+                                            <br />
+                                            <hr />
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                        <thead>
+                                                            <tr style="background-color:#001f6b; color:white">
+                                                                <th> S.No. </th>
+                                                                <th> Date</th>
+                                                                <th> Tital </th>
+                                                                <th> Description</th>
+                                                                <th> NatureofTheComplaint </th>
+                                                                <th> ComplaintReceived</th>
+                                                                <th> Decision</th>
+                                                                <th> InvolvedIn</th>
+                                                                <th> File Name</th>
+                                                                <th> Action</th>
+
+                                                                @*<th> View Pdf </th>*@
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="tbody">
+                                                            @{
+                                                                int j = 1;
+                                                                foreach (var item in ViewBag.allComplains as IEnumerable<Generalate.Models.Tbl_Complains>)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@j</td>
+                                                                        <td>@item.Date</td>
+                                                                        <td>@item.Title</td>
+                                                                        <td>@item.Discription</td>
+                                                                        <td>@item.NatureofTheComplaint</td>
+                                                                        <td>@item.ComplaintReceived</td>
+                                                                        <td>@item.Decision</td>
+                                                                        <td>@item.InvolvedIn</td>
+
+                                                                        <td>
+                                                                            @{
+                                                                                if (!string.IsNullOrWhiteSpace(@item.FileName))
+                                                                                {
+                                                                                    <a target="_blank" href="~/Image/Compains/@item.FileName">View</a>
+
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <a target="_blank" href="~/Image/No-data-found.png">View</a>
+
+                                                                                }
+                                                                            }
+
+                                                                        </td>
+                                                                        <td>
+                                                                            <button class="btn btn-success EditCompain" data-val="@item.Id">Edit</button>
+                                                                            <button class="btn btn-danger DeleteCompalin" data-val="@item.Id">Delete</button>
+                                                                            <a href="/EntryLife/ViewComplain?id=@item.Id" class="btn btn-default">View Complain</a>
+                                                                        </td>
+                                                                    </tr>
+                                                                    i++;
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                    <div id="Summary" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- row started -->
+                                            <div class="col-sm-12 table-responsive">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form">Summary</h4>
+                                                <div class="col-sm-12">
+                                                    <!-- col-sm-6 started -->
+                                                    <table class="table table-striped  table-hover" id="" style="margin-top:20px;">
+                                                        <thead>
+                                                            <tr style="background-color:#001f6b; color:white">
+                                                                <th> S.No. </th>
+                                                                <th> Title </th>
+                                                                <th> Date</th>
+                                                                <th> Description</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="tbody">
+                                                            @{
+                                                                int LL = 1;
+                                                                foreach (var item in @ViewBag.allSummary as IEnumerable<Generalate.Models.ViewModels.DetailsSummaryViewModel>)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@LL</td>
+                                                                        <td>@item.Title</td>
+                                                                        <td>@item.Date</td>
+                                                                        <td>@item.Description</td>
+                                                                    </tr>
+                                                                    LL++;
+                                                                }
+                                                            }
+                                                        </tbody>
+                                                    </table>
+                                                </div><!-- row closed -->
+                                            </div><!-- tab-pane fade closed -->
+                                        </div><!-- tab-pane fade closed -->
+                                    </div><!-- col-msx-12  closed -->
+                                </div><!-- 1st row closed -->
+                            </div> <!-- container fluid closed -->
+                        </div>
+                        <!--panel body closed-->
+                    </div>
+                    <!--panel default closed-->
+                </div> <!-- Your Page Content Here -->
+            </div> <!-- END PAGE CONTENT WRAPPER -->
+        </div>
+    </div>
+</div>
+@section scripts
+    {
+    <script>
+        $(function () {
+            $("#DrpCommunityType").chosen();
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+                localStorage.setItem('activeTab', $(e.target).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+    </script>
+
+    <script src="~/css/Dashboard/FormationJS.js"></script>
+    <script src="~/Scripts/additional/AddAcademic.js"></script>
+    <script src="~/Scripts/CompainsJS.js"></script>
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/Scripts/additional/AppoinmentJS.js"></script>
+
+
+    <script>
+        //var pageURL = $(location).attr("href");
+        //if (pageURL.indexOf("dataListName") != -1) {
+        //    $(".click_1").trigger("click");
+        //}
+
+        $(document).ready(function () {
+            $('#FormationTbl1').DataTable();
+        });
+        $(document).ready(function () {
+            $('#AcademicTbl').DataTable();
+        });
+    </script>
+
+
+    @*<script src="~/Scripts/additional/AddAcademic.js"></script>*@
+    @*<script src="~/css/Dashboard/Secularss.js"></script>*@
+    @*<script src="~/Scripts/CompainsJS.js"></script>*@
+
+    <script>
+        $(function () {
+            $('#select').multipleSelect({
+                width: 400,
+                allSelectedText: 'All'
+            })
+
+            $('#DrpDesignationType').multipleSelect({
+                width: 472,
+                allSelectedText: 'All'
+            })
+            $('#DrpInstitutionType').multipleSelect({
+                width: 472,
+                allSelectedText: 'All'
+            })
+
+            $('#DrpParishType').multipleSelect({
+                width: 472,
+                allSelectedText: 'All'
+            })
+            $('#DrpCommunityType').multipleSelect({
+                width: 472,
+                allSelectedText: 'All'
+            })
+        })
+        $('#Date').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+        $('#Date1').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+        $('#fromdate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+        $('#todate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+        $('#Date2').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+        $('#EffectedDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+        $('#ToDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+
+        $('#AppToDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020'
+        });
+        $("#select").on("change", function () {
+            var selectedValues1 = [];
+            $("#select :selected").each(function () {
+                selectedValues1.push($(this).val());
+            });
+            $("#InvolvedIn").val(selectedValues1);
+        });
+
+        $("#DrpDesignationType").on("change", function () {
+            var selectedValues2 = [];
+            $("#DrpDesignationType :selected").each(function () {
+                selectedValues2.push($(this).val());
+            });
+            $("#DesignationType").val(selectedValues2);
+        });
+
+        $("#DrpInstitutionType").on("change", function () {
+            var selectedValues3 = [];
+            $("#DrpInstitutionType :selected").each(function () {
+                selectedValues3.push($(this).val());
+            });
+            $("#InstitutionType").val(selectedValues3);
+        });
+
+        $("#DrpParishType").on("change", function () {
+            var selectedValues4 = [];
+            $("#DrpParishType :selected").each(function () {
+                selectedValues4.push($(this).val());
+            });
+            $("#ParishType").val(selectedValues3);
+        });
+        $("#DrpCommunityType").on("change", function () {
+            var selectedValues5 = [];
+            $("#DrpCommunityType :selected").each(function () {
+                selectedValues5.push($(this).val());
+            });
+            $("#CommunityType").val(selectedValues4);
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('.DrpInstitutionType').DrpInstitutionType({
+                liveSearch: true,
+                showSubtext: true
+            });
+        });
+    </script>
+}

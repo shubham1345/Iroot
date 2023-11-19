@@ -1,0 +1,715 @@
+﻿@using Generalate.Controllers;
+
+@{
+    ViewBag.Title = "ProvinceGeneralAdminCouncilMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+@*<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/ViewAllCongCouncil"></a></li>
+</ul>*@
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
+<div class="page-content-wrap" style="margin-top:100px">
+    <div class="row" style="margin-top:-8px;">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active" id="GeneralUnique1"><a data-toggle="tab" href="#GeneralUnique" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("ProvincialSuperior");}</span></a></li>
+                                    <li id="CouncilUnique1"><a @*data-toggle="tab"*@ href="/Home/ProvinceGeneral_Member" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("ProvincialCouncillors");}</span></a></li>
+                                    <li id="treasurerUnique1"><a @*data-toggle="tab"*@ href="/Home/ProvinceGeneral_Treaserer" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("ProvincialTreaserer");}</span></a></li>
+                                    <li id="secretaryUnique1"><a @*data-toggle="tab"*@ href="/Home/ProSecretary" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("ProvincialSecretary");}</span></a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+
+                                    <div id="GeneralUnique" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <div class="panel-heading" style="background-color:#29b2e1; color:white;"><span>@{@HomeController.GetControlTextByControlId("ProvincialSuperior");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left" href="/Home/ProvinceGeneral_Admin"></a></span></div>
+                                            <div class="col-md-12 brd-panel  " style="height:auto;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="">
+                                                                    <form id="GeneralCouncil" action="" method="post" enctype="multipart/form-data"/>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></label>
+                                                                                <input type="text" id="FromDate2" name="FromDate" class="form-control datepicker" value="@ViewBag.FromDate1">
+                                                                                <input type="hidden" id="ProGenMem_Id" name="ProGenMem_Id" value="@ViewBag.CouncilMemberId"/>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></label>
+                                                                                <input type="text" id="ToDate2" name="ToDate" class="form-control datepicker" value="@ViewBag.ToDate1">
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <br />
+                                                            </div>
+                                                            <div class="row" style="margin-top:10px;">
+
+                                                                <div class="col-sm-6">
+                                                                    <div class="">
+                                                                        <label><span>@{@HomeController.GetControlTextByControlId("Mandate");}</span><span class="mandatoryStar"> </span></label>
+                                                                        <input class="form-control" id="Mandate2" style="" name="Mandate" required value="@ViewBag.Mandate1"></input>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="">
+                                                                        <label><span>@{@HomeController.GetControlTextByControlId("Mission_Country");}</span><span class="mandatoryStar"> </span></label>
+                                                                        <input class="form-control" id="MissionCountry2" style="" name="MissionCountry" required value="@ViewBag.MissionCountry1"></input>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top:10px;">
+                                                                <div class="col-sm-1">
+                                                                    <input type="button" id="addRow" class="btn btn-primary btn-sm" value="Add Row (+)" />
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <input type="button" id="RemoveRow1" class="btn btn-danger btn-sm RemoveRow" value="Remove Row (-)" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top:10px;">
+                                                                <div class="col-sm-12">
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th> <label><input type="checkbox" id="SelectAllCheckBox"> @{@HomeController.GetControlTextByControlId("All");}</label></th>
+                                                                                <th>@{@HomeController.GetControlTextByControlId("Province_Name");}</th>
+                                                                                <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                                                <th>@{@HomeController.GetControlTextByControlId("Designation");}</th>
+                                                                                <th>@{@HomeController.GetControlTextByControlId("Responsibility");}</th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Status");}</span></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="counsilmemberTblBody2">
+                                                                            <tr>
+                                                                                <td><input type="checkbox" name="ischecked" /></td>
+                                                                                <td>
+                                                                                    <select class="form-control CounProvince" id="CounProvince_02" onchange="AssignProId(0);" style="width:220px !important;" name="ProvinceName" value="@ViewBag.Provinceid"></select>
+                                                                                </td>
+                                                                                <td><input type="text" id="MemberName2" name="MemberName" onclick="onclickCnt(0);" value="@ViewBag.Name1" class="form-control CouncilName" MemberName_0 /></td>
+                                                                                <td><input type="text" id="DesignationName2" value="@ViewBag.Designation1" name="DesignationName" onclick="onclickCnt(0);" class="form-control CouncilDesignation" DesignationName_0 /></td>
+                                                                                <td style="display:none"><input type="hidden" id="PersonalDetailsId2" name="PersonalDetailsId" value="" class="form-control PersonalDetailsId_0" /></td>
+
+                                                                                <td><input type="text" id="ResponsibilityName2" value="@ViewBag.Responsibility" name="ResponsibilityName" class="form-control CouncilResponsibility" /></td>
+                                                                                <td>
+                                                                                    <select class="form-control" id="Status2" name="Status" value="@ViewBag.status1">
+                                                                                        <option value="0">Active</option>
+                                                                                        <option value="1">Completed</option>
+                                                                                    </select>
+                                                                                </td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    @{
+                                                                        if (ViewBag.CouncilMemberId == 0)
+                                                                        {
+                                                                            <input type="button" class="btn btn-success" value="@{@HomeController.GetControlTextByControlId("Save");}" id="SaveCouncilBtn2" />
+
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            <input type="button" class="btn btn-success" value="@{@HomeController.GetControlTextByControlId("Update");}" id="SaveCouncilBtn2" />
+
+                                                                        }
+
+                                                                    }
+                                                                    @*<input type="button" class="btn btn-success" value="@{@HomeController.GetControlTextByControlId("Save") Save");}" id="SaveCouncilBtn2" />*@
+                                                                </div>
+                                                            </div>
+                                                           
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+        {
+    <script src="~/Scripts/additional/CongrationList.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //GetAllDisSec();
+            $('#ActivitiesCom12').multipleSelect({
+                width: 353,
+                allSelectedText: 'All'
+            });
+        });
+    </script>
+    
+    @*Add/Remove Rows*@
+    <script>
+        var currentRowCnt = 0;
+        var currentRowCnt2 = 0;
+        var currentRowCnt3 = 0;
+        var addRowCnt = 0;
+        var addRowCnt2 = 0;
+        var addRowCnt3 = 0;
+
+        var allMembers = [];
+        var allDesignations = [];
+        //--GetMemberandDesignation();
+        autocompleteFunc();
+        $("#addRow").on("click", function () {
+            //debugger;
+            addRowCnt++;
+            var newRow = "<tr>";
+            newRow += "<td><input type='checkbox' name='ischecked' /></td>";
+            newRow += "<td style='display:none'><input type='hidden' id='GenId' name='GenId'  /></td>";
+            newRow += "<td> <select class='form-control CounProvince' id='CounProvince_" + addRowCnt + "' onchange='AssignProId(" + addRowCnt + ");' style='width:220px !important;' name='ProvinceName'></select></td>";
+            newRow += "<td><input type='text' name='MemberName' onclick='onclickCnt(" + addRowCnt + ");' class='form-control CouncilName  MemberName_" + addRowCnt + "'  /></td>";
+            newRow += "<td  style='display: none'><input type='hidden' name='ProvinceId' class='form-control ProvinceId_" + addRowCnt + "' /></td>";
+            newRow += "<td  style='display: none'><input type='hidden' name='PersonalDetailsId' class='form-control PersonalDetailsId_" + addRowCnt + "' /></td>";
+            newRow += "<td><input type='text' name='DesignationName'  onclick='onclickCnt(" + addRowCnt + ");' class='form-control CouncilDesignation  DesignationName_" + addRowCnt + "'  /></td>";
+            newRow += "<td  style='display: none'><input type='hidden' name='DataListItemsId' class='form-control DataListItemsId_" + addRowCnt + "' /></td>";
+            newRow += "<td><input type='text' name='ResponsibilityName' class='form-control CouncilResponsibility' /></td>";
+            newRow += "<td><select class='form-control' id='' name='Status'><option value='0'>Active</option><option value='1'>Completed</option></select></td>";
+            newRow += "</tr>";
+            $("#counsilmemberTblBody2").append(newRow);
+            autocompleteFunc();
+            SetCouncilDesignation();
+            GetAllProvinceCouncil();
+            SetCouncilName();
+        });
+       
+
+        function onclickCnt(cnt) {
+            currentRowCnt = cnt;
+        }
+        $(".RemoveRow").on("click", function () {
+            if (confirm("Do you want to remove ?")) {
+                $.each($("input[name='ischecked']:checked"), function () {
+                    $(this).closest("tr").remove();
+                });
+            }
+        });
+        function clearCouncil() {
+            $("#MemberName,#DesignationName,#ResponsibilityName,#FromDate1,#ToDate1").val('');
+        }
+        clearCouncil();
+        $("#SaveCouncilBtn").on("click", function () {
+            
+            var data = [];
+            var counsilId = $("#CouncilId").val();
+            var GenID = $("#CouncilId").val();
+            $("#counsilmemberTblBody tr").each(function () {
+                //debugger;
+                var obj = {};
+                var counsulId = counsilId;
+                obj.ProGenMem_Id = $("#ProGenMem_Id").val();
+                obj.FromDate = $("#FromDate1").val();
+                obj.ToDate = $("#ToDate1").val();
+                obj.Mandate = $("#Mandate1").val();
+                obj.MissionCountry = $("#MissionCountry1").val();
+                obj.Name = $(this).find(':input[name="MemberName"]').val();
+                obj.Designation = $(this).find(':input[name="DesignationName"]').val();
+                obj.Responsibility = $(this).find(':input[name="ResponsibilityName"]').val();
+                obj.Status = $(this).find(':input[name="Status"]').val();
+                obj.ProvinceId = $(this).find(':input[name="ProvinceId"]').val();
+                obj.PersonalDetailsId = $(this).find(':input[name="PersonalDetailsId"]').val();
+                data.push(obj);
+            });
+
+            if (data.length > 0) {
+                $.ajax({
+                    url: "/Home/AddProvinceGenMember",
+                    data: JSON.stringify(data),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        clearCouncil();
+                        var iscode = $.cookie("iscode");
+                        if (iscode == "200") {
+                            $("#mymessage").html("<b>Data saved successfully !</b>");
+                            $("#mymessage").css("color", "green");
+                            $('#myalertbox').modal({
+                                backdrop: 'static'
+                            });
+                            $("#myalertbox").modal("show");
+                            $.cookie('iscode', null, { path: '/' })
+                        }
+                        $(".closemodel").on("click", function () {
+                            location.reload();
+                        });
+                        //if (result == "200") {
+                        //    alert("Data Save Successfully !");
+                        //    window.location.reload();
+                        //}
+                    },
+                    error: function (errormessage) {
+                        //alert(errormessage.responseText);
+                    }
+                });
+            } else {
+                alert("@{@HomeController.GetControlTextByControlId("No_records_for_Add");}");
+            }
+        });
+        
+        $("#SelectAllCheckBox").on("click", function () {
+            var isCheck = $(this).is(':checked')
+            if (isCheck) {
+                $("input[name='ischecked']").prop('checked', true);
+            } else {
+                $("input[name='ischecked']").prop('checked', false);
+            }
+        });
+        function autocompleteFunc() {
+            $(".CouncilName").autocomplete({
+                source: allMembers
+            });
+            $(".CouncilDesignation").autocomplete({
+                source: allDesignations
+            });
+
+        }
+
+        $("#SaveCouncilBtn2").on("click", function () {
+            //debugger;
+            var data = [];
+            //var counsilId = $("#CouncilId2").val();
+           
+            $("#counsilmemberTblBody2 tr").each(function () {
+                //debugger;
+                var obj = {};
+                //obj.Id = counsilId;
+                obj.Id = $("#CouncilId2").val();
+                //obj.GenId = $("#GenId").val();
+                obj.GenId = $("#CongrationId").val();
+                obj.FromDate = $("#FromDate2").val();
+                obj.ToDate = $("#ToDate2").val();
+                obj.Mandate = $("#Mandate2").val();
+                obj.MissionCountry = $("#MissionCountry2").val();
+                obj.Name = $(this).find(':input[name="MemberName"]').val();
+                obj.Designation = $(this).find(':input[name="DesignationName"]').val();
+                obj.Responsibility = $(this).find(':input[name="ResponsibilityName"]').val();
+                obj.Status = $(this).find(':input[name="Status"]').val();
+
+                obj.ProvinceId = $(this).find(':input[name="ProvinceName"]').val();
+                //alert(obj.ProvinceId);
+                obj.PersonalDetailsId = $(this).find(':input[name="PersonalDetailsId"]').val(); 
+                obj.DataListItemsId = $(this).find(':input[name="DataListItemsId"]').val();
+                data.push(obj);
+            });
+
+            if (data.length > 0) {
+                $.ajax({
+                    url: "/Home/AddProvinceGenMember",
+                    data: JSON.stringify(data),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        clearCouncil();
+                        var iscode = $.cookie("iscode");
+                        if (iscode == "200") {
+                            $("#mymessage").html("<b>Data saved!</b>");
+                            $("#mymessage").css("color", "green");
+                            $('#myalertbox').modal({
+                                backdrop: 'static'
+                            });
+                            $("#myalertbox").modal("show");
+                            $.cookie('iscode', null, { path: '/' })
+                        }
+                        $(".closemodel").on("click", function () {
+                            location.reload();
+                        });
+                        //if (result == "200") {
+                        //    alert("Data Save Successfully !");
+                        //    window.location.reload();
+                        //}
+                    },
+                    error: function (errormessage) {
+                        //alert(errormessage.responseText);
+                    }
+                });
+            } else {
+                alert("@{@HomeController.GetControlTextByControlId("No_records_for_Add");}");
+            }
+        });
+
+
+    </script>
+    
+    @*Add/Remove Rows for Commission*@
+    <script>
+        var allMembers = [];
+        var allDesignations = [];
+        GetMemberandDesignation();
+        autocompleteFunc();
+      
+        $("#RemoveRow1").on("click", function () {
+            if (confirm("Do you want to remove ?")) {
+                $.each($("input[name='ischecked']:checked"), function () {
+                    $(this).closest("tr").remove();
+                });
+            }
+        });
+
+
+
+        function cleaarProCommision() {
+            $("#MemberName1,#DesignationName1,#ResponsibilityName1,#FromDate11,#ToDate11").val('');
+            $('#Responsibilities').val("---@{@HomeController.GetControlTextByControlId("Items");}---");
+        }
+        cleaarProCommision();
+       
+        $("#SelectAllCheckBox1").on("click", function () {
+            var isCheck = $(this).is(':checked')
+            if (isCheck) {
+                $("input[name='ischecked']").prop('checked', true);
+            } else {
+                $("input[name='ischecked']").prop('checked', false);
+            }
+        });
+        function autocompleteFunc() {
+            $(".CouncilName1").autocomplete({
+                source: allMembers
+            });
+            $(".CouncilDesignation1").autocomplete({
+                source: allDesignations
+            });
+
+            //$('.CounProvince').append(option1);
+        }
+        function GetMemberandDesignation() {
+            $.ajax({
+                url: "/Home/GetMemberAndDesignationsList2",
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.Members.length > 0) {
+                        $.each(result.Members, function (index, value) {
+                            allMembers.push(value);
+                        });
+                        //alert(allMembers);
+                    }
+                    if (result.Designations.length > 0) {
+                        $.each(result.Designations, function (index, value) {
+                            allDesignations.push(value);
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+    <script>
+        $("#Responsibilities").on("change", function () {
+            var resval = $("#Responsibilities option:selected").val();
+            $("#ResponsibilityName1").val(resval);
+            $(".CouncilResponsibility1").val(resval);
+        });
+    </script>
+    
+    <script>
+        var iscode = $.cookie("iscode");
+        if (iscode == "200") {
+            $("#mymessage").html("<b>Data saved successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "204") {
+            $("#mymessage").html("<b>Some Error Occured !</b>");
+            $("#mymessage").css("color", "red");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "201") {
+            $("#mymessage").html("<b>Data Updated Successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "202") {
+            $("#mymessage").html("<b>Data Deleted Successfully !</b>");
+            $("#mymessage").css("color", "blue");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+
+    @*//DioPopupWork*@
+    
+    <script>
+        $(document).ready(function () {
+            GetAllProvince();
+        });
+
+        function GetAllProvince() {
+            $.ajax({
+                url: "/Home/GetAllProvince",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#DioProvince1').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#DioProvince1").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+    
+
+    <script>
+
+        GetAllProvinceCouncil();
+        var option1 = "";
+        function GetAllProvinceCouncil() {
+            $.ajax({
+                url: "/Home/GetAllProvinceCouncil",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var option = '';
+                        option = '<option value="0">-- Select Province Name --</option>';
+                        for (var i = 0; i < response2.length; i++) {
+                            option += '<option value="' + response2[i].Id + '">' + response2[i].ProvinceName + " " + response2[i].Place + '</option>';
+                        }
+                        option1 = option;
+                        $('.CounProvince').append(option);
+                    }
+                    $(".CounProvince").val('@ViewBag.ProvinceID1');
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+
+        $(document).ready(function () {
+            SetCouncilDesignation();
+            SetCouncilName();
+        });
+
+        function SetCouncilDesignation() {
+
+            $(".CouncilDesignation").autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Home/AutoCompleteCouncilDesignation",
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return item;
+                            }))
+                        },
+                        error: function (response) {
+                            alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            alert(response.responseText);
+                        }
+                    });
+                },
+                select: function (e, ui) {
+                    $('.DesignationName_' + currentRowCnt).val(ui.item.label);
+                    $('.DataListItemsId_' + currentRowCnt).val(ui.item.val);
+                },
+                change: function (e, ui) {
+                    if (!(ui.item)) {
+                        e.target.value == "";
+                        alert("Designation must be selected from the list only");
+                        $(".CouncilDesignation").val('');
+                    }
+                },
+                minLength: 1
+            });
+        }
+
+
+        function SetCouncilName() {
+            var province = $("#CounProvince_02").val();
+            $(".CouncilName").autocomplete({
+                source: function (request, response) {
+                    //alert($('#CounProvince_02').val());
+                    if ($('#CounProvince_' + currentRowCnt).val() != "") {
+                        $.ajax({
+                            url: '/Home/AutoCompleteCouncilName/',
+                            //data: "{ 'prefix': '" + request.term + "','Province':'" + $('#CounProvince_' + currentRowCnt).val() + "'}",
+                            data: "{ 'prefix': '" + request.term + "','Province':'" + $('#CounProvince_02').val() + "'}",
+                            //data: "{ 'prefix': '" + request.term + "','Province':" + province + "'}",
+                            // data: { prefix: request.term, Province: $('#GenProvinceInst').val() },
+                            dataType: "json",
+                            type: "POST",
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                response($.map(data, function (item) {
+                                    return item;
+                                }))
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
+                    }
+                },
+                select: function (e, ui) {
+                    $('.MemberName_' + currentRowCnt).val(ui.item.label);
+                    $('.PersonalDetailsId_' + currentRowCnt).val(ui.item.val);
+                },
+                change: function (e, ui) {
+                    if (!(ui.item)) {
+                        e.target.value == "";
+                        alert("Designation must be selected from the list only");
+                        $(".CouncilName").val('');
+                    }
+                },
+                minLength: 1
+            });
+        }
+
+        function AssignProId(cnt) {
+            $('.ProvinceId_' + cnt).val($('#CounProvince_' + cnt).val());
+        }
+
+        SearchCouncilMember();
+        function SearchCouncilMember() {
+
+            $.ajax({
+                url: '/Home/SearchCouncilMember/',
+                data: { FromDate: $('#FromDate12').val(), ToDate: $('#ToDate12').val(), Province: $('#CounProvince1').val() },
+                dataType: "json",
+                type: "POST",
+                // contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    $("#tbodyCountMember").empty("");
+
+                    for (var i = 0; i < data.length; i++) {
+                        var newRow = "<tr>";
+                      //  newRow += "<td>" + data[i].ProvinceName + "</td>";
+                        newRow += "<td>" + data[i].MemberName + "</td>";
+                        newRow += "<td>" + data[i].DesignationName + "</td>";
+                        newRow += "<td>" + data[i].count + "</td>";
+                        newRow += "</tr>";
+                        $("#tbodyCountMember").append(newRow);
+
+                    }
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+
+                }
+            });
+
+        }
+
+    </script>
+    
+    
+    <script src="~/Scripts/additional/IdGenerator.js"></script>
+}
+
+<style>
+    #Date12, #FromDate1, #FromDate2, #FromDate3, #ToDate1, #ToDate2, #ToDate3, #FromDate11, #ToDate11, #InstitutionId123, #CommunityId, #StaffId, #StaffDOB, #StaffAutoId, #FromDateCalender, #ToDateCalender,
+    #FromDate12, #ToDate12, #SocId, #CommunityId123 {
+        color: black
+    }
+</style>
+
+
+
+
+
+
+

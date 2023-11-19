@@ -1,0 +1,159 @@
+﻿@model Generalate.Models.Emaildata
+
+@{
+    ViewBag.Title = "SendEmail";
+}
+
+<script src="~/Scripts/jquery-ui.js"></script>
+<link href="~/css/jquery-ui.css" rel="stylesheet" />
+
+<script>
+    $("document").ready(function () {
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetPersonaldetails")',
+            dataType: "json",
+            async: true,
+            success: function (data, status) {
+                var items = data.toString().split(",");
+
+                $('#PersonalDetails').autocomplete({
+                    minLength: 1,
+                    source: function (request, response) {
+                        var term = request.term;
+
+                        // substring of new string (only when a comma is in string)
+                        if (term.indexOf(', ') > 0) {
+                            var index = term.lastIndexOf(', ');
+                            term = term.substring(index + 2);
+                        }
+
+                        // regex to match string entered with start of suggestion strings
+                        var re = $.ui.autocomplete.escapeRegex(term);
+                        var matcher = new RegExp('^' + re, 'i');
+                        var regex_validated_array = $.grep(items, function (item, index) {
+                            return matcher.test(item);
+                        });
+
+                        // pass array `regex_validated_array ` to the response and
+                        // `extractLast()` which takes care of the comma separation
+
+                        response($.ui.autocomplete.filter(regex_validated_array,
+                             extractLast(term)));
+                    },
+                    focus: function () {
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        terms.pop();
+                        terms.push(ui.item.value);
+                        terms.push('');
+                        this.value = terms.join(', ');
+                        return false;
+                    }
+                });
+
+                function split(val) {
+                    return val.split(/,\s*/);
+                }
+
+                function extractLast(term) {
+                    return split(term).pop();
+                }
+            }
+        });
+
+
+       
+        //$("#idMyForm").click(function () {
+        //    $("#myAlert").show('fade');
+        //    setTimeout(function () {
+        //        $("#myAlert").show('fade');
+
+        //    },1000);
+            
+        //});
+    });
+    
+</script>
+
+<h2>SendEmail</h2>
+<div id ="myAlert" class="alert alert-danger collapse">
+    <a href="#" class="close" data-dissmiss="alert">&times;</a>
+    <strong>Email has been sent successfully!!!</strong>
+</div>
+@using (Html.BeginForm("UploadFiles", "Email", FormMethod.Post, new { id="emailform" ,enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">    
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group" style="padding-bottom;100px;">
+            @Html.LabelFor(model => model.PersonalDetails, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.PersonalDetails, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PersonalDetails, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CCAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.CCAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.CCAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.BCCAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.BCCAddress, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.BCCAddress, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextArea("Body", null, new { @class = "form-control ckeditor" })
+               @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            </div>
+        </div>
+   
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.files, htmlAttributes: new {@class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.files, "", new {  @id="filles" ,@type = "file", @multiple = "multiple" })
+                @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+            </div>
+        </div>  
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" id="idMyForm" value="Compose Email" class="btn btn-success"/>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>*@
+

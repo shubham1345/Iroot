@@ -1,0 +1,1541 @@
+﻿@using Generalate.Controllers;
+@using Generalate.Models
+@{
+    ViewBag.Title = "Role Permission";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+    .well-sm {
+        padding: 9px;
+        border-radius: 3px;
+        background-color: #ededed;
+    }
+</style>
+@{
+    var tabPermissions = Session["tabPermissionList"] as List<Generalate.Models.TabPermissions>;
+}
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c" style="margin-top:85px;">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    @{
+                                        var isPermissionRolePermissionView = tabPermissions.FirstOrDefault(x => x.TabName == "RolePermissionView");
+                                        if (isPermissionRolePermissionView != null)
+                                        {
+                                            <li class="active"><a data-toggle="tab" href="#RolePagePermission" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Role_Page_Permissions");}</span></a></li>
+                                        }
+
+                                        var isPermissionTabPermissionView = tabPermissions.FirstOrDefault(x => x.TabName == "TabPermissionView");
+                                        if (isPermissionTabPermissionView != null)
+                                        {
+                                            <li><a data-toggle="tab" href="#TblPermissions" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Tab_Permission");}</span></a></li>
+                                        }
+                                            <li><a data-toggle="tab" href="#TblTopMenuPermissions" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Top_Menu_Permission");}</span></a></li>
+                                    }
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="RolePagePermission" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Role_Page_Permissions");}</span><label class="pull-right"><input type="checkbox" name="SelectAllPermission" id="SelectAllPermissions"><span> Select All Tab</span> </label></div>
+                                                    <div class="panel-body overflow-daily" style="height:500px;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Role_Page_Permissions");}</span> </h3>
+                                                                    </div>
+                                                                    <div class="panel-body">
+                                                                        <div class="right_col" role="main" style="padding-left:30px;padding-top:10px;">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-3">
+                                                                                    <label><span>@{@HomeController.GetControlTextByControlId("Select_Role");}</span> </label>
+                                                                                    @Html.DropDownList("UserRole", new SelectList(ViewBag.Roles, "Userrole_Id", "Role_Name"), new { @class = "form-control" })
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <label><span>@{@HomeController.GetControlTextByControlId("Select_Province");}</span> </label>
+                                                                                    <select id="Province" class="form-control">
+                                                                                        <option value="">-Select Province-</option>
+                                                                                        @if (Convert.ToString(Session["username"]) == "admin")
+                                                                                        {
+                                                                                            <option value="admin">admin</option>
+                                                                                        }
+                                                                                        @foreach (var item in ViewBag.Provinces as List<tbl_Province>)
+                                                                                        {
+                                                                                            <option value="@item.Id">@item.ProvinceName</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Dash_Board");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Home/Admin" name="View Dashboard" data-val="1" id="ViewDashboard"><span>@{@HomeController.GetControlTextByControlId("View_Dashboard");}</span></label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Congregation");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/IdGenerate/IdGenerator" name="Configration" data-val="2" id="Configration"><span>@{@HomeController.GetControlTextByControlId("IdGenerator");}</span></label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Member");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Member/AddMember" name="Add Member" data-val="3" id="AddMember"><span>@{@HomeController.GetControlTextByControlId("Add_Member");}</span></label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Master");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Data/DataItem" name="Data Item & Item List" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Data_Item_List");}</span></label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Reports");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Member/MemberReport" name="Member Report" data-val="5" id="MemberReport"><span>@{@HomeController.GetControlTextByControlId("Member_Report");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/SocInsCommPage/SocInsCommPage" name="Institution Report" data-val="5" id="SocInsCommPage"><span>@{@HomeController.GetControlTextByControlId("Institution_Report");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Appointment/Appointment" name="Appointment Report" data-val="5" id="Appointmentreport"><span>@{@HomeController.GetControlTextByControlId("Appointment_Report");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/AllProvinceData/AllProvinceData" name="All ProvinceData Report" data-val="5" id="AllProvinceData"><span>@{@HomeController.GetControlTextByControlId("AllProvinceData_Report");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/AllProvinceReports/AllProvinceReports" name="All Province Report" data-val="5" id="AllProvinceReports"><span>@{@HomeController.GetControlTextByControlId("AllProvince_Reports");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/SaprateProData/SaprateProData" name="Province Static" data-val="5" id="SaprateProData"><span>@{@HomeController.GetControlTextByControlId("Province_Static");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/DirectoryData/DirectoryData" name="Directory Data" data-val="5" id="DirectoryData"><span>@{@HomeController.GetControlTextByControlId("Directory_Data");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Directory2/Directory2" name="Directory2" data-val="5" id="Directory2"><span>@{@HomeController.GetControlTextByControlId("Directory");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("BackupFiles");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Member/BackupFiles" name="Download Backup Files" data-val="6" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("DownloadBackup_Files");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Password");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Data2/ChangePassword" name="Create Password" data-val="7" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Create_Password");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Data2/ChangesPassword2" name="Change Password" data-val="7" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Change_Password");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Permissions");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/RolePermission/AddRolePermission" name="Province Permissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Province_Permissions");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("MultiLanguage");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/RolePermission/MultiLanguage" name="Multi Language" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("MultiLanguage");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                @*<div class="col-sm-12">
+                                                        <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("UserDashboard");}</span> </h4>
+                                                        <div class="col-sm-3">
+                                                            <div class="checkbox">
+                                                                <label><input type="checkbox" name1="MenuPermission" value="/HomeUser/HomeUser" name="User Dashboard" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("UserDashboard");}</span> </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>*@
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("MeetingsRenewal");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Data2/DataItem2" name="Meetings And Renewal" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Meetings&Renewal");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("UserMaster");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" name1="MenuPermission" value="/Data2/UserDataItem" name="UserMaster" data-val="12" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("UserMaster");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12">
+                                                                                    <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("LoggingTrack");}</span> </h4>
+                                                                                    <div class="col-sm-3">
+                                                                                        <div class="checkbox">
+                                                                                            <label><input type="checkbox" value="/Home/LoggingTrack" name1="MenuPermission" name="LoggingTrack" data-val="13" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("LoggingTrack");}</span> </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-12" style="border-top:2px solid #ededed;">
+                                                                                    <div class="form-group">
+                                                                                        <div class="checkbox">
+                                                                                            @{
+                                                                                                var isPermissionRolePermissionAdd = tabPermissions.FirstOrDefault(x => x.TabName == "RolePermissionAdd");
+                                                                                                if (isPermissionRolePermissionAdd != null)
+                                                                                                {
+                                                                                                    <input type="button" class="btn btn-success pull-right" id="SaveUpBtn" value="Save" />
+                                                                                                }
+                                                                                            }
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="TblPermissions" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Tab_Permission");}</span><label class="pull-right"><input type="checkbox" name="SelectAlltabPermission" id="SelectAllTabPermissions"><span> Select All Tab</span> </label></div>
+                                                    <div class="panel-body overflow-daily" style="height:500px;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Tab_Permissions");}</span></h3>
+                                                                    </div>
+                                                                    <div class="box-body">
+                                                                        <div class="right_col" role="main" style="padding-left:30px;padding-top:10px;">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-3">
+                                                                                    <label><span>@{@HomeController.GetControlTextByControlId("Select_Role");}</span> </label>
+                                                                                    @Html.DropDownList("TabUserRole", new SelectList(ViewBag.Roles, "Userrole_Id", "Role_Name"), new { @class = "form-control" })
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <label><span>@{@HomeController.GetControlTextByControlId("Select_Province");}</span> </label>
+                                                                                    <select id="TabProvince" class="form-control">
+                                                                                        <option value="">-Select Province-</option>
+                                                                                        @if (Convert.ToString(Session["username"]) == "admin")
+                                                                                        {
+                                                                                            <option value="admin">admin</option>
+                                                                                        }
+                                                                                        @*<option value="admin">adminuser</option>*@
+                                                                                        @foreach (var item in ViewBag.Provinces as List<tbl_Province>)
+                                                                                        {
+                                                                                            <option value="@item.Id">@item.ProvinceName</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Primary_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="PrimaryView" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryAdd" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryEdit" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryDelete" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Family_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="FamilyView" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyAdd" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyEdit" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Sacrament_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="SacramentView" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SacramentAdd" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SacramentEdit" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SacramentDelete" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Health_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="HealthView" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HealthAdd" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HealthEdit" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HealthDelete" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Formation_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="FormationView" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FormationAdd" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FormationEdit" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FormationyDelete" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Academics_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="AcademicsView" name="tabPermissions" data-val="6" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AcademicsAdd" name="tabPermissions" data-val="6" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AcademicsEdit" name="tabPermissions" data-val="6" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AcademicsDelete" name="tabPermissions" data-val="6" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Appoinment_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="AppoinmentView" name="tabPermissions" data-val="7" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AppoinmentAdd" name="tabPermissions" data-val="7" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AppoinmentEdit" name="tabPermissions" data-val="7" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AppoinmentDelete" name="tabPermissions" data-val="7" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Remarks_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="RemarksView" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RemarksAdd" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RemarksEdit" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RemarksDelete" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Retirement_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="RetirementView" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RetirementAdd" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RetirementEdit" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RetirementDelete" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Insurance_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="InsuranceView" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InsuranceAdd" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InsuranceEdit" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InsuranceDelete" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Separation_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="SeparationView" name="tabPermissions" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SeparationAdd" name="tabPermissions" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SeparationEdit" name="tabPermissions" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SeparationDelete" name="tabPermissions" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("EternalLife_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="EternalLifeView" name="tabPermissions" data-val="12" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="EternalLifeAdd" name="tabPermissions" data-val="12" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="EternalLifeEdit" name="tabPermissions" data-val="12" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="EternalLifeDelete" name="tabPermissions" data-val="12" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Archive_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="ArchiveView" name="tabPermissions" data-val="13" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="ArchiveAdd" name="tabPermissions" data-val="13" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="ArchiveEdit" name="tabPermissions" data-val="13" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="ArchiveDelete" name="tabPermissions" data-val="13" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("OfficialMeeting_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="OfficialMeetingView" name="tabPermissions" data-val="14" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="OfficialMeetingAdd" name="tabPermissions" data-val="14" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="OfficialMeetingEdit" name="tabPermissions" data-val="14" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="OfficialMeetingDelete" name="tabPermissions" data-val="14" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("CouncilMember_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="CouncilMemberView" name="tabPermissions" data-val="15" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CouncilMemberAdd" name="tabPermissions" data-val="15" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CouncilMemberEdit" name="tabPermissions" data-val="15" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CouncilMemberDelete" name="tabPermissions" data-val="15" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("VowsReneval_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="VowsRenevalView" name="tabPermissions" data-val="16" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="VowsRenevalAdd" name="tabPermissions" data-val="16" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="VowsRenevalEdit" name="tabPermissions" data-val="16" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="VowsRenevalDelete" name="tabPermissions" data-val="16" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("HouseVisit_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="HouseVisitView" name="tabPermissions" data-val="17" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HouseVisitAdd" name="tabPermissions" data-val="17" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HouseVisitEdit" name="tabPermissions" data-val="17" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HouseVisitDelete" name="tabPermissions" data-val="17" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("TransferDetail_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="TransferDetailView" name="tabPermissions" data-val="18" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TransferDetailAdd" name="tabPermissions" data-val="18" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TransferDetailEdit" name="tabPermissions" data-val="18" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TransferDetailDelete" name="tabPermissions" data-val="18" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Community_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="CommunityView" name="tabPermissions" data-val="19" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommunityAdd" name="tabPermissions" data-val="19" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommunityEdit" name="tabPermissions" data-val="19" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommunityDelete" name="tabPermissions" data-val="19" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Institution_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="InstitutionView" name="tabPermissions" data-val="20" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InstitutionAdd" name="tabPermissions" data-val="20" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InstitutionEdit" name="tabPermissions" data-val="20" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InstitutionDelete" name="tabPermissions" data-val="20" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Society_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="SocietyView" name="tabPermissions" data-val="21" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SocietyAdd" name="tabPermissions" data-val="21" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SocietyEdit" name="tabPermissions" data-val="21" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SocietyDelete" name="tabPermissions" data-val="21" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Trust_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="TrustView" name="tabPermissions" data-val="22" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TrustAdd" name="tabPermissions" data-val="22" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TrustEdit" name="tabPermissions" data-val="22" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TrustDelete" name="tabPermissions" data-val="22" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Staff_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="StaffView" name="tabPermissions" data-val="23" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="StaffAdd" name="tabPermissions" data-val="23" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="StaffEdit" name="tabPermissions" data-val="23" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="StaffDelete" name="tabPermissions" data-val="23" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Generalate_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="GeneralateView" name="tabPermissions" data-val="24" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="GeneralateAdd" name="tabPermissions" data-val="24" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="GeneralateEdit" name="tabPermissions" data-val="24" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="GeneralateDelete" name="tabPermissions" data-val="24" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Province_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="ProvinceView" name="tabPermissions" data-val="25" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="ProvinceAdd" name="tabPermissions" data-val="25" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="ProvinceEdit" name="tabPermissions" data-val="25" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="ProvinceDelete" name="tabPermissions" data-val="25" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("DisSecReg_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="DisSecRegView" name="tabPermissions" data-val="26" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DisSecRegAdd" name="tabPermissions" data-val="26" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DisSecRegEdit" name="tabPermissions" data-val="26" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DisSecRegDelete" name="tabPermissions" data-val="26" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("CommunityOutSide_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="CommunityOutSideView" name="tabPermissions" data-val="27" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommunityOutSideAdd" name="tabPermissions" data-val="27" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommunityOutSideEdit" name="tabPermissions" data-val="27" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommunityOutSideDelete" name="tabPermissions" data-val="27" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("CommonHouse_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="CommonHouseView" name="tabPermissions" data-val="28" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommonHouseAdd" name="tabPermissions" data-val="28" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommonHouseEdit" name="tabPermissions" data-val="28" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommonHouseDelete" name="tabPermissions" data-val="28" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Diocese_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="DioceseView" name="tabPermissions" data-val="29" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DioceseAdd" name="tabPermissions" data-val="29" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DioceseEdit" name="tabPermissions" data-val="29" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DioceseDelete" name="tabPermissions" data-val="29" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("AddMember_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="AddMemberAdd" name="tabPermissions" data-val="30" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AddMemberEdit" name="tabPermissions" data-val="30" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AddMemberDelete" name="tabPermissions" data-val="30" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("DataItem_Tab");}</span> </h4>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DataItemView" name="tabPermissions" data-val="31" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DataItemAdd" name="tabPermissions" data-val="31" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("DataItemDetail_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="DataItemDetailView" name="tabPermissions" data-val="32" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DataItemDetailAdd" name="tabPermissions" data-val="32" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DataItemDetailEdit" name="tabPermissions" data-val="32" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="DataItemDetailDelete" name="tabPermissions" data-val="32" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("CreatePassword_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="CreatePasswordAdd" name="tabPermissions" data-val="33" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="CreatePasswordEdit" name="tabPermissions" data-val="33" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("RolePermission_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RolePermissionView" name="tabPermissions" data-val="34" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RolePermissionAdd" name="tabPermissions" data-val="34" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("TabPermission_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TabPermissionView" name="tabPermissions" data-val="35" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="TabPermissionAdd" name="tabPermissions" data-val="35" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("MultiLanguage_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="MultiLanguageAdd" name="tabPermissions" data-val="36" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="MultiLanguageEdit" name="tabPermissions" data-val="36" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="MultiLanguagelDelete" name="tabPermissions" data-val="36" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Appointment_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AppointmentView" name="tabPermissions" data-val="37" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AppointmentAdd" name="tabPermissions" data-val="37" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AppointmentEdit" name="tabPermissions" data-val="37" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="AppointmentDelete" name="tabPermissions" data-val="37" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Renewal_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RenewalView" name="tabPermissions" data-val="38" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RenewalAdd" name="tabPermissions" data-val="38" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RenewalEdit" name="tabPermissions" data-val="38" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RenewalDelete" name="tabPermissions" data-val="38" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Commission_Tab");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="CommissionView" name="tabPermissions" data-val="39" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommissionAdd" name="tabPermissions" data-val="39" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommissionEdit" name="tabPermissions" data-val="39" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Edit");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="CommissionDelete" name="tabPermissions" data-val="39" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Delete");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="col-sm-12" style="border-top:2px solid #ededed;">
+                                                                                <div class="form-group">
+                                                                                    <div class="checkbox">
+                                                                                        @{
+                                                                                            var isPermissionTabPermissionAdd = tabPermissions.FirstOrDefault(x => x.TabName == "TabPermissionAdd");
+                                                                                            if (isPermissionTabPermissionAdd != null)
+                                                                                            {
+                                                                                                <input type="button" class="btn btn-success pull-right" id="TabSaveUpBtn" value="Save" />
+                                                                                            }
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="TblTopMenuPermissions" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Top_Menu_Permission");}</span><label class="pull-right"><input type="checkbox" name="SelectAlltabPermission" id="SelectAllTabPermissions"><span> Select All Tab</span> </label></div>
+                                                    <div class="panel-body overflow-daily" style="height:500px;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add_Top_Menu_Permissions");}</span></h3>
+                                                                    </div>
+                                                                    <div class="box-body">
+                                                                        <div class="right_col" role="main" style="padding-left:30px;padding-top:10px;">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-3">
+                                                                                    <label><span>@{@HomeController.GetControlTextByControlId("Select_Role");}</span> </label>
+                                                                                    @Html.DropDownList("TabUserRole", new SelectList(ViewBag.Roles, "Userrole_Id", "Role_Name"), new { @class = "form-control" })
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <label><span>@{@HomeController.GetControlTextByControlId("Select_Province");}</span> </label>
+                                                                                    <select id="TabProvince" class="form-control">
+                                                                                        <option value="">-Select Province-</option>
+                                                                                        @if (Convert.ToString(Session["username"]) == "admin")
+                                                                                        {
+                                                                                            <option value="admin">admin</option>
+                                                                                        }
+                                                                                        @*<option value="admin">adminuser</option>*@
+                                                                                        @foreach (var item in ViewBag.Provinces as List<tbl_Province>)
+                                                                                        {
+                                                                                            <option value="@item.Id">@item.ProvinceName</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Congregation");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="PrimaryView" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Meetings_&_Minutes");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryAdd" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Community");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryEdit" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Generalate");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryDelete" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Legal_Registration");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryDelete" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Staff");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryDelete" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Calendar_&_Events");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="PrimaryDelete" name="tabPermissions" data-val="1" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("General_Administration");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Province");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="FamilyView" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Minutes");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyAdd" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Province Administration");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyEdit" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Commission");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Revenue_Vows");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Travel_&_Home_Leave");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Revenue_Vows");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Community");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Legal_Registration");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Staff");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FamilyDelete" name="tabPermissions" data-val="2" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Add_Provience");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Total_Member");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="SacramentView" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Total_Member");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SacramentAdd" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Candidates");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SacramentEdit" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Postulancy");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SacramentDelete" name="tabPermissions" data-val="3" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Pre_Novitiate");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="HealthView" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Novitiate");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HealthAdd" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Temporary_Vows");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HealthEdit" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Perpetual_Vows");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="FormationView" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("EternalLife");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FormationAdd" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Separated");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FormationEdit" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Generalate FileNo");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="FormationyDelete" name="tabPermissions" data-val="5" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Archive");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="HealthDelete" name="tabPermissions" data-val="4" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Appointment");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Community");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="AcademicsView" name="tabPermissions" data-val="6" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Meeting");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Institution");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="AppoinmentView" name="tabPermissions" data-val="7" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Meeting");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Reports");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="RemarksView" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Member Reports");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RemarksAdd" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Institution_Reports");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RemarksEdit" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Appointment_&_SG-Statistics");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RemarksDelete" name="tabPermissions" data-val="8" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Province_Data_Reports");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="RetirementView" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Province_Statistics");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RetirementAdd" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Pro-statistics");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RetirementEdit" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Province_Director");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="RetirementDelete" name="tabPermissions" data-val="9" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("SGDirectory");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-12">
+                                                                                <h4 class="well-sm"><span>@{@HomeController.GetControlTextByControlId("Utilities");}</span> </h4>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="InsuranceView" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("DataList");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InsuranceAdd" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Backup");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InsuranceEdit" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Permissions");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="InsuranceDelete" name="tabPermissions" data-val="10" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Creating_the_password");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" checked value="SeparationView" name="tabPermissions" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Changing_password");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SeparationAdd" name="tabPermissions" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Multiple_Language");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-sm-3">
+                                                                                    <div class="checkbox">
+                                                                                        <label><input type="checkbox" value="SeparationEdit" name="tabPermissions" data-val="11" id="DataItem"><span>@{@HomeController.GetControlTextByControlId("Import_Excel_sheet");}</span> </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                
+                                                                            </div>
+                                                                            
+
+
+                                                                            <div class="col-sm-12" style="border-top:2px solid #ededed;">
+                                                                                <div class="form-group">
+                                                                                    <div class="checkbox">
+                                                                                        @{
+                                                                                             isPermissionTabPermissionAdd = tabPermissions.FirstOrDefault(x => x.TabName == "TabPermissionAdd");
+                                                                                            if (isPermissionTabPermissionAdd != null)
+                                                                                            {
+                                                                                                <input type="button" class="btn btn-success pull-right" id="TabSavetopmenubtn" value="Save" />
+                                                                                            }
+                                                                                        }
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/RolePermissionJs/RolePermissions.js"></script>
+    <script src="~/Scripts/RolePermissionJs/TabPermissions.js"></script>
+}

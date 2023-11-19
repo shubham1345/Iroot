@@ -1,0 +1,121 @@
+<div class="page-content">
+            <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                <li class="xn-icon-button">
+                    <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                </li>
+                <li class="xn-icon-button pull-right">
+                    <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                        Logout
+                        <span class="fa fa-sign-out "></span>
+                    </a>
+                </li>
+                <li class="pull-right">
+                    <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                        <span class="fa fa-question-circle mar-rgt-no font-size-18"></span>
+                    </a>
+                <li>
+                <li class="pull-right">
+                    <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                        <span class="fa fa-home mar-rgt-no font-size-18"></span>
+                    </a>
+                <li>
+                <li class="pull-right">
+                    <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                        <span class="fa fa-envelope mar-rgt-no font-size-18"></span>
+                    </a>
+                <li>
+                <li class="pull-right">
+                    <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                        <span class="fa fa-comment mar-rgt-no font-size-18"></span>
+                    </a>
+                <li>
+                <li><a href="#contact">Congregation</a></li>
+
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Province<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Merchandise</a></li>
+                        <li><a href="#">Extras</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Prodata</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Members<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Merchandise</a></li>
+                        <li><a href="#">Extras</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Community<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Merchandise</a></li>
+                        <li><a href="#">Extras</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Institution<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Merchandise</a></li>
+                        <li><a href="#">Extras</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Candidates<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Merchandise</a></li>
+                        <li><a href="#">Extras</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Utilities<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="/Utilities/Utilities">Import Excel sheet</a></li>
+                        <li><a href="#">Export Excel Sheet</a></li>
+                        <li class="dropdown-submenu">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown</a>
+                            <ul class="dropdown-menu">
+                                <li><a href="#">Something else here</a></li>
+                                <li><a href="#">Separated link</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            @RenderBody()
+        </div>

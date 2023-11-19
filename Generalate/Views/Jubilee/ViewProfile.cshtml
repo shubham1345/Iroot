@@ -1,0 +1,138 @@
+﻿@model Generalate.Models.tbl_Jubilee
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="margin-left:30px; margin-right:30px;">
+        <br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="row">
+            <div>
+                @Html.ActionLink("Back", "Jubilee")
+            </div>
+            <br />
+
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="tab panel-heading">
+                        <a style="color:white;">Jubilee</a>
+                    </div>
+                    <br />
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @Html.HiddenFor(model => model.JubileeID)
+
+
+                    <div class="row" style="margin-left:30px; margin-right:30px;">
+                        <br />
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    MemberID
+                                    @Html.EditorFor(model => model.MemberID, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    FirstProffession
+                                    @Html.EditorFor(model => model.FirstProfession, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FirstProfession, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    SilverJubilee
+                                    @Html.EditorFor(model => model.SilverJubilee, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SilverJubilee, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    GoldenJubilee
+                                    @Html.EditorFor(model => model.GoldenJubilee, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.GoldenJubilee, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    PlatinumJubilee
+                                    @Html.EditorFor(model => model.PlatinumJubilee, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PlatinumJubilee, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    DiamondJubilee
+                                    @Html.EditorFor(model => model.DiamondJubilee, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DiamondJubilee, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    Name
+                                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    Place
+                                    @Html.EditorFor(model => model.FPPlace, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.FPPlace, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    Place
+                                    @Html.EditorFor(model => model.SJPlace, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.SJPlace, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    Place
+                                    @Html.EditorFor(model => model.GJPlace, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.GJPlace, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    Place
+                                    @Html.EditorFor(model => model.PJPlace, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.PJPlace, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    Place
+                                    @Html.EditorFor(model => model.DJPlace, new { htmlAttributes = new { @class = "form-control" } })
+                                    @Html.ValidationMessageFor(model => model.DJPlace, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+

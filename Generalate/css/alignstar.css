@@ -1,0 +1,8 @@
+﻿body{
+    text-align:center;
+    }
+    .divWrapper{
+    width:960px //Change it the to width of the parent you want
+    margin: 0 auto;
+    text-align:left;
+    }

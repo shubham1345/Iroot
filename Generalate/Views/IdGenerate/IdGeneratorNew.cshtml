@@ -1,0 +1,2918 @@
+﻿@using Generalate.Controllers;
+@model IEnumerable<Generalate.Models.Societys>
+@{
+    ViewBag.Title = "IdGenerator";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
+
+@*<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/IdGenerate/GetProvienceList"></a></li>
+</ul>*@
+
+<div class="page-content-wrap" style="margin-top:100px">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <form class="form-horizontal" action="/IdGenerate/AddProvince" method="post" id="ProvinceForm" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                        <ul class="nav nav-tabs" id="myTab">
+                                            <li class="active"><a data-toggle="tab" href="#Prov" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Details");}</span></a></li>
+                                            <li><a data-toggle="tab" href="#1a" class="sis_tab_a"><span>@{@HomeController.GetControlTextByControlId("History");}</span></a></li>
+                                            <li>
+                                                <a href="#3a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("Important_Dates");}</a>
+                                            </li>
+                                            <li>
+                                                <a href="#4a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("Community");}</a>
+                                            </li>
+                                        </ul>
+                                        <div class="tab-content tab_sis">
+
+                                            <div id="Prov" class="tab-pane fade in active brd-panel">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="panel panel-primary">
+                                                            <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Add_Province");}</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left" href="/IdGenerate/GetProvienceList" id="circleimage"></a></span> </div>
+                                                            <div class="panel-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12">
+                                                                        <div class="row">
+
+                                                                            <div class="col-sm-6">
+                                                                                <div class="form-group">
+                                                                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span> <span class="mandatoryStar">*</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="text" class="form-control" name="ProvinceName" placeholder="Please enter the province Name" id="ProvinceName1" required>
+                                                                                        <input type="hidden" id="ProvId" name="Id" />
+                                                                                        <input type="hidden" id="CreatedBy" name="CreatedBy" />
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_Code");}</span>  <span class="mandatoryStar">*</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="text" class="form-control" name="Place" required id="ProvCode" placeholder="Please enter the province Code">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_ID");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="text" class="form-control" name="MyId" value="@ViewBag.ProvinceId" id="MyId" readonly>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Motto");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="text" class="form-control" name="ProvinceMotto" id="ProvinceMotto">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Logo");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="file" class="form-control" name="files" id="ProvinceLogo" accept=".jpg,.png">
+                                                                                        <span id="ProvinceLogo1"></span>
+                                                                                        @*<input type="text" class="form-control" name="Logo" id="Logo">*@
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("CountriesofMission");}</span> </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <div class="col-sm-7" style="width:360px;">
+                                                                                            @*<input type="text" class="form-control" name="ProvinceCountriesofMission" id="ProvinceCountriesofMission">*@
+                                                                                            <select type="dropdown" multiple="multiple" id="ProvinceCountriesofMission" name="ProvinceCountriesofMission">
+
+                                                                                                @if (Convert.ToString(Session["CurrentLang"]) == "FN")
+                                                                                                {
+                                                                                                    foreach (var item in @ViewBag.CountriesofMission as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name_French</option>
+                                                                                                    }
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    foreach (var item in @ViewBag.CountriesofMission as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name</option>
+                                                                                                    }
+                                                                                                }
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-sm-1">
+                                                                                            <p id="AddCountriesofMissionProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span> <span class="mandatoryStar">*</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="email" class="form-control" name="EmailId" id="EmailId" placeholder="Please enter the Email">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span> <span class="mandatoryStar">*</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="text" class="form-control" name="Phone" required id="ProPhoneE" placeholder="Please enter the Phone Number">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Fax");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="text" class="form-control" name="Fax" id="ProFaxE">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Country");}</span> <span class="mandatoryStar">*</span> </label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <div class="col-sm-7" style="width:360px;">
+                                                                                            @*<input type="text" class="form-control" name="Country" required id="CountryProvinceka" placeholder="Please enter the Country">*@
+                                                                                            <select class="form-control" id="CountryProvinceka" name="Country" style="width:360px !important;">
+                                                                                                <option value="0">--@{@HomeController.GetControlTextByControlId("Select");}--</option>
+                                                                                                @foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                            {
+                                                                <option value="@item.Name">@item.Name_French</option>
+                                                            }
+                                                                                                @*@if (Convert.ToString(Session["CurrentLang"]) == "FN")
+                                                                                                {
+                                                                                                    foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name_French</option>
+                                                                                                    }
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name</option>
+                                                                                                    }
+                                                                                                }*@
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-sm-1">
+                                                                                            <p id="AddCountryProv1" class="AddCountryProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="text" id="Continent123" name="Continent" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <input type="file" class="form-control" name="files" id="FilePro" accept=".jpg,.png,.jpeg,.doc,.pdf">
+                                                                                        <span id="FilePro12"></span>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group" style="display:none">
+                                                                                    <label for="inputPassword3" class="col-sm-6 control-label">
+                                                                                        <input type="checkbox" class="checkdata" id="ActiveCheck1" name="ActiveCkeck22" value="Active"><span>@{@HomeController.GetControlTextByControlId("Active");}</span>
+                                                                                    </label>
+                                                                                    <label for="inputPassword3" class="col-sm-3 control-label">
+                                                                                        <input type="checkbox" class="checkdata" id="ActiveCheck2" name="ActiveCkeck22" value="Inactive"><span>@{@HomeController.GetControlTextByControlId("Inactive");}</span>
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Status");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <select class="form-control" id="Status" name="ActiveCkeck">
+                                                                                            <option value="Active">Active</option>
+                                                                                            <option value="Inactive">Inactive</option>
+                                                                                        </select>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                                <div class="form-group messageActivecheck">
+                                                                                    <label class="col-sm-10 control-label" id="ActiveInactiveProErrorMessage" style="color:red;"></label>
+                                                                                    @*<label class="col-sm-8 control-label" style="color:blue"><b>Check Active or Inactive !</b></label>*@
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <div class="col-sm-7" style="width:360px;">
+                                                                                            <select class="form-control" id="DioceseNameProv" style="width:360px !important;" name="Diocese"></select>
+                                                                                        </div>
+                                                                                        <div class="col-sm-1">
+                                                                                            <p id="AddDioProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-sm-6">
+
+                                                                                <div class="form-group">
+                                                                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></label>
+                                                                                    <div class="col-sm-8">
+                                                                                        <div class="col-sm-7" style="width:360px;">
+                                                                                            <select type="dropdown" multiple="multiple" id="ActivitiesProvinceka" name="Activities">
+
+                                                                                                @if (Convert.ToString(Session["CurrentLang"]) == "FN")
+                                                                                                {
+                                                                                                    foreach (var item in @ViewBag.AllActivities as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name_French</option>
+                                                                                                    }
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    foreach (var item in @ViewBag.AllActivities as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name</option>
+                                                                                                    }
+                                                                                                }
+                                                                                            </select>
+                                                                                        </div>
+                                                                                        <div class="col-sm-1">
+                                                                                            <p id="AddActivitiesProv1" class="AddActivitiesProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                @*<div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_History ");}</span> </label>
+                                                <div class="col-sm-7">
+                                                    <textarea type="text" rows="6" class="form-control" name="History" id="HistoryProvinceka"></textarea>
+                                                </div>
+                                            </div>*@
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Vission");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <textarea type="text" rows="4" class="form-control" name="Vission" id="VissionProvinceka"></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Mission ");}</span> </label>
+                                                                                    <div class="col-sm-7">
+                                                                                        <textarea type="text" rows="4" class="form-control" name="Mission" id="MissionProvinceka"></textarea>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Start_Date");}</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        @*@Html.TextBoxFor(model => model.StartDate, new { @type = "date", @id = "StartDate123", @name = "StartDate", @class = "form-control" })*@
+                                                                                        <input type="date" id="StartDate123" name="StartDate" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Close_Date");}</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        @*@Html.TextBoxFor(model => model.EndDate, new { @type = "date", @id = "CloseDate123", @name = "CloseDate", @class = "form-control" })*@
+                                                                                        <input type="date" id="CloseDate123" name="EndDate" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Suspension_Date");}</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        @*@Html.TextBoxFor(model => model.SuspensionDate, new { @type = "date", @id = "SuspensionDate123", @name = "SuspensionDate", @class = "form-control" })*@
+                                                                                        <input type="date" id="SuspensionDate123" name="SuspensionDate" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Restarting_Date");}</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        @*@Html.TextBoxFor(model => model.RestartDate, new { @type = "date", @id = "RestartDate123", @name = "RestartDate", @class = "form-control" })*@
+                                                                                        <input type="date" id="RestartDate123" name="RestartDate" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Name_Of_Founders");}</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        @*@Html.TextBoxFor(model => model.RestartDate, new { @type = "date", @id = "RestartDate123", @name = "RestartDate", @class = "form-control" })*@
+                                                                                        <input type="text" id="NameofFounders" name="NameofFounders" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group" style="display:none">
+                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Name_Of_Founder");}</span></label>
+                                                                                    <div class="col-sm-7">
+                                                                                        @*@Html.TextBoxFor(model => model.RestartDate, new { @type = "date", @id = "RestartDate123", @name = "RestartDate", @class = "form-control" })*@
+                                                                                        <input type="text" id="NameofFounder" name="NameofFounder" class="form-control">
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="form-group">
+                                                                                    <div class="col-sm-10">
+                                                                                        @*<button type="submit" class="btn btn-info pull-right" @*onclick="return ProvinceValidation();" id="AddProvince"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>*@
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="row" style="margin-top:20px;">
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="tab-pane" id="1a">
+                                                @*<textarea name="History" class="ckeditor form-control"></textarea>*@
+                                                <textarea type="text" rows="6" class="form-control ckeditor" name="History" id="HistoryProvinceka"></textarea>
+                                                @*Html.TextAreaFor(model => model.History, new { @name = "History", @class = "ckeditor form-control" })*@
+                                            </div>
+                                            <div class="tab-pane" id="3a">
+                                                <table id="example" class="display" style="width:100%">
+                                                    <thead style="color:white;background-color:#29b2e1">
+                                                        <tr>
+                                                            <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                            <th>@{@HomeController.GetControlTextByControlId("Day");}</th>
+                                                            <th>@{@HomeController.GetControlTextByControlId("Month");}</th>
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tfoot>
+                                                        <tr>
+                                                            <td style="cursor:pointer" colspan="4"><p id="addRow">@{@HomeController.GetControlTextByControlId("Add_new_row");}</p></td>
+                                                        </tr>
+                                                    </tfoot>
+
+                                                </table>
+                                            </div>
+                                            <div class="tab-pane" id="4a">
+                                                <div class="row">
+                                                    <div class="col-md-12">
+                                                        <div class="col-md-9">
+                                                            <input type="text" id="SearchTxt" class="o_searchview_input" accesskey="Q" placeholder="Search..." role="" aria-haspopup="true" aria-keyshortcuts="Alt+Shift+Q">
+                                                        </div>
+                                                        <div class="col-md-3">
+                                                            <div class="o_pager">
+                                                                <span class="o_pager_counter">
+                                                                    <span class="o_pager_value"><input id="StartingId" class="numberonly" value="1" style="width:15%; border:none;" />-   <input id="LastId" class="numberonly" value="10" style="width:20%; border:none" /></span> / <span class="o_pager_limit" id="totalcount">0</span>
+                                                                </span>
+                                                                @*<span class="btn-group" aria-atomic="true">*@
+                                                                <button type="button" id="previousData"><</button>
+                                                                <button type="button" id="nextData">></button>
+                                                                @*</span>*@
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                                
+                                                <div id="DynamicCommunityGrid">
+                                                    <div class="table-responsive">
+                                                        <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="hide-1" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                                    <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                                    <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province");}</span></th>
+                                                                    <th class="hide-2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                                                    <th class="hide-3" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Active_/_InActive");}</span></th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col text-center">
+
+                                    <button type="submit" class="btn btn-info" @*onclick="return ProvinceValidation();"*@ id="AddProvince"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="MyModal" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="margin-top:160px;">
+            <div class="modal-content" id="myModalContent" style="width:900px; margin-top:160px;">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Diocese");}</span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            @*<form id="MyDioceseForm">*@
+                            <div class="col-sm-6">
+                                @*<div class="form-group">
+                                        <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span>  <span class="mandatoryStar">*</span></label>
+                                        <div class="col-sm-7">
+                                            <select class="form-control" id="DioProvince1" style="width:245px !important;" name="ProvinceName" required></select>
+                                        </div>
+                                    </div>*@
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span> <span class="mandatoryStar">*</span> </label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="DioceseName" id="DioceseName1" placeholder="Please enter the Diocese Name" required>
+                                        <input type="hidden" id="IdDio1" name="Id" />
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("State");}</span> <span class="mandatoryStar">*</span> </label>
+                                    <div class="col-sm-7">
+                                        @*<select type="text" class="form-control" id="DioState" style="width:250px !important;" name="State" required></select>*@
+                                        <select type="dropdown" multiple="multiple" id="DioState" name="State">
+                                            @foreach (var item in @ViewBag.State as IEnumerable<Generalate.Models.DataListItems>)
+                                            {
+                                                <option value="@item.Name">@item.Name</option>
+                                            }
+                                        </select>
+                                    </div>
+                                    <div class="col-sm-1">
+                                        <p id="AddDioState1" style="margin-left:10px; cursor:pointer; font-size:25px;" />&#43;
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+
+                                <div class="form-group">
+                                    <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Diocese_ID");}</span> </label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control" name="DioId" id="DioId1" value="@ViewBag.DioceseId" readonly>
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span> </label>
+                                    <div class="col-sm-7">
+                                        <input type="email" class="form-control" name="EmailId" id="EmailIdDio1">
+                                    </div>
+                                </div>
+                                <br />
+                                <br />
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-6 control-label">
+                                        <input type="checkbox" id="ActiveCheckDio1" name="ActiveCkeck" value="Active"><span>@{@HomeController.GetControlTextByControlId("Active");}</span>
+                                    </label>
+                                    <label for="inputPassword3" class="col-sm-3 control-label">
+                                        <input type="checkbox" id="ActiveCheckDio2" name="ActiveCkeck" value="Inactive"><span>@{@HomeController.GetControlTextByControlId("Inactive");}</span>
+                                    </label>
+                                </div>
+                                <div class="form-group messageActivecheck">
+                                    <label class="col-sm-10 control-label" id="ActInActDisErrorMessage" style="color:red;"></label>
+                                    @*<label class="col-sm-10 control-label" style="color:blue"><b>Check Active or Inactive !</b></label>*@
+                                </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Country");}</span><span class="mandatoryStar"> *</span>  </label>
+                                    @*<div class="col-sm-7">
+                                            <input type="text" class="form-control" name="Country" id="CountryOfDiocese1" placeholder="Please enter the country" required>
+                                        </div>*@
+
+                                    <div class="col-sm-8">
+                                        <div class="col-sm-7" style="width:210px;">
+                                            <select class="form-control" id="CountryOfDiocese1" name="Country" style="width:200px !important;">
+                                                @*<option value="0">--Select Country--</option>*@
+                                                <option value="0">--@{@HomeController.GetControlTextByControlId("Select");}--</option>
+                                                @*@foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+        {
+            <option value="@item.Name">@item.Name</option>
+        }*@
+                                                @if (Convert.ToString(Session["CurrentLang"]) == "FN")
+                                                {
+                                                    foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                    {
+                                                        <option value="@item.Name">@item.Name_French</option>
+                                                    }
+                                                }
+                                                else
+                                                {
+                                                    foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                    {
+                                                        <option value="@item.Name">@item.Name</option>
+                                                    }
+                                                }
+                                            </select>
+
+
+
+                                                @*@foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                {
+                                                    <option value="@item.Name">@item.Name</option>
+                                                }
+                                            </select>*@
+                                        </div>
+                                        <div class="col-sm-1">
+                                            <p id="AddCountryProv1" class="AddCountryProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Address");}</span> </label>
+                                        <div class="col-sm-7">
+                                            <textarea type="text" rows="6" class="form-control" name="Address" id="AddressDio1"></textarea>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                        <div class="col-sm-7">
+                                            <input type="file" class="form-control" name="FileDio" id="FileDio1">
+                                            <span id="FileDio123"></span>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <br />
+                                    <div class="form-group">
+                                        <div class="col-sm-10">
+                                            <button type="submit" class="btn btn-info pull-right" id="btnAddingDiocese123"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*</form>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal fade" id="MyModal1" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal fade" id="MyModal1" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:900px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("States");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">
+                                    <div class="box-body">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <div class="form-group">
+                                                    <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                                    <div class="col-sm-6">
+                                                        <select class="form-control" name="DataListName" id="DataListName">
+                                                            @foreach (var item in @ViewBag.allDataListItems)
+                                                            {
+                                                                <option value="@item.Name">@item.Name</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" class="form-control" name="Name" id="DataName" required placeholder="Name">
+                                                        <input type="hidden" class="form-control" id="DataId" name="Id">
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <input type="submit" class="btn btn-success pull-right btndatalistSave" value="Save" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="MyModalCountry" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabelCountry" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:900px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabelCountry"><span>@{@HomeController.GetControlTextByControlId("Country");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                @*<form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">*@
+                                <form class="form-horizontal" id="DataitemForm1">
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="DataListCountryName" id="DataListCountryName">
+                                                    @foreach (var item in @ViewBag.CoutryDataListItems)
+                                                    {
+                                                        <option value="@item.Name">@item.Name</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="CountryName" id="CountryName" required placeholder="Name">
+                                                <input type="hidden" class="form-control" id="DataId" name="Id">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" id="Continent">
+                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                            <div class="col-sm-6">
+                                                <select type="text" class="form-control" name="CountryContinent" id="CountryContinent" placeholder="Continent">
+                                                    <option value="0">---Select Continent</option>
+                                                    <option value="Asia">Asia</option>
+                                                    <option value="Africa">Africa</option>
+                                                    <option value="North America">North America</option>
+                                                    <option value="South America">South America</option>
+                                                    <option value="Antarctica">Antarctica</option>
+                                                    <option value="Europe">Europe</option>
+                                                    <option value="Australia">Australia</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <input type="button" onclick="SaveCountyPopup();" class="btn btn-success pull-right btndatalistSave" value="Save" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="MyModalMaster" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabelMaster" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:900px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabelMaster"><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+
+                                @*<form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">*@
+                                <form class="form-horizontal" id="DataitemForm2">
+
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                            <div class="col-sm-6">
+                                                <select class="form-control" name="DataListName1" id="DataListName1">
+                                                    @foreach (var item in @ViewBag.ActivitiesDataListItems)
+                                                    {
+                                                        <option value="@item.Name">@item.Name</option>
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                            <div class="col-sm-6">
+                                                <input type="text" class="form-control" name="Name1" id="Name1" required placeholder="Name">
+                                                <input type="hidden" class="form-control" id="DataId" name="Id">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <input type="button" onclick="SaveActivitiesPopup();" class="btn btn-success pull-right btndatalistSave" value="Save" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        @*<div class="modal fade" id="myModal2" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal fade" id="myModal2" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:1050px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Generalate");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin-top:20px; margin-right:10px;">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="TblPersionalDetails">
+                                    @try
+                                    {
+                                        <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Generalate");}</span></h4></tr>
+                                        <tr>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Generalate_Name");}</span></th>
+                                            <td style="width:30%"><span id="GeneralateNameGeneralate"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Establishment");}</span></th>
+                                            <td><span id="EstablishmentGeneralate"></span></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("NameofFounder");}</span></th>
+                                            <td><span id="NameofFounderView"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("NameofCoFounder");}</span></th>
+                                            <td><span id="NameofCoFounderView"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Motto");}</span></th>
+                                            <td><span id="CongregationMottoView"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("CountriesofMission");}</span></th>
+                                            <td><span id="CongregationCountriesofMissionView"></span>  </td>
+                                        </tr>
+                                        <tr>
+
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                            <td><span id="EmailGeneralate"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Website");}</span></th>
+                                            <td><span id="WebsiteGeneralate"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                            <td><span id="PhoneGeneralate"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Fax");}</span></th>
+                                            <td><span id="FaxGeneralate"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                                            <td><span id="CountryGeneralate"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                            <td><span id="AddressGeneralate"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></th>
+                                            <td><span id="DioceseNameGeneralate"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></th>
+                                            <td><span id="ActivitiesGeneralate1"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("History");}</span></th>
+                                            <td><span id="HistoryGeneralate"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Vission");}</span></th>
+                                            <td><span id="VissionGeneralate1"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Mission");}</span></th>
+                                            <td><span id="MissionGeneralate1"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                            @*<td><span id="FileGeneralate"></span></td>*@
+                                            <td><a target="_blank" id="FileGeneralate" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Logo");}</span></th>
+                                            @*<td><span id="FileGeneralate"></span></td>*@
+                                            <td><a target="_blank" id="CongregationLogoView" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                </table>
+                                @*<a target="_blank" style="margin-left:450px" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal fade" id="myModal3" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal fade" id="myModal3" style="margin-left:-200px;margin-top:130px; z-index:  !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:1050px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin-top:20px; margin-right:10px;">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="TblPersionalDetails">
+                                    @try
+                                    {
+                                        <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></h4></tr>
+                                        @*<tr>
+                                                <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("District/Sector");}</span></th>
+                                                <td style="width:30%"><span id="DistrictSectorProvince"></span></td>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                                                <td><span id="PlaceProvince"></span></td>
+                                            </tr>*@
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                                            <td><span id="ProvinceNameProvince"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Province_Code");}</span></th>
+                                            <td><span id="ProvinceCodeProvince"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Motto");}</span></th>
+                                            <td><span id="ProvinceMottoView"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("CountriesofMission");}</span></th>
+                                            <td><span id="ProvinceCountriesofMissionView"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                            <td><span id="EmailProvince"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                                            <td><span id="CountryProvince"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                            <td><span id="PhoneProvince"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Fax");}</span></th>
+                                            <td><span id="FaxProvince"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Active/Inactive");}</span></th>
+                                            <td><span id="ActiveInactiveProvince"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></th>
+                                            <td><span id="DioceseNameProvince"></span></td>
+                                        </tr>
+
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></th>
+                                            <td><span id="ActivitiesProvince"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Province_History");}</span></th>
+                                            <td><span id="ProvinceHistoryProvince"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Vission");}</span></th>
+                                            <td><span id="VissionProvince"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Mission");}</span></th>
+                                            <td><span id="MissionProvince"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                            <td><a target="_blank" id="FileProvince" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                            @*<th></th>
+                                                <td></td>*@
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Logo");}</span></th>
+                                            <td><a target="_blank" id="ProvinceLogoView" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                        </tr>
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal fade" id="myModal4" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal fade" id="myModal4" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:1050px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("District/Sector/Region");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin-top:20px; margin-right:10px;">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="TblPersionalDetails">
+                                    @try
+                                    {
+                                        <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("District/Sector/Region");}</span></h4></tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Type");}</span></th>
+                                            <td><span id="TypeDisSecReg"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("District/Sector/Region");}</span></th>
+                                            <td style="width:30%"><span id="NameDisSecReg"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                            <td><span id="EmailDisSecReg"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                                            <td><span id="CountryDisSecReg"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Active/Inactive");}</span></th>
+                                            <td><span id="ActiveInactiveDisSecReg"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></th>
+                                            <td><span id="DioceseNameDisSecReg"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></th>
+                                            <td><span id="ActivitiesDisSecReg"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("History");}</span></th>
+                                            <td><span id="HistoryDisSecReg"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Vission");}</span></th>
+                                            <td><span id="VissionDisSecReg"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Mission");}</span></th>
+                                            <td><span id="MissionDisSecReg"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                            <td><a target="_blank" id="FileDisSecReg" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                            <th></th>
+                                            <td></td>
+                                        </tr>
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal fade" id="myModal5" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal fade" id="    " style="margin-left:-200px;margin-top:130px;z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:1050px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Community_Outside");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin-top:20px; margin-right:10px;">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="TblPersionalDetails">
+                                    @try
+                                    {
+                                        <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Community_Outside");}</span></h4></tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                                            <td><span id="ProvinceNameOutside"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Community_Name");}</span></th>
+                                            <td style="width:30%"><span id="CommunityNameOutside"></span></td>
+
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Community_Code");}</span></th>
+                                            <td><span id="CommunityCodeOutside"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                                            <td><span id="PlaceOutside"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                            <td><span id="PhoneOutside"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                            <td><span id="AddressOutside"></span>  </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                            <td><span id="EmailOutside"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                                            <td><span id="CountryOutside"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Active/Inactive");}</span></th>
+                                            <td><span id="ActiveInactiveOutside"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></th>
+                                            <td><span id="DioceseNameOutside"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></th>
+                                            <td><span id="ActivitiesOutside"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                            <td><a target="_blank" id="FileOutside" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                        </tr>
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal fade" id="myModal6" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal fade" id="myModal6" style="margin-left:-200px;margin-top:130px;z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:1050px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Common_House");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin-top:20px; margin-right:10px;">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="TblPersionalDetails">
+                                    @try
+                                    {
+                                        <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Common_House");}</span></h4></tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("District/Sector/Region");}</span></th>
+                                            <td><span id="DistSecRegComHouse"></span></td>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                                            <td style="width:30%"><span id="ProvinceNameComHouse"></span></td>
+
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Community_Name");}</span></th>
+                                            <td><span id="CommunityNameComHouse"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Community_Code");}</span></th>
+                                            <td><span id="CommunityCodeComHouse"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                            <td><span id="PhoneComHouse"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                                            <td><span id="PlaceComHouse"></span>  </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                            <td><span id="EmailComHouse"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                                            <td><span id="CountryComHouse"></span>  </td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Active/Inactive");}</span></th>
+                                            <td><span id="ActiveInactiveComHouse"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></th>
+                                            <td><span id="DioceseNameComHouse"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></th>
+                                            <td><span id="ActivitiesComHouse"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                            <td><a target="_blank" id="FileComHouse" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                        </tr>
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @*<div class="modal fade" id="myModal7" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">*@
+        <div class="modal fade" id="myModal7" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="margin-top:60px;">
+                <div class="modal-content" style="width:1050px;">
+                    <div class="modal-header">
+                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Diocese");}</span></h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row" style="margin-top:20px; margin-right:10px;">
+                            <div class="col-sm-12">
+                                <table class="table table-bordered" id="TblPersionalDetails">
+                                    @try
+                                    {
+                                        <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Diocese");}</span></h4></tr>
+                                        <tr>
+                                            <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                                            <td style="width:30%"><span id="ProvinceNameDiocese"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("State");}</span></th>
+                                            <td><span id="StateDiocese"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></th>
+                                            <td><span id="DioceseNameDiocese"></span></td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                            <td><span id="EmailDiocese"></span></td>
+                                        </tr>
+                                        <tr>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("Active/Inactive");}</span></th>
+                                            <td><span id="ActiveInactiveDiocese"></span></td>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                                            <td><span id="PlaceDiocese"></span>  </td>
+                                        </tr>
+
+                                        <tr>
+                                            <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                                            <td><span id="CountryDiocese"></span>  </td>
+                                            <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                            <td><a target="_blank" id="FileDiocese" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                        </tr>
+
+                                    }
+                                    catch (Exception ex)
+                                    {
+
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ </div>
+
+    <div class="modal fade" id="MyModalDialog" style="margin-left:-200px;margin-top:235px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabelMessage" aria-hidden="true">
+        <div class="modal-dialog" style="margin-top:60px;">
+            <div class="modal-content" style="width:500px;">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabelMessage"><span>Message</span></h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <span id="DialogMessage"></span>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-sm-6">
+                                        <input type="button" onclick="CloseDialogMessage();" class="btn btn-success pull-right btndatalistSave" value="OK" />
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    @section scripts
+        {
+        <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+        <script src="~/Content/multiple-select.min.js"></script>
+        @*<script src="https://raw.githubusercontent.com/ehynds/jquery-ui-multiselect-widget/1.10/src/jquery.multiselect.min.js"></script>*@
+        <script type='text/javascript' src="https://raw.github.com/ehynds/jquery-ui-multiselect-widget/master/src/jquery.multiselect.js"></script>
+
+        <script src="~/Scripts/additional/IdGenerator.js"></script>
+
+
+
+        @*<script>
+                $("#ActiveCheck1").on("click", function () {
+                    //debugger;
+                    var name = $("#checkdata").val();
+                    if (name == null) {
+                        $("#messageActivecheck").css("display", "none");
+                    }
+                });
+                $("#ActiveCheck2").on("click", function () {
+                    //debugger;
+                    var name = $("#checkdata").val();
+                    if (name == null) {
+                        $("#messageActivecheck").css("display", "none");
+                    }
+                });
+            </script>*@
+        @*//Popupdiodatasaved*@
+        <script>
+            function bindForm(dialog) {
+                $('form', dialog).submit(function () {
+                    if ($("#DioceseForm").valid()) {
+                        $.ajax({
+                            url: this.action,
+                            type: this.method,
+                            data: $(this).serialize(),
+                            dataType: 'json',
+                            success: function (result) {
+                                if (result.success) {
+                                    alert(result.message);
+                                    $('#MyModal').modal('show');
+
+                                } else {
+                                    $('#myModalContent').html(result);
+                                    bindForm(dialog);
+                                }
+                            }
+                        });
+                        return false;
+                    }
+                });
+            }
+
+            $("#circleimage").mouseover(function () {
+                $("#circleimage").text("Back");
+            });
+            $("#circleimage").mouseout(function () {
+                $("#circleimage").text("");
+            });
+
+        </script>
+        <script>
+            $(function () {
+                $("#CountryProvinceka").select2();
+                $(".CountrySelect2").select2();
+                $("#AddCountryProv,#AddCountriesofMissionProv").on('click', function () {
+                    $("#MyModalCountry").modal('show');
+                });
+                $(".AddCountryProv").on('click', function () {
+                    $("#MyModalCountry").modal('show');
+                });
+                $(".AddActivitiesProv").on('click', function () {
+                    $("#MyModalMaster").modal('show');
+                });
+
+
+                /////
+                $("#AddDioCong").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioProv").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioCom").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioSoc").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioInst").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioTrust").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                })
+                $("#AddDioCOS").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioCH").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioDisSec").on('click', function () {
+                    //debugger;
+                    $("#MyModal").modal('show');
+                });
+                $("#AddDioState,#AddDioState1").on('click', function () {
+                    //debugger;
+                    $("#MyModal1").modal('show');
+                });
+                $('#ActivitiesGeneralate').multipleSelect({
+                    width: 355,
+                    allSelectedText: 'All'
+                })
+                $('#ActivitiesProvinceka').multipleSelect({
+                    width: 355,
+                    allSelectedText: 'All'
+                })
+                $('#ProvinceCountriesofMission').multipleSelect({
+                    width: 355,
+                    allSelectedText: 'All'
+                })
+                $('#CongregationCountriesofMission').multipleSelect({
+                    width: 355,
+                    allSelectedText: 'All'
+                })
+
+                $('#DioState1').multipleSelect({
+                    width: 350,
+                    allSelectedText: 'All'
+                });
+                $('#DioState').multipleSelect({
+                    width: 230,
+                    allSelsectedText: 'All'
+                });
+
+                $('#ActivitiesCom').multipleSelect({
+                    width: 353,
+                    allSelectedText: 'All'
+                })
+                $('#ActivitiesInst').multipleSelect({
+                    width: 355,
+                    allSelectedText: 'All'
+                })
+                $('#ActivitiesSoc').multipleSelect({
+                    width: 610,
+                    allSelectedText: 'All'
+                })
+                $('#ActivitiesTrust').multipleSelect({
+                    width: 355,
+                    allSelectedText: 'All'
+                })
+                $('#ActivitiesCH').multipleSelect({
+                    width: 350,
+                    allSelectedText: 'All'
+                })
+                $('#ActivitiesCOS').multipleSelect({
+                    width: 350,
+                    allSelectedText: 'All'
+                })
+                $('#ActivitiesDisSec1').multipleSelect({
+                    width: 350,
+                    allSelectedText: 'All'
+                })
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                //debugger;
+                $("#tblSocityDiv").css("display", "block");
+                $("#TbInstitutionDiv").css("display", "none");
+                $("#TblCommunitiesDiv").css("display", "none");
+                $("#ParisInDetailDiv").css("display", "none");
+                $("#CongDetailDiv").css("display", "none");
+                $("#ProvDetailDiv").css("display", "none");
+                $('#TblSoc').DataTable();
+                $('#TblInstitution').DataTable();
+                $('#Tblcomm').DataTable();
+                $('#Tblcongre').DataTable();
+                $('#TblParish').DataTable();
+                $('#TblProv').DataTable();
+                $('#TblcommOutside').DataTable();
+                $('#TblcommOutsideInst').DataTable();
+                $('#TblcommHouse').DataTable();
+                $('#TblDiocese').DataTable();
+                $('#TblDisSec').DataTable();
+                var t = $('#example').DataTable({
+                    "bPaginate": false,                                                                                                                                                                                                                                                                                                                                                             
+                    "bFilter": false,
+                    "bInfo": false,
+                    "order": [],
+                    "bSort": false,
+                    //"oLanguage": { "sZeroRecords": "", "sEmptyTable": "" }
+                });
+                $(".dataTables_empty").hide();
+                var tblProvienceImportantDates = '@Html.Raw(ViewBag.tblProvinceImportantDates)';
+                if (tblProvienceImportantDates != 'NoData' && tblProvienceImportantDates != '[]') {
+                    $.each(tblProvienceImportantDates, function (value) {
+                        $("#addRow").click();
+                        //alert(tblProvienceImportantDates[value].Day);
+                        //alert('#' + (value + 1) + "_2");
+                        $('#' + (value + 1) + "_1").val(tblProvienceImportantDates[value].Name);
+                        $('#' + (value + 1) + "_2").val(tblProvienceImportantDates[value].Day);
+                        $('#' + (value + 1) + "_3").val('"' + tblProvienceImportantDates[value].Month + '"').trigger('change');
+                        debugger;
+                        //console.log(value);
+                    });
+                }
+                
+            });
+            function DeleteDiv(id) {
+                var cnf = confirm("@{@HomeController.GetControlTextByControlId("Are you sure, you want to delete this row?");}");
+                if (cnf) {
+                $("#tr_" + id).remove();
+                }
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('a[data-toggle="tab"]').on('click', function (e) {
+                    localStorage.setItem('activeTab', $(this).attr('href'));
+                });
+                var activeTab = localStorage.getItem('activeTab');
+                if (activeTab) {
+                    $('#myTab a[href="' + activeTab + '"]').tab('show');
+                }
+
+            });
+            $("#FamilyBelongsTo1").on("change", function () {
+                var chktrue = "Yes";
+                var chkfalse = "No";
+                if ($(this).is(':checked')) {
+                    $("#FamilyBelongsTo").val(chktrue);
+
+                } else if ($(this).is(':unchecked')) {
+                    $("#FamilyBelongsTo").val(chkfalse);
+
+                }
+            });
+            $("#previousData").on('click', function () {
+                var firstItem = $("#StartingId").val();
+                var lastItem = $("#LastId").val();
+
+                if (firstItem != 1) {
+                    $("#StartingId").val(firstItem * 1 - 10);
+                    $("#LastId").val(lastItem * 1 - 10);
+                    GetGrid();
+                }
+
+            });
+            $("#nextData").on('click', function () {
+                var firstItem = $("#StartingId").val();
+                var lastItem = $("#LastId").val();
+
+                var totalcount = $("#totalcount").text();
+                if (lastItem <= totalcount) {
+                    $("#StartingId").val(firstItem * 1 + 10);
+                    $("#LastId").val(lastItem * 1 + 10);
+                    GetGrid();
+                }
+
+            });
+        </script>
+
+        <script>
+            $("#InstitutionType").on("change", function () {
+                var institutionType = $("#InstitutionType option:selected").val();
+                if (institutionType == "Hospital" || institutionType == "NGO") {
+                    //debugger;
+                    $("#schoolcollageDiv").css("display", "none");
+                } else {
+                    $('#schoolcollageDiv').find('input:text').val('');
+                    $("#schoolcollageDiv").css("display", "block");
+                }
+            })
+            $(".InstitutionDelete").on('click', function () {
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/InstitutionDelete?id=" + DataID;
+                }
+            });
+            $(".CommunityDelete").on('click', function () {
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/CommunityDelete?id=" + DataID;
+                }
+            });
+            $(".CommunityDeleteOutside").on('click', function () {
+                var id = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/CommunityDeleteOutside?id=" + id;
+                }
+            });
+            $(".CommunityDeleteHouse").on('click', function () {
+                var id = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/CommunityDeleteComHouse?id=" + id;
+                }
+            });
+            $(".CongreDelete").on('click', function () {
+
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/CongreDelete?id=" + DataID;
+                }
+            });
+            $(".ParishDelete").on('click', function () {
+
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/ParishDelete?id=" + DataID;
+                }
+            });
+            $(".SocietyDelete").on('click', function () {
+
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/SocietyDelete?id=" + DataID;
+                }
+            });
+            $(".DisSecDelete").on('click', function () {
+
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/DistSecDelete?id=" + DataID;
+                }
+            });
+            $(".ProvinceDelete").on('click', function () {
+
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/ProvinceDelete?id=" + DataID;
+                }
+            });
+            $(".DioceseDelete").on('click', function () {
+                var DataID = $(this).attr("data-val");
+                if (confirm("Do you want to delete ?")) {
+                    window.location.href = "/IdGenerate/DioceseDelete?id=" + DataID;
+                }
+            });
+
+        </script>
+        <script>
+            AutoGeneratreMemberId();
+            function AutoGeneratreMemberId() {
+                var membrid;
+                $.ajax({
+                    url: "../PersonalDetails/GetAutoGeneratedMemberId",
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        result = "MFB" + result;
+                        $("#MemberId").val(result);
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            $("#CountryProvinceka").on("change", function () {
+                //debugger;
+                var name = $("#CountryProvinceka option:selected").text();
+                var value = $("#CountryProvinceka option:selected").val();
+                //  $("#Continent").val(value);
+                //$("#CountryName12").val(name);
+
+                $.ajax({
+                    url: "/Member/GetContinent?Name=" + value,
+                    type: "POST",
+                    dataType: "json",
+                    async: false,
+                    success: function (result) {
+                        $("#Continent123").val(result);
+                    },
+                    error: function (errormessage) {
+                        alert(errormessage.responseText);
+                    }
+                });
+                //  alert($("#CountryName12").val())
+            });
+            $('#ActiveCheck1').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $('#ActiveInactiveProErrorMessage').text("");
+                    $("#ActiveCheck2").attr("checked", false);
+                    // $(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheck2').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $('#ActiveInactiveProErrorMessage').text("");
+                    $("#ActiveCheck1").attr("checked", false);
+                    //$(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheck3').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck4").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheck4').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck3").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheck5').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck6").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheck6').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck5").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheck7').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck8").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheck8').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck7").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheck9').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck10").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheck10').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck9").attr("checked", false);
+                    $(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheck11').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $('#ActiveInactiveOutSideConErrorMessage').text("");
+                    $("#ActiveCheck12").attr("checked", false);
+                    // $(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheck12').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $('#ActiveInactiveOutSideConErrorMessage').text("");
+                    $("#ActiveCheck11").attr("checked", false);
+                    //  $(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheck13').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck14").attr("checked", false);
+                    $('#ActiveInactiveCommonHouseErrorMessage').text("");
+                    // $(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheck14').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheck13").attr("checked", false);
+                    $('#ActiveInactiveCommonHouseErrorMessage').text("");
+                    // $(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheckDioa').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheckDiob").attr("checked", false);
+                    $('#ActiveInactiveDioceseErrorMessage').text("");
+                    //$(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheckDiob').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheckDioa").attr("checked", false);
+                    $('#ActiveInactiveDioceseErrorMessage').text("");
+                    // $(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveCheckDio1').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheckDio2").attr("checked", false);
+                    $('#ActInActDisErrorMessage').text("");
+                    //$(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveCheckDio2').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveCheckDio1").attr("checked", false);
+                    $('#ActInActDisErrorMessage').text("");
+                    //$(".messageActivecheck").css("display", "none");
+                }
+            });
+
+            $('#ActiveDisSec1').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveDisSec2").attr("checked", false);
+                    $('#ActiveInactiveDisErrorMessage').text("");
+                    //$(".messageActivecheck").css("display", "none");
+                }
+            });
+            $('#ActiveDisSec2').click(function () {
+                if ($(this).prop("checked") == true) {
+                    $("#ActiveDisSec1").attr("checked", false);
+                    $('#ActiveInactiveDisErrorMessage').text("");
+                    //$(".messageActivecheck").css("display", "none");
+                }
+            });
+            var counter = 1;
+            var Imgcounter = 1;
+            $('#addRow').on('click', function () {
+                $('#example').append('<tr id = "tr_' + counter + '"><td id = "td_' + counter + '"><input style="  width: 100%;   border: none; padding: .15rem;" name ="Names" type="text" id="' + counter + '_1"></input></td><td><select style="padding: .25rem 0; width: 100%;border: none;" class="o_input o_field_widget o_required_modifier" id="' + counter + '_2" name="Days"><option value="false" style="display: none"></option><option value="1" style="">1</option><option value="2" style="">2</option><option value="3" style="">3</option><option value="4" style="">4</option><option value="5" style="">5</option><option value="6" style="">6</option><option value="7" style="">7</option><option value="8" style="">8</option><option value="9" style="">9</option><option value="10" style="">10</option><option value="11" style="">11</option><option value="12" style="">12</option><option value="13" style="">13</option><option value="14" style="">14</option><option value="15" style="">15</option><option value="16" style="">16</option><option value="17" style="">17</option><option value="18" style="">18</option><option value="19" style="">19</option><option value="20" style="">20</option><option value="21" style="">21</option><option value="22" style="">22</option><option value="23" style="">23</option><option value="24" style="">24</option><option value="25" style="">25</option><option value="26" style="">26</option><option value="27" style="">27</option><option value="28" style="">28</option><option value="29" style="">29</option><option value="30" style="">30</option><option value="31" style="">31</option></select></td><td><select style="padding: .25rem 0; width: 100%;border: none;" class="o_input o_field_widget o_required_modifier" id="' + counter + '_3" name="Months"><option value="false" style="display: none"></option><option value="&quot;1&quot;" style="">January</option><option value="&quot;2&quot;" style="">February</option><option value="&quot;3&quot;" style="">March</option><option value="&quot;4&quot;" style="">April</option><option value="&quot;5&quot;" style="">May</option><option value="&quot;6&quot;" style="">June</option><option value="&quot;7&quot;" style="">July</option><option value="&quot;8&quot;" style="">August</option><option value="&quot;9&quot;" style="">September</option><option value="&quot;10&quot;" style="">October</option><option value="&quot;11&quot;" style="">November</option><option value="&quot;12&quot;" style="">December</option></select></td><td><button type="button" onclick="DeleteDiv(' + counter + ')" class="fa fa-trash-o" id="' + counter + '_4" name="delete" aria-label="Delete row 1"></button></td></tr>');
+                counter++;
+            });
+        </script>
+        @*DioId*@
+        <script>
+            var myid = "";
+            $("#DioceseName").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#DioId").val();
+                }
+                var name = $("#DioceseName").val();
+                if (name.length > 3) {
+                    name = name.substring(0, 4);
+                }
+                $("#DioId").val(name + "/" + myid);
+            });
+        </script>
+        @*DistSecId*@
+        <script>
+            var myid = "";
+            $("#DisSecRegName").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#MyIdDisSecReg").val();
+                }
+                var name = $("#DisSecRegName").val();
+                if (name.length > 3) {
+                    name = name.substring(0, 4);
+                }
+                $("#MyIdDisSecReg").val(name + "/" + myid);
+            });
+        </script>
+        @*PopupDioId*@
+        <script>
+            var myid = "";
+            $("#DioceseName1").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#DioId1").val();
+                }
+                var name = $("#DioceseName1").val();
+                if (name.length > 3) {
+                    name = name.substring(0, 4);
+                }
+                $("#DioId1").val(name + "/" + myid);
+            });
+        </script>
+        @*ProCode*@
+        <script>
+            var myid = "";
+            $("#ProvCode").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#MyId").val();
+                }
+                var code = $("#ProvCode").val();
+                var proName = $("#ProvinceName1").val();
+                if (proName.length > 4) {
+                    proName = proName.substring(0, 4);
+                }
+                $("#MyId").val(proName + "-" + code + "/" + myid);
+            });
+        </script>
+        <script>
+            var myid = "";
+            $("#CommunityPlace1").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#MyIdCOS").val();
+                }
+                var proName = $("#OtherProvinceName1").val();
+                var complacename = $("#CommunityPlace1").val();
+                var comname = $("#CommunityName1").val();
+                if (proName.length > 4) {
+                    proName = proName.substring(0, 4);
+                }
+                if (complacename.length > 4) {
+                    complacename = complacename.substring(0, 4);
+                }
+                if (comname.length > 4) {
+                    comname = comname.substring(0, 4);
+                }
+                $("#MyIdCOS").val(proName + "-" + comname + "-" + complacename + "/" + myid);
+            });
+        </script>
+        <script>
+            var myid = "";
+            $("#CommunityPlace2").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#MyIdCH").val();
+                }
+                var proName = $("#OtherProvinceName2").val();
+                var complacename = $("#CommunityPlace2").val();
+                var comname = $("#CommunityName2").val();
+                var comcode = $("#CommunityCode2").val();
+                if (proName.length > 4) {
+                    proName = proName.substring(0, 4);
+                }
+                if (complacename.length > 4) {
+                    complacename = complacename.substring(0, 4);
+                }
+                if (comname.length > 4) {
+                    comname = comname.substring(0, 4);
+                }
+                if (comcode.length > 4) {
+                    comcode = comcode.substring(0, 4);
+                }
+                $("#MyIdCH").val(proName + "-" + comname + "-" + complacename + "-" + comcode + "/" + myid);
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllProvinceNew();
+            });
+            function GetAllProvinceNew() {
+                $.ajax({
+                    url: "/Home/GetAllProvinceNew",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#ProvinceNameCom123').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Place, text: response2[i].ProvinceName + " " + response2[i].Place });
+                            }
+                            $("#ProvinceNameCom123").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllProvinceTrans();
+            });
+            function GetAllProvinceTrans() {
+                $.ajax({
+                    url: "/Home/GetAllProvinceTrans",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DisSecRegProvinceName').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                            }
+                            $("#DisSecRegProvinceName").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllCommunityOS();
+            });
+            function GetAllCommunityOS() {
+                $.ajax({
+                    url: "/Home/GetAllCommunityOS",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#ComOsNameInst').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Community Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].CommunityName });
+                            }
+                            $("#ComOsNameInst").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllProvince();
+            });
+
+            function GetAllProvince() {
+                $.ajax({
+                    url: "/Home/GetAllProvince",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioProvince1').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                            }
+                            $("#DioProvince1").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                // GetAllStates();
+            });
+
+            function GetAllStates() {
+                $.ajax({
+                    url: "/Home/GetAllStates",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            var option = '';
+                            $('#DioState1').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select State Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Name, text: response2[i].Name });
+                                option += ' <option value="' + response2[i].Name + '">' + response2[i].Name + '</option>';
+                            }
+                            $("#DioState1").html('').select2({
+                                data: allDate2
+                            });
+                            //  $('#DioState1').appendTo(option);
+
+                            $('#DioState1').multipleSelect({
+                                width: 350,
+                                allSelectedText: 'All'
+                            });
+
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllProvinceNew();
+                //GetGrid();
+            });
+
+            function GetAllProvinceNew() {
+                $.ajax({
+                    url: "/Home/GetAllProvinceNew",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioProvince').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                            }
+                            $("#DioProvince").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                GetAllProvinceSoc();
+            });
+            function GetAllProvinceSoc() {
+                $.ajax({
+                    url: "/Home/GetAllProvinceSoc",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#OtherProvinceName2').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                            }
+                            $("#OtherProvinceName2").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllProvinceTrust();
+            });
+            function GetAllProvinceTrust() {
+                $.ajax({
+                    url: "/Home/GetAllProvinceTrust",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#ProvinceNameTrust').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Place, text: response2[i].ProvinceName + " " + response2[i].Place });
+                            }
+                            $("#ProvinceNameTrust").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            var myid = "";
+            $("#CommunityName112").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#CommunityId123").val();
+                }
+                var ProName = $("#ProvinceNameCom123").val();
+                var ComName = $("#CommunityName112").val();
+                var ComCode = $("#CommCode123").val();
+
+                if (ProName.length > 4) {
+                    ProName = ProName.substring(0, 4);
+                }
+                if (ComName.length > 4) {
+                    ComName = ComName.substring(0, 4);
+                }
+                if (ComCode.length > 4) {
+                    ComCode = ComCode.substring(0, 4);
+                }
+                $("#CommunityId123").val(ProName + "-" + ComName + "-" + ComCode + "/" + myid);
+            });
+        </script>
+        <script>
+            var myid = "";
+            $("#CongrigationName").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#CongreId").val();
+                }
+                var CongreName = $("#CongrigationName").val();
+
+                if (CongreName.length > 4) {
+                    CongreName = CongreName.substring(0, 4);
+                }
+                $("#CongreId").val(CongreName + "/" + myid);
+            });
+        </script>
+        <script>
+            var myid = "";
+            $("#InstPlace123").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#InstitutionId123").val();
+                }
+                var ProName = $("#ProvinceNameInst").val();
+                var InsPlace = $("#InstPlace123").val();
+                var InstName = $("#InstName123").val();
+
+                if (ProName.length > 4) {
+                    ProName = ProName.substring(0, 4);
+                }
+                if (InsPlace.length > 4) {
+                    InsPlace = InsPlace.substring(0, 4);
+                }
+                if (InstName.length > 4) {
+                    InstName = InstName.substring(0, 4);
+                }
+                $("#InstitutionId123").val(ProName + "-" + InsPlace + "-" + InstName + "/" + myid);
+            });
+        </script>
+        <script>
+            var myid = "";
+            $("#Name").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#ParishId").val();
+                }
+                var ProName = $("#ProvinceNameTrust").val();
+                var TrustName = $("#Name").val();
+
+                if (ProName.length > 4) {
+                    ProName = ProName.substring(0, 4);
+                }
+                if (TrustName.length > 4) {
+                    TrustName = TrustName.substring(0, 4);
+                }
+                $("#ParishId").val(ProName + "-" + TrustName + "/" + myid);
+            });
+        </script>
+        <script>
+            var myid = "";
+            $("#SocietyName").on("change", function () {
+                //debugger;
+                if (myid == "") {
+                    myid = $("#SocId").val();
+                }
+                var ProName = $("#ProvinceNameSoc").val();
+                var SocName = $("#SocietyName").val();
+
+                if (ProName.length > 4) {
+                    ProName = ProName.substring(0, 4);
+                }
+                if (SocName.length > 4) {
+                    SocName = SocName.substring(0, 4);
+                }
+                $("#SocId").val(ProName + "-" + SocName + "/" + myid);
+            });
+        </script>
+
+        @*DioceseDrop*@
+        <script>
+            $(document).ready(function () {
+                GetAllDioceseNameCong();
+            });
+            function GetAllDioceseNameCong() {
+                $.ajax({
+                    url: "/IdGenerate/GetAllDioceseNameCong",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioceseNameCong').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Diosece Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                            }
+                            $("#DioceseNameCong").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                DioceseNameDisSec();
+            });
+            function DioceseNameDisSec() {
+                $.ajax({
+                    url: "/IdGenerate/DioceseNameDisSec",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioceseNameDisSec').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Diocese Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                            }
+                            $("#DioceseNameDisSec").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllDisSec();
+            });
+            function GetAllDisSec() {
+                $.ajax({
+                    url: "/IdGenerate/GetAllDisSec",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DisSecProvinceka').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].DistSecName });
+                            }
+                            $("#DisSecProvinceka").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                //alert("pre");
+                DioceseNameProv();
+                //alert();
+            });
+            function DioceseNameProv() {
+                $.ajax({
+                    url: "/IdGenerate/DioceseNameProv",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioceseNameProv').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                            }
+                            $("#DioceseNameProv").html('').select2({
+                                data: allDate2                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+                            });
+                        }
+                        if ('@ViewBag.EditId' != null && '@ViewBag.EditId' != '') {
+                    $('#ProvinceForm').attr('action', '/IdGenerate/UpdateProvince');
+                    $("#AddProvince").text("Update");
+                    $(".panel-body").scrollTop(0)
+                            GetProvById('@ViewBag.EditId');
+                            
+                }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                DioceseNameCOS();
+            });
+            function DioceseNameCOS() {
+                $.ajax({
+                    url: "/IdGenerate/DioceseNameCOS",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioceseNameCOS').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                            }
+                            $("#DioceseNameCOS").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                // GetAllStates1();
+            });
+
+            function GetAllStates1() {
+                $.ajax({
+                    url: "/Home/GetAllStates1",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioState').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select State Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Name, text: response2[i].Name });
+                            }
+                            $("#DioState").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllDioceseNameCong1();
+            });
+            function GetAllDioceseNameCong1() {
+                $.ajax({
+                    url: "/IdGenerate/GetAllDioceseNameCong1",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioceseNameCH').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Diocese Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].DioceseName, text: response2[i].DioceseName });
+                            }
+                            $("#DioceseNameCH").html('').select2({
+                                data: allDate2
+                            });
+
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            $(document).ready(function () {
+                GetAllDisSec1();
+            });
+            function GetAllDisSec1() {
+                $.ajax({
+                    url: "/IdGenerate/GetAllDisSec1",
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DisSec2').html('').select2({ data: [{ id: '', text: '' }] });
+                            allDate2.push({ id: '0', text: '-- Select Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].DistSecName });
+                            }
+                            $("#DisSec2").html('').select2({
+                                data: allDate2
+                            });
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+        @*//ViewPopup*@
+        <script>
+            $('.CongreView').on("click", function () {
+                $('#myModal2').modal('show');
+                var id = $(this).attr("data-val");
+                GetAllGeneralateById1(id);
+            });
+            function GetAllGeneralateById1(id) {
+                $.ajax({
+                    url: "/IdGenerate/GetAllGeneralateById1?id=" + id,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#GeneralateNameGeneralate").text(data[0].CongregationName);
+                        $("#EstablishmentGeneralate").text(data[0].Establishment);
+                        $("#EmailGeneralate").text(data[0].Email);
+                        $("#WebsiteGeneralate").text(data[0].Website);
+                        $("#PhoneGeneralate").text(data[0].Phone);
+                        $("#FaxGeneralate").text(data[0].Fax);
+                        $("#CountryGeneralate").text(data[0].Country);
+                        $("#AddressGeneralate").text(data[0].Address);
+                        $("#DioceseNameGeneralate").text(data[0].Diocese);
+                        $("#ActivitiesGeneralate1").text(data[0].Activities);
+                        $("#HistoryGeneralate").text(data[0].History);
+                        $("#VissionGeneralate1").text(data[0].Vission);
+                        $("#MissionGeneralate1").text(data[0].Mission);
+
+                        $("#NameofFounderView").text(data[0].NameofFounder);
+                        $("#NameofCoFounderView").text(data[0].NameofCoFounder);
+                        $("#CongregationMottoView").text(data[0].CongregationMotto);
+                        $("#CongregationCountriesofMissionView").text(data[0].CongregationCountriesofMission);
+
+                        if (data[0].CongregationLogo == null) {
+                            $("#CongregationLogoView").text("File not available");
+                            $("#CongregationLogoView").removeAttr("href");
+                        }
+                        else {
+                            $("#CongregationLogoView").text("View");
+                            $("#CongregationLogoView").attr("href", "/Image/Congation/" + data[0].CongregationLogo);
+                        }
+                        if (data[0].File == null) {
+                            $("#FileGeneralate").text("File not available");
+                            $("#FileGeneralate").removeAttr("href");
+                        }
+                        else {
+                            $("#FileGeneralate").text("View");
+                            $("#FileGeneralate").attr("href", "/Image/Congation/" + data[0].File);
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            $('.ProvinceView').on("click", function () {
+                $('#myModal3').modal('show');
+                var id = $(this).attr("data-val");
+                GetAllProvinceById1(id);
+            });
+            function GetAllProvinceById1(id) {
+                $.ajax({
+                    url: "/IdGenerate/GetAllProvinceById1?id=" + id,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        //  $("#DistrictSectorProvince").text(data[0].DisSec);
+                        //  $("#PlaceProvince").text(data[0].Place1);
+                        $("#ProvinceNameProvince").text(data[0].ProvinceName);
+                        $("#ProvinceCodeProvince").text(data[0].Place);
+                        $("#EmailProvince").text(data[0].EmailId);
+                        $("#CountryProvince").text(data[0].Country);
+                        $("#ActiveInactiveProvince").text(data[0].ActiveCkeck);
+                        $("#DioceseNameProvince").text(data[0].Diocese);
+                        $("#ActivitiesProvince").text(data[0].Activities);
+                        $("#FaxProvince").text(data[0].Fax);
+                        $("#PhoneProvince").text(data[0].Phone);
+                        $("#ProvinceHistoryProvince").text(data[0].History);
+                        $("#VissionProvince").text(data[0].Vission);
+                        $("#MissionProvince").text(data[0].Mission);
+                        $("#ProvinceMottoView").text(data[0].ProvinceMotto);
+                        $("#ProvinceCountriesofMissionView").text(data[0].ProvinceCountriesofMission);
+                        if (data[0].File == null) {
+                            $("#FileProvince").text("File not available");
+                            $("#FileProvince").removeAttr("href");
+                        }
+                        else {
+                            $("#FileProvince").text("View");
+                            $("#FileProvince").attr("href", "/Image/Province/" + data[0].File);
+                        }
+                        if (data[0].ProvinceMotto == null) {
+                            $("#ProvinceLogoView").text("File not available");
+                            $("#ProvinceLogoView").removeAttr("href");
+                        }
+                        else {
+                            $("#ProvinceLogoView").text("View");
+                            $("#ProvinceLogoView").attr("href", "/Image/Province/" + data[0].ProvinceLogo);
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            $('.DisSecView').on("click", function () {
+                $('#myModal4').modal('show');
+                var id = $(this).attr("data-val");
+                GetAllDistSecById1(id);
+            });
+            function GetAllDistSecById1(id) {
+                $.ajax({
+                    url: "/IdGenerate/GetAllDistSecById1?id=" + id,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#TypeDisSecReg").text(data[0].DisSec);
+                        $("#NameDisSecReg").text(data[0].DistSecName);
+                        $("#EmailDisSecReg").text(data[0].EmailId);
+                        $("#CountryDisSecReg").text(data[0].Country);
+                        $("#ActiveInactiveDisSecReg").text(data[0].ActiveCkeck);
+                        $("#DioceseNameDisSecReg").text(data[0].Diocese);
+                        $("#ActivitiesDisSecReg").text(data[0].Activities);
+                        $("#HistoryDisSecReg").text(data[0].History);
+                        $("#VissionDisSecReg").text(data[0].Vission);
+                        $("#MissionDisSecReg").text(data[0].Mission);
+                        if (data[0].File == null) {
+                            $("#FileDisSecReg").text("File not available");
+                            $("#FileDisSecReg").removeAttr("href");
+                        }
+                        else {
+                            $("#FileDisSecReg").text("View");
+                            $("#FileDisSecReg").attr("href", "/Image/DistSec/" + data[0].File);
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            $('.OutsideView').on("click", function () {
+                $('#myModal5').modal('show');
+                var id = $(this).attr("data-val");
+                GetAllCongOutSideById1(id);
+            });
+            function GetAllCongOutSideById1(id) {
+                $.ajax({
+                    url: "/IdGenerate/GetAllCongOutSideById1?id=" + id,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+                        $("#ProvinceNameOutside").text(data[0].OtherProvince);
+                        $("#CommunityNameOutside").text(data[0].CommunityName);
+                        $("#CommunityCodeOutside").text(data[0].MyId);
+                        $("#PlaceOutside").text(data[0].Place);
+                        $("#PhoneOutside").text(data[0].Phone);
+                        $("#AddressOutside").text(data[0].Address);
+                        $("#EmailOutside").text(data[0].EmailId);
+                        $("#CountryOutside").text(data[0].Country);
+                        $("#ActiveInactiveOutside").text(data[0].ActiveCkeck);
+                        $("#DioceseNameOutside").text(data[0].Diocese);
+                        $("#ActivitiesOutside").text(data[0].Activities);
+                        if (data[0].File == null) {
+                            $("#FileOutside").text("File not available");
+                            $("#FileOutside").removeAttr("href");
+                        }
+                        else {
+                            $("#FileOutside").text("View");
+                            $("#FileOutside").attr("href", "/Images/ComOS/" + data[0].File);
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            $('.HouseView').on("click", function () {
+                $('#myModal6').modal('show');
+                var id = $(this).attr("data-val");
+                GetAllComHouseById1(id);
+            });
+            function GetAllComHouseById1(id) {
+                $.ajax({
+                    url: "/IdGenerate/GetAllComHouseById1?id=" + id,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {
+
+                        $("#DistSecRegComHouse").text(data[0].DisSec);
+                        $("#ProvinceNameComHouse").text(data[0].OtherProvince);
+                        $("#CommunityNameComHouse").text(data[0].CommunityName);
+                        $("#CommunityCodeComHouse").text(data[0].CommunityCode);
+                        $("#PhoneComHouse").text(data[0].Phone);
+                        $("#PlaceComHouse").text(data[0].Place);
+                        $("#EmailComHouse").text(data[0].EmailId);
+                        $("#CountryComHouse").text(data[0].Country);
+                        $("#ActiveInactiveComHouse").text(data[0].ActiveCkeck);
+                        $("#DioceseNameComHouse").text(data[0].Diocese);
+                        $("#ActivitiesComHouse").text(data[0].Activities);
+                        if (data[0].File == null) {
+                            $("#FileComHouse").text("File not available");
+                            $("#FileComHouse").removeAttr("href");
+                        }
+                        else {
+                            $("#FileComHouse").text("View");
+                            $("#FileComHouse").attr("href", "/Image/Province/" + data[0].File);
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            $('.DioceseView').on("click", function () {
+                $('#myModal7').modal('show');
+                var id = $(this).attr("data-val");
+                GetAllDioceseById1(id);
+            });
+            function GetAllDioceseById1(id) {
+                $.ajax({
+                    url: "/IdGenerate/GetAllDioceseById1?id=" + id,
+                    type: "GET",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (data) {                       
+                        $("#ProvinceNameDiocese").text(data[0].ProvinceName);
+                        $("#StateDiocese").text(data[0].State);
+                        $("#DioceseNameDiocese").text(data[0].DioceseName);
+                        $("#EmailDiocese").text(data[0].EmailId);
+                        $("#ActiveInactiveDiocese").text(data[0].ActiveCkeck);
+                        $("#PlaceDiocese").text(data[0].Place);
+                        $("#CountryDiocese").text(data[0].Country);
+                        if (data[0].FileDio == null) {
+                            $("#FileDiocese").text("File not available");
+                            $("#FileDiocese").removeAttr("href");
+                        }
+                        else {
+                            $("#FileDiocese").text("View");
+                            $("#FileDiocese").attr("href", "/Image/Diocese/" + data[0].FileDio);
+                        }
+                    },
+                    error: function (er) {
+                    }
+                });
+            }
+        </script>
+
+        <script>
+            //debugger;
+            var iscode = $.cookie("iscode");
+            if (iscode == "200") {
+                $("#mymessage").html("<b>Data saved successfully !</b>");
+                $("#mymessage").css("color", "green");
+                $('#myalertbox').modal({
+                    backdrop: 'static'
+                });
+                $("#myalertbox").modal("show");
+                $.cookie('iscode', null, { path: '/' })
+            }
+            $(".closemodel").on("click", function () {
+                location.reload();
+            });
+        </script>
+        <script>
+            //debugger;
+            var iscode = $.cookie("iscode");
+            if (iscode == "204") {
+                $("#mymessage").html("<b>Some Error Occured !</b>");
+                $("#mymessage").css("color", "red");
+                $('#myalertbox').modal({
+                    backdrop: 'static'
+                });
+                $("#myalertbox").modal("show");
+                $.cookie('iscode', null, { path: '/' })
+            }
+            $(".closemodel").on("click", function () {
+                location.reload();
+            });
+        </script>
+        <script>
+            //debugger;
+            var iscode = $.cookie("iscode");
+            if (iscode == "201") {
+                $("#mymessage").html("<b>Data Updated Successfully !</b>");
+                $("#mymessage").css("color", "green");
+                $('#myalertbox').modal({
+                    backdrop: 'static'
+                });
+                $("#myalertbox").modal("show");
+                $.cookie('iscode', null, { path: '/' })
+            }
+            $(".closemodel").on("click", function () {
+                location.reload();
+            });
+        </script>
+        <script>
+            //debugger;
+            var iscode = $.cookie("iscode");
+            if (iscode == "202") {
+                $("#mymessage").html("<b>Data Deleted Successfully !</b>");
+                $("#mymessage").css("color", "blue");
+                $('#myalertbox').modal({
+                    backdrop: 'static'
+                });
+                $("#myalertbox").modal("show");
+                $.cookie('iscode', null, { path: '/' })
+            }
+            $(".closemodel").on("click", function () {
+                location.reload();
+            });
+        </script>
+        <script>
+            //debugger;
+            var iscode = $.cookie("iscode");
+            if (iscode == "208") {
+                $("#mymessage").html("<b>Data Inserted Successfully !</b>");
+                $("#mymessage").css("color", "green");
+                $('#myalertbox').modal({
+                    backdrop: 'static'
+                });
+                $("#myalertbox").modal("show");
+                $.cookie('iscode', null, { path: '/' })
+            }
+            $(".closemodel").on("click", function () {
+                // location.reload();
+                $('#MyModal').modal('show');
+            });
+        </script>
+
+        @*//DioPopupWork*@
+        <script>
+            $("#btnAddingDiocese123").on("click", function () {
+                debugger;
+                var data = {};
+
+                data.ProvinceName = $("#DioProvince1 option:selected").text();
+                // data.State = $("#DioState option:selected").val();
+                data.State = $("#DioState").val();
+                data.DioceseName = $("#DioceseName1").val();
+                data.DioId = $("#DioId1").val();
+                data.EmailId = $("#EmailIdDio1").val();
+                data.Country = $("#CountryOfDiocese1").val();
+                data.Address = $("#AddressDio1").val();
+                data.ActiveCkeck = ("Active");
+
+                $('#ActInActDisErrorMessage').text("");
+                var act1 = $('#ActiveCheckDio1').is(":checked");
+                var act2 = $('#ActiveCheckDio2').is(":checked");
+
+                if ($('#DioProvince1').val() == "0") {
+                    alert("Please Select Province Name ");
+                    return false;
+                }
+                else if (data.State == "0") {
+                    alert("Please Select State Name");
+                    return false;
+                }
+                else if (data.DioceseName == "") {
+                    alert("Please enter the Diocese Name");
+                    return false;
+                }
+
+                else if (act1 == false && act2 == false) {
+                    $('#ActInActDisErrorMessage').text("please select any one Active or InActive");
+                    return false;
+                }
+                else if (data.Country == "") {
+                    alert("Please enter the country");
+                    return false;
+                }
+                $.ajax({
+                    url: "/IdGenerate/SaveDioceseData",
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify(data),
+                    success: function (response2) {
+                        if (response2.length > 0) {
+                            var allDate2 = [];
+                            var omObj2 = {};
+                            $('#DioceseNameCH').html('').select2({ data: [{ id: '', text: '' }] });
+                            $('#DioceseNameCOS').html('').select2({ data: [{ id: '', text: '' }] });
+                            $('#DioceseNameDisSec').html('').select2({ data: [{ id: '', text: '' }] });
+                            $('#DioceseNameProv').html('').select2({ data: [{ id: '', text: '' }] });
+                            $('#DioceseNameCong').html('').select2({ data: [{ id: '', text: '' }] });
+
+                            allDate2.push({ id: '0', text: '-- Select Diocese Name --' });
+                            for (var i = 0; i < response2.length; i++) {
+                                allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                            }
+                            $("#DioceseNameCH").html('').select2({
+                                data: allDate2
+                            });
+                            $("#DioceseNameCOS").html('').select2({
+                                data: allDate2
+                            });
+                            $("#DioceseNameDisSec").html('').select2({
+                                data: allDate2
+                            });
+                            $("#DioceseNameProv").html('').select2({
+                                data: allDate2
+                            });
+                            $("#DioceseNameCong").html('').select2({
+                                data: allDate2
+                            });
+
+                            //var option = ' <option value="' + $("#DioceseName1").val() + '">' + $("#DioceseName1").val() + '</option>';
+                            //   $('#DioceseNameCong').appendTo(option);
+                        }
+                        // $("#MyDioceseForm").clearForm();
+                        $('#MyModal').modal('hide');
+                    },
+                    error: function (er) {
+                    }
+                });
+            });
+            $("#SearchTxt").on('input', function () {
+                GetGrid();
+            });
+            $("#StartingId").on('change', function () {
+                GetGrid();
+            });
+            $("#LastId").on('change', function () {
+                GetGrid();
+            });
+            function GetGrid() {
+                //alert();
+                var firstItem = $("#StartingId").val();
+                var lastItem = $("#LastId").val();
+                var SearchTxt = $("#SearchTxt").val();
+                var prov = $('#ProvId').val();
+                var archieve = "";
+                //if (e != "") {
+                //    archieve = "archieve";
+                //}
+                //alert(firstItem);
+                jQuery.ajax({
+                    url: '/Community/GetGridForProv',
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ name: prov, firstItem: firstItem, lastItem: lastItem, SearchTxt: SearchTxt, Archieve: archieve }),
+                    success: function (result) {
+                        
+                        $("#DynamicCommunityGrid").empty();
+                        $("#DynamicCommunityGrid").html(result);
+                        var countdata = $("#cnt").val();
+                        //alert(countdata);
+                        $('#totalcount').html(countdata);
+                        //$('#example').DataTable({       
+                        //    dom: 'Bfrtip',
+                        //    buttons: [
+                        //        'columnsToggle'
+                        //    ],
+                        //    searching: false,
+                        //    paging: false,
+                        //    info: false,
+                        //    "order": [[1, "asc"]],
+                        //    'columnDefs': [{
+                        //        'targets': [0, 4, 6, 7], // column index (start from 0)
+                        //        'orderable': false, // set orderable false for selected columns
+                        //    }]
+                        //});
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            }
+        </script>
+    }
+

@@ -1,0 +1,47 @@
+﻿@using Generalate.Controllers;
+@{ int i = 0;
+    var memberList = ViewBag.MembersList as List<GetAllPrileView>;
+}
+@if (memberList != null && memberList.Any())
+{
+    for (i = 0; i <= memberList.Count / 3; i++)
+    {
+        <div class="row" style="margin:15px">
+            @for (int j = 0; j <= 2; j++)
+            {
+                int count = i * 3 + j;
+                if (count < memberList.Count)
+                {
+                    var member = memberList[count];
+                    var image = !string.IsNullOrEmpty(member.Image) ? member.Image : "";
+                    <div class="col-md-4">
+                        <a href='/Home/MemberDetails?id=@member.MemberId'>
+                            <div class="row" style="margin:5px;border:1px solid black;height:100px">
+                                <div class="col-md-4" style="margin-top:10px">
+                                    @if (image == "")
+                                    {
+                                        <img style="max-width:75px; max-height: 79px;" src="~/Image/Logo/NoImage.jpg" />
+                                    }
+                                    else
+                                    {
+                                        <img style="max-width:75px; max-height: 79px;" src="~/Image/Primarydetails/@image" />
+                                    }
+                                </div>
+                                <div class="col-md-8" style="margin-top:5px;margin-bottom:5px">
+                                    <p>@member.Name</p>
+                                    <p>@member.EmailId</p>
+                                    <p>@member.MobileNo</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+            }
+        </div>
+    }
+}
+
+
+
+

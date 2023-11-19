@@ -1,0 +1,171 @@
+﻿@model Generalate.Models.Tbl_Cong
+@using Generalate.Controllers;
+
+@{
+    var viewpermissions = Session["TopmenuPermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+
+}
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th class="hide-1" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Title");}</span></th>
+                <th class="hide-2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                <th class="hide-3" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("View_Documents");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = 1;
+                if (ViewBag.allinstitution == null)
+                {
+                    <tr>
+                        <td colspan="8">No Data Available</td>
+                    </tr>
+                }
+                else
+                {
+                    foreach (var item in @ViewBag.allinstitution as IEnumerable<Generalate.Models.Tbl_CongrationsData>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td class="hide-1">@ji</td>
+                            <td>@item.Title</td>
+                            <td class="hide-2">@item.Date</td>
+                            <td class="hide-3">
+                                @if (@item.Description.Length > 30)
+                                {
+                                    <span>@item.Description.ToString().Substring(0, 30)</span><span class="Mytooltip" style="color:blue; font:bold;" data-toggle="tooltip" data-placement="top" title="@item.Description.ToString()"> ...<span>@{@HomeController.GetControlTextByControlId("More");}</span></span>
+                                }
+                                else
+                                {
+                                    @item.Description
+                                }
+                            </td>
+                            <td>
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.File))
+                                    {
+                                        <a target="_blank" href="~/Image/Congation/@item.File"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("Not_Available");}</span></a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{
+                                    var ispermissionedit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "MinutesList");
+                                    if (ispermissionedit != null)
+                                    {
+
+                                        <button type="button"><a href="../Home/CongrationList2_MeetingMin?ide=@item.id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditCongrationData"></i></a></button>
+                                    }
+                                    var ispermissiondelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "MinutesList");
+                                    if (ispermissiondelete != null)
+                                    {
+
+                                        <button type="button"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash-o DeleteCongDataMM"></i></button>
+                                    }
+                                    var ispermissionview = viewpermissions.FirstOrDefault(x => x.Viewpermission == true && x.PageName == "MinutesList");
+                                    if (ispermissionview != null)
+                                    {
+
+                                        <button type="button"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-eye CongrationDataView"></i></button>
+                                    }
+                                }
+                            </td>
+                            <td></td>
+                        </tr>
+                        ji++;
+                    }
+                }
+
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.CommunityView').on("click", function () {
+            $('#myModal3').modal('show');
+            var id = $(this).attr("data-val");
+            alert(id);
+            GetAllCommunityById1(id);
+        });
+        $(".DeleteCongDataMM").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Home/DeleteCongData12?id=" + id;
+            }
+        });
+    });
+    function GetAllCommunityById1(id) {
+        $.ajax({
+            url: "/IdGenerate/GetAllCommunityById1?id=" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $("#DisSecRegCommunity").text(data[0].DisSec);
+                $("#CommunityCodeCommunity").text(data[0].CommCode);
+                $("#CommunityNameCommunity").text(data[0].CongregationName);
+                $("#PlaceCommunity").text(data[0].Place);
+                $("#PhoneCommunity").text(data[0].Phone);
+                $("#CountryCommunity").text(data[0].Country);
+                $("#EmailCommunity").text(data[0].EmailId);
+                $("#ActiveCommunity").text(data[0].ActiveCkeck);
+                $("#DioceseNameCommunity").text(data[0].Diocese);
+                $("#ActivitiesCommunity").text(data[0].Activities);
+                $("#AddressCommunity").text(data[0].Address);
+                $("#VissionCommunity").text(data[0].Vission);
+                $("#MissionCommunity").text(data[0].Mission);
+
+                $("#FileCommunity").attr("href", "/Images/CommunitiesSocialCentresDoc/" + data[0].File);
+            },
+            error: function (er) {
+            }
+        });
+    }
+</script>
+<script>
+    $(document).ready(function () {
+        $('.CongrationDataView').on("click", function () {
+            $('#myModal1').modal('show');
+            var id = $(this).attr("data-val");
+            GetAllGenMeetingById1(id);
+        });
+    });
+
+    function GetAllGenMeetingById1(id) {
+        $.ajax({
+            url: "/IdGenerate/GetAllGenMeetingById1?id=" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $("#TitleTrust").text(data.Title);
+                $("#DateTrust").text(data.Date);
+                $("#DescriptionTrust").text(data.Description);
+                $("#FileTrust").attr("href", "/Image/Congation/" + data.File);
+            },
+            error: function (er) {
+            }
+        });
+    }
+    function openNav() {
+        //alert();
+        $("#mySidenav").css("width", "250px").toggle();
+        //document.getElementById("mySidenav").style.width = "250px";
+    }
+    function closeNav() {
+        document.getElementById("mySidenav").style.width = "0";
+    }
+</script>

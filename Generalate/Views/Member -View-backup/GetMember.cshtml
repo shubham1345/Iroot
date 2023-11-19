@@ -1,0 +1,146 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "GetMember";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var provinceList = new SelectList(ViewBag.ProvinceList, "Id", "Name");
+}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        @*<div class="col-md-12 overflow-daily" style="margin-right:-5px;margin-left:5px;height:600px;">*@
+        <div class="col-md-12 " style="margin-right:-5px;margin-left:5px;height:auto;">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1"> <span>@{@HomeController.GetControlTextByControlId("Total_Member");}</span></div>
+                <div class="panel-body">
+                    <div class="row">
+                        @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                        {
+                            <div class="col-sm-4">
+                                <label><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></label>
+                                @Html.DropDownList("drpProvice", (IEnumerable<SelectListItem>)ViewBag.ProvinceList, "Please select provice", new { id = "drpProvice", @class = "form-control" })
+                                @*<a id="btnSearch"> <i class="fa fa-search" aria-hidden="true"></i></a>*@
+                            </div>
+                        }
+                        @*<div class="col-sm-4">
+                                <a href="~/ExcelSampleFiles/UPloadMemberSampleFile.xlsx" download>Download Sample Excel</a>
+                            </div>*@
+                    </div>
+                    <input type="hidden" value="@ViewBag.ProvinceId" id="hdnProvinceId"/>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"> <span>@{@HomeController.GetControlTextByControlId("Total_Member");}</span></h3>
+                                </div>
+                                <table class="table table-bordered" id="Memdatatbl03">
+                                    <thead>
+                                        <tr>
+                                            <th>Province Name</th>
+                                            <th>Name</th>
+                                            <th>File No.</th>
+                                            <th>View Profile</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        var proviceId = "";
+        $(function () {
+           
+            if ($("#hdnProvinceId").val() != "") {
+                $("#drpProvice").val($("#hdnProvinceId").val());
+            }
+            $('#drpProvice').select2();
+            GetAllMemberByProvice();
+        })
+
+        function GetAllMemberByProvice() {
+            $('#Memdatatbl03').DataTable().destroy();
+            if ($("#hdnProvinceId").val() != "" && $("#drpProvice option:selected").val() == "") {
+                proviceId = $("#hdnProvinceId").val();
+            }
+            if ($("#drpProvice option:selected").val() == "") {
+                proviceId = $("#drpProvice option:selected").val();
+            }
+            else {
+                proviceId = $("#drpProvice option:selected").val();
+            }
+            var datatable = $('#Memdatatbl03')
+                .DataTable({
+                    "sAjaxSource": "/Home/GetAllPrileViewData?province=" + proviceId,
+                    //"fnServerParams": function (aoData) {
+                    //    aoData.push({ "province": $("#drpProvice option:selected").val() });
+                    //},
+                    //'data': function (data) {
+                    //    data['province'] = $("#drpProvice option:selected").val();
+                    //    data = data;
+                    //    return data;
+                    //},
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": true,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "columns": [
+                        {
+                            "data": "ProvinceName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        }, {
+                            "data": "FileNo",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "MemberId",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != "") {
+                                    return '<a href="/Home/MemberDetails?id=' + data + '">View Details</a>';
+                                }
+                                else {
+
+                                    return '<a href="#">No Details</a>';
+                                }
+                            }
+                        },
+                    ]
+                });
+
+        }
+
+        $("#drpProvice").on("change", function () {
+            GetAllMemberByProvice();
+        });
+
+        //$("#btnSearch").click(function (e) {
+        //    e.preventDefault();
+        //    $('#Memdatatbl03').DataTable().draw();
+
+        //});
+    </script>
+}

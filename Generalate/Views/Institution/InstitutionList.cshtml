@@ -1,0 +1,705 @@
+﻿@using Generalate.Controllers;
+@model IEnumerable<Generalate.Models.Tbl_LandDocuments>
+@{
+    ViewBag.Title = "Institution List";
+}
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
+
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <div class="row">
+                        <div class="col-sm-4 text-center"><span style="color:white;font-weight:bold;"><span>@{@HomeController.GetControlTextByControlId("Institution_Name");}</span> @{@ViewBag.name} (@{@ViewBag.id})</span> </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a data-toggle="tab" href="#Institution" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></a></li>
+                                    <li><a data-toggle="tab" href="#LandDocument" class="sis_tab_a click_1"><span>@{@HomeController.GetControlTextByControlId("Land_Document");}</span> </a></li>
+                                    <li><a data-toggle="tab" href="#Summary" class="sis_tab_a click_2"><span>@{@HomeController.GetControlTextByControlId("Summary");}</span></a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="Institution" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <div class="col-md-12 brd-panel overflow-daily" style="height:400px;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <h4 class="std_head well-sm jss_form"><span>@{@HomeController.GetControlTextByControlId("Institution_Details");}</span> </h4>
+                                                                    <form id="FormInstitution" action="/Institution/AddInstitution" method="post" enctype="multipart/form-data">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Title");}</span></label>
+                                                                                <input type="hidden" id="MyID" name="MyId" value="@{@ViewBag.id}" />
+                                                                                <input type="hidden" id="ID" name="Id" value="" />
+                                                                                <input type="text" id="Tial" name="Tial" class="form-control">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Date");}</span></label>
+                                                                                <input type="text" id="Date11" name="Date" readonly class="form-control datepicker">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label> <span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                                <input type="file" id="file" name="FileName" class="form-control" accept=".png,.jpg,.pdf,.jpeg">
+                                                                                <span id="file1"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Description");}</span></label>
+                                                                                <textarea type="text" id="Description" rows="5" name="Description" class="form-control"></textarea>
+                                                                            </div>
+
+                                                                            <button type="submit" class="btn btn-success pull-right" id="btnAddInstitution1"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="margin-top:40px;">
+                                                                    <table class="table table-striped table-bordered table-hover" id="FormationTbl">
+                                                                        <thead>
+                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Title");}</span> </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span> </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Action");}</span> </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="tbody">
+                                                                            @{
+                                                                                int i = 1;
+                                                                                foreach (var item in @ViewBag.Institution as IEnumerable<Generalate.Models.Tbl_Institution>)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>@i</td>
+                                                                                        <td>@item.Tial</td>
+                                                                                        <td>@item.Date</td>
+                                                                                        <td>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit InstEdit"></i></button>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o InstDelete"></i></button>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye InstView"></i></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="LandDocument" class="tab-pane fade brd-panel overflow-daily" style="height:400px;">
+                                        <div class="row">
+                                            <div class="col-md-12 brd-panel overflow-daily" style="height:400px;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <h4 class="std_head well-sm jss_form"><span>@{@HomeController.GetControlTextByControlId("Land_Document");}</span> </h4>
+                                                                    <form id="InstitutionLandForm" action="/Institution/AddInstitutionLand" method="post" enctype="multipart/form-data">
+                                                                        <input type="hidden" id="MyID" name="MyId" value="@{@ViewBag.id}" />
+                                                                        <input type="hidden" id="LandID" name="Id" value="" />
+
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Date");}</span> </label>
+                                                                                <input type="text" id="LandDate" name="Date" readonly class="form-control datepicker">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Establishment");}</span> </label>
+                                                                                <input type="text" id="LandYear" name="Year" class="form-control">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Institution_Name");}</span> </label>
+                                                                                <input type="text" id="LandInstitutionInstitutionName" name="ParisInstitutionName" value="@{@ViewBag.name}" class="form-control" readonly>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Document_category ");}</span> </label>
+                                                                                <input type="text" id="LandDocumentCategory" name="DocumentCategory" class="form-control">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label> <span>@{@HomeController.GetControlTextByControlId("Sub_Category");}</span> </label>
+                                                                                <input type="text" name="SubCategory" id="LandSubCategory" class="form-control">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("KhasaraNo");}</span> </label>
+                                                                                <input type="text" id="LandKhasara" name="Khasara" class="form-control">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Survey_No");}</span> </label>
+                                                                                <input type="text" name="SurveyNo" id="LandSurveyNo" class="form-control">
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Place");}</span> </label>
+                                                                                <input type="text" id="LandPlace" name="Place" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Title");}</span>  </label>
+                                                                                <input type="text" id="LandTital" name="Tital" class="form-control">
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Description");}</span>  </label>
+                                                                                <textarea type="text" id="LandDescription" rows="5" name="Description" class="form-control"></textarea>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label> <span>@{@HomeController.GetControlTextByControlId("Registry_Document");}</span> </label>
+                                                                                <input type="file" id="RegistryDocumentFile" class="form-control" name="RegistryDocumentFile">
+                                                                                <span id="RegistryDocumentFile1"></span>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Tax_bill");}</span>  </label>
+                                                                                <input type="file" id="TaxbillFile" class="form-control" name="TaxbillFile">
+                                                                                <span id="TaxbillFile1"></span>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Pavathi");}</span>  </label>
+                                                                                <input name="PavathiFile" type="file" class="form-control" id="PavathiFile">
+                                                                                <span id="PavathiFile1"></span>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("Map");}</span> </label>
+                                                                                <input type="file" id="MapFile" class="form-control" name="MapFile">
+                                                                                <span id="MapFile1"></span>
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("KhasaraDoc");}</span>  </label>
+                                                                                <input type="file" id="KhasaraFile" class="form-control" name="KhasaraFile">
+                                                                                <span id="KhasaraFile1"></span>
+                                                                            </div>
+                                                                            <button type="submit" class="btn btn-success pull-right" id="BtnSaveInsitutionLandDoc"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="margin-top:50px;">
+                                                                    <table class="table table-striped table-bordered table-hover" id="LandTable">
+                                                                        <thead>
+                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span>  </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Establishment");}</span> </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Parish");}</span> </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Place");}</span> </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Action");}</span> </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="tbody">
+                                                                            @{
+                                                                                int w = 1;
+                                                                                foreach (var item in Model as IEnumerable<Generalate.Models.Tbl_LandDocuments>)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>@w.</td>
+                                                                                        <td>@item.Year</td>
+                                                                                        <td>@item.ParisInstitutionName</td>
+                                                                                        <td>@item.Place</td>
+                                                                                        <td>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditInstitutionDoc"></i></button>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteInstitutionDoc"></i></button>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye InstitutionDocView"></i></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    w++;
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="Summary" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12 brd-panel overflow-daily" style="height:400px;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <h4 class="std_head well-sm jss_form"> <span>@{@HomeController.GetControlTextByControlId("Summary");}</span> </h4>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <table class="table table-striped  table-hover" id="SummaryTable" style="margin-top:20px;">
+                                                                        <thead>
+                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span>  </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Title");}</span>  </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span> </th>
+                                                                                <th><span>@{@HomeController.GetControlTextByControlId("Description");}</span> </th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="tbody">
+                                                                            @{
+                                                                                int Q = 1;
+                                                                                foreach (var item in @ViewBag.summaryData as IEnumerable<Generalate.Models.Tbl_Institution>)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>@Q.</td>
+                                                                                        <td>@item.Tial</td>
+                                                                                        <td>@item.Date</td>
+                                                                                        <td>@item.Description</td>
+                                                                                    </tr>
+                                                                                    Q++;
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="myModal1" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" style="margin-top:60px;">
+                                        <div class="modal-content" style="width:1050px;">
+                                            <div class="modal-header">
+                                                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row" style="margin-top:20px; margin-right:10px;">
+                                                    <div class="col-sm-12">
+                                                        <table class="table table-bordered" id="TblPersionalDetails">
+                                                            @try
+                                                            {
+                                                                <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></h4></tr>
+                                                                <tr>
+                                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Title");}</span></th>
+                                                                    <td style="width:30%"><span id="TitleOfficial"></span></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                                    <td><span id="DateOfficial"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                                    <td><span id="DescriptionOfficial"></span>  </td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                                                    <td><a target="_blank" id="FileOfficial" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                                                </tr>
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal fade" id="myModal2" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" style="margin-top:60px;">
+                                        <div class="modal-content" style="width:1050px;">
+                                            <div class="modal-header">
+                                                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Land_Document");}</span></h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="row" style="margin-top:20px; margin-right:10px;">
+                                                    <div class="col-sm-12">
+                                                        <table class="table table-bordered" id="TblPersionalDetails">
+                                                            @try
+                                                            {
+                                                                <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Land_Document");}</span></h4></tr>
+                                                                <tr>
+                                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                                    <td style="width:30%"><span id="LandDateLand"></span></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Establishment");}</span></th>
+                                                                    <td><span id="EstablishmentLand"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Institution_Name");}</span></th>
+                                                                    <td><span id="InstitutionNameLand"></span></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Document_category");}</span></th>
+                                                                    <td><span id="DocumentcategoryLand"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Sub_Category");}</span></th>
+                                                                    <td><span id="SubCategoryLand"></span></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("KhasaraNo");}</span></th>
+                                                                    <td><span id="KhasaraNoLand"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Survey_No");}</span></th>
+                                                                    <td><span id="SurveyNoLand"></span></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                                                                    <td><span id="PlaceLand"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Title");}</span></th>
+                                                                    <td><span id="TitleLand"></span></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                                    <td><span id="DescriptionLand"></span></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Registry_Document");}</span></th>
+                                                                    <td><a target="_blank" id="RegistryDocumentLand" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Tax_bill");}</span></th>
+                                                                    <td><a target="_blank" id="TaxbillLand" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Pavathi");}</span></th>
+                                                                    <td><a target="_blank" id="PavathiLand" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                                                    <th><span>@{@HomeController.GetControlTextByControlId("Map");}</span></th>
+                                                                    <td><a target="_blank" id="MapLand" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("KhasaraDoc");}</span></th>
+                                                                    <td><a target="_blank" id="KhasaraDocLand" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                                                    <th></th>
+                                                                    <td></td>
+                                                                </tr>
+                                                            }
+                                                            catch (Exception ex)
+                                                            {
+
+                                                            }
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+        {
+    @*<script src="~/Scripts/InstitutionJS.js"></script>*@
+    @*<script src="~/Scripts/additional/InstitutionUpdateDelete.js"></script>*@
+    <script>
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                localStorage.setItem('activeTab', $(this).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#FormationTbl').DataTable();
+            $('#LandTable').DataTable();
+            $('#SummaryTable').DataTable();
+        });
+    </script>
+    <script>
+        $(".InstEdit").on('click', function () {
+          //debugger;
+            $('#FormInstitution').attr('action', '/Institution/Update');
+            var id = $(this).attr("data-val");
+            $("#btnAddInstitution1").text("Update");
+            $(".brd-panel").scrollTop(0);
+            GetInstitutionById(id);
+        });
+        function GetInstitutionById(id) {
+            $.ajax({
+                url: "/Institution/GetInstitutionById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    if (result != null) {
+                        $("#ID").val(result.Id);
+                        $("#MyID").val(result.MyId);
+                        $("#Tial").val(result.Tial);
+                        $("#Date").val(result.Date);
+                        $("#Description").val(result.Description);
+                        $("#file1").text(result.FileName);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        }
+        $(".InstDelete").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Institution/DeleteInstitution?id=" + id;
+            }
+        });
+    </script>
+    <script>
+        $(".EditInstitutionDoc").on('click', function () {
+          //debugger;
+            $('#InstitutionLandForm').attr('action', '/Institution/UpdateInstitutionLand');
+            var id = $(this).attr("data-val");
+            $("#BtnSaveInsitutionLandDoc").text("Update");
+            $(".brd-panel").scrollTop(0);
+            GetInstitutionLandDocById(id);
+        });
+        function GetInstitutionLandDocById(id) {
+            $.ajax({
+                url: "/Institution/GetInstitutionLandDocById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    if (result != null) {
+                        $("#LandID").val(result.Id);
+                        $("#MyID").val(result.MyId);
+                        $("#LandDate").val(result.Date);
+                        $("#LandYear").val(result.Year);
+                        $("#LandInstitutionName").val(result.ParisInstitutionName);
+                        $("#LandDocumentCategory").val(result.DocumentCategory);
+                        $("#LandSubCategory").val(result.SubCategory);
+                        $("#LandKhasara").val(result.Khasara);
+                        $("#SurveyNo").val(result.SurveyNo);
+                        $("#LandPlace").val(result.Place);
+                        $("#LandDescription").val(result.Description);
+                        $("#LandTital").val(result.Tital);
+                        $("#RegistryDocumentFile1").text(result.RegistryDocumentFile);
+                        $("#TaxbillFile1").text(result.TaxbillFile);
+                        $("#PavathiFile1").text(result.PavathiFile);
+                        $("#MapFile1").text(result.MapFile);
+                        $("#KhasaraFile1").text(result.KhasaraFile);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        }
+        $(".DeleteInstitutionDoc").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Institution/DeleteInstitutionLandDocById?id=" + id;
+            }
+        });
+    </script>
+    @*popupview*@
+    <script>
+        $('.InstView').on("click", function () {
+            $('#myModal1').modal('show');
+            var id = $(this).attr("data-val");
+            GetAllInstitutionById1(id);
+        });
+        function GetAllInstitutionById1(id) {
+            $.ajax({
+                url: "/Institution/GetAllInstitutionById1?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#TitleOfficial").text(data.Tial);
+                    $("#DateOfficial").text(data.Date);
+                    $("#DescriptionOfficial").text(data.Description);
+                    $("#FileOfficial").attr("href", "/Image/Institution/" + data.FileName);
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        //INSITUTION//
+        $(document).ready(function () {
+            datatable = $('#TblCouncil')
+                .datatable({
+                    "sajaxsource": "/Home/GetAllInstitutionMeetingDetails",
+                    "retrieve": true,
+                    "bserverside": true,
+                    "bprocessing": true,
+                    "bsearchable": false,
+                    "order": [[1, 'asc']],
+                    "autowidth": false,
+                    "columns": [
+                        {
+                            "data": "title",
+                            "autowidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "date",
+                            "autowidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                       
+                        {
+                            "data": "description",
+                            "autowidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+
+                        {
+                            "data": "Upload Documents",
+                            "autowidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "id",
+                            // "autowidth": true,
+                            //"width": "100px",
+                            "searchable": true,
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="' + data + '" class="fa fa-edit btnmemedit" onclick=updatemember(' + data + ')></i></button><button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="' + data + '" class="fa fa-trash-o btnmemdelete" onclick=deletemember(' + data + ')></i></button><button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="' + data + '" class="fa fa-eye memberview" onclick=viewmember(' + data + ')></i></button>';
+                                }
+                            }
+                        }
+                    ]
+                });
+        });
+
+    </script>
+
+    <script>
+        $('.InstitutionDocView').on("click", function () {
+            $('#myModal2').modal('show');
+            var id = $(this).attr("data-val");
+            GetLandDocumentsById1(id);
+        });
+        function GetLandDocumentsById1(id) {
+            $.ajax({
+                url: "/Institution/GetLandDocumentsById1?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#LandDateLand").text(data.Date);
+                    $("#EstablishmentLand").text(data.Year);
+                    $("#InstitutionNameLand").text(data.ParisInstitutionName);
+                    $("#DocumentcategoryLand").text(data.DocumentCategory);
+                    $("#SubCategoryLand").text(data.SubCategory);
+                    $("#KhasaraNoLand").text(data.Khasara);
+                    $("#SurveyNoLand").text(data.SurveyNo);
+                    $("#PlaceLand").text(data.Place);
+                    $("#TitleLand").text(data.Tital);
+                    $("#DescriptionLand").text(data.Description);
+
+                    $("#RegistryDocumentLand").attr("href", "/Image/Institution/" + data.RegistryDocumentFile);
+                    $("#TaxbillLand").attr("href", "/Image/Institution/" + data.TaxbillFile);
+                    $("#PavathiLand").attr("href", "/Image/Institution/" + data.PavathiFile);
+                    $("#MapLand").attr("href", "/Image/Institution/" + data.MapFile);
+                    $("#KhasaraDocLand").attr("href", "/Image/Institution/" + data.KhasaraFile);
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "200") {
+            $("#mymessage").html("<b>Data saved successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "204") {
+            $("#mymessage").html("<b>Some Error Occured !</b>");
+            $("#mymessage").css("color", "red");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "201") {
+            $("#mymessage").html("<b>Data Updated Successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "202") {
+            $("#mymessage").html("<b>Data Deleted Successfully !</b>");
+            $("#mymessage").css("color", "blue");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+}
+
+<style>
+    #Date11, #LandDate {
+        color: black
+    }
+</style>

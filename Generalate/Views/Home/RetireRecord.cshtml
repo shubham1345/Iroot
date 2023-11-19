@@ -1,0 +1,80 @@
+﻿@using Generalate.Controllers;
+@model Generalate.Models.tbl_Retirement
+@{
+    ViewBag.Title = "RetireRecord";
+
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div id="printbox">
+                    <div class="col-sm-12">
+                        <div class="panel-group" style="background-color:#001f6b">
+                            <div class="panel panel-primary">
+                                <div class="tab panel-heading" style="background-color:#001f6b;text-align:center;">
+                                    <a class="hidden-print" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Retirement_Details");}</span></a>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <input type="button" class="btn btn-success pull-right hidden-print" value="Print" id="btnPrint" />
+                                </div>
+                                <div id="DeathRecord" class="row" style="margin-left:30px; margin-right:30px;">
+                                    <table class="table table-bordered" id="TblRetireRecord">
+                                        @try
+                                        {
+                                            <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Retirement_Details");}</span></h4></tr>
+                                            <tr>
+                                                <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                <td style="width:30%"><span id="Name">@Model.Name</span></td>
+                                                <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                                                <td><span id="SirName">@Model.SirName</span></td>
+                                            </tr>
+                                            <tr>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                <td><span id="DOR"></span>@Model.DOR</td>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Age");}</span></th>
+                                                <td><span id="Age"></span>@Model.Age</td>
+                                            </tr>
+                                            <tr>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Reason");}</span></th>
+                                                <td><span id="Reason"></span>@Model.Reason</td>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Community");}</span></th>
+                                                <td><span id="Community">@Model.Community</span></td>
+                                            </tr>
+
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        }
+
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script>
+        $('#btnPrint').on("click", function () {
+            $("#TblRetireRecord").css("display", "block");
+            $('#printbox').printThis({
+                afterPrint: function () {
+                    $("#TblRetireRecord").css("display", "block");
+                }
+            });
+        });
+    </script>
+
+}

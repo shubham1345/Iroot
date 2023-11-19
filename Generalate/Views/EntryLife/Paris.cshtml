@@ -1,0 +1,594 @@
+﻿@model IEnumerable<Generalate.Models.ViewModels.FormationViewModel>
+@{
+    ViewBag.Title = "Details";
+
+}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<ul class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="index.html">Detail</a></li>
+</ul>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-sm-4">
+                                    <h3><span id="PName">@TempData["Name"]</span>  <span id="PSirName">@TempData["SirName"]</span>(<span id="PMemberId">@TempData["MemberId"]</span>)</h3>
+                                </div>
+                                <div class="col-sm-8">
+                                    <a href="#"><i class="fa fa-window-close fa-lg pull-right" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- row started -->
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <!-- col-msx-12 started -->
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#add" class="sis_tab_a click">Trust Details</a></li>
+                                    <li><a data-toggle="tab" href="#add1" class="sis_tab_a click">Institution Details </a></li>
+                                    <li><a data-toggle="tab" href="#add2" class="sis_tab_a click_1">Land Document </a></li>
+                                    <li><a data-toggle="tab" href="#add3" class="sis_tab_a click_2">Summary</a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="add" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form"> Trust Details</h4>
+                                                <div class="col-sm-6" style="border-right: 1px solid #eee;">
+                                                    <!-- col-sm-6 started -->
+
+                                                    <div class="form-group">
+                                                        <label>Year of establacement  :</label>
+                                                        <input type="text" id="Description" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Paresh name  :</label>
+                                                        <input type="text" id="StageOfFormation" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Place  :</label>
+                                                        <input type="text" id="DateYear" class="form-control">
+                                                    </div>
+
+
+
+                                                </div><!-- col-sm-6 closed -->
+                                                <div class="col-sm-6">
+                                                    <!-- col-sm-6 started -->
+                                                    <div class="form-group">
+                                                        <label>Address   : </label>
+                                                        <input type="text" id="Place" class="form-control">
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Tial : </label>
+                                                        <input type="text" id="Superior" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Date : </label>
+                                                        <input type="text" id="Formator" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Description : </label>
+                                                        <input type="text" id="Minister" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>File : </label>
+
+                                                        <input type="file" id="file">
+
+                                                    </div>
+                                                    @*<h4 class="std_head well-sm jss_form"> Father Details</h4>*@
+                                                    <button class="btn btn-success" id="btnFormationSave" onclick="return Add();"> Save</button>
+                                                    <button class="btn btn-success" id="btnFormationUpdate" data-val=""> Update</button>
+
+                                                    <button class="btn btn-danger pull-right" id="btnClear"> Clear</button>
+                                                </div><!-- col-sm-6 closed -->
+                                            </div><!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            <th> S.No. </th>
+                                                            <th> Year of establacement </th>
+                                                            <th> Paresh name</th>
+                                                            <th>  Place</th>
+                                                            <th> Tital</th>
+                                                            <th> File</th>
+                                                            <th> Action</th>
+                                                            @*<th> View Pdf </th>*@
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @*@{
+                                                            int i = 1;
+                                                            foreach (var item in Model as IEnumerable<Generalate.Models.ViewModels.FormationViewModel>)
+                                                            {
+                                                                <tr>
+                                                                    <td>@i</td>
+                                                                    <td>@item.Description</td>
+                                                                    <td>@item.StageofFormation</td>
+                                                                    <td>@item.Date_Year</td>
+                                                                    <td>@item.Place</td>
+                                                                    <td>@item.Superior</td>
+                                                                    <td>@item.Formator</td>
+                                                                    <td>@item.Minister</td>
+                                                                    <td></td>
+                                                                    <td>
+                                                                        <button class="btn btn-success Edit" data-val="@item.Id">Edit</button>
+                                                                        <button class="btn btn-danger Delete" data-val="@item.Id">Delete</button>
+                                                                    </td>
+                                                                </tr>
+                                                                i++;
+                                                            }
+                                                        }*@
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                    <div id="add1" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form">Institution Details </h4>
+                                                <div class="col-sm-6" style="border-right: 1px solid #eee;">
+                                                    <div class="form-group">
+                                                        <label>Year of establacement  :</label>
+                                                        <input type="text" id="Acad111" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Institution name  :</label>
+                                                        <input type="text" id="Acad1" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Place  :</label>
+                                                        <input type="text" id="Acad2" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Address  :</label>
+                                                        <input type="text" id="Acad3" class="form-control">
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <label>Teliphone Number  :</label>
+                                                        <input type="text" id="Acad4" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Tital  :</label>
+                                                        <input type="text" id="Acad5" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Date :</label>
+                                                        <input type="text" id="Acad6" class="form-control">
+                                                    </div>
+                                                </div><!-- col-sm-6 closed -->
+                                                <div class="col-sm-6">
+                                                    <!-- col-sm-6 started -->
+                                                    <div class="form-group">
+                                                        <label>Description  :</label>
+                                                        <input type="text" id="Acad7" class="form-control">
+                                                    </div>
+                                                        <div class="form-group">
+                                                        <label>Upload Doccument : </label>
+
+                                                        <input type="file" id="file1">
+
+                                                    </div>
+                                                    @*<h4 class="std_head well-sm jss_form"> Father Details</h4>*@
+                                                    @*<button class="btn btn-success" id="btnFormationSave1"  onclick="return Adds();"> Save</button>*@
+                                                    <button type="button" class="btn btn-primary" id="btnAdd1" onclick="return Adds();" style="background-color:#001f6b">Add</button>
+                                                    <button class="btn btn-success" id="btnFormationUpdate" data-val=""> Update</button>
+
+                                                    <button class="btn btn-danger pull-right" id="btnClear"> Clear</button>
+                                                </div><!-- col-sm-6 closed -->
+                                            </div><!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            @*<th> S.No. </th>*@
+                                                            <th> S.No. </th>
+                                                            <th> Year of establacement </th>
+                                                            <th> Paresh name</th>
+                                                            <th>  Place</th>
+                                                            <th> Tital</th>
+                                                            <th> File</th>
+                                                            <th> Action</th>
+                                                            @*<th> View Pdf </th>*@
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @{
+                                                            //int i = 1;
+                                                            //foreach (var item in Model as IEnumerable<Generalate.Models.ViewModels.FormationViewModel>)
+                                                            {
+                                                                <tr>
+                                                                    @*<td>@i</td>*@
+                                                                    @*<td>@item.Course</td>
+                                                                    <td>@item.Title</td>
+                                                                    <td>@item.DegreeObtained</td>
+                                                                    <td>@item.Univercity</td>
+                                                                    <td>@item.Fromdate</td>
+                                                                    <td>@item.ToDate</td>
+                                                                    <td>@item.ClassObtained</td>
+                                                                    <td>@item.Medium</td>
+                                                                    <td>@item.Address</td>
+                                                                    <td>@item.Remarks</td>
+                                                                    <td>@item.file1</td>*@
+
+                                                                    <td></td>
+                                                                    @*<td>
+                                                                        <button class="btn btn-success Edit" data-val="@item.Id">Edit</button>
+                                                                        <button class="btn btn-danger Delete" data-val="@item.Id">Delete</button>
+                                                                    </td>*@
+                                                                </tr>
+                                                                //i++;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                    <div id="add2" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form">Land Document</h4>
+                                                <div class="col-sm-6" style="border-right: 1px solid #eee;">
+                                                    <div class="form-group">
+                                                        <label>Year:</label>
+                                                        <input type="text" id="ClassObtained" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Document category :</label>
+                                                        <input type="text" id="Medium" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Sub Category :</label>
+                                                        <input type="text" id="Address" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Khasara: : </label>
+                                                        <input type="text" id="Remarks" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Survey No :  </label>
+                                                        <input type="text" id="Remarks" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Date  : </label>
+                                                        <input type="text" id="Remarks" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Description : </label>
+                                                        <input type="text" id="Remarks" class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Registry  Document : </label>
+
+                                                        <input type="file" id="file1">
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Tax bill : </label>
+
+                                                        <input type="file" id="file1">
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Pavathi: </label>
+
+                                                        <input type="file" id="file1">
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Map: </label>
+
+                                                        <input type="file" id="file1">
+
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Khasara: </label>
+
+                                                        <input type="file" id="file1">
+
+                                                    </div>
+
+                                                    @*<h4 class="std_head well-sm jss_form"> Father Details</h4>*@
+                                                    <button class="btn btn-success" id="btnFormationSave"> Save</button>
+                                                    <button class="btn btn-success" id="btnFormationUpdate" data-val=""> Update</button>
+
+                                                    <button class="btn btn-danger pull-right" id="btnClear"> Clear</button>
+                                                </div><!-- col-sm-6 closed -->
+                                            </div><!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            @*<th> S.No. </th>*@
+                                                            <th> S.No. </th>
+                                                            <th> Year of establacement </th>
+                                                            <th> Paresh name</th>
+                                                            <th>  Place</th>
+                                                            <th> Tital</th>
+                                                            <th> File</th>
+                                                            <th> Action</th>
+                                                            @*<th> View Pdf </th>*@
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @{
+                                                            //int i = 1;
+                                                            //foreach (var item in Model as IEnumerable<Generalate.Models.ViewModels.FormationViewModel>)
+                                                            {
+                                                                <tr>
+                                                                    @*<td>@i</td>*@
+                                                                    @*<td>@item.Course</td>
+                                                                    <td>@item.Title</td>
+                                                                    <td>@item.DegreeObtained</td>
+                                                                    <td>@item.Univercity</td>
+                                                                    <td>@item.Fromdate</td>
+                                                                    <td>@item.ToDate</td>
+                                                                    <td>@item.ClassObtained</td>
+                                                                    <td>@item.Medium</td>
+                                                                    <td>@item.Address</td>
+                                                                    <td>@item.Remarks</td>
+                                                                    <td>@item.file1</td>*@
+
+                                                                    <td></td>
+                                                                    @*<td>
+                                                                        <button class="btn btn-success Edit" data-val="@item.Id">Edit</button>
+                                                                        <button class="btn btn-danger Delete" data-val="@item.Id">Delete</button>
+                                                                    </td>*@
+                                                                </tr>
+                                                                //i++;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+
+                                    <div id="add3" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- row started -->
+                                            <div class="col-sm-12 table-responsive">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form">Sumary Details</h4>
+                                                <div class="col-sm-6" style="border-right: 1px solid #eee;">
+                                                    <!-- col-sm-6 started -->
+                                                                                                                                                                                                  
+
+
+                                             
+                                                
+                                                    </div><!-- col-sm-6 closed -->
+                                            </div><!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            @*<th> S.No. </th>*@
+                                                            <th> Date </th>
+                                                            <th> Title</th>
+                                                            <th> file1</th>
+                                                            <th> Action</th>
+                                                            @*<th> View Pdf </th>*@
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @{
+                                                            //int i = 1;
+                                                            //foreach (var item in Model as IEnumerable<Generalate.Models.ViewModels.FormationViewModel>)
+                                                            {
+                                                                <tr>
+                                                                    @*<td>@i</td>*@
+                                                                    @*<td>@item.Course</td>
+                                                                    <td>@item.Title</td>
+                                                                    <td>@item.DegreeObtained</td>
+                                                                    <td>@item.Univercity</td>
+                                                                    <td>@item.Fromdate</td>
+                                                                    <td>@item.ToDate</td>
+                                                                    <td>@item.ClassObtained</td>
+                                                                    <td>@item.Medium</td>
+                                                                    <td>@item.Address</td>
+                                                                    <td>@item.Remarks</td>
+                                                                    <td>@item.file1</td>*@
+
+                                                                    <td></td>
+                                                                    @*<td>
+                                                                        <button class="btn btn-success Edit" data-val="@item.Id">Edit</button>
+                                                                        <button class="btn btn-danger Delete" data-val="@item.Id">Delete</button>
+                                                                    </td>*@
+                                                                </tr>
+                                                                //i++;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+
+                                    <div id="add5" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- row started -->
+                                            <div class="col-sm-12 table-responsive">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form">Skillsets</h4>
+                                                <div class="col-sm-12">
+                                                    <!-- col-sm-6 started -->
+                                                    <div class="form-group">
+                                                        <label>Management Skills :</label><br>
+                                                        <label><input type="checkbox" value=""> Problem solving and analytical skills</label><br />
+                                                        <label><input type="checkbox" value=""> Initiative</label><br />
+                                                        <label><input type="checkbox" value=""> Adaptability to change</label><br />
+                                                        <label><input type="checkbox" value=""> Interpersonal skills</label><br />
+                                                        <label><input type="checkbox" value=""> Strategic thinking and planning abilities</label><br />
+                                                        <label><input type="checkbox" value=""> Time management</label><br />
+                                                        <label><input type="checkbox" value=""> Communication skills</label><br />
+                                                        <label>
+                                                            <input type="checkbox" value=""> Leadership </ label >< br />
+
+                                                            < label >< input type= "checkbox" value= "" > Teamwork </ label >
+
+                                                            </ div >
+
+                                                            </ div >< !--col - sm - 6 closed -->
+                                                            <div class="col-sm-12 table-responsive" style="margin-top:10px;">
+                                                                <!-- col-sm-6 started -->
+                                                                <div class="form-group">
+                                                                    <label>Additional Skills :</label><br>
+                                                                    <label class="checkbox-inline"><input type="checkbox" value="">Dancing</label>
+                                                                    <label class="checkbox-inline"><input type="checkbox" value="">Singing</label>
+                                                                    <label class="checkbox-inline"><input type="checkbox" value="">Compering</label>
+                                                                    <label class="checkbox-inline"><input type="checkbox" value="">Creative Content writing</label>
+                                                                    <label class="checkbox-inline"><input type="checkbox" value="">Coral Draw</label>
+                                                                    <label class="checkbox-inline"><input type="checkbox" value="">Photo shop</label>
+                                                                    <label class="checkbox-inline"><input type="checkbox" value="">Drawing</label>
+                                                                </div>
+                                                            </div><!-- col-sm-6 closed -->
+                                                    </div><!-- col-sm-12 closed -->
+                                                    <button class="btn btn-success pull-right"><a data-toggle="tab" href="#add4" class="button_a outsidelink_4">Next</a></button>
+                                                </div><!-- row closed -->
+                                            </div><!-- tab-pane fade closed -->
+
+                                            <div id="add4" class="tab-pane fade">
+                                                <!-- tab-pane fade started -->
+                                                <div class="row">
+                                                    <!-- row started -->
+                                                    <div class="col-sm-12">
+                                                        <!-- col-sm-12 started -->
+                                                        <h4 class="std_head well-sm jss_form"> Declaration</h4>
+                                                        <div class="col-sm-12">
+                                                            <!-- col-sm-6 started -->
+
+                                                            <div class="form-group">
+                                                                <label>Are you interested in College Assistance for Final Placement? : </label><br />
+                                                                <label class="checkbox-inline"><input type="checkbox" value="">Yes</label>
+                                                                <label class="checkbox-inline"><input type="checkbox" value="">No</label>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>If No, Please Give Reason : </label>
+                                                                <input type="text" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label>Agreement : </label>  <br />
+                                                                <label>
+                                                                    I Ms. / Mr.  <input type="text" class="form-control"> hereby agree that I shall abide by the Terms & Conditions for
+                                                                    Placement Assistance of St.Francis Institute of Management and Research.I shall keep transparency with the placement staff, in terms
+                                                                    of my placement through sources other than the placement cell of the college. I shall be honest and keep the college placement staff
+                                                                    informed if I am appearing for any interview not arranged by the college during the college placement procedure. I shall submit my offer
+                                                                    letter to the college irrespective of my placement through college or by self efforts.In case of any default,
+                                                                    I shall abide by the decision taken by the management in the matter.
+                                                                </label>
+                                                                <br />
+                                                                <label class="checkbox-inline"><input type="checkbox" value="">Agree</label>
+                                                                <label class="checkbox-inline"><input type="checkbox" value="">Disagree</label>
+                                                            </div>
+                                                        </div><!-- col-sm-6 closed -->
+                                                        <div class="col-sm-6">
+                                                            <!-- col-sm-6 started -->
+                                                            <button class="btn btn-success pull-right">Save</button>
+                                                        </div>
+                                                    </div><!-- col-sm-12 closed -->
+                                                </div><!-- row closed -->
+
+                                            </div><!-- tab-pane fade closed -->
+
+                                        </div><!-- tab-pane fade closed -->
+                                    </div><!-- col-msx-12  closed -->
+                                </div><!-- 1st row closed -->
+                            </div> <!-- container fluid closed -->
+                        </div><!--panel body closed-->
+                    </div><!--panel default closed-->
+                </div> <!-- Your Page Content Here -->
+            </div>   <!-- END PAGE CONTENT WRAPPER -->
+        </div>
+    </div>
+</div>
+
+
+
+
+@section scripts
+        {
+    <script src="~/css/Dashboard/FormationJS.js"></script>
+
+    <script>
+        $(".outsidelink").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click").css({ 'background-color': '#691a61', 'color': '#fff' });
+        });
+    </script>
+    <script>
+        $(".outsidelink_1").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_1").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".outsidelink_2").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_2").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click_1").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".outsidelink_3").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_3").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click_2").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".outsidelink_4").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_4").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click_3").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".nav li").click(function () {
+            $(".this").css('background-color', '#5BC0DE');
+        });
+    </script>
+
+
+}

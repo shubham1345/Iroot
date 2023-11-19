@@ -1,0 +1,1283 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "Directory2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <span class="aligntext">@{@HomeController.GetControlTextByControlId("Directory_Data");}</span>
+                    <input type="button" class="btn btn-success pull-right" value=@{@HomeController.GetControlTextByControlId("Print");} id="btnPrint" />
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row" style="margin-left: 40px;">
+                                <div class="col-md-12">
+                                    <div class="col-sm-3">
+                                        <label>@{@HomeController.GetControlTextByControlId("From Date");}</label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control datepicker" id="FromDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("From Date");}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label>@{@HomeController.GetControlTextByControlId("To Date");}</label>
+                                        <div class="form-group">
+                                            <input type="text" class="form-control datepicker" id="ToDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("To Date");}">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label>@{@HomeController.GetControlTextByControlId("Select Province");}</label>
+                                        <div class="form-group">
+                                            <select id="provinceid"  type="dropdown" multiple="multiple" >
+                                                @foreach(var item in ViewBag.Allprovince as IEnumerable<Generalate.Models.tbl_Province>)
+                                                {
+                                                    <option value="@item.Id">@item.ProvinceName</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-2" style="margin-top:20px">
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-success pull-right" id="btnfilterdata" value="@{@HomeController.GetControlTextByControlId("Filter");}" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div id="tblSocDiv">
+                            <div class="page-content-wrap">
+                                <div class="row" style="margin-right:50px; margin-left:50px; margin-top:50px;">
+                                    <div class="col-md-12 col-sm-12 col-xs-12">
+                                        <div>
+                                            <div>
+                                                <div class="row" style="margin-top:50px;">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                        <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("FRERES DE SAINT GABRIEL");}</b></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top:50px;">
+                                                    <hr style="border: 1px solid black;"/>
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 " style="text-align:center;">
+                                                        <h1 class="aligntext" style="text-transform:uppercase;text-shadow:3px 3px black;font-size:60px;">@{@HomeController.GetControlTextByControlId("PersonalDetails");}</h1>
+                                                    </div>
+                                                    <hr style="border: 1px solid black;"/>
+                                                </div>
+                                                <div class="row" style="margin-top:50px;display:none">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 " style="text-align:center;">
+                                                        <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Brothers Of St. Gabriel");}</b></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top:50px;">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center;">
+                                                        <h3 class="aligntext"><b>@System.DateTime.Now.ToString("dd-MM-yyyy")</b></h3>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top:90px;">
+                                                    <div class="col-md-12 col-sm-12 col-xs-12 " style="text-align:center;">
+                                                        <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Fratelli di san Gabriele - via Trionfale - 12840 - 00135 Roma");}</b></h3>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                <p style="page-break-after:always;"></p>
+                                <div class="">
+                                    <div class="row" @*style="margin-right:220px; margin-left:50px;"*@>
+                                        <div class="col-md-12 col-sm-12 col-xs-12">
+                                            <div>
+                                                <div>
+                                                    <div class="row" style="margin-right:50px;margin-left:50px;">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 " style="text-align:center;">
+                                                            <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Brothers Of St. Gabriel");}</b></h3>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" @*style="margin-left:50px;"*@>
+                                                            <p1 style="font-size:10px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("List of all the Brothers");}</b></p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 " @*style="margin-left:50px;"*@>
+                                                            <p1 style="font-size:10px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Tacken together by Province and Community");}</b></p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:30px;">
+                                                            <p1 style="font-size:10px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("For each province you will find");}:</b></p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" @*style="margin-left:50px;"*@>
+                                                            <p1 style="font-size:10px;">
+                                                                <b class="aligntext">- @{@HomeController.GetControlTextByControlId("Some details about the Provincial Administration");};</b><br />
+                                                                <b class="aligntext">- @{@HomeController.GetControlTextByControlId("the houses by countries");};</b>
+                                                                <br /><b class="aligntext">- @{@HomeController.GetControlTextByControlId("the list of the Brothers living in other Provinces, with the");}</b>
+                                                            </p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" @*style="margin-left:60px;"*@>
+                                                            <p1 style="font-size:10px;" class="aligntext"><b> @{@HomeController.GetControlTextByControlId("code of thier community, and the brothers living alone");};</b></p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" @*style="margin-left:50px;"*@>
+                                                            <p1 style="font-size:10px;" class="aligntext"><b>- @{@HomeController.GetControlTextByControlId("The list of the professed brothers in alphabetical order, followed by");}:</b></p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" @*style="margin-left:70px;"*@>
+                                                            <p1 style="font-size:10px;" class="aligntext">
+                                                                <b>
+                                                                    -@{@HomeController.GetControlTextByControlId("their date of birth");}
+                                                                    <br /> -@{@HomeController.GetControlTextByControlId("their country of birth");}
+                                                                    <br /> -@{@HomeController.GetControlTextByControlId("their date of first profession");}
+                                                                    <br /> -@{@HomeController.GetControlTextByControlId("their date of final profession");}
+                                                                    <br /> -@{@HomeController.GetControlTextByControlId("the code of the community where they live.");}
+                                                                </b>
+                                                            </p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:20px; margin-left:50px;">
+                                                            <p1 style="font-size:10px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("");} N. B. The full phone number with codes is meant for international use.</b></p1>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:20px;">
+                                                            <div id="ProvinceListswithGen2">
+                                                                <div style="margin-left:-5px;margin-right:-5px;">
+                                                                    <div style="float:left;width:50%;padding:5px;">
+                                                                        <table>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>@{@HomeController.GetControlTextByControlId("Province_name");}</th>
+                                                                                    <th>@{@HomeController.GetControlTextByControlId("Code");}</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @{
+                                                                                    foreach (var item in ViewBag.proname as IEnumerable<Generalate.Models.tbl_Province>)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td>@item.ProvinceName</td>
+                                                                                            <td>@item.Place</td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                    <div style="float:left;width:50%;padding:5px;">
+                                                                        <table>
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th>@{@HomeController.GetControlTextByControlId("Province_name");}</th>
+                                                                                    <th>@{@HomeController.GetControlTextByControlId("Code");}</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                @{
+                                                                                    foreach (var item in ViewBag.proname1 as IEnumerable<Generalate.Models.tbl_Province>)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td>@item.ProvinceName</td>
+                                                                                            <td>@item.Place</td>
+                                                                                        </tr>
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="pb"></div>
+                                <div class="">
+                                    <div class="row" @*style="margin-right:220px;margin-left:50px;"*@>
+                                        <div class="col-md-12 col-sm-12 col-xs-12" id="Getprovincebyid">
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12" id="GeneralateData">
+                                            <div class="">
+                                                <div class="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                @*ProvinceDetails*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12" id="allProvinceData">
+                                            <div class="">
+                                                <div class="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="page-content-wrap" style="display:none">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+
+                                        <div class='col-md-12' style='margin-top: 10px;'>
+                                            <div class=''>
+                                                <div class=''>
+                                                    <div class='col-sm-12' style='text-align:center;'>
+                                                        <h3><b>@{@HomeController.GetControlTextByControlId("Montfort Family - Central Administraation");}  </b></h3>
+                                                        <h3><b>@{@HomeController.GetControlTextByControlId("Famille Montfortaine - Administration centrales");} </b></h3>
+                                                    </div>
+                                                    <div class='box box-info'>
+                                                        <div class='box-body'>
+                                                            <div class="col-md-12" style='text-align:center; margin-top:20px;' id="GeneralateDataLast">
+
+                                                            </div>
+                                                            <div class="col-md-12" style='text-align:center; margin-top:20px;' id="GeneralateDataLast1">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .row1{
+        margin-left:-5px;
+        margin-right:-5px;
+    }
+    .column1{
+        float:left;
+        width:50%;
+        padding:5px;
+    }
+    td{
+        text-align:left;
+        padding:10px;
+        /*text-transform:uppercase;*/
+        font-family:"Times New Roman",Times,serif;
+    }
+    table,th,td {
+        border-collapse: collapse;
+        border:none,
+        /*border-spacing: 0;
+        width: 100%;*/
+    }
+    .aligntext {
+        /*text-transform: uppercase;*/
+        font-family: "Times New Roman",Times,serif;
+    }
+    .ms-choice {
+        height: 35px;
+    }
+    th,td{
+        padding:5px;
+        font-size:17px;
+    }
+    .pb{
+        page-break-after:always;
+    }
+    table {
+        page-break-inside: auto
+    }
+
+    /*tr {
+        page-break-inside: avoid;
+        page-break-after: auto
+    }*/
+
+    /*thead {
+        display: table-header-group
+    }*/
+
+    tfoot {
+        display: table-footer-group
+    }
+</style>
+
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/Scripts/additional/MemberReportJS.js"></script>
+    <script>
+        $('#btnPrint').on("click", function () {
+
+            var provinceid = $("#provinceid").val();
+            var fromdate = $("#FromDate").val();
+            var todate = $("#ToDate").val();
+            //window.location.href = "/Directory2/PrintprovinceData?provinceid=Belg-BEL/1";
+            if (provinceid != null && fromdate == "" && todate == "")
+            {
+                window.location.href = "/Directory2/PrintpdfusingItextsharp?ProvinceId=" + provinceid + "&fromdate=" + "" + "&todate=" + "";
+            }
+            else
+            {
+                window.location.href = "/Directory2/PrintpdfusingItextsharp?ProvinceId=" + "" + "&fromdate=" + fromdate + "&todate=" + todate;
+            }
+
+            //$('#tblSocDiv').printThis();
+        });
+    </script>
+
+    <script>
+        $(function () {
+
+            $('#provinceid').multipleSelect({
+                width: '400px',
+                height: '35px',
+                allSelectedText: 'All'
+            });
+        });
+    </script>
+
+    <script>
+        //$(document).ready(function () {
+        //    $("#Getprovincebyid").hide();
+        //});
+
+        $("#btnfilterdata").on("click", function () {
+            var fromdate = $("#FromDate").val();
+            var todate = $("#ToDate").val();
+            var provinceid = $("#provinceid").val();
+
+            if (fromdate != "" || todate != "") {
+                GeneralateallData(fromdate, todate);
+                GetallProvinceData(fromdate, todate);
+                GetallGenCouncilData(fromdate, todate);
+                GetallGenCouncilData1(fromdate, todate);
+            }
+
+            if (provinceid != null && fromdate == "" && todate == "") {
+                //alert(provinceid);
+                Getprovincebaseddirectory(fromdate, todate, provinceid);
+            }
+
+            //ProvinceListswithGen2(fromdate, todate);
+            //ProvinceListswithGen3(fromdate, todate);
+            //ProvinceListswithGen4(fromdate, todate);
+
+
+
+
+
+            //ProvinceListswithGen(fromdate, todate);
+
+        });
+
+        function Getprovincebaseddirectory(fromdate, todate, provinceid)
+        {
+            var provincename = $("#provinceid").val();
+            $.ajax({
+                url: "/Directory2/GetProvinceData",
+                data: { fromdate: fromdate, todate: todate, provinceid: JSON.stringify( provincename )},
+                type: "post",
+                dataType: "json",
+                traditional: true,
+                success: function (response) {
+                    //console.log("response", response);
+                    //$("#Enabledata").hide();
+                    $("#Getprovincebyid").html("");
+
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                            var i = 1;
+                            var country = "";
+                            html += "<p style='page-break-after:always;'></p>";
+                             html += "<div class='col-md-12 col-sm-12 col-xs12'>";
+                            html += "<h3 class='aligntext'><b>" + user.Provincecode + "-</b><b>" + user.ProvinceName + "</b></h3>";
+                            html += "<hr style='border:1px solid black'>";
+                            html += "</div>"; //col-sm-12
+                            html += "<div class='row'>";
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12' style='margin-top: 10px;'>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12'>";//superior province
+                            if (user.provsuperiorcnt > 0) {
+                                 html += "<div class='col-md-3 col-sm-3 col-xs-3'>";
+                            html += "<p class='aligntext'>@{@HomeController.GetControlTextByControlId("ProvincialSuperior");}</p>"
+                            html += "</div>";
+                            html += "<div class='col-md-5 col-sm-5 col-xs-5'>";
+                            user.ProvinceSuperior.forEach(function (provincesuperior) {
+                                html += "<p class='aligntext'>" + checkNullValue(provincesuperior.CouncilMember) + "</p>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-md-4 col-sm-4 col-xs-4'>";
+                            //user.ProvinceSuperior.forEach(function (sup) {
+                            //    html += "<p class='aligntext'>" + checkNullValue(sup.Designation) + "</p>";
+                            //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue(user.Address) + "</h4>";
+                            html += "</div>";
+                            }
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12'>";//council province
+                            if (user.procouncilcnt > 0) {
+                                  html += "<div class='col-md-3 col-sm-3 col-xs-3'>";
+                            html += "<p class='aligntext'>@{@HomeController.GetControlTextByControlId("ProvincialCouncillors");}</p>"
+                            html += "</div>";
+                            html += "<div class='col-md-5 col-sm-5' col-xs-5>";
+                            user.ProvinceCouncilor.forEach(function (provincesuperior) {
+                                html += "<p class='aligntext'>" + checkNullValue(provincesuperior.CouncilMember) + "</p>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-md-4 col-sm-4 col-xs-4'>";
+                            //user.ProvinceCouncilor.forEach(function (sup) {
+                            //    html += "<p class='aligntext'>" + checkNullValue(sup.Designation) + "</p>";
+                            //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue(user.Telephone) + "</h4>";
+                            html += "</div>";
+                            }
+                          
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12endcouncil province
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12'>";//treaserer province
+                            if (user.protreasecnt > 0) {
+                                html += "<div class='col-md-3 col-sm-3 col-xs-3'>";
+                            html += "<p class'aligntext'>@{@HomeController.GetControlTextByControlId("ProvincialTreaserer");}</p>"
+                            html += "</div>";
+                            html += "<div class='col-md-5 col-sm-5 col-xs-5'>";
+                            user.Treaserer.forEach(function (provincesuperior) {
+                                html += "<p class='aligntext'>" + checkNullValue(provincesuperior.CouncilMember) + "</p>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-md-4 col-sm-4 col-xs-4'>";
+                            //user.Treaserer.forEach(function (sup) {
+                            //    html += "<p class='aligntext'>" + checkNullValue(sup.Designation) + "</p>";
+                            //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue(user.EmailId) + "</h4>";
+                            html += "</div>";
+                            }
+                            
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12end provincetreaserer
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12'>";//secretary province
+                            if (user.proseccnt > 0) {
+                                 html += "<div class='col-md-3 col-sm-3 col-xs-3'>";
+                            html += "<p class='aligntext'>@{@HomeController.GetControlTextByControlId("ProvincialSecretary");}</p>"
+                            html += "</div>";
+                            html += "<div class='col-md-5 col-sm-5 col-xs-5'>";
+                            user.Secretary.forEach(function (provincesuperior) {
+                                html += "<p class='aligntext'>" + checkNullValue(provincesuperior.CouncilMember) + "</p>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-md-4 col-sm-4 col-xs-4'>";
+                            //user.Secretary.forEach(function (sup) {
+                            //    html += "<p class='aligntext'>" + checkNullValue(sup.Designation) + "</p>";
+                            //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue(user.Fax) + "</h4>";
+                            html += "</div>";
+                            }
+                           
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12end provincetreaserer
+                            html += "</div>"; // box-body
+                            html += "</div>"; // box box-info
+                            html += "</div>"; // panel-body
+                            html += "</div>"; // panel panel-primary
+                            html += "</div>"; // col-md-12
+                            html += "</div>"; // row
+                            if (user.provsuperiorcnt == 0 && user.procouncilcnt == 0 && user.protreasecnt == 0 && user.proseccnt == 0) {
+
+                                html += "<hr style='border:1px solid black;display:none'>";
+                            }
+                            else {
+                                html += "<hr style='border:1px solid black'>";
+                            }
+                            html += "<p style='page-break-after:always;'></p>";
+                            html += "<div class='row'>";
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12' style='margin-top: 10px;'>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class='box box-info'>";
+                            user.CommunityDetails.forEach(function (CommunityDetails) {
+                                html += "<div class=''>";
+                                html += "<div class=''>";
+                                html += "<div class='box box-info'>";
+
+                                html += "<div class='col-md-12 col-sm-12 col-xs-12' style='text-align:right;text-transform:uppercase;'>"
+                                if (country != checkNullValue(CommunityDetails.CommunityCountry))
+                                {
+                                    html += "<h4 class='aligntext'><b>" + checkNullValue(CommunityDetails.CommunityCountry) + "</b></h4>";
+                                }
+                                else
+                                {
+                                    html += "<h4></h4>";
+
+                                }
+                                html += "</div>";
+                                html += "<div class='col-md-12 col-sm-12 col-xs-12' style='text-align:center;'>";
+                                html += "<div class='col-sm-2' style='text-align:left'>";
+                                html += "<h4 class='aligntext'><b>" + checkNullValue(CommunityDetails.CommunityCode) + "</b></h4>";
+                                html += "</div>";//col-3m-3
+                                html += "<div class='col-sm-7' style='text-align:left'>";
+                                html += "<h4 class='aligntext'><b>" + checkNullValue(CommunityDetails.CommunityName) + "</b></h4>";
+                                html += "<h4 class='aligntext'>" + checkNullValue(CommunityDetails.CommunityAddress) + "</h4>";
+
+                                html += "<h4 class='aligntext'> " + checkNullValue(CommunityDetails.CommunityPlace) + "</h4>";
+                                html += "<h4 class='aligntext'>" + checkNullValue(CommunityDetails.CommunityPhone) + "</h4>";
+                                html += "<h4 class='aligntext'>" + checkNullValue(CommunityDetails.CommunityEmailId) + "</h4>";
+                                html += "</div>";//col-sm-6
+                                html += "<div class='col-sm-3'>";
+                                html += "</div>";
+                                html += "</div>"; // col-sm-12
+                                html += "<div class='col-md-12 col-md-12 col-xs-12' style='margin-right:50px;'>";
+                                html += "<div>";//Designations
+                                //html += "<div class='col-md-2'>";
+                                //html += "</div>";
+                                html += "<div class='col-md-6 col-md-6 col-xs-6' style='text-align:left;'>";
+                                CommunityDetails.AppointmentsMember.forEach(function (appointments) {
+                                    html += "<h4 class='aligntext'>" + checkNullValue(appointments.MemberName) + " " + checkNullValue( appointments.SurName )+ "</h4>";
+                                });
+                                html += "</div>";
+                                html += "<div class='col-sm-6 col-md-6 col-xs-6'>";
+                                CommunityDetails.Appointment.forEach(function (appointmentsmember) {
+                                    html += "<h4 class='aligntext'>" + checkNullValue(appointmentsmember.MemberName) + " " + checkNullValue( appointmentsmember.SurName )+ "</h4>";
+                                });
+                                html += "</div>";
+                                html += "<div class='col-sm-2'>";
+                                html += "</div>";
+                                html += "</div>";
+
+                                html += "</div>"; // class='col-md-12
+                                html += "</div>";// box box-info
+                                html += "</div>"; // panel-body
+                                html += "</div>"; // panel panel-primary
+                                country = checkNullValue(CommunityDetails.CommunityCountry);
+
+                            });
+                            country = "";
+
+                            html += "</div>";// box box-info
+                            html += "</div>"; // panel-body
+                            html += "</div>"; // panel panel-primary
+                            html += "</div>"; // col-md-12
+                            html += "</div>";// row
+                            html += "<p style='page-break-after:always;'></p>";
+                            html += "<div class='row'>";
+                            html += "<div class='col-md-12' style='margin-top: 10px;'>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class='box box-info'>";
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12' >";
+                            html += "<table style='margin-top:30px;'>";
+                            html += "<thead style=' display: table-header-group;'>";
+                            html += "<tr style='page-break-inside: avoid;page -break-after: auto'>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("S_No");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Name");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("DateBirth");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Country");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("First Vows");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Final_Vows");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Code");}</th>";
+                            html += "</tr>";
+                            user.AllMembers.forEach(function (AllMembers) {
+                                html += "<tr style='page-break-inside: avoid;page -break-after: auto'>";
+                                html += "<td>" + i + "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.ProMemberName) + " " + checkNullValue(AllMembers.ProSurName) + "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.DateOfBirth) + "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.ProCountry) + "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.ProFirstVows) + "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.ProFinalVows) + "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.ProMemCode) + "</td>";
+                                i = i + 1;
+                                html += "</tr>";
+                            });
+                            html += "</thead>";
+                            html += "</table>";
+                            html += "</div>"; // col-md-12 table AllMembers
+                            html += "</div>";// box box-info AllMembers
+                            html += "</div>";// panel-body AllMembers
+                            html += "</div>"; //panel panel-primary AllMembers
+                            html += "</div>"; //col-md-12 AllMembers
+                            html += "</div>"; //row AllMembers
+                            html += "<p style='page-break-after:always;'></p>";
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12'>";//outsideprovince
+                            if (user.ospcount > 0)
+                            {
+
+                                html += "<h4 class='aligntext' style='text-align:center'><b>@{@HomeController.GetControlTextByControlId("Freres vivant dans une autre Province ou isoles");}</b></h4>";
+                            }
+                            else
+                            {
+                                html += "<h4></h4>";
+
+                            }
+                            html += "<div class='col-md-6 col-sm-6 col-xs-6'>";
+                            user.Outsideprovince.forEach(function (outsidepro) {
+                                html += "<h4 class='aligntext'>" + outsidepro.MemberName + "</h4>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-md-6 col-sm-6 col-xs-6'>";
+                            user.Outsideprovince1.forEach(function (outsidepro1) {
+                                html += "<h4 class='aligntext'>" + outsidepro1.MemberName + "</h4>";
+                            });
+                            html += "</div>";
+                            html += "</div>";
+                            html += "<p style='page-break-after:always;'></p>";
+
+
+                        });
+                        $("#Getprovincebyid").html(html);
+                    }
+
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+       
+
+        function ProvinceListswithGen(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/ProvinceListswithGen?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ProvinceListswithGen').html("");
+                    //var i = 1;
+                    if (response != null) {
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + data.Name + "</td><td>" + data.ProvinceCode + "</td></tr>";
+                            $('#ProvinceListswithGen').append(row);
+                            //i = i + 1;
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function ProvinceListswithGen3(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/ProvinceListswithGen3?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ProvinceListswithGen3').empty();
+                    $('#ProvinceListswithGen3').append(response);
+                    ////var i = 1;
+                    //if (response != null) {
+                    //    response.forEach(function (data) {
+                    //        var row = "<tr><td>" + data.Name + "</td><td>" + data.ProvinceCode + "</td></tr>";
+                    //        //i = i + 1;
+                    //    });
+                    //}
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function ProvinceListswithGen2(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/ProvinceListswithGen2?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ProvinceListswithGen2').empty();
+                    $("#ProvinceListswithGen2").append(response);
+                    //var i = 1;
+                    //if (response != null) {
+                    //    response.forEach(function (data) {
+                    //        var row = "<tr><td>" + data.Name + "</td><td>" + data.ProvinceCode + "</td></tr>";
+                    //        $('#ProvinceListswithGen2').append(row);
+                    //        //i = i + 1;
+                    //    });
+                    //}
+                },
+                error: function (er) {
+                }
+            });
+        }
+        function ProvinceListswithGen4(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/ProvinceListswithGen4?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ProvinceListswithGen4').html("");
+                    //var i = 1;
+                    if (response != null) {
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + data.Name + "</td><td>" + data.ProvinceCode + "</td></tr>";
+                            $('#ProvinceListswithGen4').append(row);
+                            //i = i + 1;
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+        function GeneralateallData(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/GeneralateallData?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#GeneralateData').html("");
+                    if (response != null) {
+                        var html = "";
+                        var i = 1;
+                        response.forEach(function (user) {
+                            //alert(user.ProvinceName);
+                            html += "<div class='row'>";
+                            html += "<div class='col-md-12' style='margin-top: 10px;'>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class='box box-info'>";
+                            html += "<div class='box-body'>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            html += "<h3 class='aligntext'><b>" + checkNullValue(user.Provincecode) + "</b>-<b>" + checkNullValue( user.ProvinceName )+ "</b></h3>";
+                            html += "</div>"; //col-sm-12
+                            html += "<hr style='border: 1px solid black;>";
+                            html += "<div class='col-sm-12'>";//col-sm-12superior
+                            html += "<div class='col-sm-2'>";//col-sm-4
+                            html += "<h4 class='aligntext'><b>@{@HomeController.GetControlTextByControlId("SuperiorGeneral");}:</b></h4>";
+                            html += "</div>";//end
+                            html += "<div class='col-sm-6'>";//col-sm-4
+                            html += "<h4  class='aligntext'>" + checkNullValue( user.superiorgeneral.CouncilMember )+ "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4  class='aligntext'>" + checkNullValue(user.Address )+ "</h4>";
+                            html += "</div>";
+                            html += "</div>";//end superior
+                            html += "<div class='col-sm-12'>";//col-sm-12 councilmember
+                            html += "<div class='col-sm-2'>";//col-sm-4
+                            html += "<h4  class='aligntext'><b>@{@HomeController.GetControlTextByControlId("AssistantsGeneral");}:</b></h4>";
+                            html += "</div>";//end
+                            html += "<div class='col-sm-6'>";//col-sm-4
+                            user.Generalcouncil.forEach(function (ProvinceCouncils) {
+                                html += "<h4  class='aligntext'>" + checkNullValue( ProvinceCouncils.CouncilMember )+ "</h4>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            //user.Generalcouncil.forEach(function (address) {
+                            //    html += "<h4  class='aligntext'>" + checkNullValue( address.MemPhone )+ "</h4>";
+                            //});
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.Telephone ) + "</h4>";
+                            html += "</div>";
+                            html += "</div>";//end councilmember
+                            html += "<div class='col-sm-12'>";//col-sm-12 Generaltreaserer
+                            html += "<div class='col-sm-2'>";//col-sm-4
+                            html += "<h4  class='aligntext'><b>@{@HomeController.GetControlTextByControlId("GeneralTreaserer");}:</b></h4>";
+                            html += "</div>";//end
+                            html += "<div class='col-sm-6'>";//col-sm-4
+                            html += "<h4  class='aligntext'>" + checkNullValue( user.Generaltreaserer.CouncilMember )+ "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4  class='aligntext'>" + checkNullValue(user.EmailId )+ "</h4>";
+                            html += "</div>";
+                            html += "</div>";//end treaserer
+                            html += "<div class='col-sm-12'>";//col-sm-12 secretary
+                            html += "<div class='col-sm-2'>";//col-sm-4
+                            html += "<h4  class='aligntext'><b>@{@HomeController.GetControlTextByControlId("SecretaryGeneral");}:</b></h4>";
+                            html += "</div>";//end
+                            html += "<div class='col-sm-6'>";//col-sm-4
+                            html += "<h4  class='aligntext'>" + checkNullValue( user.GeneralSecretary.CouncilMember )+ "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4  class='aligntext'>" + checkNullValue(user.Fax) + "</h4>";
+                            html += "<h4  class='aligntext'>" + checkNullValue(user.website )+ "</h4>";
+                            html += "</div>";
+                            html += "</div>";//end secretary
+                            html += "</div>"; // row
+                            html += "</div>"; // box-body
+                            html += "</div>"; // box box-info
+                            html += "</div>"; // panel-body
+                            html += "</div>"; // panel panel-primary
+                            html += "</div>"; // col-md-12
+                            html += "</div>"; // row
+                            html += " </div>";
+                            html += " </div>";
+                            html += "</div>";
+                            html += " </div>";
+                            html += " </div>";
+                            html += "</div>";
+                            html += " </div>";
+                            html += " </div>";
+                            html += "<hr style='border: 1px solid black;'>";
+                            html += "<div class='col-sm-12' style='text-align:right'>";//address
+                            html += "<h4 class='aligntext'><b>" + checkNullValue(user.Congregation_Country) + "</b></h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-12'>";
+                            html += "<div class='col-sm-2'>";
+                            html += "</div>";
+                            html += "<div class='col-sm-10'>";
+                            html += "<h4 class='aligntext'><b>" + checkNullValue(user.Congregation) + "</b></h4>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.Address) + "</h4>";
+                            html += "<h4 class='aligntext'>@{@HomeController.GetControlTextByControlId("Tel");}:" + checkNullValue(user.Telephone) + "</h4><h4 class='aligntext'>@{@HomeController.GetControlTextByControlId("Fax:")}" + checkNullValue( user.Fax )+ "</h4>";
+                            html += "<h4 class='aligntext'>@{@HomeController.GetControlTextByControlId("Email");}:" + checkNullValue(user.EmailId) + "</h4>";
+                            html += "<h4 class='aligntext'>@{@HomeController.GetControlTextByControlId("Website");}:" + checkNullValue(user.website) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-2'>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "<div style='margin-top:20px'>";
+                            html += "<div class='col-sm-12'>";//Members
+                            html += "<div class='col-sm-4' style='text-align:left'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.superiorgeneral.CouncilMember) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.superiorgeneral.Designation) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.superiorgeneral.MemEmail) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-12'>";
+                                html += "<div class='col-sm-4'>";
+                            user.Generalcouncil.forEach(function (ProvinceCouncils) {
+                                html += "<h4 class='aligntext'>" + checkNullValue(ProvinceCouncils.CouncilMember) + "</h4>";
+                            });
+                                html += "</div>";
+                                html += "<div class='col-sm-4'>";
+                            user.Generalcouncil.forEach(function (ProvinceCouncils) {
+                                html += "<h4 class='aligntext'>" + checkNullValue(ProvinceCouncils.Designation) + "</h4>";
+                            });
+                                html += "</div>";
+                                html += "<div class='col-sm-4'>";
+                            user.Generalcouncil.forEach(function (ProvinceCouncils) {
+                                html += "<h4 class='aligntext'>" + checkNullValue(ProvinceCouncils.MemEmail) + "</h4>";
+                            });
+                                html += "</div>";
+                            html += "</div>";
+                            html += "<div class='col-sm-12'>";//Members
+                            html += "<div class='col-sm-4' style='text-align:left'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.Generaltreaserer.CouncilMember) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.Generaltreaserer.Designation) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.Generaltreaserer.MemEmail) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-12'>";//Members
+                            html += "<div class='col-sm-4' style='text-align:left'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.GeneralSecretary.CouncilMember) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.GeneralSecretary.Designation) + "</h4>";
+                            html += "</div>";
+                            html += "<div class='col-sm-4'>";
+                            html += "<h4 class='aligntext'>" + checkNullValue(user.GeneralSecretary.MemEmail) + "</h4>";
+                            html += "</div>";
+                            html += "</div>";
+
+                            //contactnumber
+                             html += "<div class='col-md-12 col-sm-12 col-xs-12'>";//outsideprovince
+                            if (user.ospcount > 0)
+                            {
+                                html += "<h4 class='aligntext' style='text-align:center'><b>@{@HomeController.GetControlTextByControlId("Freres vivant dans une autre Province ou isoles");}</b></h4>";
+                                html += "<div class='col-md-6 col-sm-6 col-xs-6'>";
+                                user.Outsideprovince.forEach(function (outsidepro) {
+                                    html += "<h4 class='aligntext'>" + checkNullValue(outsidepro.MemberName) + "</h4>";
+                                });
+                                html += "</div>";
+                                html += "<div class='col-md-6 col-sm-6 col-xs-6'>";
+                                user.Outsideprovince1.forEach(function (outsidepro1) {
+                                    html += "<h4 class='aligntext'>" + checkNullValue(outsidepro1.MemberName) + "</h4>";
+                                });
+                                html += "</div>";
+                                html += "</div>";
+                            }
+                            else
+                            {
+                                html += "<h4></h4>";
+
+                            }
+                           
+                        });
+                        $('#GeneralateData').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetallProvinceData(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/GetallProvinceData?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#allProvinceData').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                            var i = 1;
+                            var country = "";
+                           // html += "<div class='panel panel-primary'>";
+                           // html += "<div class='panel-body'>";
+                            html += "<div class='col-sm-12'>";
+                            html += "<h3 class='aligntext'><b>" + user.Provincecode + "-</b><b>" + user.ProvinceName + "</b></h3>";
+                            html += "<hr style='border: 1px solid black;>";
+                            html += "</div>"; //col-sm-12
+                            html += "<div class='row'>";
+                            html += "<div class='col-md-12' style='margin-top: 10px;'>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class='box box-info'>";
+                            html += "<div class='box-body'>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";//superior province
+                            if (user.provsuperiorcnt > 0) {
+                                html += "<div class='col-sm-3'>";
+                            html += "<h3 class='aligntext'><b>@{@HomeController.GetControlTextByControlId("ProvincialSuperior");}</b></h3>"
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            user.ProvinceSuperior.forEach(function (provincesuperior) {
+                                html += "<h4 class='align-text'>" + checkNullValue(provincesuperior.CouncilMember) + "</h4>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            //user.ProvinceSuperior.forEach(function (sup) {
+                            //    html += "<h4 class='aligntext'>" + checkNullValue(sup.Designation) + "</h4>";
+                                //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue( user.Address )+ "</h4>";
+                            html += "</div>";
+                            }
+                            
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12
+                            html += "<div class='col-sm-12' style='text-align:center;'>";//council province
+                            if (user.procouncilcnt > 0) {
+                                  html += "<div class='col-sm-3'>";
+                            html += "<h3 class='aligntext'><b>@{@HomeController.GetControlTextByControlId("ProvincialCouncillors");}</b></h3>"
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            user.ProvinceCouncilor.forEach(function (provincesuperior) {
+                                html += "<h4>" + checkNullValue(provincesuperior.CouncilMember) + "</h4>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            //user.ProvinceCouncilor.forEach(function (sup) {
+                            //    html += "<h4 class='aligntext'>" + checkNullValue(sup.Designation) + "</h4>";
+                            //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue(user.Telephone) + "</h4>";
+                            html += "</div>";
+                            }
+                          
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12endcouncil province
+                            html += "<div class='col-sm-12' style='text-align:center;'>";//treaserer province
+                            if (user.protreasecnt > 0) {
+                                html += "<div class='col-sm-3'>";
+                            html += "<h3 class'aligntext'><b>@{@HomeController.GetControlTextByControlId("ProvincialTreaserer");}</b></h3>"
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            user.Treaserer.forEach(function (provincesuperior) {
+                                html += "<h4 class='aligntext'>" + checkNullValue(provincesuperior.CouncilMember) + "</h4>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            //user.Treaserer.forEach(function (sup) {
+                            //    html += "<h4 class='aligntext'>" + checkNullValue(sup.Designation) + "</h4>";
+                            //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue(user.EmailId) + "<h4>";
+                            html += "</div>";
+                            }
+                            
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12end provincetreaserer
+                            html += "<div class='col-sm-12' style='text-align:center;'>";//treaserer province
+                            if (user.proseccnt > 0) {
+                                 html += "<div class='col-sm-3'>";
+                            html += "<h3 class='aligntext'><b>@{@HomeController.GetControlTextByControlId("ProvincialSecretary");}</b></h3>"
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            user.Secretary.forEach(function (provincesuperior) {
+                                html += "<h4 class='aligntext'>" + checkNullValue(provincesuperior.CouncilMember) + "</h4>";
+                            });
+                            html += "</div>";
+                            html += "<div class='col-sm-3'>";
+                            //user.Secretary.forEach(function (sup) {
+                            //    html += "<h4 class='aligntext'>" + checkNullValue(sup.Designation) + "</h4>";
+                            //    });
+                                html += "<h4 class='aligntext'>" + checkNullValue(user.Fax) + "</h4>";
+                            html += "</div>";
+                            }
+                           
+                            html += "<div>";
+                            html += "</div>";
+                            // col-sm-6
+                            html += "</div>"; //col-sm-12end provincetreaserer
+                            html += "</div>"; // box-body
+                            html += "</div>"; // box box-info
+                            html += "</div>"; // panel-body
+                            html += "</div>"; // panel panel-primary
+                            html += "</div>"; // col-md-12
+                            html += "</div>"; // row
+                            if (user.provsuperiorcnt == 0 && user.procouncilcnt == 0 && user.protreasecnt == 0 && user.proseccnt == 0) {
+
+                                html += "<hr style='border:1px solid black;display:none'>";
+                            }
+                            else {
+                                html += "<hr style='border:1px solid black'>";
+                            }
+                            html +="<div class='row'>";
+                            html += "<div class='col-md-12' style='margin-top: 10px;'>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            //html += "<h3 class='aligntext'><b>@{HomeController.GetControlTextByControlId("Community Details of");}  " + checkNullValue( user.ProvinceName )+ " Province</b></h3>";
+                            html += "</div>"; //col-sm-12
+                            html += "<div class='box box-info'>";
+                            user.CommunityDetails.forEach(function (CommunityDetails) {
+                                html += "<div class=''>";
+                                html += "<div class=''>";
+                                html += "<div class='box box-info'>";
+                                html += "<div class='col-sm-12' style='text-align:right;text-transform:uppercase;'>"
+                                if (country != checkNullValue(CommunityDetails.CommunityCountry)) {
+
+                                    html += "<h4 class='aligntext'><b>" + checkNullValue(CommunityDetails.CommunityCountry) + "</b></h4>";
+                                }
+                                else {
+                                    html += "<h4></h4>";
+                                }
+                                html += "</div>";
+                                html += "<div class='col-sm-12' style='text-align:center;'>";
+                                html += "<div class='col-sm-2' style='text-align:left'>";
+                                html += "<h4 class='aligntext'><b>" + checkNullValue( CommunityDetails.CommunityCode )+ "</b></h4>";
+                                html += "</div>";//col-3m-3
+                                html += "<div class='col-sm-7' style='text-align:left'>";
+                                html += "<h4 class='aligntext'><b>" + checkNullValue(CommunityDetails.CommunityName) + "</b></h4>";
+                                html += "<h4 class='aligntext'>" + checkNullValue( CommunityDetails.CommunityAddress )+ "</h4>";
+
+                                html += "<h4 class='aligntext'> " + checkNullValue( CommunityDetails.CommunityPlace )+ "</h4>";
+                                html += "<h4 class='aligntext'>" + checkNullValue( CommunityDetails.CommunityPhone )+ "</h4>";
+                                html += "<h4 class='aligntext'>" + checkNullValue( CommunityDetails.CommunityEmailId )+ "</h4>";
+                                html += "</div>";//col-sm-6
+                                html += "<div class='col-sm-3'>";
+                                html += "</div>";
+                                html += "</div>"; // col-sm-12
+                                html += "<div class='col-md-12 col-sm-12 col-xs-12' style='margin-right:50px;margin-left:50px;'>";
+                                html += "<div>";//Designations
+                                //html += "<div class='col-md-2'>";
+                                //html += "</div>";
+                                html += "<div class='col-md-4 col-sm-4 col-xs-4'>";
+                                CommunityDetails.AppointmentsMember.forEach(function (appointments) {
+                                    html += "<h4 class='aligntext'>" + checkNullValue(appointments.MemberName) + " " + checkNullValue(appointments.SurName )+ "</h4>";
+                                });
+                                html += "</div>";
+                                html += "<div class='col-md-4 col-sm-4 col-xs-4'>";
+                                CommunityDetails.Appointment.forEach(function (appointmentsmember) {
+                                    html += "<h4 class='aligntext'>" + checkNullValue(appointmentsmember.MemberName) + " " + checkNullValue(appointmentsmember.SurName)+  "</h4>";
+                                });
+                                html += "</div>";
+                                html += "<div class='col-sm-2'>";
+                                html += "</div>";
+                                html += "</div>";
+
+                                html += "</div>"; // class='col-md-12
+                                html += "</div>";// box box-info
+                                html += "</div>"; // panel-body
+                                html += "</div>"; // panel panel-primary
+                                country = checkNullValue(CommunityDetails.CommunityCountry);
+                            });
+                            country = "";
+
+                            html += "</div>";// box box-info
+                            html += "</div>"; // panel-body
+                            html += "</div>"; // panel panel-primary
+                            html += "</div>"; // col-md-12
+                            html += "</div>";// row
+
+                            html += "<div class='row'>";
+                            html += "<div class='col-md-12' style='margin-top: 10px;'>";
+                            html += "<div class=''>";
+                            html += "<div class=''>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            //html += "<h3><b> @{@HomeController.GetControlTextByControlId("All Members in the");} " + checkNullValue( user.ProvinceName )+ " @{@HomeController.GetControlTextByControlId("Province");}</b></h3>";
+                            html += "</div>"; //col-sm-12
+                            html += "<div class='box box-info'>";
+                            html += "<div class='col-md-12 col-sm-12 col-xs-12' style='margin-right:50px;margin-left:50px;'>";
+                            html += "<table style='margin-top:30px; width: 90%;'>";
+                            html += "<thead>";
+                            html += "<tr>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("S_No");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Name");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("DateBirth");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Country");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("First Vows");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Final_Vows");}</th>";
+                            html += "<th class='aligntext'>@{@HomeController.GetControlTextByControlId("Code");}</th>";
+                            html += "</tr>";
+                            user.AllMembers.forEach(function (AllMembers) {
+                                html += "<tr>";
+                                html += "<td>" + i + "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.ProMemberName) + " " + checkNullValue( AllMembers.ProSurName )+ "</td>";
+                                html += "<td>" + checkNullValue( AllMembers.DateOfBirth )+ "</td>";
+                                html += "<td>" + checkNullValue( AllMembers.ProCountry )+ "</td>";
+                                html += "<td>" + checkNullValue(AllMembers.ProFirstVows )+ "</td>";
+                                html += "<td>" + checkNullValue( AllMembers.ProFinalVows )+ "</td>";
+                                html += "<td>" + checkNullValue( AllMembers.ProMemCode )+ "</td>";
+                                i = i + 1;
+                                html += "</tr>";
+                            });
+                            html += "</thead>";
+                            html += "</table>";
+                            html += "</div>"; // col-md-12 table AllMembers
+                            html += "</div>";// box box-info AllMembers
+                            html += "</div>";// panel-body AllMembers
+                            html += "</div>"; //panel panel-primary AllMembers
+                            html += "</div>"; //col-md-12 AllMembers
+                            html += "</div>"; //row AllMembers
+
+                            @*html += "<div class='row'>";
+                            html += "<div class='col-md-12' style='margin-top: 10px;'>";
+                            html += "<div class='panel panel-primary'>";
+                            html += "<div class='panel-body'>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            html += "<h3><b>" + checkNullValue( user.ProvinceName )+ " Province</b></h3>";
+                            html += "<h3><b>@{@HomeController.GetControlTextByControlId("SECRETARIATES & SOUS/SUB-SECRETARIATES");}</b></h3>";
+                            html += "</div>"; //col-md-12
+                            html += "<div class='box box-info'>";
+                            html += "<div class='box-body'>";
+
+                            user.Responsibility.forEach(function (Responsibility) {
+                            html += "<div class='col-sm-6'>";
+                                html += "<h4><b>" + checkNullValue( Responsibility.ResponsibilityName )+ " </b></h4>";
+                                Responsibility.ProvinceComission.forEach(function (ProvinceComission) {
+                                    html += "<p><b>" + checkNullValue(ProvinceComission.ComisMemName) + " - " + checkNullValue( ProvinceComission.ComisDesignation )+ "</b></p>";
+                                    html += "<p>" + checkNullValue( ProvinceComission.ComisAddress )+ ", " + "</p>";
+                                    html += "<p>" + checkNullValue( ProvinceComission.ComisPlace )+ " </p>";
+                                    html += "<p>" + checkNullValue(ProvinceComission.Comisstate) + " - " + checkNullValue(ProvinceComission.ComisPin) + ", " + checkNullValue( ProvinceComission.ComisCountry )+ " </p>";
+                                    html += "<p>Email: " + checkNullValue(ProvinceComission.ComisEmail) + " - Tel. " + checkNullValue( ProvinceComission.ComisTelephone )+ "</p>";
+                            });
+                            html += "</div>";
+                            });
+                            html += "</div>";// panel-body Commission
+                            html += "</div>";//  box box-info Commission
+                            html += "</div>";// panel-body Commission
+                            html += "</div>"; //panel panel-primary Commission
+                            html += "</div>"; //col-md-12 Commission
+                            html += "</div>"; //row Commission*@
+                        });
+                        $('#allProvinceData').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetallGenCouncilData(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/GetallGenCouncilData?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#GeneralateDataLast').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                            html += "<div class='col-sm-6'>";
+                            html += "<p><b>" + checkNullValue( user.FGeneralateName )+ "</b></p>";
+                            html += "<p>" + checkNullValue( user.Address )+ "</p>";
+                            html += "<p>" + checkNullValue( user.Country )+ "</p>";
+                            html += "<p> Tel :" + checkNullValue( user.Telephone )+ "</p>";
+                            html += "<p> @{@HomeController.GetControlTextByControlId("Fax");} :" + checkNullValue( user.Fax )+ "</p>";
+                            html += "<p> @{@HomeController.GetControlTextByControlId("E-mail:");} :" + checkNullValue( user.EmailId )+ "</p>";
+                            user.GenDesignation.forEach(function (GenDesignation) {
+                               // html += "<div class='col-sm-6'>";
+                                html += "<p><b>" + checkNullValue( GenDesignation.Designation )+ " </b></p>";
+                                GenDesignation.GenCouncil.forEach(function (GenCouncil) {
+                                    html += "<p>" + checkNullValue( GenCouncil.ComisMemName )+ "</p>";
+                                });
+                               // html += "</div>";
+                            });
+                            html += "</div>";
+                        });
+                        $('#GeneralateDataLast').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+        function GetallGenCouncilData1(fromdate, todate) {
+            $.ajax({
+                url: "/Directory2/GetallGenCouncilData1?fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#GeneralateDataLast1').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                            html += "<p><b>" + checkNullValue( user.GeneralateName )+ "</b></p>";
+                            html += "<p>" + checkNullValue( user.Address )+ "</p>";
+                            html += "<p>" + checkNullValue( user.Country )+ "</p>";
+                            html += "<p> Tel :" + checkNullValue( user.Telephone )+ "</p>";
+                            html += "<p> @{@HomeController.GetControlTextByControlId("Fax");} :" + checkNullValue( user.Fax )+ "</p>";
+                            html += "<p> @{@HomeController.GetControlTextByControlId("E-mail:");} :" + checkNullValue( user.EmailId )+ "</p>";
+                        });
+                        $('#GeneralateDataLast1').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+   
+
+}
+
+<style>
+    #FromDate, #ToDate {
+        color: black
+    }
+</style>
+

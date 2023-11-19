@@ -1,0 +1,100 @@
+﻿@model Generalate.Models.tbl_PersonalDetails
+
+<head>
+    @*Required Js File for Apartment*@
+
+
+</head>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-horizontal">
+        <div class="" style="margin-left:20px; margin-right:20px;">
+            <div class="form-horizontal">
+                <br />
+                <div>
+                    Select&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="text" list="Proffession" id="Status" />
+                    <datalist id="Proffession">
+                        <option value="All">
+                        <option value="ALive">
+                        <option value="Passed">
+                        <option value="Seperated">
+                        <option value="Age">
+                    </datalist>
+                    <input type="button" value="Submit" class="btn-sm btn-primary" id="submitbtn" style="background-color:#001f6b" />
+                </div>
+
+                <div class="panel-group">
+                    <div class="panel panel-primary" style="margin-top:10px; background-color:#fff">
+                        <div class="tab panel-heading" style="background-color :#009be1">
+                            <a style="color:white;">Reports</a>
+                        </div>
+
+                        <div class="" style="margin-left:20px; margin-right:20px;">
+                            <div class="form-horizontal">
+                                <br />
+                                <table class="table table-striped  table-hover" id="EmpInfo" style="border:solid; border-color:#001f6b">
+                                    <thead>
+                                        <tr style="background-color:#001f6b; color:white">
+                                            <th hidden="hidden"> Id </th>
+                                            <th>Surname</th>
+                                            <th> Name </th>
+
+                                            <th> Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody"> </tbody>
+                                </table>
+                            </div>
+                            @*Age Popup*@
+
+                            <div class="modal fade" id="myAgeModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Set SMS Content</h4>
+                                        </div>
+                                        <div class="modal-body">
+
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    Please Enter the Age
+                                                    <input type="text" id="Age" class="form-control" />
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <div class="col-md-10">
+                                                    <br />
+                                                    @*<button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                                                        <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>*@
+                                                    <button type="button" class="btn btn-success" id="closebtn" onclick="return loadPersonalDetailsDataByStatus()" data-dismiss="modal">OK</button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="~/Scripts/additional/Reports.js"></script>

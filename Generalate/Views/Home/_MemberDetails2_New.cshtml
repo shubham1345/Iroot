@@ -1,0 +1,80 @@
+﻿
+@model Generalate.Models.tbl_PersonalDetails
+@using Generalate.Controllers;
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                <th class="hide-1" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                <th class="hide-2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Baptismal_Name");}</span></th>
+                <th class="hide-3" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("DOB");}</span></th>
+                <th class="hide-4" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                <th class="hide-5" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                <th class="hide-6" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                <th class="hide-7" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Place_Of_Birth");}</span></th>
+                <th class="hide-8" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Nationality");}</span></th>
+                <th class="hide-9" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("MobileNo");}</span></th>
+                <th class="hide-10" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("EmailId");}</span></th>
+                <th class="hide-11" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Mother_Tounge");}</span></th>
+                <th class="hide-12" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Designations");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("View_Profile");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Add_Profile");}</span></th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = 1;
+                foreach (var item in @ViewBag.allinstitution)
+                {
+                    <tr>
+                        <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                        <td>@ji</td>
+                        @*<td>@item.Name</td>*@
+                        <td> <a href="/Member/MemberInfoById?memberId=@item.MemberId&Name=&SirName=">@item.Name</a></td>
+                        <td class="hide-1">@item.Sirname</td>
+                        <td class="hide-2">@item.NameBaptismial</td>
+                        <td class="hide-3">@item.DOB</td>
+                        <td class="hide-4">@item.Country</td>
+                        <td class="hide-5">@item.ProvinceName</td>
+                        <td class="hide-6">@item.FileNo</td>
+                        <td class="hide-7">@item.PlaceOfBirth</td>
+                        <td class="hide-8">@item.Nationality</td>
+                        <td class="hide-9">@item.MobileNo</td>
+                        <td class="hide-10">@item.EmailId</td>
+                        <td class="hide-11">@item.MotherTounge</td>
+                        <td class="hide-12">@item.AppiontmentType</td>
+                        <td>
+                            <a href='/Home/MemberDetails?id=@item.MemberId'>View Details</a>
+
+                        </td>
+                        <td><a href='/Member/MemberInfoById?memberId=@item.MemberId'>Add Details</a></td>
+                        <td></td>
+                    </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(document).ready(function () {
+        
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'columnsToggle'
+            ],
+            searching: false,
+            "autoWidth":false,
+            paging: false,
+           
+        });
+
+    });
+</script>

@@ -1,0 +1,494 @@
+﻿
+@model Generalate.Models.tbl_PersonalDetails
+@using Generalate.Controllers;
+@using System.Linq;
+
+@{
+    var viewpermissions = Session["ViewPagePermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+
+<input id="DynamicTotalCount" type="hidden" value="@ViewBag.DynamicTotalCount" />
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th class="hide-1 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th class="hide-2 AllShow" style="background-color:#29b2e1;color:white;display:none">
+                    <span>@{@HomeController.GetControlTextByControlId("Name");}</span>
+                </th>
+                <th class="hide-3 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                <th class="hide-4 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Baptismal_Name");}</span></th>
+                <th class="hide-5 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("DOB");}</span></th>
+                <th class="hide-6 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                <th class="hide-7 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                <th class="hide-8 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                <th class="hide-9 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Place_Of_Birth");}</span></th>
+                <th class="hide-10 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Nationality");}</span></th>
+                <th class="hide-11 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("MobileNo");}</span></th>
+                <th class="hide-12 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                <th class="hide-13 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Mother_Tongue");}</span></th>
+                <th class="hide-14 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Designations");}</span></th>
+                <th class="hide-15 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("GenFileNo");}</span></th>
+                <th class="hide-16 AllShow" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="hide-2 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcname" onkeyup="searchbycolumn(event,'forname')" class="searchclass" />
+                        <span onclick="clearsrcname()" class="clearbutton" id="nameid">X</span>
+                    </div>
+                </td>
+                <td class="hide-3 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcsurname" placeholder="" onkeyup="searchbycolumn(event,'forsurname')" class="searchclass" />
+                        <span onclick="clearsrcdurname()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-4 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcbapname" placeholder="" onkeyup="searchbycolumn(event,'forbapname')" class="searchclass" />
+                        <span onclick="clearbapname()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-5 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcdob" placeholder="" onkeyup="searchbycolumn(event,'fordob')" class="searchclass" />
+                        <span onclick="cleardob()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-6 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrccountry" placeholder="" onkeyup="searchbycolumn(event,'forcountry')" class="searchclass" />
+                        <span onclick="clearcountry()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-7 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcprovince" placeholder="" onkeyup="searchbycolumn(event,'forprovince')" class="searchclass" />
+                        <span onclick="clearprovince()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-8 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcfileno" placeholder="" onkeyup="searchbycolumn(event,'forfileno')" class="searchclass" />
+                        <span onclick="clearfileno()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-9 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcplaceofbirth" placeholder="" onkeyup="searchbycolumn(event,'forplaceofbirth')" class="searchclass" />
+                        <span onclick="clearplaceofbirth()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-10 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcnationality" placeholder="" onkeyup="searchbycolumn(event,'fornationality')" class="searchclass" />
+                        <span onclick="clearnationality()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-11 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcmobileno" placeholder="" onkeyup="searchbycolumn(event,'forformobileno')" class="searchclass" />
+                        <span onclick="clearmobileno()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-12 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcemail" placeholder="" onkeyup="searchbycolumn(event,'foremail')" class="searchclass" />
+                        <span onclick="clearemail()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-13 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcmothertongue" placeholder="" onkeyup="searchbycolumn(event,'formothertongue')" class="searchclass" />
+                        <span onclick="clearmothertongue()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-14 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcdesignations" placeholder="" onkeyup="searchbycolumn(event,'fordesignations')" class="searchclass" />
+                        <span onclick="cleardesignations()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="hide-15 AllShow" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="forsrcgenfileno" placeholder="" onkeyup="searchbycolumn(event,'forgenfileno')" class="searchclass" />
+                        <span onclick="cleargenfileno()" class="clearbutton">X</span>
+                    </div>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = ViewBag.StartValue;
+                foreach (var item in (IEnumerable<Generalate.Controllers.GetAllPrileView>)TempData["GetAllData"])
+                {
+                    <tr>
+                        <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                        <td class="AllShow hide-1" style="display:none">@ji</td>
+                        <td class="AllShow hide-2" style="display:none"> <a href='/Member/MemberInfoById?memberId=@item.MemberId'>@item.Name</a></td>
+                        <td class="AllShow hide-3" style="display:none">@item.Sirname</td>
+                        <td class="AllShow hide-4" style="display:none">@item.NameBaptismial</td>
+                        <td class="AllShow hide-5" style="display:none">@item.DOB</td>
+                        <td class="AllShow hide-6" style="display:none">@item.Country</td>
+                        <td class="AllShow hide-7" style="display:none">@item.ProvinceName</td>
+                        <td class="AllShow hide-8" style="display:none">@item.FileNo</td>
+                        <td class="AllShow hide-9" style="display:none">@item.PlaceOfBirth</td>
+                        <td class="AllShow hide-10" style="display:none">@item.Nationality</td>
+                        <td class="AllShow hide-11" style="display:none">@item.MobileNo</td>
+                        <td class="AllShow hide-12" style="display:none">@item.EmailId</td>
+                        <td class="AllShow hide-13" style="display:none">@item.MotherTongue</td>
+                        <td class="AllShow hide-14" style="display:none">@item.AppiontmentType</td>
+                        <td class="AllShow hide-15" style="display:none">@item.GenFileNo</td>
+                        <td class="AllShow hide-16" style="display:none">
+
+                            @{
+                                var ispermissionview = viewpermissions.FirstOrDefault(x => x.Viewpermission == true && x.PageName == "Members");
+                                if (ispermissionview != null)
+                                {
+                                    <a href='/Home/MemberDetails?id=@item.MemberId'>
+                                        <i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberId" class="fa fa-eye"></i>
+                                    </a>
+                                }
+
+                                var ispermissionedit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Members");
+                                if (ispermissionedit != null)
+                                {
+                                    <a href="/Member/MemberInfoById_Primary?memberId=@item.MemberId&Name=&SirName=">
+                                        <i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberId" class="fa fa-edit"></i>
+                                    </a>
+                                }
+
+                                var ispermissiondelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Members");
+                                if (ispermissiondelete != null)
+                                {
+                                    <a>
+                                        <i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberId" class="fa fa-trash-o DeleteMember"></i>
+                                    </a>
+                                }
+
+                            }
+
+
+
+
+                        </td>
+
+                        <td></td>
+                    </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+    <div id="mySidenav_Dynamic" class="sidenav" style="display:none">
+        <div style="border-style:solid">
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-1" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("S_No");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-2" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Name");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-3" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Surname");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-4" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Baptismal_Name");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-5" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("DOB");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-6" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Country");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-7" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Province_Name");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-8" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("File_No");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-9" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Place_Of_Birth");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-10" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Nationality");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-11" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("MobileNo");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-12" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("EmailId");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-13" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("MotherTounge");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-14" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Designations");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-15" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("GenFileNo");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-16" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Action");}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<style>
+
+
+
+    .buttonwrapper {
+        display: inline-block;
+    }
+
+    .searchclass {
+        background-color: transparent;
+        border: 1px solid #dcdce5;
+        height: 7%;
+        color: black;
+        border-radius: 15px;
+    }
+
+    .clearbutton {
+        margin-left: -20%;
+        border: none;
+        background-color: white;
+        color: dodgerblue;
+        cursor: pointer;
+    }
+
+    /*.inline-buttonwrapper {
+        display: inline;
+    }
+
+    .inline-button {
+        margin-left: -50%;
+        border: none;
+        background-color: transparent;
+    }*/
+</style>
+
+<script>
+    $(document).ready(function () {
+        //alert($('#mySidenav_Dynamic').html());
+        $('#Dynamic_Checkbox').val('1');
+        $("#mySidenav").empty();
+        $("#mySidenav").html($('#mySidenav_Dynamic').html());
+        $('#mySidenav_Dynamic').empty();
+
+        var dynamiColData = '@ViewBag.ColumnShow';
+        //alert(dynamiColData);
+        if (dynamiColData != '') {
+            var CommaSepData = dynamiColData.split(',');
+            $.each(CommaSepData, function (index, value) {
+                $("#checkbox-grid-" + CommaSepData[index]).attr('checked','');
+                $(".hide-" + CommaSepData[index]).show();
+            });
+        }
+        else {
+            $('input[class=notdivhide]').each(function () {
+                $(this).attr('checked', 'true');
+            });
+            $('.AllShow').show();
+        }
+        $('input[class=notdivhide]').on('click', function () {
+            var id = $(this).attr("id").replace('checkbox-grid-', '');
+            if ($(this).is(':checked')) {
+                $(".hide-" + id).show();
+            }
+            else {
+                $(".hide-" + id).hide();
+            }
+        });
+
+    });
+
+    $(".DeleteMember").on('click', function () {
+        var id = $(this).attr("data-val");
+        var cnf = confirm("Are you sure, You want to delete?");
+        if (cnf == true) {
+            window.location.href = "/Member/DeleteMemberById?id=" + id;
+        }
+    });
+
+
+
+
+    function clearsrcname() {
+        $("#srcname").val('');
+        GetGrid();
+    }
+    function clearsrcdurname() {
+        $("#srcsurname").val('');
+        GetGrid();
+    }
+    function clearbapname() {
+        $("#srcbapname").val('');
+        GetGrid();
+    }
+    function cleardob() {
+        $("#srcdob").val('');
+        GetGrid();
+    }
+    function clearcountry() {
+        $("#srccountry").val('');
+        GetGrid();
+    }
+    function clearprovince() {
+        $("#srcprovince").val('');
+        GetGrid();
+    }
+    function clearfileno() {
+        $("#srcfileno").val('');
+        GetGrid();
+    }
+    function clearplaceofbirth() {
+        $("#srcplaceofbirth").val('');
+        GetGrid();
+    }
+    function clearnationality() {
+        $("#srcnationality").val('');
+        GetGrid();
+    }
+    function clearmobileno() {
+        $("#srcmobileno").val('');
+        GetGrid();
+    }
+    function clearemail() {
+        $("#srcemail").val('');
+        GetGrid();
+    }
+    function clearmothertongue() {
+        $("#srcmothertongue").val('');
+        GetGrid();
+    }
+    function cleardesignations() {
+        $("#srcdesignations").val('');
+        GetGrid();
+    }
+    function cleargenfileno() {
+        $("#srcgenfileno").val('');
+        GetGrid();
+    }
+
+</script>

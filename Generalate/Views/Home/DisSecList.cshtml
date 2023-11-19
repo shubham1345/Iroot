@@ -1,0 +1,796 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "DisSecList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<style>
+    .Mytooltip:hover {
+        margin-bottom: 500px;
+        cursor: pointer;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <div class="row">
+                        <div class="col-sm-12"><span style="color:white;font-weight:bold; margin-left:20px;"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}:</span>@ViewBag.Province<span>@{@HomeController.GetControlTextByControlId("Province_ID");}:</span> @ViewBag.MyId </span> </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a data-toggle="tab" href="#DistSec" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></a></li>
+                                    <li><a data-toggle="tab" href="#Council" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Council_Member");}</span></a></li>
+                                    <li><a data-toggle="tab" href="#Commission" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Commission");}</span></a></li>
+                                </ul>
+
+                                <div class="tab-content tab_sis">
+                                    <div id="DistSec" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <div class="panel-heading" style="background-color:#29b2e1;color:white;"><span>@{@HomeController.GetControlTextByControlId("Province_Details");}</span></div>
+                                            <div class="col-md-12 brd-panel overflow-daily" style="height:400px;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <form id="DisSecForm" action="/Home/AddDisSecData" method="post" enctype="multipart/form-data">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label> <span>@{@HomeController.GetControlTextByControlId("Title");}</span></label>
+                                                                                <input type="hidden" id="MyId" name="MyId" value="@ViewBag.DisSecId" />
+                                                                                <input type="hidden" id="DistId" name="DistId" value="@ViewBag.DisSecMyId" />
+                                                                                <input type="hidden" id="DisSecName" name="DistSecName" value="@ViewBag.DisSecName" />
+                                                                                <input type="text" id="Title" name="Title" class="form-control">
+                                                                                <input type="hidden" id="id" name="id" class="form-control" />
+                                                                            </div>
+                                                                            <div class="form-group">
+                                                                                <label> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></label>
+                                                                                <input type="text" id="Date10" name="Date" readonly class="form-control datepicker">
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label> <span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                                <input type="file" name="File" id="File" class="form-control" accept=".png,.jpg,.pdf,.jpeg">
+                                                                                <span id="file1"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></label>
+                                                                                <textarea id="Description" rows="5" name="Description" class="form-control"></textarea>
+                                                                            </div>
+                                                                            <button type="submit" class="btn btn-success" id="btnAddData"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top:30px;">
+                                                                <div class="col-sm-12">
+                                                                    <table class="table table-striped table-bordered table-hover" id="ComHouseTbl" style="margin-top:20px;">
+                                                                        <thead>
+                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Title");}</span> </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("View_Documents");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="tbody">
+                                                                            @{
+                                                                                int iii = 1;
+                                                                                foreach (var item in ViewBag.DistSectorData as IEnumerable<Generalate.Models.tbl_DistSectorData>)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>@iii</td>
+                                                                                        <td>@item.Title</td>
+                                                                                        <td>@item.Date</td>
+                                                                                        <td>
+                                                                                            @if (@item.Description.Length > 30)
+                                                                                            {
+                                                                                                <span>@item.Description.ToString().Substring(0, 30)</span><span class="Mytooltip" style="color:blue; font:bold;" data-toggle="tooltip" data-placement="top" title="@item.Description.ToString()"> ...<span>@{@HomeController.GetControlTextByControlId("More");}</span></span>
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                @item.Description
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            @{
+                                                                                                if (!string.IsNullOrWhiteSpace(@item.File))
+                                                                                                {
+                                                                                                    <a target="_blank" href="~/Image/DistSec/@item.File"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("Not_Available");}</span></a>
+
+                                                                                                }
+                                                                                            }
+                                                                                        </td>
+                                                                                        <td>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditDistSecData"></i></button>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash DeleteDistSecData"></i></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    iii++;
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="Council" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="panel-heading" style="background-color:#29b2e1; color:white;"><span>@{@HomeController.GetControlTextByControlId("Council_Members");}</span></div>
+                                            <div class="col-md-12 brd-panel overflow-daily" style="height:400px;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <form id="ProvinceCouncil" action="/Home/AddProvinceCouncil" method="post" enctype="multipart/form-data">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></label>
+                                                                                <input type="text" id="FromDate1" name="FromDate" readonly class="form-control datepicker">
+                                                                                <input type="hidden" id="CouncilId" name="CouncilId" />
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></label>
+                                                                                <input type="text" id="ToDate1" name="ToDate" readonly class="form-control datepicker">
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <br />
+                                                            </div>
+
+                                                            <div class="row" style="margin-top:10px;">
+                                                                <div class="col-sm-1">
+                                                                    <input type="button" id="addRow" class="btn btn-primary btn-sm" value="Add Row (+)" />
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <input type="button" id="RemoveRow" class="btn btn-danger btn-sm" value="Remove Row (-)" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="row" style="margin-top:10px;">
+                                                                <div class="col-sm-12">
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th> <label><input type="checkbox" id="SelectAllCheckBox"> All</label></th>
+                                                                                <th>Name</th>
+                                                                                <th>Designation</th>
+                                                                                <th>Responsibility</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="counsilmemberTblBody">
+                                                                            <tr>
+                                                                                <td><input type="checkbox" name="ischecked" /></td>
+                                                                                <td><input type="text" id="MemberName" name="MemberName" class="form-control CouncilName" /></td>
+                                                                                <td><input type="text" id="DesignationName" name="DesignationName" class="form-control CouncilDesignation" /></td>
+                                                                                <td><input type="text" id="ResponsibilityName" name="ResponsibilityName" class="form-control CouncilResponsibility" /></td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <input type="button" class="btn btn-success" value="Save" id="SaveCouncilBtn" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row" style="margin-top:40px;">
+                                                                <div class="col-sm-12">
+                                                                    <table class="table table-striped table-hover table-bordered" id="TblCouncil">
+                                                                        <thead>
+                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("MemberName");}</span> </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Responsibility");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="tbody">
+                                                                            @{
+                                                                                int i1 = 1;
+                                                                                foreach (var item in ViewBag.AllDistSecCouncil as IEnumerable<Generalate.Models.tbl_DistSecCouncil>)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>@i1</td>
+                                                                                        <td>@item.FromDate</td>
+                                                                                        <td>@item.ToDate</td>
+                                                                                        <td>@item.MemberName</td>
+                                                                                        <td>@item.DesignationName</td>
+                                                                                        <td>@item.ResponsibilityName</td>
+                                                                                        <td>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditProvinceCouncil"></i></button>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DeleteProvinceCouncil"></i></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    i1++;
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="Commission" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="panel-heading" style="background-color:#29b2e1; color:white;"><span>@{@HomeController.GetControlTextByControlId("Commission");}</span></div>
+                                            <div class="col-md-12 brd-panel overflow-daily" style="height:400px;">
+                                                <div class="panel panel-default">
+                                                    <div class="panel-body">
+                                                        <div class="container-fluid">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <form id="ProvinceCommission" action="/Home/AddProvinceCommission" method="post" enctype="multipart/form-data">
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></label>
+                                                                                <input type="text" id="FromDate11" name="FromDate" readonly class="form-control datepicker">
+                                                                                <input type="hidden" id="commissionId" name="ProId" />
+                                                                                <input type="hidden" id="commId" name="Id" />
+
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-sm-6">
+                                                                            <div class="form-group">
+                                                                                <label><span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></label>
+                                                                                <input type="text" id="ToDate11" name="ToDate" readonly class="form-control datepicker">
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                                <br />
+                                                            </div>
+
+                                                            <div class="row" style="margin-top:10px;">
+                                                                <div class="col-sm-1">
+                                                                    <input type="button" id="addRow1" class="btn btn-primary btn-sm" value="Add Row (+)" />
+                                                                </div>
+                                                                <div class="col-sm-2">
+                                                                    <input type="button" id="RemoveRow1" class="btn btn-danger btn-sm" value="Remove Row (-)" />
+                                                                </div>
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Responsibility");}</span></label>
+                                                                        <div class="col-sm-5">
+                                                                            <select id="Responsibilities" class="form-control">
+                                                                                <option value="---Select Items---">---Select Responsibility ---</option>
+                                                                                @foreach (var item in @ViewBag.AllResponsibility as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                {
+                                                                                    <option value="@item.Name">@item.Name</option>
+                                                                                }
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <div class="row" style="margin-top:10px;">
+                                                                <div class="col-sm-12">
+                                                                    <table class="table table-bordered">
+                                                                        <thead>
+                                                                            <tr>
+                                                                                <th> <label><input type="checkbox" id="SelectAllCheckBox1"> All</label></th>
+                                                                                <th>Name</th>
+                                                                                <th>Designation</th>
+                                                                                <th>Responsibility</th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody id="counsilmemberTblBody1">
+                                                                            <tr>
+                                                                                <td><input type="checkbox" name="ischecked" /></td>
+                                                                                <td><input type="text" id="MemberName1" name="MemberName" class="form-control CouncilName1" /></td>
+                                                                                <td><input type="text" id="DesignationName1" name="DesignationName" class="form-control CouncilDesignation1" /></td>
+                                                                                <td><input type="text" id="ResponsibilityName1" name="ResponsibilityName" class="form-control CouncilResponsibility1" /></td>
+                                                                            </tr>
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+                                                                    <input type="button" class="btn btn-success" value="Save" id="SaveCouncilBtn1" />
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="row" style="margin-top:40px;">
+                                                                <div class="col-sm-12">
+                                                                    <table class="table table-striped table-hover table-bordered" id="TblCouncil1">
+                                                                        <thead>
+                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("MemberName");}</span> </th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Responsibility");}</span></th>
+                                                                                <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                            </tr>
+                                                                        </thead>
+                                                                        <tbody class="tbody">
+                                                                            @{
+                                                                                int i12 = 1;
+                                                                                foreach (var item in ViewBag.AllDistSecCommission as IEnumerable<Generalate.Models.tbl_DistSecCommission>)
+                                                                                {
+                                                                                    <tr>
+                                                                                        <td>@i12</td>
+                                                                                        <td>@item.FromDate</td>
+                                                                                        <td>@item.ToDate</td>
+                                                                                        <td>@item.MemberName</td>
+                                                                                        <td>@item.DesignationName</td>
+                                                                                        <td>@item.ResponsibilityName</td>
+                                                                                        <td>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditProvinceCommission"></i></button>
+                                                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash DeleteProvinceCommission"></i></button>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                    i12++;
+                                                                                }
+                                                                            }
+                                                                        </tbody>
+                                                                    </table>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+        {
+    <script>
+        $(document).ready(function () {
+            $('#ComHouseTbl').DataTable();
+            $('#TblCouncil').DataTable();
+            $('#TblCouncil1').DataTable();
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                localStorage.setItem('activeTab', $(this).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+    </script>
+    <script>
+        $(".EditProvinceCouncil").on('click', function () {
+          //debugger;
+            var id = $(this).attr("data-val");
+            GetDistCouncilById(id);
+        });
+
+        function GetDistCouncilById(id) {
+            $.ajax({
+                url: "/Home/GetDistCouncilById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#Id").val(result.Id);
+
+                    $("#FromDate1").val(result.FromDate);
+                    $("#ToDate1").val(result.ToDate);
+
+                    $("#MemberName").val(result.MemberName);
+                    $("#DesignationName").val(result.DesignationName);
+                    $("#ResponsibilityName").val(result.ResponsibilityName);
+
+                    $("#addRow").prop('disabled', true);
+                    $("#RemoveRow").prop('disabled', true);
+                    $("#SaveCouncilBtn").val("Update");
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        $(".DeleteProvinceCouncil").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Home/DeleteDistSecCouncil?id=" + id;
+            }
+        });
+    </script>
+    <script>
+        $(".EditProvinceCommission").on('click', function () {
+          //debugger;
+            var id = $(this).attr("data-val");
+            GetDistCommissionById(id);
+        });
+
+        function GetDistCommissionById(id) {
+            $.ajax({
+                url: "/Home/GetDistCommissionById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#Id").val(result.Id);
+                    $("#commissionId").val(result.ProId);
+                    $("#FromDate11").val(result.FromDate);
+                    $("#ToDate11").val(result.ToDate);
+
+                    $("#MemberName1").val(result.MemberName);
+                    $("#DesignationName1").val(result.DesignationName);
+                    $("#ResponsibilityName1").val(result.ResponsibilityName);
+
+                    $("#addRow1").prop('disabled', true);
+                    $("#RemoveRow1").prop('disabled', true);
+                    $("#SaveCouncilBtn1").val("Update");
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+        $(".DeleteProvinceCommission").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Home/DeleteDistSecCommission?id=" + id;
+            }
+        });
+    </script>
+    <script>
+        $(".EditDistSecData").on('click', function () {
+          //debugger;
+            $('#DisSecForm').attr('action', '/Home/UpdateDisSec');
+            var id = $(this).attr("data-val");
+            $("#btnAddData").text("Update");
+            GetDisSecID1(id);
+        });
+        function GetDisSecID1(id) {
+            $.ajax({
+                url: "/Home/GetDisSecID1?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#id").val(result.id);
+                    $("#MyId").val(result.MyId);
+                    $("#DistId").val(result.DistId);
+                    $("#DisSecName").val(result.DisSecName);
+                    $("#Title").val(result.Title);
+                    $("#Date").val(result.Date);
+                    $("#Description").val(result.Description);
+                    $("#file1").text(result.File);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        $(".DeleteDistSecData").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Home/DeleteDisSecData?id=" + id;
+            }
+        });
+    </script>
+
+    @*Add/Remove Council Rows*@
+    <script>
+        var allMembers = [];
+        var allDesignations = [];
+        GetMemberandDesignation();
+        autocompleteFunc();
+        $("#addRow").on("click", function () {
+          //debugger;
+            var newRow = "<tr>";
+            newRow += "<td><input type='checkbox' name='ischecked' /></td>";
+            newRow += "<td><input type='text' name='MemberName' class='form-control CouncilName' /></td>";
+            newRow += "<td><input type='text' name='DesignationName' class='form-control CouncilDesignation' /></td>";
+            newRow += "<td><input type='text' name='ResponsibilityName' class='form-control CouncilResponsibility' /></td>";
+            newRow += "</tr>";
+
+            $("#counsilmemberTblBody").append(newRow);
+            autocompleteFunc();
+        });
+        $("#RemoveRow").on("click", function () {
+            if (confirm("Do you want to remove ?")) {
+                $.each($("input[name='ischecked']:checked"), function () {
+                    $(this).closest("tr").remove();
+                });
+            }
+        });
+
+        $("#SaveCouncilBtn").on("click", function () {
+          //debugger;
+            var data = [];
+            var counsilId = $("#CouncilId").val();
+            var GenID = $("#CouncilId").val();
+            $("#counsilmemberTblBody tr").each(function () {
+              //debugger;
+                var obj = {};
+                obj.Id = counsilId;
+                obj.Id = $("#CouncilId").val();
+                obj.FromDate = $("#FromDate1").val();
+                obj.ToDate = $("#ToDate1").val();
+                obj.MemberName = $(this).find(':input[name="MemberName"]').val();
+                obj.DesignationName = $(this).find(':input[name="DesignationName"]').val();
+                obj.ResponsibilityName = $(this).find(':input[name="ResponsibilityName"]').val();
+                data.push(obj);
+            });
+            if (data.length > 0) {
+                $.ajax({
+                    url: "/Home/AddDistSecCouncil",
+                    data: JSON.stringify(data),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result == "200") {
+                            alert("Data Save Successfully !");
+                            window.location.reload();
+                        }
+                    },
+                    error: function (errormessage) {
+                        //alert(errormessage.responseText);
+                    }
+                });
+            } else {
+                alert("No records for Add !");
+            }
+        });
+
+        $("#SelectAllCheckBox").on("click", function () {
+            var isCheck = $(this).is(':checked')
+            if (isCheck) {
+                $("input[name='ischecked']").prop('checked', true);
+            } else {
+                $("input[name='ischecked']").prop('checked', false);
+            }
+        });
+        function autocompleteFunc() {
+            $(".CouncilName").autocomplete({
+                source: allMembers
+            });
+            $(".CouncilDesignation").autocomplete({
+                source: allDesignations
+            });
+
+        }
+        function GetMemberandDesignation() {
+            $.ajax({
+                url: "/Home/GetMemberAndDesignationsList",
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.Members.length > 0) {
+                        $.each(result.Members, function (index, value) {
+                            allMembers.push(value);
+                        });
+                    }
+                    if (result.Designations.length > 0) {
+                        $.each(result.Designations, function (index, value) {
+                            allDesignations.push(value);
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+    </script>
+
+    @*Add/Remove Rows for Commission*@
+    <script>
+        var allMembers = [];
+        var allDesignations = [];
+        GetMemberandDesignation();
+        autocompleteFunc();
+        $("#addRow1").on("click", function () {
+          //debugger;
+            var newRow = "<tr>";
+            newRow += "<td><input type='checkbox' name='ischecked' /></td>";
+            newRow += "<td><input type='text' name='MemberName' class='form-control CouncilName1' /></td>";
+            newRow += "<td><input type='text' name='DesignationName' class='form-control CouncilDesignation1' /></td>";
+            newRow += "<td><input type='text' name='ResponsibilityName' class='form-control CouncilResponsibility1' /></td>";
+            newRow += "</tr>";
+
+            $("#counsilmemberTblBody1").append(newRow);
+            autocompleteFunc();
+        });
+        $("#RemoveRow1").on("click", function () {
+            if (confirm("Do you want to remove ?")) {
+                $.each($("input[name='ischecked']:checked"), function () {
+                    $(this).closest("tr").remove();
+                });
+            }
+        });
+
+        $("#SaveCouncilBtn1").on("click", function () {
+          //debugger;
+            var data = [];
+            var commissionId = $("#commissionId").val();
+            var GenID = $("#commissionId").val();
+            $("#counsilmemberTblBody1 tr").each(function () {
+              //debugger;
+                var obj = {};
+                obj.Id = commissionId;
+                obj.Id = $("#commissionId").val();
+                obj.FromDate = $("#FromDate11").val();
+                obj.ToDate = $("#ToDate11").val();
+                obj.MemberName = $(this).find(':input[name="MemberName"]').val();
+                obj.DesignationName = $(this).find(':input[name="DesignationName"]').val();
+                obj.ResponsibilityName = $(this).find(':input[name="ResponsibilityName"]').val();
+                data.push(obj);
+            });
+            if (data.length > 0) {
+                $.ajax({
+                    url: "/Home/AddDistSecCommission",
+                    data: JSON.stringify(data),
+                    type: "POST",
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result) {
+                        if (result == "200") {
+                            alert("Data Save Successfully !");
+                            window.location.reload();
+                        }
+                    },
+                    error: function (errormessage) {
+                        //alert(errormessage.responseText);
+                    }
+                });
+            } else {
+                alert("No records for Add !");
+            }
+        });
+
+        $("#SelectAllCheckBox1").on("click", function () {
+            var isCheck = $(this).is(':checked')
+            if (isCheck) {
+                $("input[name='ischecked']").prop('checked', true);
+            } else {
+                $("input[name='ischecked']").prop('checked', false);
+            }
+        });
+        function autocompleteFunc() {
+            $(".CouncilName1").autocomplete({
+                source: allMembers
+            });
+            $(".CouncilDesignation1").autocomplete({
+                source: allDesignations
+            });
+
+        }
+        function GetMemberandDesignation() {
+            $.ajax({
+                url: "/Home/GetMemberAndDesignationsList",
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    if (result.Members.length > 0) {
+                        $.each(result.Members, function (index, value) {
+                            allMembers.push(value);
+                        });
+                    }
+                    if (result.Designations.length > 0) {
+                        $.each(result.Designations, function (index, value) {
+                            allDesignations.push(value);
+                        });
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+    <script>
+        $("#Responsibilities").on("change", function () {
+            var resval = $("#Responsibilities option:selected").val();
+            $("#ResponsibilityName1").val(resval);
+            $(".CouncilResponsibility1").val(resval);
+        });
+
+    </script>
+
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "200") {
+            $("#mymessage").html("<b>Data saved successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "204") {
+            $("#mymessage1").html("<b>Some Error Occured !</b>");
+            $("#mymessage1").css("color", "red");
+            $('#myalertbox1').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox1").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel1").on("click", function () {
+            location.reload();
+        });
+    </script>
+}
+
+<style>    #ToDate11, #FromDate11, #ToDate1, #FromDate1, #Date10
+    {
+        color:black
+    }
+</style>
+
+

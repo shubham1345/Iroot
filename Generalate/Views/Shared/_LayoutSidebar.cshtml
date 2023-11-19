@@ -1,0 +1,66 @@
+﻿
+@using Generalate.EnumData;
+@using Generalate.Models;
+
+<div class="col-md-3 left_col">
+    <div class="left_col scroll-view">
+
+        <div class="navbar nav_title" style="border: 0;">
+            <a href="/Dashboard/Dashboard" class="site_title"><i class="fa fa-tachometer"></i> <span style="font-size:19px;">Dash Board</span></a>
+        </div>
+        <div class="clearfix"></div>
+
+        <!-- menu prile quick info -->
+        <div class="profile">
+            <div class="profile_pic">
+                <img src="~/WebsiteImages/images/user.png" alt="image" class="img-circle profile_img">
+            </div>
+            <div class="profile_info">
+                <span>Welcome,</span>
+                <h2>Admin</h2>
+            </div>
+        </div>
+        <!-- /menu prile quick info -->
+
+        <br />
+
+        <!-- sidebar menu -->
+        <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+            <div class="menu_section">
+                <ul class="nav side-menu" id="LeftMenu">
+                    @{
+                        var rolePermissionList = Session["rolePermissionList"] as List<RolePagePermission>;
+                        foreach (int item in Enum.GetValues(typeof(SideParentMenuEnum)))
+                        {
+                            var RootName = Enum.GetName(typeof(SideParentMenuEnum), item);
+                            var rolePermissionListByRootId = rolePermissionList.Where(x => x.ParentId == item);
+                            if (rolePermissionListByRootId.ToList().Count > 0)
+                            {
+                                if (@RootName == "Dashboard")
+                                {
+                                    foreach (var pageName in rolePermissionListByRootId)
+                                    {
+                                        <li><a href='@pageName.PageName'>@pageName.PageViewName</a></li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li>
+                                        <a><i class='fa fa-arrow-circle-o-down'></i>@RootName <span class='fa fa-chevron-down'></span></a>
+                                        <ul class='nav child_menu' style='display: none'>
+                                            @foreach (var pageName in rolePermissionListByRootId)
+                                            {
+                                                <li><a href='@pageName.PageName'>@pageName.PageViewName</a></li>
+                                            }
+                                        </ul>
+                                    </li>
+                                }
+
+                            }
+                        }
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

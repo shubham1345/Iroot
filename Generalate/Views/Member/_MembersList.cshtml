@@ -1,0 +1,268 @@
+﻿@using Generalate.Controllers;
+
+<input type="hidden" id="prvncName" value="@ViewBag.ProvinceName" />
+<input type="hidden" id="agefilter" value="@ViewBag.Age" />
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                @*<th class="hide2-1 AllShow2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th class="hide2-2 AllShow2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                <th class="hide2-3 AllShow2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                <th class="hide2-4 AllShow2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Age");}</span></th>
+                <th class="hide2-5 AllShow2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Mobile");}</span></th>
+                <th class="hide2-6 AllShow2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("EmailId");}</span></th>*@
+
+                <th class="hide2-1 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th class="hide2-2 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                <th class="hide2-3 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                <th class="hide2-4 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Baptismal_Name");}</span></th>
+                <th class="hide2-5 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("DOB");}</span></th>
+                <th class="hide2-6 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                <th class="hide2-7 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                <th class="hide2-8 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                <th class="hide2-9 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Place_Of_Birth");}</span></th>
+                <th class="hide2-10 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Nationality");}</span></th>
+                <th class="hide2-11 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("MobileNo");}</span></th>
+                <th class="hide2-12 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                <th class="hide2-13 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Mother_Tongue");}</span></th>
+                <th class="hide2-14 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Designations");}</span></th>
+                <th class="hide2-15 AllShow2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                <th style="background-color:#29b2e1;color:white;cursor:pointer" id="ExportGrid" onclick="openNavExp()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = 1;
+                foreach (GetAllPrileView item in ViewBag.MembersList as List<GetAllPrileView>)
+                {
+            <tr>
+                @*<td class="hide2-1 AllShow2">@ji</td>
+        <td class="hide2-2 AllShow2"> @item.Name</td>
+        <td class="hide2-3 AllShow2"> @item.Sirname</td>
+        <td class="hide2-4 AllShow2">@{@MemberController.GetAge(item.DOB);}</td>
+        <td class="hide2-5 AllShow2">@item.MobileNo</td>
+        <td class="hide2-6 AllShow2">@item.EmailId</td>*@
+
+                <td class="AllShow2 hide2-1" style="display:none">@ji</td>
+                <td class="AllShow2 hide2-2" style="display:none"> <a href="/Member/MemberInfoById_Primary?memberId=@item.MemberId&Name=&SirName=">@item.Name</a></td>
+                <td class="AllShow2 hide2-3" style="display:none">@item.Sirname</td>
+                <td class="AllShow2 hide2-4" style="display:none">@item.NameBaptismial</td>
+                <td class="AllShow2 hide2-5" style="display:none">@item.DOB</td>
+                <td class="AllShow2 hide2-6" style="display:none">@item.Country</td>
+                <td class="AllShow2 hide2-7" style="display:none">@item.ProvinceName</td>
+                <td class="AllShow2 hide2-8" style="display:none">@item.FileNo</td>
+                <td class="AllShow2 hide2-9" style="display:none">@item.PlaceOfBirth</td>
+                <td class="AllShow2 hide2-10" style="display:none">@item.Nationality</td>
+                <td class="AllShow2 hide2-11" style="display:none">@item.MobileNo</td>
+                <td class="AllShow2 hide2-12" style="display:none">@item.EmailId</td>
+                <td class="AllShow2 hide2-13" style="display:none">@item.MotherTounge</td>
+                <td class="AllShow2 hide2-14" style="display:none">@item.AppiontmentType</td>
+                <td class="AllShow2 hide2-15" style="display:none">
+                    <a href='/Home/MemberDetails?id=@item.MemberId'>
+                        <i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberId" class="fa fa-eye"></i>
+                    </a>
+                    <a href="/Member/MemberInfoById_Primary?memberId=@item.MemberId&Name=&SirName=">
+                        <i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberId" class="fa fa-edit"></i>
+                    </a>
+                    @*<a href='/Member/MemberInfoById_Primary?memberId=@item.MemberId'><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberId" class="fa fa-trash-o"></i></a>*@
+                </td>
+                <td></td>
+            </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+
+</div>
+<div id="mySidenav_Dynamic2" class="sidenav" style="display:none">
+    <div style="border-style:solid">
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-1" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("S_No");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-2" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Name");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-3" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Surname");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-4" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Baptismal_Name");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-5" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("DOB");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-6" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Country");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-7" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Province_Name");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-8" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("File_No");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-9" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Place_Of_Birth");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-10" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Nationality");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-11" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("MobileNo");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-12" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("EmailId");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-13" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("MotherTounge");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-14" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Designations");}
+                </div>
+            </div>
+        </div>
+        <div class="row notdivhide">
+            <div class="col-md-12">
+                <div class="col-md-1">
+                    <input type="checkbox" id="checkbox-grid2-15" class="notdivhide2">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Action");}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+<script>
+    $(document).ready(function () {
+        var dynamiColData = '@ViewBag.ColumnShowExp';
+        //alert(dynamiColData);
+        if (dynamiColData != '') {
+            var CommaSepData = dynamiColData.split(',');
+            $.each(CommaSepData, function (index, value) {
+                $("#checkbox-grid2-" + CommaSepData[index]).attr('checked','');
+                $(".hide2-" + CommaSepData[index]).show();
+            });
+        }
+        else {
+            $('input[class=notdivhide2]').each(function () {
+                $(this).attr('checked', 'true');
+            });
+            $('.AllShow2').show();
+        }
+        $('input[class=notdivhide2]').on('click', function () {
+            var id = $(this).attr("id").replace('checkbox-grid2-', '');
+            //alert(id);
+            if ($(this).is(':checked')) {
+                $(".hide2-" + id).show();
+            }
+            else {
+                $(".hide2-" + id).hide();
+            }
+        });
+    });
+    function openNavExp() {
+        document.getElementById("mySidenav_Dynamic2").style.width = "250px";
+        $('#mySidenav_Dynamic2').show();
+        //alert(document.getElementById("mySidenav").style.width);
+    }
+</script>

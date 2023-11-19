@@ -1,0 +1,330 @@
+﻿
+@{
+    ViewBag.Title = "Departed2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:89px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Seperated</h3>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="row">
+                                        <div class="col-sm-10" style="text-align:right">
+                                            <div class="form-group">
+                                                @*<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-print pull-right" id="btnPrintDepart"></i></button>*@
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12" style="margin-top:20px;">
+                                            <div class="form-group">
+                                                <label for="inputPassword3" class="col-sm-5 control-label">
+                                                    @*<input type="checkbox" value="Novitiate2ndY" id="BeforeProfess1"><span>BeforeProfess</span>*@
+                                                </label>
+                                                <label for="inputPassword3" class="col-sm-3 control-label">
+                                                    @*<input type="checkbox" value="PerpetualProfession" id="AfterProfess1"><span>AfterProfession</span>*@
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="margin-top:10px;" id="departdatatbl1">
+                                        <div class="col-sm-12 overflow-daily" style="height:400px;">
+                                            <table class="table table-bordered" id="departdatatbl">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.No</th>
+                                                        <th>Province Name</th>
+                                                        <th>MemberId</th>
+                                                        <th>Name</th>
+                                                        <th>Sur Name</th>
+                                                        <th>View Details</th>
+                                                        <th>Add Profile</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody></tbody>
+                                                @*<tbody class="tbody" id="ViewDepartData"></tbody>*@
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top:10px;" id="departdatatbl2">
+                                        <div class="col-sm-12 overflow-daily" style="height:400px;">
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>S.No</th>
+                                                        <th>MemberId</th>
+                                                        <th>Name</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody" id="ViewDepartData1"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script>
+          var page = '@ViewBag.Page';
+        $(document).ready(function () {
+            $("#Memdatatbl2").css("display", "none");
+            $("#Memdatatbl1").css("display", "none");
+            $("#Insttbl1").css("display", "none");
+            $("#Insttbl2").css("display", "none");
+            $("#tblParishes1").css("display", "none");
+            $("#tblParishes2").css("display", "none");
+            $("#tblcomdata1").css("display", "none");
+            $("#tblcomdata2").css("display", "none");
+            $("#tblSocData1").css("display", "none");
+            $("#tblSocData2").css("display", "none");
+            $("#tblOrdindata2").css("display", "none");
+            $("#tblRetire2").css("display", "none");
+            $("#deathdatatbl2").css("display", "none");
+            $("#departdatatbl2").css("display", "none");
+            $("#NovPPdatatbl2").css("display", "none");
+            $("#EnterToNovdatatbl2").css("display", "none");
+        });
+
+        $('#btnPrintDepart').on("click", function () {
+            $('#departdatatbl2').printThis();
+            $("#departdatatbl2").css("display", "block");
+            $("#departdatatbl1").css("display", "none");
+        });
+
+        $('#BeforeProfess1').click(function () {
+            if ($(this).prop("checked") == true) {
+                var id = $("#BeforeProfess1 option:selected").val();
+                //GetAllbeforprofessById1(id);
+                GetbeforprofessById1(id);
+            }
+        });
+
+        function GetbeforprofessById1(id) {
+            $('#departdatatbl').DataTable().destroy();
+            // $('#EnterToNovdatatbl1').DataTable().destroy();
+            datatable = $('#departdatatbl')
+                .DataTable({
+                    "sAjaxSource": "/Member/GetAllbeforprofessById1?id=" + id,
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": false,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "columns": [
+                        {
+                            "data": "MemberID",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "MemberId",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a href=/HomeUser/SaprationDetails?id=' + data + '>View Details</a>';
+                                }
+                                else {
+                                    return '<a target="_blank" href="#">No Profile</a>';
+                                }
+                            }
+                        },
+                    ]
+                });
+        }
+
+        function GetAllbeforprofessById1(id) {
+            $.ajax({
+                url: "/Home/GetAllbeforprofessById1?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ViewDepartData').html("");
+                    $('#ViewDepartData1').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberID != null && data.MemberID != "") {
+                                    url = "/HomeUser/SaprationDetails?id=" + data.MemberID;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.MemberID + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                var row1 = "<tr><td>" + i + "</td><td>" + data.MemberID + "</td><td>" + data.Name + "</td></tr>";
+                                $('#ViewDepartData').append(row);
+                                $('#ViewDepartData1').append(row1);
+                                i = i + 1;
+                            }
+                        });
+                        $("#DepartedLbl").text("Before Total Member: " + (i - 1));
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        $('#AfterProfess1').click(function () {
+            if ($(this).prop("checked") == true) {
+                var id = $("#AfterProfess1 option:selected").val();
+                GetAllafterprofessById1(id);
+            }
+        });
+
+        function GetAllafterprofessById1(id) {
+            $.ajax({
+                url: "/Home/GetAllafterprofessById1?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ViewDepartData').html("");
+                    $('#ViewDepartData1').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberID != null && data.MemberID != "") {
+                                    url = "/HomeUser/SaprationDetails?id=" + data.MemberID;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.MemberID + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                var row1 = "<tr><td>" + i + "</td><td>" + data.MemberID + "</td><td>" + data.Name + "</td></tr>";
+                                $('#ViewDepartData').append(row);
+                                $('#ViewDepartData1').append(row1);
+                                i = i + 1;
+                            }
+
+                        });
+                        $("#DepartedLbl").text("After Total Member: " + (i - 1));
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetAllSaprationViewData1() {
+            //url: "/Home/GetAllSaprationViewData1?province=" + province,
+
+            $('#departdatatbl').DataTable().destroy();
+            // $('#EnterToNovdatatbl1').DataTable().destroy();
+            datatable = $('#departdatatbl')
+                .DataTable({
+                    "sAjaxSource": "/Member/GetAllSaprationList",
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": false,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                        var oSettings = this.fnSettings();
+                        $("td:first", nRow).html(oSettings._iDisplayStart + iDisplayIndex + 1);
+                        return nRow;
+                    },
+                    "columns": [
+                        {
+                            "defaultContent": ""
+                        },
+                        {
+                            "data": "ProvinceName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "MemberID",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "SurName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "MemberID",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a href=/HomeUser/SaprationDetails?id=' + data + '>View Details</a>';
+                                }
+                                else {
+                                    return '';
+                                }
+                            }
+                        },
+                        {
+                            "data": "MemberID",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a href=/Member/MemberInfoById?memberId=' + data + '>Add Profile</a>';
+                                }
+                                else {
+                                    return '';
+                                }
+                            }
+                        },
+                    ]
+                });
+        }
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            GetAllSaprationViewData1();
+        });
+
+    </script>
+}

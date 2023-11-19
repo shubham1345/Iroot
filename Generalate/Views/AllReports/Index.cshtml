@@ -1,0 +1,909 @@
+﻿@using Generalate.Models;
+@using System.Configuration;
+@model dynamic
+
+@{var domain = ConfigurationManager.AppSettings["domain"];}
+<div class="form-horizontal" style="margin-left:30px; margin-right:30px;">
+    <br />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        @Html.ActionLink("Back", "Report")
+
+        <button type="button" class="btn btn-primary" id="printbtn" style="background-color:#001f6b">Print</button>
+
+        <br />
+        <br />
+
+        <div class="panel-group" style="background-color:#001f6b">
+            <div class="panel panel-primary">
+                <div class="tab panel-heading" style="background-color:#001f6b">
+                    <a style="color:white;">All Reports</a>
+                    <br />
+                </div>
+                <div class="row" style="margin-left:30px; margin-right:30px;">
+                    <div class="col-sm-2">
+                        <img src="~/Images/CMF.png" style="height:150px; width:150px;" />
+
+                    </div>
+                    <div class="col-sm-8" style="margin-top:50px; text-align:center; color:brown;">
+
+                        <h1 style="color:#ed2930"><b>Congregation of Holy Cross Bangalore @*Province Of Bangaloor*@</b></h1>
+                        @*<h3 style="color:#c4393d">Province Of Bangalore</h3>*@
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;" align="right">
+                        <img src="~/Images/rajesh/camillians.png" style="height:150px; width:150px;" id="personimg" />
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-left:30px; margin-right:30px;">
+                    <br />
+                    @{
+                        int i = 0;
+                    }
+
+                    <table class="table table-bordered">
+
+
+                        @try
+                        {
+                            foreach (tbl_PersonalDetails personal in Model.tbl_PersonalDetails)
+                            {
+
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Personal Details</h4></tr>
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <th>Name</th>
+                                    <td>@personal.Spare1</td>
+
+                                    <th> Sur Name </th>
+                                    <td>  @personal.Name</td>
+
+
+                                    <th> Other Name </th>
+                                    <td>  @personal.SirName </td>
+
+
+
+
+                                </tr>
+                                <tr>
+                                    <th> Baptismial Name</th>
+                                    <td>@personal.NameBaptismial</td>
+
+                                    <th> Date of Birth </th>
+                                    <td>  @personal.DOB </td>
+                                    <th> Feast Days </th>
+                                    <td>  @personal.FeastDays </td>
+
+
+                                    <th> Blood Group </th>
+                                    <td>  @personal.BloodGroup </td>
+                                </tr>
+
+                                <tr>
+                                    <th> Email ID </th>
+                                    <td> @personal.EmailID </td>
+
+                                    <th> Mobile Number </th>
+                                    <td> @personal.Mobile </td>
+
+                                    <th> Native Language </th>
+                                    <td> @personal.MotherTongue </td>
+
+                                </tr>
+
+
+                                <tr>
+
+
+                                    <th> House No. </th>
+                                    <td>  @personal.VillageTown </td>
+
+                                    <th> House Name </th>
+                                    <td> @personal.Country</td>
+
+                                    <th> District </th>
+                                    <td>  @personal.District </td>
+
+                                </tr>
+
+                                <tr>
+                                    <th> State </th>
+                                    <td> @personal.State</td>
+
+                                    <th>Diocese</th>
+                                    <td> @personal.NameasinAadharCard </td>
+
+
+                                    <th>Name of The Trust </th>
+                                    <td>@personal.Parish1</td>
+
+
+                                </tr>
+
+
+                                <tr>
+
+                                    <th> Pincode </th>
+                                    <td>@personal.Pincode</td>
+
+
+                                    <th> Aadhar Number </th>
+                                    <td> @personal.AadharNo </td>
+
+                                    <th> PAN Number </th>
+                                    <td>  @personal.MMobile </td>
+
+                                </tr>
+
+                                    <tr>
+                                        <th> Father's Name </th>
+                                        <td> @personal.FatherName </td>
+
+                                        <th>Father's Baptismial Name</th>
+                                        <td>@personal.FBaptism</td>
+
+                                        <th> Mother's Name </th>
+                                        <td> @personal.MotherName </td>
+
+
+
+
+                                    </tr>
+
+                                    <tr>
+
+
+
+                                        <th>Mother's Baptismial Name</th>
+                                        <td>@personal.MBaptism</td>
+
+                                        <th> Place in the Family </th>
+                                        <td> @personal.PlaceintheFamily </td>
+
+
+                                        <th> No of Brothers </th>
+                                        <td> @personal.NoOfBrother </td>
+
+
+                                    </tr>
+
+                                    <tr>
+
+
+                                        <th> No of Sisters </th>
+                                        <td> @personal.NoOfSister </td>
+                                        <th> Mobile Number</th>
+                                        <td> @personal.FMobile </td>
+
+
+                                        <th>Will</th>
+                                        @if (!string.IsNullOrEmpty(@personal.Spare2))
+                                        {
+                                            @*<td><a href="@domain/AllReports/Download?FileName=/Images/PertionalDetails/@personal.Spare2"> Download </a> </td>*@
+                                            <td><a href="@domain/Images/PertionalDetails/@personal.Spare2" download> Download </a> </td>
+                                        }
+
+                                    </tr>
+
+
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+
+                    </table>
+
+
+
+                    <table class="table table-bordered">
+                        <tr><h4 style="color:#009be1"> Jubilee Details</h4></tr>
+                        <tr>
+
+                            <th> Feast </th>
+                            <th> Ordination Place</th>
+                            <th> Ordination Date </th>
+                            <th> Silver Jubilee</th>
+                            <th> Golden Jubilee</th>
+                            <th> Platinum Jubilee</th>
+                            <th> Diamond Jubilee</th>
+
+                        </tr>
+
+                        @foreach (tbl_Jubilee jub in Model.tbl_Jubilee)
+                        {
+
+                            <tr>
+
+                                <td>@jub.Profession</td>
+                                <td>@jub.FPPlace</td>
+                                <td>@jub.FirstProfession</td>
+                                <td>@jub.SilverJubilee</td>
+                                <td>@jub.GoldenJubilee</td>
+                                <td>@jub.PlatinumJubilee</td>
+                                <td>@jub.DiamondJubilee</td>
+                            </tr>
+                        }
+                    </table>
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_EmergencyContact student in Model.tbl_EmergencyContact)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Emergency Contact</h4></tr>
+                                        <tr>
+
+                                            <th>Relationship</th>
+
+                                            <th>Mobile Number</th>
+                                            <th>Landline Number</th>
+                                            <th>Address</th>
+                                            @* <th>EmailID</th>*@
+                                        </tr>
+
+                                    i = 1;
+                                }
+                                <tr>
+
+                                    <td>@student.Relationship</td>
+                                    <td>@student.Mobile</td>
+                                    <td>@student.Landline</td>
+                                    <td>@student.Address</td>
+                                    @*<td>@student.EmailID</td>*@
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+                            foreach (tbl_Entry form in Model.tbl_Entry)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Sacrament</h4></tr>
+                                        <tr>
+                                            @*<th>DateOfBaptism</th>*@
+                                            <th> Sacrament </th>
+                                            <th> Minister/Prelate</th>
+                                            <th> Date</th>
+                                            @*<th>Sacrament</th>*@
+                                            <th>Church Name/Place</th>
+                                            @*<th>Rector</th>*@
+                                        </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+
+                                    <td>@form.Place1</td>
+                                    <td>@form.Minister1</td>
+                                    <td>@form.DateOfBaptism</td>
+                                    @*<td>@form.DateOfConfirmation</td>*@
+                                    <td>@form.Place1</td>
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+                            foreach (tbl_EntryLife form in Model.tbl_EntryLife)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Formation</h4></tr>
+                                        <tr>
+                                            <th>Stage of Formation</th>
+                                            <th>Date/Year</th>
+                                            <th>Place</th>
+                                            <th>Superior</th>
+                                            <th>Formator</th>
+                                            <th>Ministor</th>
+                                            @*<th>Rector</th>*@
+                                        </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <td>@form.ColName</td>
+                                    <td>@form.EntryDate</td>
+                                    <td>@form.Place</td>
+                                    <td>@form.Director</td>
+                                    <td>@form.Minister</td>
+                                    <td>@form.OngoingFormation</td>
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_SecularEducation secular in Model.tbl_SecularEducation)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Secular Education</h4></tr>
+                                        <tr>
+                                            <th> Name of the Certificate</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>University</th>
+                                            <th>Address</th>
+                                            <th>Class Obtained</th>
+                                            <th>Medium</th>
+                                            <th>Document</th>
+                                        </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <td>@secular.DegreeName</td>
+                                    <td>@secular.FromDate</td>
+                                    <td>@secular.ToDate</td>
+                                    <td>@secular.University</td>
+                                    <td>@secular.Address</td>
+                                    <td>@secular.ClassObtained</td>
+                                    <td>@secular.Medium</td>
+                                    <td><a href="@domain/Images/SecularCertificate/@secular.Certificate" view>view</a> </td>
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_ReligiousEducation secular in Model.tbl_ReligiousEducation)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Religious Education</h4></tr>
+                                    <tr>
+                                        <th>Name of the Certificate</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>University</th>
+                                        <th>Address</th>
+                                        <th>Class Obtained</th>
+                                        <th>Document</th>
+                                    </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <td>@secular.DegreeName</td>
+                                    <td>@secular.FromDate</td>
+                                    <td>@secular.ToDate</td>
+                                    <td>@secular.University</td>
+                                    <td>@secular.Address</td>
+                                    <td>@secular.ClassObtained</td>
+                                    <td><a href="@domain/Images/SecularCertificate/@secular.Certificate">view</a> </td>
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_Seminar seminar in Model.tbl_Seminar)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Seminar</h4></tr>
+                                    <tr>
+                                        <th>Name of the Seminar</th>
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Institute</th>
+                                        <th>Place</th>
+
+                                    </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <td>@seminar.Community</td>
+                                    <td>@seminar.FromDate</td>
+                                    <td>@seminar.ToDate</td>
+                                    <td>@seminar.Institute</td>
+                                    <td>@seminar.Place</td>
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_KnownLanguages lanugages in Model.tbl_KnownLanguages)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Languages</h4></tr>
+                                    <tr>
+                                        <th>Language</th>
+                                        <th>Read</th>
+                                        <th>Write</th>
+                                        <th>Speak</th>
+
+
+                                    </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <td>@lanugages.LanguageName</td>
+                                    <td>@lanugages.ToRead</td>
+                                    <td>@lanugages.ToWrite</td>
+                                    <td>@lanugages.ToSpeak</td>
+
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+                            foreach (tbl_HomeLiveAndHomeVisit secular in Model.tbl_HomeLiveAndHomeVisit)
+                            {
+
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Service In the Congregation</h4></tr>
+                                    <tr>
+                                        @*<th>Name</th>*@
+                                        <th>From</th>
+                                        <th>To</th>
+                                        <th>Institution</th>
+                                        <th>Superior Name</th>
+                                        <th>Status/Office</th>
+                                        <th>Document</th>
+
+                                        @*<th>Other</th>*@
+
+                                    </tr>
+
+                                    i = 1;
+                                }
+                                <tr>
+
+                                    <td>@secular.ArrivalDate</td>
+                                    <td>@secular.DepartureDate</td>
+                                    <td>@secular.ColName</td>
+                                    <td>@secular.Place</td>
+
+                                    <td>@secular.Spare1</td>
+
+                                    <td><a href="@domain/Images/TransferLetter/@secular.TransferLetter">view</a> </td>
+
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+                            foreach (tbl_SeperationFromTheCongregation tube in Model.tbl_SeperationFromTheCongregation)
+                            {
+
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Seperation From The Congregation</h4></tr>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Date of separation</th>
+                                            <th>Purpose</th>
+                                            <th>Nature of separation</th>
+
+                                            <th>Document</th>
+                                            
+
+                                           
+
+                                        </tr>
+
+                                    i = 1;
+                                }
+                                <tr>
+
+                                    <td>@tube.Name</td>
+                                    <td>@tube.SeperationDate</td>
+                                    <td>@tube.Purpose</td>
+                                    <td>@tube.NatureOfSeperation</td>
+
+                                    @*<td>@tube.DispensationLetter</td>*@
+
+                                    <td><a href="@domain/Images/SeperationFromTheCongregation/@tube.DispensationLetter" view>view</a> </td>
+
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_LivingOutsideTheCongregation livingoutsidecongregation in Model.tbl_LivingOutsideTheCongregation)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Living outside the Congregation</h4></tr>
+                                        <tr>
+                                            <th>From </th>
+                                            <th>To</th>
+                                            <th>Place</th>
+                                            <th> Purpose</th>
+                                        </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <td>@livingoutsidecongregation.FromDate</td>
+                                    <td>@livingoutsidecongregation.ToDate</td>
+                                    <td>@livingoutsidecongregation.Place</td>
+                                    <td>@livingoutsidecongregation.Purpose</td>
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+
+
+
+
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_TravelRecord secular in Model.tbl_TravelRecord)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Travel Record</h4></tr>
+                                        <tr>
+                                            @*<th>Name</th>*@
+                                            <th>From </th>
+                                            <th>To </th>
+                                            <th>Place</th>
+                                            <th>Purpose</th>
+                                        </tr>
+
+                                    i = 1;
+                                }
+                                <tr>
+                                    @*<td>@secular.Name</td>*@
+                                    <td>@secular.FromDate</td>
+                                    <td>@secular.ToDate</td>
+                                    <td>@secular.Place</td>
+                                    <td>@secular.Purpose</td>
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_Health secular in Model.tbl_Health)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Health</h4></tr>
+                                        <tr>
+                                            @*<th>Name</th>*@
+                                            <th>From </th>
+                                            <th>To</th>
+                                            <th>Complaint</th>
+                                            <th>Doctor</th>
+                                            <th>Diagnosis</th>
+
+                                            <th>Hospital</th>
+                                        </tr>
+
+                                    i = 1;
+                                }
+                                <tr>
+                                    @*<td>@secular.Name</td>*@
+                                    <td>@secular.FromDate</td>
+                                    <td>@secular.ToDate</td>
+                                    <td>@secular.Complaint</td>
+                                    <td>@secular.Doctor</td>
+                                    <td>@secular.Diagnosis</td>
+                                    <td>@secular.Hospital</td>
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_Complaint complaints in Model.tbl_Complaint)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Complaints</h4></tr>
+                                        <tr>
+
+                                            <th>From </th>
+                                            <th>Date</th>
+                                            <th>Nature</th>
+                                            <th>Decision</th>
+                                            <th>Doccument</th>
+                                        </tr>
+
+                                    i = 1;
+                                }
+                                <tr>
+
+                                    <td>@complaints.ComplaintFrom</td>
+                                    <td>@complaints.ComplaintDATE</td>
+                                    <td>@complaints.ComplaintNATURE</td>
+                                    <td>@complaints.Decesion</td>
+                                    <td><a href="@domain/Images/Complaints/@complaints.Spare3" view>view</a></td>
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_Retirement retirements in Model.tbl_Retirement)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Retirement</h4></tr>
+                                        <tr>
+
+                                            <th>Date of Retirement </th>
+                                            <th>Age</th>
+                                            <th>Reason</th>
+                                            <th>Community</th>
+                                            <th>Remarks</th>
+                                        </tr>
+
+                                    i = 1;
+                                }
+                                <tr>
+
+                                    <td>@retirements.DOR</td>
+                                    <td>@retirements.Age</td>
+                                    <td>@retirements.Reason</td>
+                                    <td>@retirements.Community</td>
+                                    <td>@retirements.Remarks</td>
+
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+
+                            foreach (tbl_Passed secular in Model.tbl_Passed)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:#009be1">Death</h4></tr>
+
+                                        <tr>
+                                            @*<th>Name</th>*@
+                                            <th>Last Community</th>
+                                            <th>Cause of Death</th>
+                                            <th>Date</th>
+                                            <th>Time</th>
+                                            <th>Institution and Place</th>
+                                            <th>Nature of Last Rites</th>
+                                            <th>Place of Last Rites</th>
+                                            <th>Doccument</th>
+                                        </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    @*<td>@secular.Name</td>*@
+                                    <td>@secular.LastCommunity</td>
+                                    <td>@secular.Cause</td>
+                                    <td>@secular.Date</td>
+                                    <td>@secular.Time</td>
+                                    <td>@secular.InstitutionPlace</td>
+                                    <td>@secular.LastNatureRites</td>
+                                    <td>@secular.LastPlaceRites</td>
+                                    <td><a href="@domain/Images/PassedImages/@secular.obituary" view>view</a></td>
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        "";
+        var url;
+        if (!url) url = window.location.href
+        var array = url.split('/');
+        var lastsegment = array[array.length - 1];
+        document.getElementById("personimg").src = "../../Images/PertionalDetails/" + lastsegment + ".jpg";
+
+
+        $('#printbtn').click(function () {
+
+            window.open('/AllReports/IndexPrint/' + lastsegment);
+            //window.open('http://localhost:40757/AllReports/IndexPrint/' + lastsegment);
+        });
+
+
+    });
+
+</script>

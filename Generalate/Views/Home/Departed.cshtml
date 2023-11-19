@@ -1,0 +1,179 @@
+﻿
+@{
+    ViewBag.Title = "Departed";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using Generalate.Controllers;
+
+
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        @*<div class="col-md-12 overflow-daily" style="margin-right:-5px;margin-left:5px;height:600px;">*@
+        <div class="col-md-12 " style="margin-right:-5px;margin-left:5px;height:auto;">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1"> <span>@{@HomeController.GetControlTextByControlId("Death");}</span></div>
+                <div class="panel-body">
+                    <div class="row">
+                        @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                        {
+                            <div class="col-sm-4">
+                                <label><span>@{@HomeController.GetControlTextByControlId("Death");}</span></label>
+                                @Html.DropDownList("drpProvice", (IEnumerable<SelectListItem>)ViewBag.ProvinceList, "Please select province", new { id = "drpProvice", @class = "form-control" })
+                            </div>
+                        }
+                    </div>
+                    <br />
+                    <div class="row">
+                        <input type="hidden" value="@ViewBag.ProvinceId" id="hdnProvinceId" />
+
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label for="inputPassword3" class="col-sm-5 control-label">
+                                    <input type="checkbox" id="BeforeProfess"><span>@{@HomeController.GetControlTextByControlId("BeforeProfess");}</span>
+                                </label>
+                                <label for="inputPassword3" class="col-sm-3 control-label">
+                                    <input type="checkbox" id="AfterProfess"><span>@{@HomeController.GetControlTextByControlId("AfterProfession");}</span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    @*<h3 class="box-title"> <span>@{@HomeController.GetControlTextByControlId("Total_Institution");}</span></h3>*@
+                                    @*<h3 class="box-title"> <span>@HomeController.GetControlTextByControlId("Total_Profession")</span></h3>*@
+                                </div>
+                                <br />
+                                <table class="table table-bordered" id="datatable">
+                                    <thead>
+                                        <tr>
+                                            <th>S.No</th>
+                                            @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                                            {
+                                            <th> @{@HomeController.GetControlTextByControlId("Province_Name");}</th>
+                                            }
+                                            <th> @{@HomeController.GetControlTextByControlId("Name");}</th>
+                                            <th> @{@HomeController.GetControlTextByControlId("Surname");}</th>
+                                            <th> @{@HomeController.GetControlTextByControlId("View");} @{@HomeController.GetControlTextByControlId("Details");}</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section Scripts{
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        var proviceId = "";
+        $(function () {
+
+            if ($("#hdnProvinceId").val() != "") {
+                $("#drpProvice").val($("#hdnProvinceId").val());
+            }
+            $('#drpProvice').select2();
+            iniDatatable();
+        })
+        $('#BeforeProfess').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#AfterProfess").attr("checked", false);
+            }
+            iniDatatable();
+        });
+        $('#AfterProfess').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#BeforeProfess").attr("checked", false);
+            }
+            iniDatatable();
+        });
+        function iniDatatable() {
+            $('#datatable').DataTable().destroy();
+            if ($("#hdnProvinceId").val() != "" && $("#drpProvice option:selected").val() == "") {
+                proviceId = $("#hdnProvinceId").val();
+            }
+            if ($("#drpProvice option:selected").val() == "") {
+                proviceId = $("#drpProvice option:selected").val();
+            }
+            else {
+                proviceId = $("#drpProvice option:selected").val();
+            }
+
+
+            datatable = $('#datatable')
+                .DataTable({
+                    "sAjaxSource": "/Home/GetDepartedList?province=" + proviceId + "&isBefore=" + $('#BeforeProfess').prop('checked') + "&isAfter=" + $('#AfterProfess').prop('checked'),
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": true,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "columns": [
+                        {
+                            "defaultContent": ""
+                        },
+                        @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                        {
+                            <text>
+                        {
+                            "data": "ProvinceName",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+                            </text>
+                        }
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "SirName",
+                            "autoWidth": true,
+                            "searchable": true
+                        },
+
+                           {
+                               "data": "MemberID",
+                               "render": function(data, type, row) {
+
+                                   if (data != null && data != "")
+                                   {
+                                       return '<a href="/Home/DeathRecord?id=' + data + '">View Details';
+                                   }
+                                   else
+                                   {
+
+                                       return '<a href="#">No Details</a>';
+                                   }
+                               }
+                        },
+
+                    ],
+                    "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                               var oSettings = this.fnSettings();
+                        $("td:first", nRow).html(oSettings._iDisplayStart + iDisplayIndex + 1);
+                               return nRow;
+                           },
+                });
+
+        }
+
+        $("#drpProvice").on("change", function () {
+            iniDatatable();
+        });
+    </script>
+}
+

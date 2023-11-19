@@ -1,0 +1,471 @@
+﻿@using Generalate.Controllers;
+@model Generalate.Models.tbl_Primarydetails
+@{
+    ViewBag.Title = "MemberDetails";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Member/MemberReport"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <input type="button" class="btn btn-success pull-right" style="margin-right:20px; margin-top:20px; margin-bottom:20px;" value="Print" id="btnPrint"/>
+                <div id="prientbox">
+                    <div class="row" id="PersionalDetailsDiv">
+                        <div class="col-sm-12">
+                            <div class="panel-group" style="background-color:#001f6b">
+                                <div class="panel panel-primary">
+                                    <div class="tab panel-heading" style="background-color:#001f6b;text-align:center;">
+                                        <a style="color:white;"><span>@{@HomeController.GetControlTextByControlId("DetailsofMembers");}</span></a>
+                                        <br />
+                                    </div>
+                                    <div class="row" style="margin-left:30px; margin-right:30px;">
+                                        <div class="col-sm-8" style="margin-top:50px; text-align:center; color:brown;">
+                                            <h2 style="color:#ed2930"><b><span>@{@HomeController.GetControlTextByControlId("Montfort_Brothers");}</span></b></h2>
+                                        </div>
+                                        <div class="col-sm-2" style="margin-top:10px;" align="right">
+                                            <img alt="" src="~/Image/Primarydetails/@ViewBag.Photo" style="height:100px; width:100px;" id="uploadimage" />
+                                        </div>
+                                    </div>
+                                    <div id="PersonalDetailDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <table class="table table-bordered" id="TblPersionalDetails">
+                                            @try
+                                            {
+                                                <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("DetailsofMembers");}</span></h4></tr>
+                                                <tr>
+                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                    <td style="width:30%"><span id="PersonKnowName">@Model.Knowname</span></td>
+                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                                                    <td><span id="personBaptismalName"></span>@Model.SurName</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Baptismal_Name");}</span></th>
+                                                    <td><span id="PersonDateofBirthBaptism"></span>@Model.Baptismialname</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("NameInCong");}</span></th>
+                                                    <td><span id="PersonDateofBirthSSLC"></span>@Model.Congregation</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("PriestRele");}</span></th>
+                                                    <td><span id="PersonDateofBirthBaptism"></span>@Model.placeinfamily</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Final_Profession");}</span></th>
+                                                    <td><span id="PersoOrdinationId"></span>@Model.Ordination</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("BaptismDate");}</span></th>
+                                                    <td><span id="PersonDateofBirthBaptism"></span>@Model.DOB</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("BirthPlace");}</span></th>
+                                                    <td><span id="PersonDateofBirthSSLC"></span>@Model.placeofbirth</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Feast_Day");}</span></th>
+                                                    <td><span id="PersonFeastDay"></span>@Model.Feastday</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Blood_Group");}</span></th>
+                                                    <td><span id="PersonBloodGroup"></span>@Model.Bloodgroup</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                                    <td><span id="PersonEmailID"></span>@Model.emailid</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Mobile_Number");}</span> </th>
+                                                    <td><span id="PersonMobileNumber"></span>@Model.mobilenumber</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("NoSister");}</span> </th>
+                                                    <td><span id="Personnoofsisters"></span>@Model.noofsisters</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("NoBrother");}</span> </th>
+                                                    <td><span id="Personnoofbrother"></span>@Model.noofbrother</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("AchDio");}</span></th>
+                                                    <td><span id="PersoOrdinationId"></span>@Model.homediocese</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Parish_Name");}</span> </th>
+                                                    <td><span id="Persohomeparish"></span>@Model.homeparish</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Pincode");}</span></th>
+                                                    <td><span id="personPincode"></span>@Model.pin</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("City");}</span> </th>
+                                                    <td><span id="personCity"></span>@Model.city</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("District");}</span></th>
+                                                    <td><span id="personDistrict"></span>@Model.district</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("State");}</span> </th>
+                                                    <td><span id="persionState"></span>@Model.state</td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Nationality");}</span></th>
+                                                    <td><span id="personDistrict"></span>@Model.Nationality</td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Birth_Country");}</span> </th>
+                                                    <td><span id="persionState"></span>@Model.country</td>
+                                                </tr>
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                            }
+                                        </table>
+                                    </div>
+                                    <div id="AppointmentDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Appointment_Details");}</span></h4>
+                                        <table class="table table-bordered" id="TblAppointment">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Designation");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Institution");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Community");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Superior");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii1 = 1;
+                                                    foreach (var item in ViewBag.AppointmentsData as IEnumerable<Generalate.Models.Appointments>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii1</td>
+                                                            <td>@item.Date</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.DesignationType</td>
+                                                            <td>@item.InstitutionType</td>
+                                                            <td>@item.CommunityType</td>
+                                                            <td>@item.Superior</td>
+                                                        </tr>
+                                                        ii1++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="AcademyDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Academic_Details");}</span></h4>
+                                        <table class="table table-bordered" id="Tbl_Academy">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Course");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Degree");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("University");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Remarks");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii2 = 1;
+                                                    foreach (var item in ViewBag.AcademyData as IEnumerable<Generalate.Models.tbl_Academy>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii2</td>
+                                                            <td>@item.course</td>
+                                                            <td>@item.degree</td>
+                                                            <td>@item.university</td>
+                                                            <td>@item.fromdate</td>
+                                                            <td>@item.todate</td>
+                                                            <td>@item.adress</td>
+                                                            <td>@item.remark</td>
+                                                        </tr>
+                                                        ii2++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="SacramentDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Sacrament_Details");}</span></h4>
+                                        <table class="table table-bordered" id="TblSacrament">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Title");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Sacrament");}</span></th>
+                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Minister");}</span> </th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("ChurchName");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Remarks");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii3 = 1;
+                                                    foreach (var item in ViewBag.SacramentsData as IEnumerable<Generalate.Models.Sacraments>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii3</td>
+                                                            <td>@item.Title</td>
+                                                            <td>@item.Date</td>
+                                                            <td>@item.Sacrament</td>
+                                                            <td>@item.Minister</td>
+                                                            <td>@item.ChurchName</td>
+                                                            <td>@item.Remarks</td>
+                                                        </tr>
+                                                        ii3++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="FormationDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Formation_Details");}</span></h4>
+                                        <table class="table table-bordered" id="tblFormation">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Stage_formation");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Community");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Formators/Celebrant");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii4 = 1;
+                                                    foreach (var item in ViewBag.formationsDetails as IEnumerable<Generalate.Models.Tbl_formationsDetails>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii4</td>
+                                                            <td>@item.StageOfFormation</td>
+                                                            <td>@item.FromDate</td>
+                                                            <td>@item.ToDate</td>
+                                                            <td>@item.Community</td>
+                                                            <td>@item.Formators</td>
+                                                            <td>@item.Place</td>
+                                                        </tr>
+                                                        ii4++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    @*<div id="VowsRenewalDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Revenue_Vows");}</span></h4>
+                                        <table class="table table-bordered" id="tblVowsRenewal">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Superior");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Duration");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Witness");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody></tbody>
+                                        </table>
+                                    </div>*@
+                                    <div id="FamilyDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Family_Details");}</span></h4>
+                                        <table class="table table-bordered" id="tblFamilyDetails">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Family_Member_Name");}</span>/th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Relationship");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Mobile_Number");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Emergency_Contact");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+
+                                                    int ii = 1;
+                                                    foreach (var item in @ViewBag.FamilyDetails1)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.MemberName</td>
+                                                            <td>@item.Relationship</td>
+                                                            <td>@item.Mobile</td>
+                                                            <td>@item.Email</td>
+                                                            <td>@item.Address</td>
+                                                        </tr>
+
+                                                        ii++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="HealthDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Health_Details");}</span></h4>
+                                        <table class="table table-bordered" id="TblHealth">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Complaint");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Diagnosis");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Hospital");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Doctor");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii5 = 1;
+                                                    foreach (var item in ViewBag.HealthDetails as IEnumerable<Generalate.Models.tbl_Health>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii5</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.SirName</td>
+                                                            <td>@item.Complaint</td>
+                                                            <td>@item.FromDate</td>
+                                                            <td>@item.ToDate</td>
+                                                            <td>@item.Diagnosis</td>
+                                                            <td>@item.Hospital</td>
+                                                            <td>@item.Doctor</td>
+                                                        </tr>
+                                                        ii5++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="deathDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Eternal_Life");}</span></h4>
+                                        <table class="table table-bordered" id="TblPassed">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("LastCommunity");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Cause");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("InstitutionPlace");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("LastNatureRites");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("LastPlaceRites");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii6 = 1;
+                                                    foreach (var item in ViewBag.PassedData as IEnumerable<Generalate.Models.tbl_Passed>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii6</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.SirName</td>
+                                                            <td>@item.LastCommunity</td>
+                                                            <td>@item.Cause</td>
+                                                            <td>@item.Date</td>
+                                                            <td>@item.InstitutionPlace</td>
+                                                            <td>@item.LastNatureRites</td>
+                                                            <td>@item.LastPlaceRites</td>
+                                                        </tr>
+                                                        ii6++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="InsuranceDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Insurance_Details");}</span></h4>
+                                        <table class="table table-bordered" id="TblInsurance">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Title");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Premium");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Ammount");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii7 = 1;
+                                                    foreach (var item in ViewBag.InsuranceDetails as IEnumerable<Generalate.Models.tbl_Insurance>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii7</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.Title</td>
+                                                            <td>@item.Date</td>
+                                                            <td>@item.Premium</td>
+                                                            <td>@item.Ammount</td>
+                                                            <td>@item.Description</td>
+                                                        </tr>
+
+                                                        ii7++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div id="SaprationDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Separation_Details");}</span></h4>
+                                        <table class="table table-bordered" id="TblSapration">
+                                            <thead>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Title");}</span> </th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Stage_formation");}</span> </th>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @{
+                                                    int ii8 = 1;
+                                                    foreach (var item in ViewBag.SeperationDetails as IEnumerable<Generalate.Models.tbl_SeperationFromTheCongregation>)
+                                                    {
+                                                        <tr>
+                                                            <td>@ii8</td>
+                                                            <td>@item.Title</td>
+                                                            <td>@item.Name</td>
+                                                            <td>@item.SeperationDate</td>
+                                                            <td>@item.StageOFFormation</td>
+                                                            <td>@item.Describtion</td>
+                                                        </tr>
+                                                        ii8++;
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script>
+        $('#btnPrint').on("click", function () {
+            $('#prientbox').printThis();
+        });
+    </script>
+}
+

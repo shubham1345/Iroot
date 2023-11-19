@@ -1,0 +1,318 @@
+﻿@model Generalate.Models.tbl_PersonalDetails
+@{
+    /**/
+
+    ViewBag.Title = "MemberInfoById";
+}
+
+<ul class="breadcrumb">
+    <li><a href="#">Home</a></li>
+    <li><a href="index.html">Persional Detail</a></li>
+</ul>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-sm-12">
+                                    <p class="pull-right">
+                                        <h3><span id="PName">@Model.Name</span>  <span id="PSirName">@Model.SirName</span>(<span id="PMemberId">@Model.MemberID</span>)</h3>
+                                    </p>
+                                </div>
+                                @*<div class="col-sm-8">
+                                        <a href="#"><i class="fa fa-window-close fa-lg pull-right" aria-hidden="true"></i></a>
+                                    </div>*@
+                            </div>
+                        </div>
+                        <div class="row">
+                            <!-- row started -->
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <!-- col-msx-12 started -->
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#add" class="sis_tab_a click">Primary Detail</a></li>
+                                    <li><a data-toggle="tab" href="#add" class="sis_tab_a click">Family</a></li>
+                                    <li><a data-toggle="tab" href="#add" class="sis_tab_a click_1">Sacrament</a></li>
+                                    <li><a data-toggle="tab" href="#add" class="sis_tab_a click_2">Eternal Life</a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="add" class="tab-pane fade in active">
+                                        <form action="/Home/AddPrimanryDetail" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-12">
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-heading" style="background-color:#29b2e1">Member Detail</div>
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <!-- Horizontal Form -->
+                                                                    <div class="box box-info">
+                                                                        <div class="box-header with-border">
+                                                                            <h3 class="box-title">Primary Detail</h3>
+                                                                        </div>
+                                                                        <div class="box-body">
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Know Name</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="know" placeholder="Know Name">
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Baptismal Name</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="baptisimial" placeholder="Baptismial Name">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputEmail3" class="col-sm-2 control-label">Date of Birth(Baptism)</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="dob" placeholder="Date Of Birth" required>
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Date Of Birth(SSLC)</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="dob1" required placeholder="DOB">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputEmail3" class="col-sm-2 control-label">Feast Day</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="feast" placeholder="Feast Day" required>
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Blood Group</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="blood" required placeholder="Blood Group">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputEmail3" class="col-sm-2 control-label">Email ID</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="emailid" placeholder="Email ID" required>
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Mobile Number</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="mobile" required placeholder="Mobile Number">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputEmail3" class="col-sm-2 control-label">Whatsapp Number</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="whats" placeholder="Whatsapp Number" required>
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Facebook Id</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="facebook" required placeholder="Facebook Id">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputEmail3" class="col-sm-2 control-label">Twitter Id</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="tweet" placeholder="Twitter Id" required>
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Blog</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="blog" required placeholder="Blog">
+                                                                                </div>
+                                                                            </div>
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+
+                                                            </div>
+
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <!-- Horizontal Form -->
+                                                                    <div class="box box-info">
+                                                                        <div class="box-header with-border">
+                                                                            <h3 class="box-title">Address</h3>
+                                                                        </div>
+                                                                        <div class="box-body">
+
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">House no./Village</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="house" placeholder="House no.">
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">City</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="city" placeholder="City">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">District</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="district" placeholder="District">
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">State</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="state" placeholder="State">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Pincode</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="pincode" placeholder="Pincode">
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <br />
+
+                                                                        </div>
+                                                                    </div>
+                                                                    <!-- /.box -->
+                                                                    <!-- general form elements disabled -->
+                                                                    <!-- /.box -->
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-body">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <!-- Horizontal Form -->
+                                                                    <div class="box box-info">
+                                                                        <div class="box-header with-border">
+                                                                            <h3 class="box-title">Official Document </h3>
+                                                                        </div>
+
+                                                                        <div class="box-body">
+
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Aadhar Number</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="adhar" placeholder="Aadhar Number">
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Name as it is Aadhar</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="nod" placeholder="Name as it is Aadhar">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Upload Doccument </label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="file" class="form-control" name="" id="doc1" placeholder="DOC">
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">PAN Number </label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="pan" placeholder="PAN Number">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Name as it in PAN</label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="text" class="form-control" name="" id="nop" placeholder="Name as it in PAN">
+                                                                                </div>
+                                                                                <label for="inputPassword3" class="col-sm-2 control-label">Upload Doccument </label>
+                                                                                <div class="col-sm-4">
+                                                                                    <input type="file" class="form-control" name="" id="doc2" placeholder="DOC">
+                                                                                </div>
+                                                                            </div>
+                                                                            <br />
+                                                                            <div class="form-group" style="margin-top:30px">
+                                                                                <div class="col-sm-12">
+                                                                                    <input type="submit" class="btn btn-info pull-right id="btnFormationSave" onclick="return Add()" value="Add Member" />
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-sm-12">
+                                                                                    <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                                                        <thead>
+                                                                                            <tr style="background-color:#001f6b; color:white">
+                                                                                                <th> S.No. </th>
+                                                                                                <th> Knowname </th>
+                                                                                                <th> Baptismialname</th>
+                                                                                                @*<th>  Date/Year</th>
+                                                                                                    <th> Place</th>
+                                                                                                    <th> Superior</th>
+                                                                                                    <th> Formator</th>
+                                                                                                    <th> Minister</th>
+                                                                                                    <th> File</th>
+                                                                                                    <th> Action</th>*@
+                                                                                                @*<th> View Pdf </th>*@
+                                                                                            </tr>
+                                                                                        </thead>
+                                                                                        <tbody class="tbody"></tbody>
+                                                                                    </table>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div><!-- tab-pane fade in active closed -->
+                                                                    </div>
+
+                                                                </div>
+                                                                <!-- /.box -->
+                                                                <!-- general form elements disabled -->
+                                                                <!-- /.box -->
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div><!-- tab-pane fade in active closed -->
+                                <div id="add1" class="tab-pane fade">
+                                    <!-- tab-pane fade started -->
+                                    <!-- row closed -->
+                                </div><!-- tab-pane fade closed -->
+                                <div id="add2" class="tab-pane fade">
+                                    <!-- tab-pane fade started -->
+                                </div><!-- tab-pane fade closed -->
+
+                                <div id="add3" class="tab-pane fade">
+                                    <!-- tab-pane fade started -->
+
+                                </div><!-- tab-pane fade closed -->
+
+                                <div id="add5" class="tab-pane fade">
+                                    <!-- tab-pane fade started -->
+
+                                </div><!-- col-msx-12  closed -->
+                            </div><!-- 1st row closed -->
+                        </div> <!-- container fluid closed -->
+                    </div><!--panel body closed-->
+                </div><!--panel default closed-->
+            </div> <!-- Your Page Content Here -->
+        </div>   <!-- END PAGE CONTENT WRAPPER -->
+    </div>
+</div>
+
+
+
+@section scripts
+        {
+    <script src="~/css/Dashboard/addmember.js"></script>
+    @*<script src="~/Scripts/additional/AddAcademic.js"></script>*@
+}
+
+
+

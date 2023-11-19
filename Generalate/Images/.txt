@@ -1,0 +1,7 @@
+Core Rebuilsd Debug
+CopyAssembly
+
+<module> Rebuilsd Debug
+
+attacch process > core
+

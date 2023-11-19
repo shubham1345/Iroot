@@ -1,0 +1,115 @@
+﻿@using Generalate.Models;
+@model dynamic
+@{
+    ViewBag.Title = "UserSeminarView";
+    Layout = "~/Views/UserModule/_LayoutUser.cshtml";
+}
+
+<div class="form-horizontal" style="margin-left:30px; margin-right:30px;">
+    <br />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        @*@Html.ActionLink("Back", "ViewAllReport")
+
+            <button type="button" class="btn btn-primary" id="printbtn">Print</button>*@
+
+        <br />
+        <br />
+
+        <div class="panel-group">
+            <div class="panel panel-primary">
+                <div class="tab panel-heading">
+                    <a style="color:white;">View</a>
+                    <br />
+                </div>
+                <div class="row" style="margin-left:30px; margin-right:30px;">
+                    <div class="col-sm-2">
+                        <img src="~/Images/cssr.png" style="height:150px; width:150px;" />
+                    </div>
+                    <div class="col-sm-8" style="margin-top:50px; text-align:center; color:brown;">
+                        @*<h2>THE CONGREGATION OF THE MISSIONARY BROTHERS OF </h2>
+                            <h2>SAINT FRANCIS OF ASSISI(C.M.S.F)</h2>*@
+                        @*<h2>Salesians of Don Bosco Province of Shillong</h2>*@
+                        <h2>Congregation Of The Most Holy Redeemer @*Province Of Bangaloor*@</h2>
+                        <h3>Province Of Bangalore</h3>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;" align="right">
+                        <img src="~/Images/ABC001.jpg" style="height:150px; width:150px;" id="personimg" />
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-left:30px; margin-right:30px;">
+                    <br />
+                    @{
+                        int i = 0;
+                    }
+
+                    <table class="table table-bordered">
+                        @try
+                        {
+                            i = 0;
+
+
+                            foreach (tbl_Seminar seminar in Model.tbl_Seminar)
+                            {
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:dodgerblue">Seminar</h4></tr>
+                                        <tr>
+                                            <th>Name of the Seminar</th>
+                                            <th>From</th>
+                                            <th>To</th>
+                                            <th>Institute</th>
+                                            <th>Place</th>
+
+                                        </tr>
+
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <td>@seminar.Community</td>
+                                    <td>@seminar.FromDate</td>
+                                    <td>@seminar.ToDate</td>
+                                    <td>@seminar.Institute</td>
+                                    <td>@seminar.Place</td>
+
+                                </tr>
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+
+                        }
+
+                    </table>
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        
+        var url;
+        if (!url) url = window.location.href
+        var array = url.split('/');
+        var lastsegment = array[array.length - 1];
+        document.getElementById("personimg").src = "../../Images/" + lastsegment + ".jpg";
+
+
+        //$('#printbtn').click(function () {
+        //    window.open('http://localhost:8087/AllReports/IndexPrint/' + lastsegment);
+        //    //window.open('http://localhost:40757/AllReports/IndexPrint/' + lastsegment);
+        //});
+
+
+    });
+
+</script>

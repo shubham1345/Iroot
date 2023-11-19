@@ -1,0 +1,280 @@
+﻿@model IEnumerable<Generalate.Models.CGetEmailWithFileCount>
+
+
+<h2>EmailData</h2>
+@*<script src="~/Scripts/additional/Emaildata.js"></script>*@
+<style>
+    .modal-body,.modal-header {
+  width: 750px !important;
+  height: auto;
+  margin: auto;
+}
+</style>
+<script>
+    $(document).ready(function () {
+        loadData();
+        //loadDataListItems();
+        $('#linkClose').click(function () {          
+            $("#myAlert").css('display','none');
+        });
+    });
+
+    function loadData() {
+        var tb = document.getElementById('EmailInfo');
+        while (tb.rows.length > 1) {
+            tb.deleteRow(1);
+        }
+      //    ,[FileUniqueId]
+      //,[EmailUniqueId]
+        $.getJSON("/Email/GetEmailWithFileCount",
+            function (json) {
+                var tr;
+
+                //Append each row to html table
+                for (var i = 0; i < json.length; i++) {
+
+                    tr = $('<tr />');
+                    //tr.append("<td >" + json[i].EmailUniqueId + "</td>");
+                    tr.append("<td>" + json[i].Slno + "</td>");
+                    tr.append("<td>" + json[i].EmailSubject + "</td>");
+                    //tr.append('<td><a href=ViewProfile/' + json[i].EmailId + '>' + json[i].EmailSubject + '</a></td>');
+                    //tr.append("<td>" + json[i].Emailsenddate + "</td>");
+                    tr.append("<td>" + json[i].FileCount + "</td>");
+                    tr.append('<td><a href="#" id="' + json[i].EmailUniqueId + '"onclick="return GetDataByMailId(\'' + json[i].EmailUniqueId + '\')">View</a> | <a href="#"  onclick="Delele(\'' + json[i].EmailUniqueId + '\')">Delete</a></td>')
+                    //tr.append('<td><a href="#" onclick="return GetDataByMailId((\'' + json[i].EmailUniqueId + '\')">View</a> | <a href="#" onclick="Delele(\'' + json[i].EmailUniqueId + '\')">Delete</a></td>')
+                    $('table').append(tr);
+
+                }
+                $('#EmailInfo').DataTable({
+                    "order": [[1, "asc"]],
+                    retrieve: true
+                });
+            });
+    }
+
+    function GetDataByFileId(id) {
+        alert(id);
+        var url = '/Email/GetFileDataByFileIdMethod/' + id;
+        $.ajax({
+            url: url,
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            type: "GET",
+            success: function () {
+                window.location = url;
+            }, error: function (xhr, ajaxOptions, thrownError) {
+
+                //alert(thrownError);
+
+            }
+        });
+    }
+    function GetDataByMailId(EmailUniqueId) {
+       // alert(EmailUniqueId);
+        $('table#FileInfo').html("");
+        var url = '/Email/GetDataByMailId/' + EmailUniqueId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            success: function (json) {
+
+                var html = '';
+                if (json[0].attchedfilename != null) {
+
+                    html += "<tr><td  width='20%'>" + 'EmailSubject' + "</td><td colspan='2'>" + json[0].EmailSubject + "</td><td></td></tr>";
+                    html += "<tr><td  width='20%'>" + 'EmailBody' + "</td><td td colspan='2'>" + json[0].EmailBody + "</td><td></td></tr>";
+                    html += "<tr ><td colspan='3' class='text-center'>" + 'Attachements' + "</td></tr>";
+
+                    var tab = "<tr><td width='10%'>" + 'FileSlno' + "</td><td width='45%'>" + 'attchedfilename' + "</td><td width='45%'>" + 'Action' + "</td></tr>";
+                    html += tab;
+                    for (var i = 0; i < json.length; i++)
+                    {
+                        html += "<tr><td width='10%'>" + json[i].FileSlno + "</td><td width='45%'>" + json[i].attchedfilename + "</td><td width='45%'><a href='#' onclick='GetDataByFileId(' + "+json[i].EmailUniqueId + "')'>Download</a></td></tr>";
+                       // html.append('<tr><td><a href="#" onclick="GetDataByFileId(' + json[i].EmailId + ')">Download</a></td></tr>');
+                        //alert(json[i].attchedfilename);
+
+                    }
+
+                }
+                else if (json[0].attchedfilename == null) {
+
+                    html += "<tr><td>" + 'EmailSubject' + "</td><td>" + json[0].EmailSubject + "</td></tr>";
+                    html += "<tr><td>" + 'EmailBody' + "</td><td>" + json[0].EmailBody + "</td></tr>";
+                }
+                //for (var i = 0; i < json.length; i++) {
+                //    //alert(json[i].attchedfilename);
+                //   // alert(json[i].attchedfilename);
+                //    //if (json[i].attchedfilename==null) {
+                //    //    alert('no File');
+                //    //}
+                //    //if (i == 0)
+                //    //{
+                //    //    html += "<tr><td>" + 'EmailSubject' + "</td><td>" + json[i].EmailSubject + "</td></tr>";
+                //    //    html += "<tr><td>" + 'EmailBody' + "</td><td>" + json[i].EmailBody + "</td></tr>";
+                //    //}
+                //    //else
+                //    //{
+
+                //    //}
+                //    if(i==0){
+                //    tr = $('<tr />');
+                //    tr.append("<td hidden='hidden'>" + json[i].EmailUniqueId + "</td>");
+                //    tr.append('<td><td>Subject</td>' + json[i].EmailSubject + '</td>');
+                //    tr.append("<td>Body</td><td>" + json[i].EmailBody + "</td>");
+                //    tr.append("<td>" + json[i].FileCount + "</td>");
+                //    tr.append('<td><a href="#" onclick="return GetDataByMailId(\'' + json[i].EmailUniqueId + '\')">Edit</a> | <a href="#" onclick="Delele(' + json[i].EmailId + ')">Delete</a></td>')
+                //    }
+                //    else
+                //    {
+                //        //tr.append("<td>" + json[i].attchedfilename + "</td>");
+                //    }
+                //    $('table#FileInfo').append(tr);
+
+                //}
+                alert(html);
+                $('#FileInfo').append(html);
+
+                //  $('table#FileInfo').DataTable();
+                $('#myModal').modal('show');
+                //$('#btnUpdate').show();
+                //$('#btnAdd').hide();
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.status == 404) {
+                    //alert(thrownError);
+                }
+            }
+
+        });
+
+
+    }
+
+    function Delele(ID) {
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            $.ajax({
+                url: "../Email/Delete/" + ID,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $(this).closest('tr').remove()
+                    loadData();
+
+                },
+                error: function (errormessage) {
+                    //alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    //$("#closebtn").click(function () {
+    //    alert("ok");
+    //});
+
+    
+
+</script>
+
+@if (TempData["Message"] == null)
+{
+
+
+}
+else
+{
+    <script>
+        $(document).ready(function () {
+            //$("#myAlert").show('fade');
+            setTimeout(function () {
+                $("#myAlert").show('fade');
+            });
+            setTimeout(function () {
+                $("#myAlert").hide('fade'),20000
+            });
+            
+        });
+    </script>
+}
+
+
+<div id="myAlert" class="alert alert-success collapse">
+    <a href="#"  id="linkClose"class="close" data-dissmiss="alert">&times;</a>
+    <strong>Email has been sent successfully!!!</strong>
+</div>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-horizontal">
+        <div class="" style="margin-left:20px; margin-right:20px;">
+            <div class="form-horizontal">
+                <br />
+                @*<button type="button" id="addbtnclickevent" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add PersonalDetail</button>
+                <button type="button" class="btn btn-primary" id="printbtn">Print</button>*@
+                <div class="panel-group">
+                    <div class="panel panel-primary" style="margin-top:10px; background-color:#F4ECF7">
+                        <div class="tab panel-heading">
+                            <a style="color:white;">Email List</a>
+                        </div>
+
+                        <div class="" style="margin-left:20px; margin-right:20px;">
+                            <div class="form-horizontal">
+                                <br />
+                                <table class="table table-striped  table-hover" id="EmailInfo" style="border:solid; border-color:#044244">
+                                    <thead>
+                                        <tr style="background-color:#044244; color:white">
+                                            <th hidden="hidden"> EmailId </th>
+                                            <th> Slno </th>
+                                            <th> EmailSubject </th>
+                                            <th> FileCount</th>    
+                                            <th> Action </th>                                      
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody"> </tbody>
+                                </table>
+                            </div>                         
+
+                            <div class="modal fade" id="myModal" tabindex="-1">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Email details</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <br />
+                                                    <table  id="FileInfo">
+                                                       
+                                                    </table>
+                                                    @*---<button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>*@
+                                                    <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                                                    <button type="button" class="btn btn-success" id="closebtn" data-dismiss="modal">Close</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+}

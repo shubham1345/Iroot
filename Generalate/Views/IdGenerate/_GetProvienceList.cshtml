@@ -1,0 +1,81 @@
+﻿@model Generalate.Models.Tbl_ParisInstitutionDetails
+@using Generalate.Controllers;
+
+@{
+    var viewpermissions = Session["TopmenuPermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th style="background-color:#29b2e1;color:white" class="hide-13"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span>  </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province_Code");}</span> </th>
+                <th style="background-color:#29b2e1;color:white" class="hide-10"> <span>@{@HomeController.GetControlTextByControlId("Email");}</span> </th>
+                <th style="background-color:#29b2e1;color:white" class="hide-4"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span> </th>
+                <th style="background-color:#29b2e1;color:white">Active / InActive</th>
+                <th style="background-color:#29b2e1;color:white">@{@HomeController.GetControlTextByControlId("Action");}</th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = ViewBag.Firstitem;
+                foreach (var item in @ViewBag.allinstitution as IEnumerable<Generalate.Models.tbl_Province>)
+                {
+            <tr>
+                <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                <td class="hide-13">@ji</td>
+                <td><a href="~/IdGenerate/IdGeneratorNew?Id=@item.Id">@item.ProvinceName</a></td>
+                <td>@item.Place</td>
+                <td class="hide-10">@item.EmailId</td>
+                <td class="hide-4">@item.Country</td>
+                <td class="hide-">@item.ActiveCkeck</td>
+                <td>
+                    @{
+                        var ispermissionedit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "CommunityList");
+                        if (ispermissionedit != null)
+                        {
+
+                            <button type="button"><a href="~/IdGenerate/IdGeneratorNew?Id=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditInstitution"></i></a></button>
+                        }
+
+                        var ispermissiondelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "CommunityList");
+                        if (ispermissiondelete != null)
+                        {
+
+                            <a onclick=" return confirm('Are you sure,you want to delete this record?')" href="/IdGenerate/ProvinceDelete?Id=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-trash-o "></i></a>
+                        }
+
+                        var ispermissionview = viewpermissions.FirstOrDefault(x => x.Viewpermission == true && x.PageName == "CommunityList");
+                        if (ispermissionview != null)
+                        {
+
+                            <button type="button"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye ProvinceView"></i></button>
+                        }
+                    }
+
+                </td>
+                
+                <td></td>
+            </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.ProvinceView').on("click", function () {
+            //alert("called")
+            $('#myModal3').modal('show');
+            var id = $(this).attr("data-val");
+            GetAllProvinceById1(id);
+        });
+
+    });
+
+</script>

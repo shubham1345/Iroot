@@ -1,0 +1,64 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "UserDataItem";
+}
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/HomeUser/HomeUser"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12">
+                                <div class="col-sm-4">
+                                </div>
+                                <div class="col-sm-8">
+                                    <a href="#"><i class="fa fa-window-close fa-lg pull-right" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Data_Item");}</span></div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="box box-info">
+                                                    <div class="box-header with-border">
+                                                    </div>
+                                                    <form class="form-horizontal" action="/Data2/DataItemSave" method="post" enctype="multipart/form-data">
+                                                        <div class="box-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" class="col-sm-2 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                        <div class="col-sm-6">
+                                                                            <input type="text" class="form-control" name="Name" id="name" required placeholder="Enter Name">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-6 col-sm-offset-2">
+                                                                            <input type="submit" class="btn btn-success" value="Save">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div> 
+        </div>
+    </div>
+</div> 

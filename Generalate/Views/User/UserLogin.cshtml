@@ -1,0 +1,149 @@
+﻿@model Generalate.Models.tbl_UserModuleLogin
+
+@{
+    ViewBag.Title = "Generalate : UserLogin";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<head>
+    <title>Generalate :User Login</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        .login {
+            font-family: 'Lucida Calligraphy';
+        }
+    </style>
+
+</head>
+
+@using (Html.BeginForm())
+{
+
+    <body style="background-color:#F4ECF7">
+
+        <nav class="navbar primary" style="background-color:#641E16">
+            <div class="">
+
+                <div class="collapse navbar-collapse" id="myNavbar" style="color:darkslategrey; font-family:'Times New Roman';">
+                    <div style="float:left; margin-left:10px; margin-top:10px; margin-bottom:10px;">
+                        @*<img src="~/Images/LOGO-SDB.png" style="height:88px; width:108px;" />*@
+                        <img src="~/Images/Right.png" style="height:88px; width:108px;" />
+                    </div>
+                    <div style="margin-top:5px; margin-bottom:5px; color:white;" align="center" class="serif">
+                        @*<H1 style="margin-top:30px">Salesians of Don Bosco Province St. John Paul II of Shillong </H1>*@
+                        @*<H1 style="margin-top:30px">HSM Province Bangalore   </H1>*@
+                        <H3 style="margin-top:30px">THE CAMILLUS OF INDIA @*PROVINCE OF BANGALOOR*@  </H3>
+                        <h4 style="margin-bottom:5px;"> </h4>
+
+                    </div>
+
+                    <div style="float:right; margin-left:10px; margin-top:10px; margin-bottom:10px;">
+                        @*<img src="~/Images/images.jpg" style="height:88px; width:108px;;margin-top:-80px;margin-right:20px;" />*@
+                        <img src="~/Images/Left.jpg" style="height:88px; width:108px;margin-top:-80px;margin-right:20px;" />
+
+                    </div>
+
+                </div>
+
+            </div>
+        </nav>
+
+
+
+        <div class="row">
+
+            <div class="col-sm-1">
+
+
+            </div>
+            <div class="col-sm-3" style="margin-left:10px; margin-right:10px; margin-top:35px;">
+                <img src="~/Images/sam.jpg" style="width:370px; height:530px;" class="img-circle" />
+            </div>
+
+            <div class="col-sm-4">
+                <div align="center">
+                    @*<img src="~/Images/found.jpg" style="width:170px; height:230px;" class="img-circle" />*@
+                </div>
+                <div style="margin-top:220px; text-align:center; color:#641E16;" class="login">
+
+                    <div align="center"><h4> "He has anointed me  <br /></h4></div>
+                    <div align="center"><h4> to preach<br /> </h4></div>
+                    <div align="center"><h4> the good news to the poor" </h4></div>
+                    <div align="center"><h4> (Lk 4:18).</h4></div>
+
+
+                </div>
+
+            </div>
+
+            <div class="col-sm-3" style="margin-top:120px;">
+                <div class="panel panel-default">
+                    <div class="panel-heading" style="background-color:#641E16;color:white;">
+                        <h4> Login </h4>
+                    </div>
+                    <div class="panel-body" style="background-color:#E8F8F5;">
+                        <form role="form" action="#" method="POST">
+                            <fieldset>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-10  col-md-offset-1 ">
+                                        <div class="form-group">
+                                            <div style="color:red;"> @Html.ValidationSummary(true)</div>
+                                            <br />
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-user"></i>
+                                                </span>
+                                                @* <input class="form-control" placeholder="Username" name="loginname" type="text" autofocus id="Username">*@
+                                                @Html.TextBoxFor(model => model.Username, new { @class = "form-control", autocomplete = "off", placeholder = "UserName or EmailId" })
+                                                @*<span class="glyphicon glyphicon-envelope form-control-feedback"></span>*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="input-group">
+                                                <span class="input-group-addon">
+                                                    <i class="glyphicon glyphicon-lock"></i>
+                                                </span>
+                                                @*<input class="form-control" placeholder="Password" name="password" type="password" value="" id="UserPassword">*@
+                                                @Html.PasswordFor(model => model.UserPassword, new { @class = "form-control", autocomplete = "off", placeholder = "Password" })
+                                                @*<span class="glyphicon glyphicon-lock form-control-feedback"></span>*@
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <input type="submit" class="btn btn-lg btn-primary btn-block" value="Sign in">
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </form>
+                    </div>
+                    <div class="panel-footer" style="background-color:#641E16; color:white;">
+                        Forgot Password<a href="#" onClick=""> Click Here </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="">
+            <hr />
+            <div align="center" style="margin-top:90px; background-color:#641E16; color:white;">
+                <strong>Copyright &copy; @DateTime.Now.Year <a href="#">iRoots</a>.</strong> All rights reserved.
+            </div>
+        </div>
+    </body>
+
+}
+
+
+
+
+
+
+

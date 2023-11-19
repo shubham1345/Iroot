@@ -1,0 +1,336 @@
+﻿@model Generalate.Models.Tbl_Cong
+@using Generalate.Controllers;
+@{
+    Layout = "";
+}
+
+@*@using (Html.BeginForm("ExportToExcel", "Member", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div>
+            <button id="fileDow" @*style="display:none" type="submit" value="Export" class="btn-primary">Export</button>
+        </div>
+
+    }*@
+
+<div class="page-content-wrap commonGrid">
+    <input id="membrId" value="@ViewBag.MemberId" type="hidden" />
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="">
+
+                @*<button id="fileDow" @*style="display:none" type="button" value="Export" class="btn-primary">Export</button>*@
+
+                <div class="">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <ul style="display:none" class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a data-toggle="tab" href="#Generalate" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="Generalate" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    @*<div class="panel-heading" style="background-color:#29b2e1"><span>Legal Status</span></div>*@
+                                                    <div class="panel-body" style="height:auto;">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="col-md-5">
+                                                                                <ol class="breadcrumb" role="navigation" style="background-color:#ffffff !important"><li class="breadcrumb-item active"></li></ol>
+                                                                            </div>
+                                                                            <div class="col-md-7">
+                                                                                <input type="text" id="SearchTxt" class="o_searchview_input" accesskey="Q" placeholder="Search..." role="" aria-haspopup="true" aria-keyshortcuts="Alt+Shift+Q">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="col-md-5">
+                                                                                <div class="o_list_buttons" role="toolbar" aria-label="Main actions">
+                                                                                    <button type="button" class="btn btn-primary o_list_button_save" accesskey="s" aria-keyshortcuts="Alt+Shift+s" style="display:none">
+
+                                                                                        <i class="d-inline d-sm-none fa fa-floppy-o" title="Save"></i>
+                                                                                        <span class="d-none d-sm-inline">Save</span>
+
+                                                                                    </button>
+                                                                                    <button type="button" class="btn btn-secondary o_list_button_discard" accesskey="j" aria-keyshortcuts="Alt+Shift+j" style="display:none">
+
+                                                                                        <i class="d-inline d-sm-none fa fa-times" title="Discard"></i>
+                                                                                        <span class="d-none d-sm-inline">Discard</span>
+
+                                                                                    </button>
+
+                                                                                    <button type="button" class="btn btn-primary o_list_button_add" accesskey="c" data-original-title="" title="" aria-keyshortcuts="Alt+Shift+c" style="position: relative;">
+
+
+                                                                                        <a class="CreateButton"><i class="d-inline d-sm-none fa fa-plus" title="Create"></i><span class="d-none d-sm-inline">@{@HomeController.GetControlTextByControlId("Create");}</span></a>
+
+
+                                                                                    </button>
+
+                                                                                    @*<button type="button" class="btn btn-secondary o_button_import" accesskey="I" aria-keyshortcuts="Alt+Shift+I" style="position: relative;">
+                                                                                            @{@HomeController.GetControlTextByControlId("Import");}
+                                                                                        </button>*@
+
+
+
+
+                                                                                    <button type="button" id="ExportMemberData" class="btn btn-secondary fa fa-download o_list_export_xlsx" title="Export All" accesskey="X" aria-keyshortcuts="Alt+Shift+X" style="position: relative;"><a href="@Url.Action("ExportToExcel","Member")">@{@HomeController.GetControlTextByControlId("Download");}</a></button>
+
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-7">
+                                                                                <div class="col-md-6" style="text-align:left">
+                                                                                    <div class="dropdown">
+                                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                                            <span class="fa fa-filter"></span>
+                                                                                            Filters
+                                                                                            <span class="caret"></span>
+                                                                                        </button>
+                                                                                        <ul class="dropdown-menu">
+                                                                                            <li><a href="#">Archived</a></li>
+                                                                                            <li><a href="#" class="dropdown-item">Add Custom Filter</a></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                    <div class="dropdown">
+                                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                                                                                            <span class="fa fa-bars"></span>
+                                                                                            Group By
+                                                                                            <span class="caret"></span>
+                                                                                        </button>
+                                                                                        <ul class="dropdown-menu">
+                                                                                            <li class="dropdown-submenu">
+                                                                                                <a class="test" href="#">Province<span class="caret"></span></a>
+                                                                                                <ul class="dropdown-menu" id="uu">
+                                                                                                    <li>
+                                                                                                        <a class="pro">
+                                                                                                            <div class="row pro" id="listmenu" style="min-width:250px;min-height:50px">
+                                                                                                                <div class="col-sm-12 pro">
+                                                                                                                    <div class="form-group pro">
+                                                                                                                        <label style="width:100%; text-align:center" for="inputPassword3" class="col-sm-4 control-label pro"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></label>
+                                                                                                                        <div class="col-sm-12 pro" style="width:100% !important">
+                                                                                                                            <select class="form-control pro" name="" style="width:100%" id="ProvinceName_New"></select>
+                                                                                                                        </div>
+                                                                                                                    </div>
+                                                                                                                </div>
+
+                                                                                                            </div>
+                                                                                                        </a>
+                                                                                                    </li>
+                                                                                                </ul>
+                                                                                            </li>
+                                                                                            @*<li>
+                                                                                                    <a class="dropdown-item" href="#">Province</a>
+                                                                                                    <ul class="dropdown-menu dropdown-submenu">
+                                                                                                        <li>
+                                                                                                            <a class="dropdown-item" href="#">Submenu item 1</a>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </li>*@
+
+                                                                                        </ul>
+                                                                                    </div>
+
+                                                                                    <div class="dropdown">
+                                                                                        <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                                            <span class="fa fa-star"></span>
+                                                                                            Favorites
+                                                                                            <span class="caret"></span>
+                                                                                        </button>
+                                                                                        <ul class="dropdown-menu">
+                                                                                            <li><a href="#">Save Current Search</a></li>
+                                                                                        </ul>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-3" style="text-align:right">
+                                                                                    <div class="o_pager">
+                                                                                        <span class="o_pager_counter">
+                                                                                            <span class="o_pager_value"><input id="StartingId" class="numberonly" value="1" style="width:15%; border:none;" />-   <input id="LastId" class="numberonly" value="10" style="width:20%; border:none" /></span> / <span id="totalcount" class="o_pager_limit">@ViewBag.totalCount</span>
+                                                                                        </span>
+                                                                                        @*<span class="btn-group" aria-atomic="true">*@
+                                                                                        <button type="button"><</button>
+                                                                                        <button type="button">></button>
+                                                                                        @*</span>*@
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-3" style="text-align:right">
+                                                                                    <button type="button" accesskey="l" class="btn btn-secondary fa fa-lg fa-list-ul o_cp_switch_list  active" aria-label="View list" data-view-type="list" title="" tabindex="-1" data-original-title="View list" aria-keyshortcuts="Alt+Shift+l" style="position: relative;"></button>
+                                                                                    <button type="button" class="btn btn-secondary fa fa-lg fa-bar-chart o_cp_switch_graph " aria-label="View graph" data-view-type="graph" title="" tabindex="-1" data-original-title="View graph"></button>
+                                                                                    <button type="button" class="btn btn-secondary fa fa-lg fa-table o_cp_switch_pivot " aria-label="View pivot" data-view-type="pivot" title="" tabindex="-1" data-original-title="View pivot"></button>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <br />
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div id="mySidenav" class="sidenav" style="">
+                                                                            <div style="border-style:solid">
+                                                                                @{ int count = 1;}
+                                                                                @foreach (var heading in ViewBag.TableHeading as List<string>)
+                                                                                {
+
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-@count" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId(heading);}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    count = count + 1;
+                                                                                }
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                        <div class="col-md-12">
+                                                                            <!-- testing 5 -->
+                                                                            <div id="PartialTable"></div>
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+
+    <script src="~/Content/Dropdown3/fSelect.js"></script>
+
+    @*<script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+    <script src="~/css/Dashboard/addmember.js"></script>
+    <script src="~/Scripts/additional/AddAcademic.js"></script>
+    <script src="~/Scripts/additional/Healths.js"></script>
+    <script src="~/Scripts/additional/FamilyDetailsJS.js"></script>
+    <script src="~/css/Dashboard/FormationJS.js"></script>
+    <script src="~/Scripts/CompainsJS.js"></script>
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/Scripts/additional/AppointmentJS.js"></script>
+
+    <script src="~/Scripts/additional/MemberInfoById.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="~/Scripts/additional/CommonGrid.js"></script>
+}
+
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+
+    .o_control_panel .breadcrumb {
+        font-size: 15px;
+    }
+
+    .o_control_panel .breadcrumb, .o_control_panel .o_cp_left {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+        flex: 1 1 auto;
+    }
+
+        .o_control_panel .breadcrumb > li {
+            display: inline-block;
+            max-width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top;
+        }
+
+    .breadcrumb-item.active {
+        color: #777777;
+    }
+
+    .o_searchview_input {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #3b7495 !important;
+    }
+
+    .sidenav {
+        /*height: 1%;*/
+        width: 0;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #fff;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 0px;
+    }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+            .sidenav a:hover {
+                color: #f1f1f1;
+            }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            left: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+    .CreateButton:hover {
+        color: white;
+    }
+
+    .CreateButton {
+        color: white;
+    }
+</style>
+
+

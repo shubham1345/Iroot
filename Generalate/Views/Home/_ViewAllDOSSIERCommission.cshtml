@@ -1,0 +1,61 @@
+﻿
+@model Generalate.Models.tbl_PersonalDetails
+@using Generalate.Controllers;
+@{
+    /**/
+
+    var tabPermissions = Session["tabPermissionList"] as List<Generalate.Models.TabPermissions>;
+}
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th style="background-color:#29b2e1; color:white" class="hide-13"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                <th  style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></th>
+                <th class="hide-" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("MemberName");}</span> </th>
+                <th class="hide-12" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span></th>
+                <th class="hide-" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Responsibility");}</span></th>
+                @*<th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>*@
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = 1;
+                foreach (var item in ViewBag.allinstitution as IEnumerable<Generalate.Models.tblGenCommission>)
+                {
+                    <tr>
+                        <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                        <td class="hide-13">@ji</td>
+                        <td class="hide-">@item.FromDate</td>
+                        <td class="hide-">@item.ToDate</td>
+                        <td>@item.MemberName</td>
+                        <td class="hide-12">@item.DesignationName</td>
+                        <td class="hide-">@item.ResponsibilityName</td>
+                        @*<td>
+                                @{
+                                    var isPermissionOfficialMeetingEdit = tabPermissions.FirstOrDefault(x => x.TabName == "CouncilMemberEdit");
+                                    if (isPermissionOfficialMeetingEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditProvinceCommission"></i></button>
+                                    }
+                                    var isPermissionOfficialMeetingDelete = tabPermissions.FirstOrDefault(x => x.TabName == "CouncilMemberEdit");
+                                    if (isPermissionOfficialMeetingDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteProvinceCommission"></i></button>
+                                    }
+                                }
+                            </td>*@
+                        <td></td>
+                    </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+
+</script>

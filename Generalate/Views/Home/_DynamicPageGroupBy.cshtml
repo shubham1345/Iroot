@@ -1,0 +1,130 @@
+﻿
+@model Generalate.Models.Tbl_ParisInstitutionDetails
+@using Generalate.Controllers;
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th style="background-color:#29b2e1;color:white" class="hide-13"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span>  </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Surname");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Baptismal_Name");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("DOB");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province_File_No");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Place_Of_Birth");}</span> </th>
+                <th style="background-color:#29b2e1;color:white" class=""> <span>@{@HomeController.GetControlTextByControlId("Nationality");}</span> </th>
+                <th style="background-color:#29b2e1;color:white" class=""> <span>@{@HomeController.GetControlTextByControlId("Mobile_No");}</span> </th>
+                <th style="background-color:#29b2e1;color:white" class=""> <span>@{@HomeController.GetControlTextByControlId("EmailId");}</span> </th>
+                <th style="background-color:#29b2e1;color:white" class=""> <span>@{@HomeController.GetControlTextByControlId("Mother_Tounge");}</span> </th>
+                <th style="background-color:#29b2e1;color:white" class=""> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span> </th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+
+                for (int ji = 0; ji < @ViewBag.DynamicTable.Rows.Count; ji++)
+                {
+
+                    <tr id="Parent-div-@ViewBag.DynamicTable.Rows[ji][1]" class="ParentData">
+                        <th colspan="12" id="Parent-row-@ViewBag.DynamicTable.Rows[ji][1]"><span id="span_@ViewBag.DynamicTable.Rows[ji][1]" class="fa fa-caret-right" style="padding-left: 0px; padding-right: 5px;"></span>@ViewBag.DynamicTable.Rows[ji][2] (@ViewBag.DynamicTable.Rows[ji][0])</th>
+                        <th></th>
+                        <th></th>
+                        <th></th>
+                        @*<tr id="child-@ViewBag.DynamicTable.Rows[ji][1]" class="childData" style="">
+                            <tr>
+                                <th colspan="6">abbb</th>
+                                <th>jbhyvg</th>
+                                <th>ijh8gu</th>
+                                <th>ojhgyufy</th>
+                            </tr>
+                        
+                            <tr>
+                                <th colspan="6">abbb</th>
+                                <th>jhiyguy</th>
+                                <th>jhguy</th>
+                                <th>ygfytuyiu</th>
+                            </tr>
+
+                            @*<tr id="subchild-@ViewBag.DynamicTable.Rows[ji][1]" class="subchildData"></tr>
+                        </tr>*@
+                    </tr>
+
+                }
+                @*foreach (var item in @ViewBag.DynamicTable)
+            {
+                <tr>
+                    <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                    <td class="hide-13">@ji</td>
+                    <td>@item.ProvinceName</td>
+                    <td>@item.Place</td>
+                    <td class="hide-10">@item.EmailId</td>
+                    <td class="hide-4">@item.Country</td>
+                    <td class="hide-">@item.ActiveCkeck</td>
+                    <td>
+                        <button type="button"><a href="~/IdGenerate/IdGeneratorNew?Id=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditInstitution"></i></a></button>
+                        <a onclick=" return confirm('Are you sure,you want to delete this record?')" href="/IdGenerate/ProvinceDelete?Id=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-trash-o "></i></a>
+                        <button type="button"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye ProvinceView"></i></button>
+                    </td>
+                    <td></td>
+                </tr>
+                ji++;
+            }*@
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.ProvinceView').on("click", function () {
+            //alert("called")
+            $('#myModal3').modal('show');
+            var id = $(this).attr("data-val");
+            GetAllProvinceById1(id);
+        });
+        $(".ParentData").on('click', function () {
+            var id = $(this).attr('id');
+            id = id.slice(11);
+            //alert(id);
+            //$("#child-" + id).toggle();
+            $("#span_" + id).toggleClass("fa fa-caret-right fa fa-caret-down");
+            var ra = $(".child-div-" + id).html();
+            //alert(ra);
+            if (ra != undefined && ra != '') {
+                //alert("not");
+                $(".child-div-" + id).toggle();
+            }
+            else {
+                //alert("enters");
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/GetDynamicDataChild",
+                    data: "{id:" + JSON.stringify(id) + ",GridType:" + JSON.stringify("Province") + ",ContentType:" + JSON.stringify("Member") + "}",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (response) {
+                        if (response != '') {
+                            $(response).insertAfter($("#Parent-div-" + id).closest('tr'));
+                            //$("#child-" + id).html(response);
+                            //alert("got data");
+                        } else {
+                            alert("Something went wrong");
+                        }
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                }); 
+            }
+            
+            //alert(id);
+        });
+    });
+
+</script>

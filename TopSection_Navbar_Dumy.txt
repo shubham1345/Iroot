@@ -1,0 +1,130 @@
+  <div style="float:left; margin-left:10px; margin-top:-45px; margin-bottom:10px;">
+
+                <img src="/Images/rajesh/camillians.png" style="height:96px; width:80px; padding-bottom:16px;">
+            </div>
+            <div style="background-color:#009be1;padding-top:20px;padding-bottom:20px;margin-top:-50px">
+
+                <ul align="right" style="margin-right:135px;">
+                    <li class="dropdown"><a href="/Home/Admin">Home</a></li>
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropbtn">Primary Details</a>
+                        <div class="dropdown-content">
+                            <a href="/PersonalDetails/PersonalDetail">Personal Details</a>
+                            <a href="/EmergencyContact/Contact">Emergency Contact</a>
+                            <a href="/Entry/Entry">Sacraments</a>
+                            <a href="/EntryLife/EntryLife">Formation</a>
+
+                            <a href="/SecularEducation/Secular">Secular Education</a>
+                            <a href="/ReligiousEducation/Religious">Religious Education</a>
+                            <a href="/Seminar/Seminar">Seminar</a>
+                            <a href="/KnownLanguages/Languages">Languages</a>
+
+                        </div>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropbtn">Congregation</a>
+                        <div class="dropdown-content">
+
+                            <a href="/HomeLiveAndHomeVisit/HomeLive">Appointments</a>
+
+                            <a href="/LivingOutsideTheCongregation/LivingOutside">At the Service of other Organisms</a>
+
+                            <a href="/SeperationFromTheCongregation/Seperation">Seperation from the Congregation</a>
+
+                            <a href="/Retirement/Retirement">Retirement</a>
+                            <a href="/Passed/Passed">Death</a>
+
+
+                        </div>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropbtn">Records</a>
+                        <div class="dropdown-content">
+                            <a href="/TravelRecord/TravelRecord">Travel Record</a>
+                            <a href="/Jubilee/Jubilee">Jubilee Record</a>
+                            <a href="/Health/Health">Health Record</a>
+                            <a href="/Complaint/Complaints">Complaints</a>
+                            <a href="/AllReports/Report">View All Records</a>
+
+
+                            <a href="/AllReports/ViewAllReport">All Birth Details</a>
+                            <a href="/AllReports/ViewAllReport2">Ordination Days</a>
+                            <a href="/AllReports/ViewAllReport1">Feast Days</a>
+                            <a href="/AllReports/ViewAllReport3">Final Profession Days</a>
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropbtn">Province Doc</a>
+                        <div class="dropdown-content">
+                            <a href="/ProvincialDoc/ProvincialDoc">Provincial</a>
+                            <a href="/StCamillusProvincialateDoc/StCamillusProvincialateDoc">St Camillus Provincialate</a>
+                            <a href="/GeneralateDoc/GeneralateDoc">Generalate</a>
+                            <a href="/ConfreresDoc/ConfreresDoc">Confreres</a>
+                            <a href="/SpiritualCommunityDoc/SpiritualCommunityDoc">Spiritual Community Life</a>
+                            <a href="/FomDoc/FomDoc">Formation</a>
+                            <a href="/VocationPromotionDoc/VocationPromotionDoc">Vocation Promotion</a>
+                            <a href="/FormatorsMeetDoc/FormatorsMeetDoc">Formators Meet</a>
+                            <a href="/OngoingFormationDoc/OngoingFormationDoc">Ongoing Formation</a>
+                            <a href="/CandidatesInformationDoc/CandidatesInformationDoc">Candidates In formation</a>
+                            <a href="/MinistryDoc/MinistryDoc">Ministry</a>
+                            <a href="/SCTDoc/SCTDoc">SCT</a>
+                            <a href="/OVCDoc/OVCDoc">OVC</a>
+                            <a href="/FinancialGuidelineDoc/FinancialGuidelineDoc">Financial Guideline</a>
+                            <a href="/BookOfAccountsDoc/BookOfAccountsDoc">Book Of Accounts</a>
+                            <a href="/FinancialReportDoc/FinancialReportDoc">Financial Report</a>
+                            <a href="/MissionDoc/MissionDoc">Mission</a>
+                            <a href="/FundRaisingCommiteeDoc/FundRaisingCommiteeDoc">Fund Raising Commitee</a>
+
+
+                        </div>
+                    </li>
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropbtn">Social Centres</a>
+                        <div class="dropdown-content">
+                            <a href="/CommunitiesSocialCentresDoc/CommunitiesSocialCentresDoc">Communities SocialCentres</a>
+                            <a href="/SocialInstitutionDoc/SocialInstitutionDoc">Social Institution</a>
+                            <a href="/VocationalTrainingDoc/VocationalTrainingDoc">Vocational Training</a>
+                            <a href="/CommunicationOfficeDoc/CommunicationOfficeDoc">Communication Office</a>
+                            <a href="/GeneralMattersDoc/GeneralMattersDoc">General Matters</a>
+
+
+
+                        </div>
+                    </li>
+
+
+                    <li class="dropdown">
+                        <a href="javascript:void(0)" class="dropbtn">Manage</a>
+                        <div class="dropdown-content">
+                            <a href="/CommonDataList/DataLists"> DataList </a>
+                            <a href="/CommonDataListItems/DataListItems"> DataList Items </a>
+                            <a href="/Home/ChangePassword"> Change Password </a>
+                        </div>
+                    </li>
+
+
+                    <li class="dropdown">
+                        <a href="/Home/Login" class="dropbtn">Email</a>
+                        <div class="dropdown-content">
+                            <a href="/Inbox/Inbox">Inbox</a>
+
+
+                            <a href="/Email/EmailData">Emails </a>
+                            <a href="/Email/SignInEmail">SignInEmail</a>
+                        </div>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="/Home/Login" class="dropbtn">Logout</a>
+                    </li>
+
+                </ul>
+                <div style="float:right; margin-left:10px; margin-top:27px; margin-bottom:10px;">
+
+                    <img src="/Images/rajesh/download.jpg" style="height:100px; width:77px;margin-top:-106px;margin-right:28px;">
+
+                </div>
+            </div>

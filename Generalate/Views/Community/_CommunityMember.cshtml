@@ -1,0 +1,27 @@
+﻿@using Generalate.Controllers;
+
+<table class="table table-bordered" id="TblPersionalDetails">
+    <thead>
+        <tr>
+            <th>@{@HomeController.GetControlTextByControlId("Member");}</th>
+            <th>@{@HomeController.GetControlTextByControlId("From");}</th>
+            <th>@{@HomeController.GetControlTextByControlId("To");}</th>
+            <th>@{@HomeController.GetControlTextByControlId("Roles");}</th>
+        </tr>
+    </thead>
+    @if (ViewBag.Appointments != null)
+    {
+        <tbody>
+            @foreach (var item in ViewBag.Appointments as IEnumerable<Generalate.Models.Appointments>)
+            {
+                <tr id="append">
+                    <td>@item.Name</td>
+                    <td>@item.FromDate</td>
+                    <td>@item.ToDate</td>
+                    <td>@item.DesignationType</td>
+                </tr>
+            }
+
+        </tbody>
+    }
+</table>

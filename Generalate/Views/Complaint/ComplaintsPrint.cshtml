@@ -1,0 +1,64 @@
+﻿@model Generalate.Models.tbl_Complaint
+
+@{
+    Layout = null;
+}
+
+<head>
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css">
+
+    @*<script src="~/Scripts/additional/CommunityHouses.js"></script>*@
+
+    <script type="text/javascript">
+
+        $(document).ready(function ()
+        {
+            $.getJSON("GetAll",
+        function (json)
+        {
+            var tr;
+
+            //Append each row to html table
+            for (var i = 0; i < json.length; i++)
+            {
+                tr = $('<tr />');
+                tr.append("<td hidden='hidden'>" + json[i].ComplaintID + "</td>");
+                tr.append('<td><a href=ViewProfile/' + json[i].ComplaintID + '>' + json[i].Name + '</a></td>');
+                tr.append("<td>" + json[i].Spare1 + "</td>");
+                tr.append("<td>" + json[i].ComplaintFrom + "</td>");
+                tr.append("<td>" + json[i].ComplaintDATE + "</td>");
+                tr.append("<td>" + json[i].ComplaintNATURE + "</td>");
+                $('table').append(tr);
+
+            }
+        });
+        });
+
+    </script>
+</head>
+
+<div class="form-horizontal">
+
+    <div class="container">
+        <div class="form-horizontal">
+            <br />
+            <table class="table table-striped  table-hover" id="EmpInfo">
+                <thead>
+                    <tr>
+                        <th hidden="hidden"> Id </th>
+                        <th>Sur Name </th>
+                        <th> Name</th>
+                        <th> ComplaintFrom </th>
+                        <th> ComplaintDATE </th>
+                        <th> ComplaintNATURE </th>
+                    </tr>
+                </thead>
+                <tbody class="tbody"> </tbody>
+            </table>
+        </div>
+
+    </div>
+
+</div>

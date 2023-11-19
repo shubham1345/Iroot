@@ -1,0 +1,208 @@
+﻿@model Generalate.Models.tbl_TravelRecord
+<head>
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#addtravelrecord').click(function () {
+            window.location.href = '../TravelRecord/AddTravelRecord'
+        });
+
+        $('#printbtn').click(function () {
+            window.open('../TravelRecord/TravelReport');
+        });
+    });
+    </script>
+<script>
+    $(document).ready(function () {
+
+        $('#FromDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2080'
+        });
+
+        $('#ToDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2080'
+        });
+
+        $("#SirName").change(function () {
+            // var a = $("#tbl_PersonalDetails option:selected").text();
+            //var a = $("#tbl_PersonalDetails").val();
+            //$("#Name").val(a);
+            
+            var memberId = $("#SirName option:selected").val();
+            if (memberId == "") {
+                $("#Name").val('');
+                $("#MemberID").val('');
+                return false;
+            }
+            $.ajax({
+                url: "../PersonalDetails/GetPersonalDetailsByMemberId?SirName=" + memberId,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    
+                    $("#Name").val(result.Name);
+                    $("#MemberID").val(result.MemberID);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        });
+        });
+</script>
+    <script>
+        //Add Data Function 
+        function Add() {
+            //var res = validate();
+            //if (res == false) {
+            //    return false;
+            //}
+
+            var datenow = new Date();
+
+            var general =
+                {
+                    TravelId: $('#TravelId').val(),
+                    // MemberID: $('#MemberID').val(),
+                    SirName: $("#SirName option:selected").text(),
+                    Name: $('#Name').val(),
+                   MemberID: $('#MemberID').val(),
+                    FromDate: $('#FromDate').val(),
+                    ToDate: $('#ToDate').val(),
+                    Place: $('#Place').val(),
+                    Purpose: $('#Purpose').val(),
+                  
+            };
+           
+            $.ajax({
+                url: "../TravelRecord/Add",
+                data: JSON.stringify(general),
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    //loadData();
+                    clearTextBox();
+                    //$('#myModal').modal('hide');
+                    window.location.href = '../TravelRecord/TravelRecord'
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+    <script>
+        function clearTextBox()
+        {
+            $('#TravelId').val("");
+            $('#SirName').val("");
+            $('#MemberID').val("");
+            $('#Name').val("");
+            $('#FromDate').val("");
+            $('#ToDate').val("");
+            $('#Complaint').val("");
+            $('#Place').val("");
+            $('#Purpose').val("");
+        }
+    </script>
+</head>
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal" style="margin-left:30px; margin-right:30px;" style="background-color:#001f6b">
+        <br />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.TravelId)
+
+        <div class="row">
+            <div>
+                @Html.ActionLink("Back", "TravelRecord")
+            </div>
+            <br />
+
+            <div class="panel-group">
+                <div class="panel panel-primary">
+                    <div class="tab panel-heading">
+                        <a style="color:white;">Add TravelRecord</a>
+                    </div>
+                    <br />
+
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.SirName, "Name", htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-3">
+                            @*@Html.DropDownList("tbl_PersonalDetails", ViewBag.tbl_PersonalDetails as SelectList, "Select")
+                @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })*@
+                            @Html.DropDownListFor(model => model.SirName, new SelectList(@ViewBag.tbl_PersonalDetails, "Text", "Text"), "Select")
+                            @Html.ValidationMessageFor(model => model.SirName, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, "Sur Name", htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.MemberID, htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.MemberID, new { htmlAttributes = new { @class = "form-control" ,@readonly="readonly" } })
+                            @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FromDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.FromDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.FromDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.ToDate, htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.ToDate, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.ToDate, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Place, htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.Place, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Place, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Purpose, htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.Purpose, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Purpose, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-3">
+                            <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                            @*<input type="submit" value="Create" class="btn btn-primary" />*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

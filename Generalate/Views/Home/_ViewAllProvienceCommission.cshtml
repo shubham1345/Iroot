@@ -1,0 +1,71 @@
+﻿
+@model Generalate.Models.tbl_PersonalDetails
+@using Generalate.Controllers;
+
+
+@{
+    var viewpermissions = Session["TopmenuPermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                <th class="hide-1" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("FromDate");}</span></th>
+                <th class="hide-2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("ToDate");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Member_Name");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span></th>
+                <th class="hide-3" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Responsibility");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = 1;
+                foreach (var item in ViewBag.allinstitution as IEnumerable<Generalate.Models.tbl_ProCommission>)
+                {
+                    <tr>
+                        <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                        <td>@ji</td>
+                        <td>@item.ProvinceName</td>
+                        <td class="hide-1">@item.FromDate</td>
+                        <td class="hide-2">@item.ToDate</td>
+                        <td>@item.MemberName</td>
+                        <td>@item.DesignationName</td>
+                        <td class="hide-3">@item.ResponsibilityName</td>
+                        <td>
+                            @{
+                                var isPermissionOfficialMeetingEdit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Commission" && x.ParentId == 10);
+                                if (isPermissionOfficialMeetingEdit != null)
+                                {
+                                    @*<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditProvinceCommission"></i></button>*@
+                                    <button type="button"><a href="/Home/ProvinceList2?page=Commission=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditCommunity"></i></a></button>
+
+                                }
+                                var isPermissionOfficialMeetingDelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Commission" && x.ParentId == 10);
+                                if (isPermissionOfficialMeetingDelete != null)
+                                {
+                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteProvinceCommission"></i></button>
+                                }
+                            }
+                        </td>
+                        <td></td>
+                    </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(".DeleteProvinceCommission").on('click', function () {
+        var id = $(this).attr("data-val");
+        if (confirm("Do you want to delete ?")) {
+            window.location.href = "/Home/DeleteProvinceCommission?id=" + id;
+        }
+    });
+</script>

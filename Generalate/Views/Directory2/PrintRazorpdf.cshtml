@@ -1,0 +1,504 @@
+﻿@using Generalate.Controllers
+
+@{
+    ViewBag.Title = "PrintRazorpdf";
+}
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>@{@HomeController.GetControlTextByControlId("SG");}</title>
+
+
+    <link rel="icon" href="img/fevicon.png" type="image/x-icon" />
+    <link href="~/Plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/css/Dashboard/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/Dashboard/css/theme-default.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/multiple-select.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/assets/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/magnific-popup/magnific-popup.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/morris/morris.css" />
+
+    <link href="~/css/PrintPage.css" rel="stylesheet" />
+
+    <style>
+        .row1 {
+            margin-left: -5px;
+            margin-right: -5px;
+        }
+
+        .column1 {
+            float: left;
+            width: 50%;
+            padding: 5px;
+        }
+
+        td {
+            text-align: left;
+            padding: 10px;
+            /*text-transform:uppercase;*/
+            font-family: "Times New Roman",Times,serif;
+        }
+
+        table, th, td {
+            border-collapse: collapse;
+            border: none,
+            /*border-spacing: 0;
+        width: 100%;*/
+            /*border: 1px solid #ddd;*/
+        }
+
+        .aligntext {
+            /*text-transform: uppercase;*/
+            font-family: "Times New Roman",Times,serif;
+        }
+
+        .ms-choice {
+            height: 35px;
+        }
+
+        th, td {
+            padding: 5px;
+            font-size: 17px;
+        }
+
+        /*.pb {
+            clear: both;
+            display: block;
+            overflow: visible !important;
+            border: 1px solid transparent;
+            float:none;
+            page-break-after: always;
+            /*page-break-before: always;
+        }*/
+        table {
+            page-break-inside: auto
+        }
+
+        tr {
+            page-break-inside: avoid;
+            page-break-after: auto
+        }
+
+        thead {
+            display: table-header-group
+        }
+
+        tfoot {
+            display: table-footer-group
+        }
+    </style>
+</head>
+
+<body>
+    <div class="">
+        <div class="container-fluid">
+            <div class="row" @*style="margin-right:-5px;margin-left:-5px;"*@>
+                <div class="col-xs-12">
+                    <div class="panel panel-primary">
+                        <div class="">
+                            <div class="row" style="margin-right:50px; margin-left:50px; margin-top:50px;">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="">
+                                            <div class="row" style="margin-top:50px;">
+                                                <div class="col-xs-12" style="text-align:center;">
+                                                    <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("FRERES DE SAINT GABRIEL");}</b></h3>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:50px;">
+                                                <hr style="border: 1px solid black;" />
+                                                <div class="col-xs-12" style="text-align:center;">
+                                                    <h1 class="aligntext" style="text-transform:uppercase;text-shadow:3px 3px black;font-size:60px;">@{@HomeController.GetControlTextByControlId("PersonalDetails");}</h1>
+                                                </div>
+                                                <hr style="border: 1px solid black;" />
+                                            </div>
+                                            <div class="row" style="margin-top:50px;display:none">
+                                                <div class="col-xs-12" style="text-align:center;">
+                                                    <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Brothers Of St. Gabriel");}</b></h3>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:50px;">
+                                                <div class="col-xs-12" style="text-align:center;">
+                                                    <h3 class="aligntext"><b>@System.DateTime.Now.ToString("dd-MM-yyyy")</b></h3>
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:90px;">
+                                                <div class="col-xs-12" style="text-align:center;">
+                                                    <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Fratelli di san Gabriele - via Trionfale - 12840 - 00135 Roma");}</b></h3>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pb">
+                        </div>
+
+                        @*<p class="pb"></p>*@
+                        <div class="">
+                            <div class="row" @*style="margin-right:220px; margin-left:50px;"*@>
+                                <div class="col-xs-12">
+                                    <div class="">
+                                        <div class="">
+                                            <div class="row" style="margin-right:50px;margin-left:50px;">
+                                                <div class="col-xs-12" style="text-align:center;">
+                                                    <h3 class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Brothers Of St. Gabriel");}</b></h3>
+                                                </div>
+                                                <div class="col-xs-12" @*style="margin-left:50px;"*@>
+                                                    <p1 style="font-size:18px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("List of all the Brothers");}</b></p1>
+                                                </div>
+                                                <div class="col-xs-12" @*style="margin-left:50px;"*@>
+                                                    <p1 style="font-size:18px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("Tacken together by Province and Community");}</b></p1>
+                                                </div>
+                                                <div class="col-xs-12" style="margin-top:30px;">
+                                                    <p1 style="font-size:18px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("For each province you will find");}:</b></p1>
+                                                </div>
+                                                <div class="col-xs-12" @*style="margin-left:50px;"*@>
+                                                    <p1 style="font-size:18px;">
+                                                        <b class="aligntext">- @{@HomeController.GetControlTextByControlId("Some details about the Provincial Administration");};</b><br />
+                                                        <b class="aligntext">- @{@HomeController.GetControlTextByControlId("the houses by countries");};</b>
+                                                        <br /><b class="aligntext">- @{@HomeController.GetControlTextByControlId("the list of the Brothers living in other Provinces, with the");}</b>
+                                                    </p1>
+                                                </div>
+                                                <div class="col-xs-12" @*style="margin-left:60px;"*@>
+                                                    <p1 style="font-size:18px;" class="aligntext"><b> @{@HomeController.GetControlTextByControlId("code of thier community, and the brothers living alone");};</b></p1>
+                                                </div>
+                                                <div class="col-xs-12" @*style="margin-left:50px;"*@>
+                                                    <p1 style="font-size:18px;" class="aligntext"><b>- @{@HomeController.GetControlTextByControlId("The list of the professed brothers in alphabetical order, followed by");}:</b></p1>
+                                                </div>
+                                                <div class="col-xs-12" @*style="margin-left:70px;"*@>
+                                                    <p1 style="font-size:18px;" class="aligntext">
+                                                        <b>
+                                                            -@{@HomeController.GetControlTextByControlId("their date of birth");}
+                                                            <br /> -@{@HomeController.GetControlTextByControlId("their country of birth");}
+                                                            <br /> -@{@HomeController.GetControlTextByControlId("their date of first profession");}
+                                                            <br /> -@{@HomeController.GetControlTextByControlId("their date of final profession");}
+                                                            <br /> -@{@HomeController.GetControlTextByControlId("the code of the community where they live.");}
+                                                        </b>
+                                                    </p1>
+                                                </div>
+                                                <div class="col-xs-12" style="margin-top:20px; margin-left:50px;">
+                                                    <p1 style="font-size:18px;" class="aligntext"><b>@{@HomeController.GetControlTextByControlId("");} N. B. The full phone number with codes is meant for international use.</b></p1>
+                                                </div>
+                                                <div class="col-md-12 col-sm-12 col-xs-12" style="margin-top:20px; margin-left:50px;">
+                                                    <div id="ProvinceListswithGen2">
+                                                        <div style="margin-left:-5px;margin-right:-5px;">
+                                                            <div style="float:left;width:50%;padding:5px;">
+                                                                <table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>@{@HomeController.GetControlTextByControlId("Province_name");}</th>
+                                                                            <th>@{@HomeController.GetControlTextByControlId("Code");}</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @{
+                                                                            foreach (var item in ViewBag.proname as IEnumerable<Generalate.Models.tbl_Province>)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td>@item.ProvinceName</td>
+                                                                                    <td>@item.Place</td>
+                                                                                </tr>
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                            <div style="float:left;width:50%;padding:5px;">
+                                                                <table>
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th>@{@HomeController.GetControlTextByControlId("Province_name");}</th>
+                                                                            <th>@{@HomeController.GetControlTextByControlId("Code");}</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @{
+                                                                            foreach (var item in ViewBag.proname1 as IEnumerable<Generalate.Models.tbl_Province>)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td>@item.ProvinceName</td>
+                                                                                    <td>@item.Place</td>
+                                                                                </tr>
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="">
+                                                    <div class="row" @*style="margin-right:220px;margin-left:50px;*@ ">
+                                                        <div class="col-xs-12" id="Getprovincebyid">
+                                                            @{
+                                                                var data = ViewBag.provincedata;
+                                                                foreach (var item in data)
+                                                                {
+                                                                    <div class="col-xs-12">
+                                                                        <h3><b>@item.Provincecode</b>-<b>@item.ProvinceName</b></h3>
+                                                                        <hr style="border:1px solid black" />
+                                                                    </div>
+                                                                    <div class="row">
+                                                                        <div class="col-xs-12" style="margin-top:10px;">
+                                                                            <div class="box box-info">
+                                                                                <div class="box-body">
+                                                                                    <div class="col-xs-12" style="text-align:center">
+                                                                                        @{
+                                                                                            if (item.provsuperiorcnt > 0)
+                                                                                            {
+                                                                                                <div class="col-xs-3">
+                                                                                                    <h4>@{@HomeController.GetControlTextByControlId("ProvinceSuperior");}</h4>
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prosu in item.ProvinceSuperior)
+                                                                                                        {
+                                                                                                            <h4>@prosu.CouncilMember</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prodes in item.ProvinceSuperior)
+                                                                                                        {
+                                                                                                            <h4>@prodes.Designation</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                    </div>
+                                                                                    @*councilmember*@
+                                                                                    <div class="col-xs-12" style="text-align:center">
+                                                                                        @{
+                                                                                            if (item.procouncilcnt > 0)
+                                                                                            {
+                                                                                                <div class="col-xs-3">
+                                                                                                    <h4>@{@HomeController.GetControlTextByControlId("CouncilProvince");}</h4>
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prosu in item.ProvinceCouncilor)
+                                                                                                        {
+                                                                                                            <h4>@prosu.CouncilMember</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prodes in item.ProvinceSuperior)
+                                                                                                        {
+                                                                                                            <h4>@prodes.Designation</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                    </div>
+                                                                                    @*treaserer*@
+                                                                                    <div class="col-xs-12" style="text-align:center">
+                                                                                        @{
+                                                                                            if (item.procouncilcnt > 0)
+                                                                                            {
+                                                                                                <div class="col-xs-3">
+                                                                                                    <h4>@{@HomeController.GetControlTextByControlId("Treaserer");}</h4>
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prosu in item.Treaserer)
+                                                                                                        {
+                                                                                                            <h4>@prosu.CouncilMember</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prodes in item.Treaserer)
+                                                                                                        {
+                                                                                                            <h4>@prodes.Designation</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                    </div>
+                                                                                    @*secretary*@
+                                                                                    <div class="col-xs-12" style="text-align:center">
+                                                                                        @{
+                                                                                            if (item.procouncilcnt > 0)
+                                                                                            {
+                                                                                                <div class="col-xs-3">
+                                                                                                    <h4>@{@HomeController.GetControlTextByControlId("Secretary");}</h4>
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prosu in item.Secretary)
+                                                                                                        {
+                                                                                                            <h4>@prosu.CouncilMember</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                                <div class="col-xs-3">
+                                                                                                    @{
+                                                                                                        foreach (var prodes in item.Secretary)
+                                                                                                        {
+                                                                                                            <h4>@prodes.Designation</h4>
+                                                                                                        }
+                                                                                                    }
+                                                                                                </div>
+                                                                                            }
+                                                                                        }
+                                                                                    </div>
+                                                                                    <hr style="border:1px solid black" />
+                                                                                    <div class="row">
+                                                                                        <div class="col-xs-12" style="margin-top:10px">
+                                                                                            <div class="box box-info">
+                                                                                                @{
+                                                                                                    var country = "";
+                                                                                                    foreach (var commdetails in item.CommunityDetails)
+                                                                                                    {
+                                                                                                        <div class="box box-info">
+                                                                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:right;text-transform:uppercase">
+                                                                                                                @{
+                                                                                                                    if (country != commdetails.CommunityCountry)
+                                                                                                                    {
+                                                                                                                        <h4><b></b>@commdetails.CommunityCountry<b></b></h4>
+                                                                                                                    }
+                                                                                                                    else
+                                                                                                                    {
+                                                                                                                        <h4></h4>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            </div>
+                                                                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="text-align:center">
+                                                                                                                <div class="col-xs-2" style="text-align:left">
+                                                                                                                    <h4>@commdetails.CommunityCode</h4>
+                                                                                                                </div>
+                                                                                                                <div class="col-xs-7" style="text-align:left">
+                                                                                                                    <h4>@commdetails.CommunityName</h4>
+                                                                                                                    <h4>@commdetails.CommunityAddress</h4>
+                                                                                                                    <h4>@commdetails.CommunityPlace</h4>
+                                                                                                                    <h4>@commdetails.CommunityPhone</h4>
+                                                                                                                    <h4>@commdetails.CommunityEmailId</h4>
+                                                                                                                </div>
+                                                                                                                <div class="col-xs-3">
+                                                                                                                </div>
+                                                                                                            </div>
+                                                                                                            <div class="col-md-12 col-sm-12 col-xs-12 ">
+
+                                                                                                            </div>
+                                                                                                            <div class="col-md-6 col-sm-6 col-xs-6" style="text-align:left">
+                                                                                                                @{
+                                                                                                                    foreach (var appo in commdetails.AppointmentsMember)
+                                                                                                                    {
+                                                                                                                        <h4>@appo.MemberName @appo.SurName</h4>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            </div>
+                                                                                                            <div class="col-md-6 col-sm-6 col-xs-6" style="text-align:left">
+                                                                                                                @{
+                                                                                                                    foreach (var appomem in commdetails.Appointment)
+                                                                                                                    {
+                                                                                                                        <h4>@appomem.MemberName @appomem.SurName</h4>
+                                                                                                                    }
+                                                                                                                }
+                                                                                                            </div>
+                                                                                                        </div>
+                                                                                                        country = commdetails.CommunityCountry;
+                                                                                                    }
+                                                                                                    country = "";
+                                                                                                }
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="pb" style="page-break-after:always;"></div>
+                                                                                    <div class="row">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-12 col-sm-12 col-xs-12" style="margin-left:50px;margin-right:50px">
+                                                                                                <table style="margin-top:30px;width:90%;">
+                                                                                                    <thead style="display:table-header-group">
+                                                                                                        <tr>
+                                                                                                            <th>@{@HomeController.GetControlTextByControlId("S.No");}</th>
+                                                                                                            <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                                                                            <th>@{@HomeController.GetControlTextByControlId("DateofBirth");}</th>
+                                                                                                            <th>@{@HomeController.GetControlTextByControlId("Country");}</th>
+                                                                                                            <th>@{@HomeController.GetControlTextByControlId("Firstvows");}</th>
+                                                                                                            <th>@{@HomeController.GetControlTextByControlId("FinalVows");}</th>
+                                                                                                            <th>@{@HomeController.GetControlTextByControlId("Code");}</th>
+                                                                                                        </tr>
+                                                                                                    </thead>
+                                                                                                    <tbody>
+                                                                                                        @{ int i = 1;
+                                                                                                            foreach (var mem in item.AllMembers)
+                                                                                                            {
+                                                                                                                <tr>
+                                                                                                                    <td>@i</td>
+                                                                                                                    <td>@mem.ProMemberName @mem.ProSurName</td>
+                                                                                                                    <td>@mem.DateOfBirth</td>
+                                                                                                                    <td>@mem.ProCountry</td>
+                                                                                                                    <td>@mem.ProFirstVows</td>
+                                                                                                                    <td>@mem.ProFinalVows</td>
+                                                                                                                    <td>@mem.ProMemCode</td>
+                                                                                                                </tr>
+                                                                                                                i = i + 1;
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </tbody>
+
+                                                                                                </table>
+
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+</body>
+
+</html>
+
+

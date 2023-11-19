@@ -1,0 +1,106 @@
+﻿
+@model Generalate.Models.Tbl_Cong
+@using Generalate.Controllers;
+
+<div class="table-responsive">
+    <input type="hidden" value="@ViewBag.TotalDataCount" id="cnt" />
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th class="hide-1" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Province");}</span></th>
+                <th class="hide-2" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                <th class="hide-3" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Active_/_InActive");}</span></th>
+            
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = ViewBag.StartIndex;
+                foreach (var item in @ViewBag.allinstitution as IEnumerable<Generalate.Models.Tbl_Cong>)
+                {
+                    <tr>
+                        <td class="hide-1">@ji</td>
+                        <td>@item.CongregationName</td>
+                        <td>@item.ProvinceName</td>
+                        <td class="hide-2">@item.Phone</td>
+                        @if (item.Status == 1)
+                        {
+                            <td class="hide-3">Active</td>
+                        }
+                        @if (item.Status == 3)
+                        {
+                            <td class="hide-3">InActive</td>
+                        }
+
+                    
+                    </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.CommunityView').on("click", function () {
+            $('#myModal3').modal('show');
+            var id = $(this).attr("data-val");
+            //alert(id);
+            GetAllCommunityById1(id);
+            GetAllCommunityMemberById1(id);
+        });
+
+    });
+    function GetAllCommunityById1(id) {
+        $.ajax({
+            url: "/IdGenerate/GetAllCommunityById1?id=" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $("#DisSecRegCommunity").text(data[0].DisSec);
+                $("#CommunityCodeCommunity").text(data[0].CommCode);
+                $("#CommunityNameCommunity").text(data[0].CongregationName);
+                $("#PlaceCommunity").text(data[0].Place);
+                $("#PhoneCommunity").text(data[0].Phone);
+                $("#CountryCommunity").text(data[0].Country);
+                $("#EmailCommunity").text(data[0].EmailId);
+                $("#ActiveCommunity").text(data[0].ActiveCkeck);
+                $("#DioceseNameCommunity").text(data[0].Diocese);
+                $("#ActivitiesCommunity").text(data[0].Activities);
+                $("#AddressCommunity").text(data[0].Address);
+                $("#VissionCommunity").text(data[0].Vission);
+                $("#MissionCommunity").text(data[0].Mission);
+
+                $("#FileCommunity").attr("href", "/Images/CommunitiesSocialCentresDoc/" + data[0].File);
+            },
+            error: function (er) {
+            }
+        });
+    }
+
+    function GetAllCommunityMemberById1(id) {
+        $.ajax({
+            url: "/IdGenerate/GetAllCommunityMembersById?id=" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    var i = 1;
+                    $('#tblMemberDetails tbody').html("");
+                    data.forEach(function (user) {
+                        var row = "<tr><td>" + user.Name + "</td><td>" + user.FromDate + "</td><td>" + user.ToDate + "</td><td>" + user.DesignationType + "</td></tr>";
+                        $('#tblMemberDetails tbody').append(row);
+                        i = i + 1;
+                    });
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+
+</script>

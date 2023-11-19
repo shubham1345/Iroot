@@ -1,0 +1,2198 @@
+using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Drawing.Charts;
+using OpenQA.Selenium;
+using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Support.UI;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Dynamic;
+using System.IO;
+using System.Linq;
+using System.Reflection;
+using System.Threading;
+using System.Timers;
+using System.Windows.Forms;
+using WhatsAppUnReadReplyMessage.DbHelper;
+using WhatsAppUnReadReplyMessage.Helper;
+using WhatsAppUnReadReplyMessage.UnReadReplyMessgae;
+using DataTable = System.Data.DataTable;
+
+
+namespace WhatsAppUnReadReplyMessage
+{
+    public partial class FrmWhatsAppUnReadReplyMsg : Form
+    {
+        private System.Threading.Timer timerCheckLicence;
+        int interval = 1000 * 60 * 60;
+        public FrmWhatsAppUnReadReplyMsg()
+        {
+            InitializeComponent();
+            timerCheckLicence = new System.Threading.Timer(CallBacktimerCheckLicence, null, -1, -1);
+            //timerCheckLicence.Change(50000, 50000);
+            timerCheckLicence.Change(interval, interval);
+        }
+
+        private void CallBacktimerCheckLicence(object state)
+        {
+            timerCheckLicence.Change(-1, -1);
+            CheckLicenceEveryHours();
+        }
+
+        private void CheckLicenceEveryHours()
+        {
+            timerCheckLicence.Change(-1, -1);
+            string filePath = new DirectoryInfo(Environment.CurrentDirectory).FullName;
+            var fullPath = Path.Combine(filePath, @"licenceFile.txt");
+            if (File.Exists(fullPath))
+            {
+                string[] lines = System.IO.File.ReadAllLines(fullPath);
+                string serialNo = Licence.CheckProduct(lines[0].ToString());
+                int response = Convert.ToInt32(serialNo.Replace("\"", ""));
+                if (response == 102)
+                {
+                    Application.Exit();
+                }
+            }
+            timerCheckLicence.Change(interval, interval);
+            ExportAllReplyMessageDetails();
+        }
+
+        BackgroundWorker worker = new BackgroundWorker();
+        string loginUserName = string.Empty;
+        public void FrmWhatsAppUnReadReplyMsg_Load(object sender, EventArgs e)
+        {
+            Control.CheckForIllegalCrossThreadCalls = false;
+            OpenBrowser();
+            GetLoginUserName();
+            var allPathAndMsg = SqlQueryHelper.GetAllPathAndMessage(loginUserName);
+            if (allPathAndMsg.Count > 0)
+            {
+                this.BeginInvoke(new Action(() =>
+                txtFilePath.Text = allPathAndMsg[0].CustomerPath));
+                this.BeginInvoke(new Action(() => txtMsgFilePath.Text = allPathAndMsg[0].MessagePath));
+                this.BeginInvoke(new Action(() => txtOtherMsgFilePath.Text = allPathAndMsg[0].OtherMessagePath));
+                this.BeginInvoke(new Action(() => txtFileDoesNotExist.Text = allPathAndMsg[0].FileNotExist));
+                this.BeginInvoke(new Action(() => txtFileExistEnableCus.Text = allPathAndMsg[0].CustomerWithMessage));
+                this.BeginInvoke(new Action(() => txtMsgPathCusNotEnable.Text = allPathAndMsg[0].MessageWithOutCus));
+                this.BeginInvoke(new Action(() => txtFileExistOtherMsg.Text = allPathAndMsg[0].CustomerWithOtherMessage));
+                this.BeginInvoke(new Action(() => txtOtherFileNotEnableCus.Text = allPathAndMsg[0].OtherMessageWithOutCus));
+                this.BeginInvoke(new Action(() => numericReplyMsg.Text = allPathAndMsg[0].NoOfReplyMessage.ToString()));
+                this.BeginInvoke(new Action(() => numericMinutes.Text = allPathAndMsg[0].TotalTime.ToString()));
+                this.BeginInvoke(new Action(() => numericDefaultValue.Text = allPathAndMsg[0].TotalDefaultReplyValue.ToString()));
+            }
+            isLoad = true;
+            var allLogStatus = SqlQueryHelper.GetAllLogStatus(loginUserName);
+            if (allLogStatus.Count > 0)
+            {
+                for (int i = 0; i < allLogStatus.Count; i++)
+                {
+                    SaveLogStatus(allLogStatus[i].ApplicationLogStatus);
+                }
+            }
+        }
+        private void GetLoginUserName()
+        {
+
+
+            WaitForElementByXPath(".//*[@class='_3RWII']");
+            ReadOnlyCollection<IWebElement> userProfile = _chromeWebDriver.FindElements(By.XPath(".//*[@class='_3RWII']"));
+            userProfile[0].Click();
+            WaitForElementByXPath(".//div[@class='_3u328 copyable-text selectable-text']");
+            ReadOnlyCollection<IWebElement> userName = _chromeWebDriver.FindElements(By.XPath(".//div[@class='_3u328 copyable-text selectable-text']"));
+            loginUserName = userName[0].Text;
+            WaitForElementByXPath("//span[@data-icon='back-light']");
+            ReadOnlyCollection<IWebElement> backButton = _chromeWebDriver.FindElements(By.XPath("//span[@data-icon='back-light']"));
+            backButton[0].Click();
+        }
+        public IWebDriver _chromeWebDriver;
+        public void OpenBrowser()
+        {
+            string appStartupPath = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            ChromeOptions options = new ChromeOptions();
+            options.AddArgument("--disable-notifications");
+            options.AddArgument("--disable-extensions");
+            options.AddArgument("--test-type");
+            options.AddArgument("--log-level=3");
+            // options.AddArgument("--Incognito");
+            options.AddArgument(string.Format("user-data-dir={0}", Environment.CurrentDirectory));
+            //options.AddArgument("--lang=IW");
+            ChromeDriverService chromeDriverService = ChromeDriverService.CreateDefaultService(appStartupPath);
+            chromeDriverService.HideCommandPromptWindow = true;
+            _chromeWebDriver = new ChromeDriver(chromeDriverService, options);
+            _chromeWebDriver.Manage().Window.Minimize();
+            _chromeWebDriver.Navigate().GoToUrl("https://web.whatsapp.com");
+            while (true)
+            {
+                if (CheckLoggedIn())
+                {
+                    break;
+                }
+            }
+        }
+        public bool CheckLoggedIn()
+        {
+            try
+            {
+                return _chromeWebDriver.FindElement(By.ClassName("_1wSzK")).Displayed;
+            }
+            catch (Exception e)
+            {
+                Debug.Print(e.Message);
+                return false;
+            }
+        }
+        BackgroundWorker bgwrSendMessage = new BackgroundWorker();
+        public void btn_StartProcess_Click(object sender, EventArgs e)
+        {
+            bgwrSendMessage.DoWork -= bgwrSendMessage_DoWork;
+            bgwrSendMessage.DoWork += bgwrSendMessage_DoWork;
+            bgwrSendMessage.RunWorkerCompleted -= bgwrSendMessage_RunWorkerCompleted;
+            bgwrSendMessage.RunWorkerCompleted += bgwrSendMessage_RunWorkerCompleted;
+            bgwrSendMessage.RunWorkerAsync();
+        }
+        public void WriteLog(string logMessage)
+        {
+            lblLog.Text = lblLog.Text + Environment.NewLine + DateTime.Now.ToString("dd-MMM-yyyy HH:mm") + ": " + logMessage;
+            pnlLog.VerticalScroll.Value = pnlLog.VerticalScroll.Maximum;
+        }
+        public void bgwrSendMessage_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+
+            try
+            {
+                _chromeWebDriver.Navigate().Refresh();
+                WebDriverWait wait = new WebDriverWait(_chromeWebDriver, TimeSpan.FromSeconds(3));
+                //UnComment Before Build Setup
+                //if (wait.Until(ExpectedConditions.AlertIsPresent()) != null)
+                    _chromeWebDriver.SwitchTo().Alert().Accept();
+            }
+            catch
+            {
+            }
+            string logMsg = string.Empty;
+            if (e.Result == null)
+            {
+
+            }
+            else if (e.Result.ToString() == "success")
+            {
+                countpost = 0;
+                if (switchValue)
+                {
+                    logMsg = "UnReadReply message task completed successfully !";
+                    this.WriteLog(logMsg);
+                }
+                else
+                {
+                    EnableControl();
+                    logMsg = "UnReadReply message task completed successfully !";
+                    this.WriteLog(logMsg);
+                }
+            }
+            else if (e.Result.ToString() == "Not Found")
+            {
+                if (!switchValue)
+                {
+                    EnableControl();
+                    logMsg = "No any Unread message!";
+                    this.WriteLog(logMsg);
+                }
+                else
+                {
+                    logMsg = "No any Unread message!";
+                    this.WriteLog(logMsg);
+                }
+            }
+            else
+            {
+                countpost = 0;
+                EnableControl();
+                //StartSchedulerTask();
+            }
+            if (timer != null)
+            {
+                timer.Stop();
+                timer = null;
+                StartSchedulerTask();
+            }
+            //StartSchedulerTask();
+        }
+        System.Timers.Timer timer;
+        public void StartSchedulerTask()
+        {
+            if (timer == null)
+            {
+                var totalTime = DateTime.Now.ToShortTimeString();
+                int hours = Convert.ToInt32(totalTime.Split(':')[0]);
+                int min = Convert.ToInt32(totalTime.Split(':')[1].Split(' ')[0]);
+                int minute = Convert.ToInt32(numericMinutes.Value);
+                timer = new System.Timers.Timer(TimeSpan.FromMinutes(minute).TotalMilliseconds);
+                timer.AutoReset = true;
+                timer.Elapsed += new System.Timers.ElapsedEventHandler(CallRepeatedTask);
+                timer.Start();
+            }
+        }
+        public void CallRepeatedTask(object sender, ElapsedEventArgs e)
+        {
+            bgwrSendMessage.DoWork -= bgwrSendMessage_DoWork;
+            bgwrSendMessage.DoWork += bgwrSendMessage_DoWork;
+            bgwrSendMessage.RunWorkerCompleted -= bgwrSendMessage_RunWorkerCompleted;
+            bgwrSendMessage.RunWorkerCompleted += bgwrSendMessage_RunWorkerCompleted;
+            if (!bgwrSendMessage.IsBusy)
+                bgwrSendMessage.RunWorkerAsync();
+        }
+
+        List<UnReadReplyPathAndMsg> allpathNadMessage = new List<UnReadReplyPathAndMsg>();
+        public void bgwrSendMessage_DoWork(object sender, DoWorkEventArgs e)
+        {
+            DisableControl();
+            bool valid = Validation();
+            if (!valid)
+            {
+                return;
+            }
+            var allPathAndMsg = SqlQueryHelper.GetAllPathAndMessage(loginUserName);
+            if (allPathAndMsg.Count == 0)
+            {
+                MessageBox.Show("Save the all path into database !", Application.ProductName, MessageBoxButtons.OK,
+                                                                                MessageBoxIcon.Information);
+                EnableControl();
+                return;
+            }
+            try
+            {
+                string chrominfo = _chromeWebDriver.CurrentWindowHandle;
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("chrome not reachable"))
+                {
+                    MessageBox.Show("Browser is close !", Application.ProductName, MessageBoxButtons.OK,
+                                                                 MessageBoxIcon.Information);
+                    this.BeginInvoke(new Action(() => this.Close()));
+                    return;
+                }
+            }
+            var status = FindAllUnreadSender();
+            var backgroundWorker = sender as BackgroundWorker;
+            e.Result = status;
+        }
+        public bool Validation()
+        {
+            if (string.IsNullOrWhiteSpace(txtFilePath.Text) || string.IsNullOrWhiteSpace(txtMsgFilePath.Text) || string.IsNullOrWhiteSpace(txtOtherMsgFilePath.Text))
+            {
+
+                MessageBox.Show("Please input path in a textbox !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                EnableControl();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(txtFileDoesNotExist.Text) || string.IsNullOrWhiteSpace(txtFileExistEnableCus.Text) || string.IsNullOrWhiteSpace(txtMsgPathCusNotEnable.Text) || string.IsNullOrWhiteSpace(txtFileExistOtherMsg.Text) || string.IsNullOrWhiteSpace(txtOtherFileNotEnableCus.Text))
+            {
+
+                MessageBox.Show("Please input reply in a textbox !", Application.ProductName, MessageBoxButtons.OK,
+                                                                  MessageBoxIcon.Information);
+                EnableControl();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(numericReplyMsg.Text) || numericReplyMsg.Value == 0)
+            {
+                MessageBox.Show("Please enter No Of Reply message !", Application.ProductName, MessageBoxButtons.OK,
+                                                                                MessageBoxIcon.Information);
+                numericReplyMsg.Focus();
+                EnableControl();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(numericMinutes.Text) || numericMinutes.Value == 0)
+            {
+                MessageBox.Show("Please enter total minutes!", Application.ProductName, MessageBoxButtons.OK,
+                                                                                MessageBoxIcon.Information);
+                numericMinutes.Focus();
+                EnableControl();
+                return false;
+            }
+            if (string.IsNullOrWhiteSpace(numericDefaultValue.Text) || numericDefaultValue.Value == 0)
+            {
+                MessageBox.Show("Please enter maximum  no of reply message !", Application.ProductName, MessageBoxButtons.OK,
+                                                                                MessageBoxIcon.Information);
+                EnableControl();
+                numericDefaultValue.Focus();
+                return false;
+            }
+            return true;
+        }
+        List<string> allUnreadMsgSender = new List<string>();
+        static int S_no = 0;
+        bool MsgSentStatus = false;
+        bool matchResult = false;
+        public string FindAllUnreadSender()
+        {
+
+            ReadOnlyCollection<IWebElement> UnReadMessageSender = _chromeWebDriver.FindElements(By.XPath("//div[contains(@class, '_2UaNq _2ko65') and not (contains(@class,'_3NWy8'))]"));
+
+            allUnreadMsgSender = new List<string>();
+
+            if (UnReadMessageSender.Count > 0)
+            {
+                foreach (var senderByMsg in UnReadMessageSender.Reverse())
+                {
+
+                    allUnreadMsgSender.Add(senderByMsg.Text);
+                }
+
+                foreach (var senderMsg in allUnreadMsgSender)
+                {
+                    string senderName = senderMsg.Split('\r')[0];
+                    var allSenderDetails = SqlQueryHelper.GetAllSenderInfo(loginUserName);
+                    var messageInfo = SqlQueryHelper.GetAllMessageInfo(loginUserName, senderName);
+                    int maxNoofReplyMsg = allSenderDetails.Where(x => x.SenderName == senderName).Select(x => x.NoOfReplyMsg).FirstOrDefault();
+                    if (maxNoofReplyMsg != 0)
+                    {
+                        if (messageInfo.Count() > 0 && allSenderDetails.Count() > 0)
+                        {
+                            matchResult = allSenderDetails.Any(x => x.NoOfReplyMsg == messageInfo[0].NoOfReplyMsg && x.SenderName == senderName);
+                        }
+                        else
+                        {
+                            bool result = Sendmessage(senderMsg, 0, maxNoofReplyMsg);
+                            if (!result)
+                            {
+                                continue;
+                            }
+                            goto end;
+                        }
+                        if (matchResult)
+                        {
+                            string logMsg = "Already maximum" + " * " + maxNoofReplyMsg + " * " + " number of  reply message sent to this Sender " + " " + "*" + senderName + "*";
+                            this.WriteLog(logMsg);
+                            Thread.Sleep(4000);
+                            continue;
+                        }
+                        else
+                        {
+                            if (maxNoofReplyMsg >= messageInfo[0].NoOfReplyMsg)
+                            {
+                                int leftNoofReplymsg = maxNoofReplyMsg - messageInfo[0].NoOfReplyMsg;
+                                bool result = Sendmessage(senderMsg, leftNoofReplymsg, maxNoofReplyMsg);
+                                if (!result)
+                                {
+                                    continue;
+                                }
+                            }
+                            else
+                            {
+                                continue;
+                            }
+                        }
+                    }
+                    else //// for new user which is not saved in WhatsAppContact 
+                    {
+                        newUser = true;
+                        int defaultLimit = Convert.ToInt32(numericDefaultValue.Value);
+                        bool result = Sendmessage(senderMsg, 0, defaultLimit);
+                        if (!result)
+                        {
+                            continue;
+                        }
+                    }
+
+                end:
+                    newUser = false;
+                    Thread.Sleep(4000);
+                }
+            }
+            else
+            {
+                return "Not Found";
+            }
+
+            if (MsgSentStatus)
+                return "success";
+            else
+                return "fail";
+        }
+        public bool Sendmessage(string senderMsg, int leftNoofReplymsg, int maxNoofReplyMsg)
+        {
+            countpost = 0;
+            msgSentOrNot = "fail";
+            string senderDetails = senderMsg;
+            var senderInfo = senderDetails.Split(new char[] { '\r', '\n' });
+            var sender = senderDetails.Split(new char[] { '\r', '\n' })[0];
+            int totalUnreadMsg = Convert.ToInt32(senderInfo.Last());
+            try
+            {
+                Thread.Sleep(1000);
+                ReadOnlyCollection<IWebElement> searchSenderElement = _chromeWebDriver.FindElements(By.XPath(".//input[@title='Search or start new chat']"));
+                searchSenderElement[0].SendKeys(sender);
+
+
+                Thread.Sleep(1000);
+                ReadOnlyCollection<IWebElement> senderElement = _chromeWebDriver.FindElements(By.XPath(".//*[@class='_2WP9Q']"));
+                if (senderElement.Count > 0)
+                {
+                    try
+                    {
+                        var fromGroupClick = senderElement.FirstOrDefault(x => x.Text.StartsWith(sender));
+                        fromGroupClick.Click();
+                    }
+                    catch (Exception)
+                    {
+                        _chromeWebDriver.FindElements(By.XPath(".//span[@data-icon='search']"))[0].Click();
+                        return false;
+                    }
+                }
+                Thread.Sleep(1000);
+                _chromeWebDriver.FindElements(By.XPath(".//span[@data-icon='search']"))[0].Click();
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            ReadOnlyCollection<IWebElement> allUnreadMsg = null;
+            while (allUnreadMsg == null)
+            {
+                try
+                {
+                    Thread.Sleep(1000);
+                    allUnreadMsg = _chromeWebDriver.FindElements(By.XPath(".//*[@class='copyable-text']"));
+                }
+                catch (Exception)
+                {
+                }
+            }
+            string folderName = txtFilePath.Text;
+            if (!folderName.Contains("Desktop"))
+            {
+                DriveName = folderName.Split(':').First() + ":/";
+                allFolder = Directory.GetDirectories(DriveName);
+            }
+            else
+            {
+                string desktopPath = string.Empty;
+                string OtherMsgExistFilePath = folderName.Substring(0, folderName.LastIndexOf("\\"));
+                string[] pathDesk = folderName.Split('\\');
+                for (int i = 0; i < pathDesk.Length - 1; i++)
+                {
+                    desktopPath = desktopPath + pathDesk[i] + "\\";
+                }
+                DriveName = desktopPath;
+                allFolder = Directory.GetDirectories(DriveName);
+            }
+            string senderFileName = folderName + "\\" + sender + ".pdf";
+            string dirPath = folderName;
+            string textMsg = string.Empty;
+            int count = 0;
+            allReplyInfo = new List<UnReadReplyMsg>();
+            allUnReadMsgList = new List<string>();
+            allReplyMsg = new List<IWebElement>();
+            if (allUnreadMsg.Count() >= totalUnreadMsg)
+            {
+                allUnReadMsgList = new List<string>();
+                int countReply = 0;
+                int userInputNo = Convert.ToInt32(numericReplyMsg.Value);
+                if (leftNoofReplymsg >= userInputNo)
+                {
+                    allUnReadMsgList = new List<string>();
+                    for (int i = allUnreadMsg.Count() - totalUnreadMsg; i < allUnreadMsg.Count(); i++)
+                    {
+                        if (countReply == userInputNo)
+                        {
+                            break;
+                        }
+                        var textDetail = allUnreadMsg[i].GetAttribute("data-pre-plain-text");
+                        allUnReadMsgList.Add(string.Format(".//*[@data-pre-plain-text='{0}']//*[text()='{1}']", textDetail, allUnreadMsg[i].Text));
+                        countReply++;
+                    }
+                    MsgSentStatus = ReplyUnreadMessage(sender, folderName, DriveName, senderFileName, MsgSentStatus, allFolder, out count, out string replyMessagePath, out string fileExistPath, allUnReadMsgList, newUser);
+                }
+                else if (userInputNo >= leftNoofReplymsg && maxNoofReplyMsg >= userInputNo)
+                {
+                    if (leftNoofReplymsg > 0)
+                    {
+                        allUnReadMsgList = new List<string>();
+                        for (int i = allUnreadMsg.Count() - totalUnreadMsg; i < allUnreadMsg.Count(); i++)
+                        {
+                            if (countReply == leftNoofReplymsg)
+                            {
+                                break;
+                            }
+                            var textDetail = allUnreadMsg[i].GetAttribute("data-pre-plain-text");
+                            allUnReadMsgList.Add(string.Format(".//*[@data-pre-plain-text='{0}']//*[text()='{1}']", textDetail, allUnreadMsg[i].Text));
+                            countReply++;
+                        }
+                    }
+                    else
+                    {
+                        allUnReadMsgList = new List<string>();
+                        for (int i = allUnreadMsg.Count() - totalUnreadMsg; i < allUnreadMsg.Count(); i++)
+                        {
+                            if (countReply == userInputNo)
+                            {
+                                break;
+                            }
+                            var textDetail = allUnreadMsg[i].GetAttribute("data-pre-plain-text");
+                            allUnReadMsgList.Add(string.Format(".//*[@data-pre-plain-text='{0}']//*[text()='{1}']", textDetail, allUnreadMsg[i].Text));
+                            countReply++;
+                        }
+                    }
+                    MsgSentStatus = ReplyUnreadMessage(sender, folderName, DriveName, senderFileName, MsgSentStatus, allFolder, out count, out string replyMessagePath, out string fileExistPath, allUnReadMsgList, newUser);
+                }
+                else
+                {
+                    allUnReadMsgList = new List<string>();
+                    for (int i = allUnreadMsg.Count() - totalUnreadMsg; i < allUnreadMsg.Count(); i++)
+                    {
+                        if (countReply == maxNoofReplyMsg)
+                        {
+                            break;
+                        }
+                        var textDetail = allUnreadMsg[i].GetAttribute("data-pre-plain-text");
+                        allUnReadMsgList.Add(string.Format(".//*[@data-pre-plain-text='{0}']//*[text()='{1}']", textDetail, allUnreadMsg[i].Text));
+                        countReply++;
+                    }
+                    MsgSentStatus = ReplyUnreadMessage(sender, folderName, DriveName, senderFileName, MsgSentStatus, allFolder, out count, out string replyMessagePath, out string fileExistPath, allUnReadMsgList, newUser);
+                }
+            }
+            else
+            {
+                allUnReadMsgList = new List<string>();
+                for (int i = 0; i < allUnreadMsg.Count(); i++)
+                {
+                    var textDetail = allUnreadMsg[i].GetAttribute("data-pre-plain-text");
+                    allUnReadMsgList.Add(string.Format(".//div[@data-pre-plain-text='{0}']//*[text()='{1}']", textDetail, allUnreadMsg[i].Text));
+                }
+                MsgSentStatus = ReplyUnreadMessage(sender, folderName, DriveName, senderFileName, MsgSentStatus, allFolder, out count, out string replyMessagePath, out string fileExistPath, allUnReadMsgList, newUser);
+            }
+            return true;
+        }
+        bool newUser = false;
+        public string generateXPATH(IWebElement childElement, string current)
+        {
+            String childTag = childElement.TagName;
+            if (childTag.Equals("html"))
+            {
+                return "/html[1]" + current;
+            }
+            IWebElement parentElement = childElement.FindElement(By.XPath(".."));
+            var childrenElements = parentElement.FindElements(By.XPath("*"));
+            int count = 0;
+            for (int i = 0; i < childrenElements.Count; i++)
+            {
+                IWebElement childrenElement = childrenElements[i];
+                String childrenElementTag = childrenElement.TagName;
+                if (childTag.Equals(childrenElementTag))
+                {
+                    count++;
+                }
+                if (childElement.Equals(childrenElement))
+                {
+                    return generateXPATH(parentElement, "/" + childTag + "[" + count + "]" + current);
+                }
+            }
+            return null;
+        }
+        List<string> xpaths = new List<string>();
+        public bool ReplyUnreadMessage(string sender, string folderName, string driveName, string senderFileName, bool msgSentStatus, string[] allFolder, out int count, out string replyMessagePath, out string fileExistPath, List<string> allUnReadMsgList, bool newUser)
+        {
+            int totalCompleteTask = 0;
+            bool status = false;
+            count = 0;
+            replyMessagePath = string.Empty;
+            fileExistPath = string.Empty;
+
+            xpaths = new List<string>();
+            foreach (var element in allUnReadMsgList)
+            {
+                xpaths.Add(element);
+            }
+            int countElement = 0;
+            foreach (var element in xpaths)
+            {
+                try
+                {
+                    WaitForElementByXPath(element);
+                    var ReplyMsgElement = _chromeWebDriver.FindElement(By.XPath(element));
+
+                    countElement++;
+                    if (!SelectReplyMessage(ReplyMsgElement))
+                    {
+                        SelectReplyMessage(ReplyMsgElement);
+                    }
+                    string unReadReplyMsg = ReplyMsgElement.Text.Split('\r').First();
+                    string textMsg = unReadReplyMsg + ".pdf";
+                    bool senderNameExist = false;
+                    string folderPath = string.Empty;
+                    if (folderName.Contains("Desktop"))
+                        folderStatus = allFolder.Contains(folderName);
+                    else
+                        folderStatus = allFolder.Contains(folderName.Replace("\\", "/"));
+
+                    string[] fileNames = Directory.GetFiles(folderName, "*.pdf", SearchOption.TopDirectoryOnly);
+                    var result = fileNames.Any(x => x.ToUpper() == senderFileName.ToUpper());
+                    string dateTime = DateTime.Now.ToString("dd-MMM-yyyy HH:mm");
+                    string[] msgdate = dateTime.Split(' ');
+                    string date = msgdate[0];
+                    string time = msgdate[1];
+                    if (fileNames.Length != 0 && result == true && folderStatus)
+                    {
+                        senderNameExist = true;
+                        status = SearchFileAndSendMessage(ReplyMsgElement, out driveName, textMsg, out count, out replyMessagePath, out fileExistPath, allUnReadMsgList, senderNameExist);
+                        ScrollContent(countElement);
+                        S_no++;
+                        totalCompleteTask++;
+                        
+                        allReplyInfo.Add(new UnReadReplyMsg()
+                        {
+                            SenderBy = sender.ToString(),
+                            UnReadmsg = unReadReplyMsg,
+                            ReplyMessageStatus = replyMessagePath,
+                            FileExistPath = fileExistPath,
+                            S_No = S_no,
+                            Date=date,
+                            Time=time
+                        });
+                        UnReadDataGridView.Invoke(new Action(() => UnReadDataGridView.Rows.Add(allReplyInfo[0].S_No, allReplyInfo[0].SenderBy, allReplyInfo[0].UnReadmsg, allReplyInfo[0].ReplyMessageStatus, allReplyInfo[0].FileExistPath,date,time)));
+                        allReplyInfo.Clear();
+                    }
+                    else
+                    {
+                        senderNameExist = false;
+                        status = SearchFileAndSendMessage(ReplyMsgElement, out driveName, textMsg, out count, out replyMessagePath, out fileExistPath, allUnReadMsgList, senderNameExist);
+                        ScrollContent(countElement);
+                        totalCompleteTask++;
+                        S_no++;
+                        allReplyInfo.Add(new UnReadReplyMsg()
+                        {
+                            SenderBy = sender.ToString(),
+                            UnReadmsg = unReadReplyMsg,
+                            ReplyMessageStatus = replyMessagePath,
+                            FileExistPath = fileExistPath,
+                            S_No = S_no,
+                            Date = date,
+                            Time = time
+                        });
+                        UnReadDataGridView.Invoke(new Action(() => UnReadDataGridView.Rows.Add(allReplyInfo[0].S_No, allReplyInfo[0].SenderBy, allReplyInfo[0].UnReadmsg, allReplyInfo[0].ReplyMessageStatus, allReplyInfo[0].FileExistPath,date,time)));
+                        allReplyInfo.Clear();
+                    }
+                    status = true;
+                }
+                catch
+                {
+
+                }
+            }
+            dynamic messageDetail = new ExpandoObject();
+            messageDetail.LoginUserName = loginUserName;
+            messageDetail.SenderName = sender.ToString();
+            messageDetail.NoOfReplyMessage = totalCompleteTask++;
+            SqlQueryHelper.InsertMessageDetails(messageDetail);
+            if (newUser)
+            {
+                saveNewUserInfoData = new List<WhatsAppSenderDetails>();
+                newUserDetails = new WhatsAppSenderDetails();
+                newUserDetails.LoginUserName = loginUserName;
+                newUserDetails.SenderName = sender.ToString();
+                newUserDetails.NoOfReplyMsg = Convert.ToInt32(numericDefaultValue.Value);
+                saveNewUserInfoData.Add(newUserDetails);
+                SqlQueryHelper.InsertSenderDetails(saveNewUserInfoData);
+            }
+            return status;
+        }
+        public bool SearchFileAndSendMessage(IWebElement webElement, out string driveName, string textMsg, out int count, out string replyMessageStatus, out string fileExistPath, List<string> allUnReadMsg, bool senderNameExist)
+        {
+            string msgFolder = txtMsgFilePath.Text;
+            if (msgFolder.Contains("Desktop"))
+            {
+                driveName = msgFolder.Substring(0, msgFolder.LastIndexOf("\\"));
+            }
+            else
+            {
+                driveName = msgFolder.Split(':').First() + ":/";
+            }
+            string[] MsgFileDir = Directory.GetDirectories(driveName);
+
+            if (msgFolder.Contains("Desktop"))
+            {
+                resultMsgFile = MsgFileDir.Contains(msgFolder);
+            }
+            else
+            {
+                resultMsgFile = MsgFileDir.Contains(msgFolder.Replace("\\", "/"));
+            }
+            string[] msgFileName = Directory.GetFiles(msgFolder, "*.pdf", SearchOption.TopDirectoryOnly);
+            string replyMsg = msgFolder + "\\" + textMsg;
+            if (msgFileName.Any(m => m.ToUpper() == replyMsg.ToUpper()) && msgFileName.Count() > 0 && resultMsgFile)
+            {
+                string msgExist = "MsgFile";
+                if (senderNameExist)
+                {
+                    string replyTextMsgFileExistWithEnanleCus = txtFileExistEnableCus.Text.Trim();
+                    bool msgFileStatus = ReplyMsgExist(webElement, replyMsg, out count, out replyMessageStatus, out fileExistPath, senderNameExist, replyTextMsgFileExistWithEnanleCus, msgExist, allUnReadMsg);
+                    return msgFileStatus;
+                }
+                else
+                {
+                    string replyTextMsgFileExistNotEnanleCus = txtMsgPathCusNotEnable.Text.Trim();
+                    bool msgFileStatus = ReplyMsgExist(webElement, replyMsg, out count, out replyMessageStatus, out fileExistPath, senderNameExist, replyTextMsgFileExistNotEnanleCus, msgExist, allUnReadMsg);
+                    return msgFileStatus;
+                }
+            }
+            else
+            {
+                string msgOtherFolder = txtOtherMsgFilePath.Text;
+                if (msgOtherFolder.Contains("Desktop"))
+                {
+                    driveName = msgOtherFolder.Substring(0, msgOtherFolder.LastIndexOf("\\"));
+                }
+                else
+                {
+                    driveName = msgOtherFolder.Split(':').First() + ":/";
+                }
+                string[] MsgOtherFileDir = Directory.GetDirectories(driveName);
+
+                if (msgOtherFolder.Contains("Desktop"))
+                {
+                    resultOtherMsgFolder = MsgOtherFileDir.Contains(msgOtherFolder);
+                }
+                else
+                {
+                    resultOtherMsgFolder = MsgOtherFileDir.Contains(msgOtherFolder.Replace("\\", "/"));
+                }
+                string replyOthermsg = msgOtherFolder + "\\" + textMsg;
+                string[] msgOtheFileName = Directory.GetFiles(msgOtherFolder, "*.pdf", SearchOption.TopDirectoryOnly);
+                bool otherMsgFileExist = msgOtheFileName.Any(x => x.ToUpper() == replyOthermsg.ToUpper());
+                if (msgOtheFileName.Count() > 0 && otherMsgFileExist && resultOtherMsgFolder)
+                {
+                    string msgPath = "OtherMsgFile";
+                    if (senderNameExist)
+                    {
+                        string replyTextBoxotherMsgCusEnable = txtFileExistOtherMsg.Text.Trim();
+
+                        bool otherFileStatus = ReplyMsgExist(webElement, replyOthermsg, out count, out replyMessageStatus, out fileExistPath, senderNameExist, replyTextBoxotherMsgCusEnable, msgPath, allUnReadMsg);
+                        return otherFileStatus;
+                    }
+                    else
+                    {
+
+                        string replyTextBoxotherMsgnotCusEnable = txtOtherFileNotEnableCus.Text.Trim();
+                        bool otherFileStatus = ReplyMsgExist(webElement, replyOthermsg, out count, out replyMessageStatus, out fileExistPath, senderNameExist, replyTextBoxotherMsgnotCusEnable, msgPath, allUnReadMsg);
+                        return otherFileStatus;
+                    }
+                }
+                else
+                {
+                    string DoesNotExist = "No";
+                    if (senderNameExist)
+                    {
+
+                        string replyTextMsg = txtFileDoesNotExist.Text.Trim();
+                        bool fileNotExist = ReplyMsgExist(webElement, null, out count, out replyMessageStatus, out fileExistPath, senderNameExist, replyTextMsg, DoesNotExist, allUnReadMsg);
+                        return fileNotExist;
+                    }
+                    else
+                    {
+
+                        string replyTextMsg = txtFileDoesNotExist.Text.Trim();
+                        bool fileNotExist = ReplyMsgExist(webElement, null, out count, out replyMessageStatus, out fileExistPath, senderNameExist, replyTextMsg, DoesNotExist, allUnReadMsg);
+                        return fileNotExist;
+                    }
+
+                }
+            }
+        }
+        static int countpost = 0;
+        public bool ReplyMsgExist(IWebElement msgClickElement, string replyMsg, out int count, out string replyMessageStatus, out string fileExistPath, bool senderNameExist, string replyTextBoxMsg, string allMsgFileStatus, List<string> allUnReadMsg)
+        {
+            count = 0;
+            countpost++;
+            replyMessageStatus = string.Empty;
+            fileExistPath = string.Empty;
+            try
+            {
+                if (senderNameExist || allMsgFileStatus == "OtherMsgFile")
+                {
+                    count++;
+                    if (allMsgFileStatus == "MsgFile" || allMsgFileStatus == "OtherMsgFile")
+                    {
+                        string[] stringSeparators = new string[] { "\\" };
+                        string Replymessage = replyMsg.Split(stringSeparators, StringSplitOptions.None).Last().Split('.')[0] + " " + " Message";
+                        WaitForElementByXPath(".//*[@title='Attach']");
+                        _chromeWebDriver.FindElement(By.XPath(".//*[@title='Attach']")).Click();
+                        ReadOnlyCollection<IWebElement> postDocElements = _chromeWebDriver.FindElements(By.XPath(".//input[@type='file']"));
+                        if (postDocElements.Count > 0)
+                        {
+                            try
+                            {
+                                postDocElements[0].SendKeys(replyMsg);
+                                Thread.Sleep(2000);
+                                WaitForElementByXPath(".//span[@data-icon='send-light']");
+                                _chromeWebDriver.FindElement(By.XPath(".//span[@data-icon='send-light']")).Click();
+                                Thread.Sleep(3000);
+                                ScrollContent(countpost);
+                                if (!SelectReplyMessage(msgClickElement))
+                                {
+                                }
+                                WaitForElementByXPath(".//div[@class='_3u328 copyable-text selectable-text']");
+                                ReadOnlyCollection<IWebElement> postReplyElements = _chromeWebDriver.FindElements(By.XPath(".//div[@class='_3u328 copyable-text selectable-text']"));
+                                if (postReplyElements.Count > 0)
+                                {
+                                    string replyMsgFileExistWithEnanleCus = replyTextBoxMsg;
+                                    fileExistPath = replyMsg.Substring(0, replyMsg.LastIndexOf("\\"));
+                                    replyMessageStatus = replyTextBoxMsg.Replace("\r\n", " ").Replace("\n", " ");
+                                    postReplyElements[0].SendKeys("*" + Replymessage + "*" + "  " + replyMessageStatus);
+                                    Thread.Sleep(1000);
+                                    WaitForElementByXPath(".//span[@data-icon='send']");
+                                    _chromeWebDriver.FindElement(By.XPath(".//span[@data-icon='send']")).Click();
+                                    Thread.Sleep(2000);
+                                    return true;
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                if (ex.Message.Contains("chrome not reachable"))
+                                {
+                                    MessageBox.Show("Browser is close !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                                    this.BeginInvoke(new Action(() => this.Close()));
+                                    EnableControl();
+                                    return false;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        count++;
+                        WaitForElementByXPath(".//div[@class='_3u328 copyable-text selectable-text']");
+                        ReadOnlyCollection<IWebElement> postDocElements = _chromeWebDriver.FindElements(By.XPath(".//div[@class='_3u328 copyable-text selectable-text']"));
+                        if (postDocElements.Count > 0)
+                        {
+                            string replyTextMsg = replyTextBoxMsg;
+                            replyMessageStatus = replyTextMsg.Replace("\r\n", " ").Replace("\n", " ");
+                            fileExistPath = "File Does Not exist In Any Directory";
+                            postDocElements[0].SendKeys(replyMessageStatus);
+                            Thread.Sleep(1000);
+                            WaitForElementByXPath(".//span[@data-icon='send']");
+                            _chromeWebDriver.FindElement(By.XPath(".//span[@data-icon='send']")).Click();
+                            Thread.Sleep(2000);
+                            return true;
+                        }
+                    }
+                }
+                else
+                {
+                    count++;
+                    if (allMsgFileStatus == "MsgFile")
+                    {
+                        string[] stringSeparators = new string[] { "\\" };
+                        string Replymessages = replyMsg.Split(stringSeparators, StringSplitOptions.None).Last().Split('.')[0] + " " + "Message";
+                        WaitForElementByXPath(".//div[@class='_3u328 copyable-text selectable-text']");
+                        ReadOnlyCollection<IWebElement> postReplyElements = _chromeWebDriver.FindElements(By.XPath(".//div[@class='_3u328 copyable-text selectable-text']"));
+                        if (postReplyElements.Count > 0)
+                        {
+                            string replyMsgFileExistWithoutEnanleCus = txtMsgPathCusNotEnable.Text.Trim();
+                            fileExistPath = replyMsg.Substring(0, replyMsg.LastIndexOf("\\"));
+                            replyMessageStatus = replyMsgFileExistWithoutEnanleCus.Replace("\r\n", " ").Replace("\n", " ");
+                            postReplyElements[0].SendKeys("*" + Replymessages + "*" + "  " + replyMessageStatus);
+                            Thread.Sleep(1000);
+                            WaitForElementByXPath(".//span[@data-icon='send']");
+                            _chromeWebDriver.FindElement(By.XPath(".//span[@data-icon='send']")).Click();
+                            Thread.Sleep(2000);
+                            count++;
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        count++;
+                        WaitForElementByXPath(".//div[@class='_3u328 copyable-text selectable-text']");
+                        ReadOnlyCollection<IWebElement> postDocElements = _chromeWebDriver.FindElements(By.XPath(".//div[@class='_3u328 copyable-text selectable-text']"));
+                        if (postDocElements.Count > 0)
+                        {
+                            string replyTextMsg = replyTextBoxMsg;
+                            replyMessageStatus = replyTextMsg.Replace("\r\n", " ").Replace("\n", " ");
+                            fileExistPath = "File Does Not exist In Any Directory";
+                            postDocElements[0].SendKeys(replyMessageStatus);
+                            Thread.Sleep(1000);
+                            WaitForElementByXPath(".//span[@data-icon='send']");
+                            _chromeWebDriver.FindElement(By.XPath(".//span[@data-icon='send']")).Click();
+                            Thread.Sleep(2000);
+                            return true;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("chrome not reachable"))
+                {
+                    MessageBox.Show("Browser is close !", Application.ProductName, MessageBoxButtons.OK,
+                                                                 MessageBoxIcon.Information);
+                    this.BeginInvoke(new Action(() => this.Close()));
+                    EnableControl();
+                    return false;
+                }
+            }
+            return false;
+        }
+        public bool SelectReplyMessage(IWebElement webElement)
+        {
+            try
+            {
+                Thread.Sleep(2000);
+                webElement.Click();
+                WaitForElementByXPath(".//*[@class='_2Nkc4 _15CAo']");
+                ReadOnlyCollection<IWebElement> msgDownArrowElement = _chromeWebDriver.FindElements(By.XPath(".//*[@class='_2Nkc4 _15CAo']"));
+                if (msgDownArrowElement.Count > 0)
+                {
+                    msgDownArrowElement[0].Click();
+                }
+                WaitForElementByXPath(".//div[@title='Reply']");
+                ReadOnlyCollection<IWebElement> msgReplyElement = _chromeWebDriver.FindElements(By.XPath(".//div[@title='Reply']"));
+                if (msgReplyElement.Count > 0)
+                {
+                    msgReplyElement[0].Click();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public WebDriverWait WaitForElementByXPath(string xPath)
+        {
+            var wait = new WebDriverWait(_chromeWebDriver, TimeSpan.FromSeconds(_waitSeconds));
+            try
+            {
+                wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.VisibilityOfAllElementsLocatedBy(By.XPath(xPath)));
+                return wait;
+            }
+            catch (Exception)
+            {
+
+            }
+            return wait;
+        }
+        public void btn_browse_AttachFIlepath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDlg = new FolderBrowserDialog();
+            if (folderDlg.ShowDialog() == DialogResult.OK)
+            {
+                txtFilePath.Text = folderDlg.SelectedPath;
+            }
+        }
+        public void ScrollContent(int countElement)
+        {
+            try
+            {
+                if (countElement <= 5)
+                {
+
+                    int i = 0;
+                    while (i < 4)
+                    {
+                        System.Drawing.Point LocPoint = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElements(By.XPath(".//div[@class='_1zGQT _2ugFP message-in tail']")).Last()).LocationOnScreenOnceScrolledIntoView;
+                        i++;
+                    }
+                }
+                else if (countElement > 5 && countElement <= 8)
+                {
+                    System.Drawing.Point LocPoint = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElement(By.XPath(".//div[@class='_1_vLz']"))).LocationOnScreenOnceScrolledIntoView;
+                    Thread.Sleep(2000);
+                    int i = 0;
+                    while (i < 2)
+                    {
+                        System.Drawing.Point LocPoint1 = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElements(By.XPath(".//div[@class='_1zGQT _2ugFP message-in tail']")).Last()).LocationOnScreenOnceScrolledIntoView;
+                        i++;
+                    }
+                }
+                else if (countElement > 8 && countElement <= 15)
+                {
+                    System.Drawing.Point LocPoint = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElement(By.XPath(".//div[@class='_1_vLz']"))).LocationOnScreenOnceScrolledIntoView;
+                    Thread.Sleep(1500);
+                    int i = 0;
+                    while (i < 3)
+                    {
+                        System.Drawing.Point LocPoint1 = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElements(By.XPath(".//div[@class='_1zGQT _2ugFP message-in tail']")).Last()).LocationOnScreenOnceScrolledIntoView;
+                        i++;
+                    }
+                }
+                else if (countElement > 15 && countElement <= 20)
+                {
+
+                    int i = 0;
+                    while (i < 2)
+                    {
+                        System.Drawing.Point LocPoint = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElement(By.XPath(".//div[@class='_1_vLz']"))).LocationOnScreenOnceScrolledIntoView;
+                        Thread.Sleep(1500);
+                        System.Drawing.Point LocPoint1 = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElements(By.XPath(".//div[@class='_1zGQT _2ugFP message-in tail']")).Last()).LocationOnScreenOnceScrolledIntoView;
+                        i++;
+                    }
+                }
+                else
+                {
+                    System.Drawing.Point LocPoint = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElement(By.XPath(".//div[@class='wml2-']"))).LocationOnScreenOnceScrolledIntoView;
+                    Thread.Sleep(1500);
+                    int i = 0;
+                    while (i < 2)
+                    {
+                        System.Drawing.Point LocPoint2 = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElement(By.XPath(".//div[@class='wml2-']"))).LocationOnScreenOnceScrolledIntoView;
+                        System.Drawing.Point LocPoint1 = ((OpenQA.Selenium.Remote.RemoteWebElement)_chromeWebDriver.FindElements(By.XPath(".//div[@class='_1zGQT _2ugFP message-in tail']")).Last()).LocationOnScreenOnceScrolledIntoView;
+                        i++;
+                    }
+                }
+                Thread.Sleep(2000);
+            }
+            catch (Exception ex)
+            {
+            }
+
+        }
+        public void FrmWhatsAppUnReadReplyMsg_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            ExportAllPathAndMsg();
+            ExportAllSenderByDetails();
+            ExportLogStatus();
+            ExportAllReplyMessageDetails();
+            if (_chromeWebDriver != null)
+            {
+                _chromeWebDriver.Quit();
+            }
+        }
+        public void btn_SavepathAndMsg_Click(object sender, EventArgs e)
+        {
+
+            this.BeginInvoke(new Action(() => btn_SavepathAndMsg.Enabled = false));
+            bool valid = Validation();
+            if (!valid)
+            {
+                return;
+            }
+            DialogResult dialogResult = MessageBox.Show("Do u want to save Path and Message into database !", Application.ProductName, MessageBoxButtons.YesNo,MessageBoxIcon.Information);
+            if (dialogResult == DialogResult.Yes)
+            {
+                allpathNadMessage = new List<UnReadReplyPathAndMsg>();
+                allpathNadMessage.Add(new UnReadReplyPathAndMsg()
+                {
+                    LoginUserName = loginUserName,
+                    CustomerPath = txtFilePath.Text.Trim(),
+                    MessagePath = txtMsgFilePath.Text.Trim(),
+                    OtherMessagePath = txtOtherMsgFilePath.Text.Trim(),
+                    FileNotExist = txtFileDoesNotExist.Text.Trim(),
+                    CustomerWithMessage = txtFileExistEnableCus.Text.Trim(),
+                    CustomerWithOtherMessage = txtFileExistOtherMsg.Text.Trim(),
+                    OtherMessageWithOutCus = txtOtherFileNotEnableCus.Text.Trim(),
+                    MessageWithOutCus = txtMsgPathCusNotEnable.Text.Trim(),
+                    NoOfReplyMessage = Convert.ToInt32(numericReplyMsg.Value),
+                    TotalTime = Convert.ToInt32(numericMinutes.Value),
+                    TotalDefaultReplyValue = Convert.ToInt32(numericDefaultValue.Value)
+                });
+                SqlQueryHelper.InsertAllPathAndMessage(allpathNadMessage);
+                MessageBox.Show("Save Path , Message and reply message into database !", Application.ProductName, MessageBoxButtons.YesNo,
+                                                                             MessageBoxIcon.Information);
+            }
+            this.BeginInvoke(new Action(() => btn_SavepathAndMsg.Enabled = true));
+
+        }
+        public void btn_MessageFilePath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDlg = new FolderBrowserDialog();
+            if (folderDlg.ShowDialog() == DialogResult.OK)
+            {
+                txtMsgFilePath.Text = folderDlg.SelectedPath;
+            }
+        }
+        public void btn_OtherMessage_FilePath_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog folderDlg = new FolderBrowserDialog();
+            if (folderDlg.ShowDialog() == DialogResult.OK)
+            {
+                txtOtherMsgFilePath.Text = folderDlg.SelectedPath;
+            }
+        }
+        bool switchValue = false;
+        public void switchOff_Radio_btn_Click(object sender, EventArgs e)
+        {
+            if (timer != null)
+            {
+                timer.Stop();
+                timer = null;
+                EnableControl();
+                switch_On_radioButton.Checked = false;
+                numericMinutes.Enabled = true;
+                switchValue = false;
+            }
+        }
+        public void switch_On_radioButton_Click(object sender, EventArgs e)
+        {
+            var allPathAndMsg = SqlQueryHelper.GetAllPathAndMessage(loginUserName);
+            if (allPathAndMsg.Count == 0)
+            {
+                MessageBox.Show("Save the all path into database !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                switch_On_radioButton.Checked = false;
+                return;
+            }
+            DisableControl();
+            bool valid = Validation();
+            if (!valid)
+            {
+                switch_On_radioButton.Checked = false;
+                return;
+            }
+            switchValue = true;
+            StartSchedulerTask();
+            numericMinutes.Enabled = false;
+            this.BeginInvoke(new Action(() => btn_StartProcess.Enabled = false));
+            //int sleepTime = Convert.ToInt32(numericMinutes.Value);
+            //Task.Factory.StartNew(() =>
+            //{
+            //    Thread.Sleep(sleepTime * 60 * 1000);
+            //    btn_StartProcess_Click(sender, e);
+            //});
+
+            //bgwrSendMessage.DoWork -= bgwrSendMessage_DoWork;
+            //bgwrSendMessage.DoWork += bgwrSendMessage_DoWork;
+            //bgwrSendMessage.RunWorkerCompleted -= bgwrSendMessage_RunWorkerCompleted;
+            //bgwrSendMessage.RunWorkerCompleted += bgwrSendMessage_RunWorkerCompleted;
+            //bgwrSendMessage.RunWorkerAsync();
+        }
+        public void btn_GrabSenderName_Click(object sender, EventArgs e)
+        {
+            BackgroundWorker bgwrGrabSender = new BackgroundWorker();
+            bgwrGrabSender.DoWork += bgwrGrabSender_DoWork;
+            bgwrGrabSender.DoWork += bgwrGrabSender_RunWorkerCompleted;
+            bgwrGrabSender.RunWorkerAsync();
+
+        }
+        public void bgwrGrabSender_RunWorkerCompleted(object sender, DoWorkEventArgs e)
+        {
+            this.BeginInvoke(new Action(() => btn_GrabSenderName.Enabled = true));
+        }
+        public void bgwrGrabSender_DoWork(object sender, DoWorkEventArgs e)
+        {
+            this.BeginInvoke(new Action(() => btn_GrabSenderName.Enabled = false));
+            try
+            {
+                WhatsAppSenderDetailsList = new List<WhatsAppSenderDetails>();
+
+                if (SenderDataGridView.Rows.Count > 0)
+                {
+                    if (MessageBox.Show("Do you want to add Sender name?", "Entry Saving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        if (MessageBox.Show("Please Scroll WhatsApp Contact list?", "Entry Saving", MessageBoxButtons.OKCancel, MessageBoxIcon.Question) == DialogResult.OK)
+                        {
+                            Thread.Sleep(5000);
+                            WaitForElementByXPath("//div[@title='New chat']");
+                            ReadOnlyCollection<IWebElement> chatElement = _chromeWebDriver.FindElements(By.XPath("//div[@title='New chat']"));
+                            chatElement[0].Click();
+                            //WaitForElementByXPath(".//*[@class='_3TEwt']");
+                            //ReadOnlyCollection<IWebElement> sendMessagesElements = _chromeWebDriver.FindElements(By.XPath(".//*[@class='_3TEwt']")); ////div[@class='_25Ooe']/span[not(contains(@class, '_3TEwt'))]
+                            WaitForElementByXPath(".//*[@class='_3NWy8']");
+                            ReadOnlyCollection<IWebElement> UnReadMessageSenders = _chromeWebDriver.FindElements(By.XPath(".//*[@class='_3NWy8']"));
+                            if (UnReadMessageSenders.Count > 0)
+                            {
+                                isSave = false;
+                                SenderDataGridView.AutoGenerateColumns = false;
+
+                                foreach (var item in UnReadMessageSenders)
+                                {
+
+                                    var matchGroupName = (from DataGridViewRow r in SenderDataGridView.Rows
+                                                          where Convert.ToString(r.Cells[1].Value) == item.Text.Split(new char[] { '\r', '\n' })[0]
+                                                          select r.Cells[2].Value);
+                                    if (matchGroupName.Count() == 0)
+                                    {
+                                        countGridData++;
+                                        senderInfo.LoginUserName = loginUserName;
+                                        senderInfo.SenderName = item.Text.Split('\r')[0];
+                                        senderInfo.NoOfReplyMsg = Convert.ToInt32(numericDefaultValue.Value);
+                                        senderInfo.Id = countGridData;
+                                        try
+                                        {
+                                            SenderDataGridView.Invoke(new Action(() => SenderDataGridView.Rows.Add(senderInfo.LoginUserName, senderInfo.SenderName, senderInfo.NoOfReplyMsg, false, senderInfo.Id)));
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        }
+                                    }
+                                }
+                                MessageBox.Show("Grab Group name successfully !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                                _chromeWebDriver.Navigate().Refresh();
+                                return;
+                            }
+                        }
+                        else
+                        {
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+                countGridData = 0;
+                WaitForElementByXPath("//div[@title='New chat']");
+                ReadOnlyCollection<IWebElement> chatElements = _chromeWebDriver.FindElements(By.XPath("//div[@title='New chat']"));
+                chatElements[0].Click();
+                WaitForElementByXPath(".//*[@class='_3NWy8']");
+                ReadOnlyCollection<IWebElement> senderNameElements = _chromeWebDriver.FindElements(By.XPath(".//*[@class='_3NWy8']"));  //_chromeWebDriver.FindElements(By.XPath("//div[contains(@class, '_2EXPL CxUIE') and not(contains(@class,'_25Ooe'))]")); ////div[@class='_25Ooe']/span[not(contains(@class, '_3TEwt'))]
+                if (senderNameElements.Count > 0)
+                {
+                    isSave = false;
+                    SenderDataGridView.AutoGenerateColumns = false;
+                    SenderDataGridView.Rows.Clear();
+                    foreach (var item in senderNameElements)
+                    {
+                        var matchGroupName = (from DataGridViewRow r in SenderDataGridView.Rows
+                                              where Convert.ToString(r.Cells[1].Value) == item.Text.Split(new char[] { '\r', '\n' })[0]
+                                              select r.Cells[2].Value);
+
+
+                        if (matchGroupName.Count() == 0)
+                        {
+                            countGridData++;
+                            senderInfo.LoginUserName = loginUserName;
+                            senderInfo.SenderName = item.Text.Split(new char[] { '\r', '\n' })[0];
+                            senderInfo.NoOfReplyMsg = Convert.ToInt32(numericDefaultValue.Value);
+                            senderInfo.Id = countGridData;
+                            try
+                            {
+                                SenderDataGridView.Invoke(new Action(() => SenderDataGridView.Rows.Add(senderInfo.LoginUserName, senderInfo.SenderName, senderInfo.NoOfReplyMsg, false, senderInfo.Id)));
+                            }
+                            catch (Exception ex)
+                            {
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    //for (int i = 0; i < loginUserName.Count; i++)
+                    //{
+                    //    if (loginUserName[i].UserName == loginusername)
+                    //    {
+                    //        return;
+                    //    }
+                    //}
+                }
+                //this.BeginInvoke(new Action(() => btn_GrabSenderName.Enabled = true));
+                MessageBox.Show("Grab All Sender name successfully !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                _chromeWebDriver.Navigate().Refresh();
+            }
+            catch (Exception ex)
+            {
+                this.BeginInvoke(new Action(() => btn_GrabSenderName.Enabled = true));
+            }
+        }
+        public void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            if (checkBox1.Checked == true)
+            {
+                foreach (DataGridViewRow row in SenderDataGridView.Rows)
+                {
+                    row.Cells[3].Value = true;
+                }
+            }
+            else
+            {
+                foreach (DataGridViewRow row in SenderDataGridView.Rows)
+                {
+                    row.Cells[3].Value = false;
+                }
+            }
+        }
+        List<WhatsAppSenderDetails> saveSenderInfoData = new List<WhatsAppSenderDetails>();
+        bool isSave = false;
+        bool isLoad = false;
+        public void btn_SaveSender_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                numericReplyMsg.Enabled = false;
+                int totalReplyMsg = 0;
+                btn_SaveSender.Enabled = false;
+                if (SenderDataGridView.Rows.Count > 0 && checkDefault)
+                {
+                    try
+                    {
+                        if (SenderDataGridView.Rows.Count > 0)
+                        {
+                            if (MessageBox.Show("Do you want to Update Sender maxNoofReplyMessage ?", "Entry Saving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                            {
+                                updateSenderNoofReplyMsg = new List<WhatsAppSenderDetails>();
+                                DataGridViewRow drow = new DataGridViewRow();
+                                for (int i = 0; i <= SenderDataGridView.Rows.Count - 1; i++)
+                                {
+                                    senderInfo = new WhatsAppSenderDetails();
+                                    drow = SenderDataGridView.Rows[i];
+                                    if (Convert.ToBoolean(drow.Cells[3].Value) == true) //checking if  checked or not.  
+                                    {
+                                        string loginUserName = drow.Cells[0].Value.ToString();
+                                        string senderName = drow.Cells[1].Value.ToString();
+                                        int id = Convert.ToInt32(drow.Cells[4].Value.ToString());
+                                        senderInfo.LoginUserName = loginUserName;
+                                        senderInfo.SenderName = senderName;
+                                        senderInfo.NoOfReplyMsg = Convert.ToInt32(numericDefaultValue.Value);
+                                        senderInfo.Id = id;
+                                        senderInfo.Status = true;
+                                        updateSenderNoofReplyMsg.Add(senderInfo);
+                                    }
+                                }
+                                if (updateSenderNoofReplyMsg.Count > 0)
+                                {
+
+                                    SqlQueryHelper.UpdateSenderDetails(updateSenderNoofReplyMsg);
+                                    var allSenderInfo = SqlQueryHelper.GetAllSenderInfo(loginUserName);
+                                    bindGroupInfoToGrid(allSenderInfo);
+                                    checkBox1.Checked = false;
+                                    MessageBox.Show(" Sender maxNoofReplyMessage successfully updated !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                                    btn_SaveSender.Enabled = true;
+                                    check_DefaultValue.Checked = false;
+                                    numericReplyMsg.Enabled = true;
+                                }
+                                else
+                                {
+                                    MessageBox.Show("Please select checkbox for Update record  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                                    btn_SaveSender.Enabled = true;
+                                }
+                            }
+                            else
+                            {
+                                checkBox1.Checked = false;
+                                btn_SaveSender.Enabled = true;
+                                numericReplyMsg.Enabled = true;
+                            }
+                        }
+                        else
+                        {
+                            MessageBox.Show("Record is not available  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                            btn_SaveSender.Enabled = true;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                    }
+                }
+                else
+                {
+                    if (SenderDataGridView.Rows.Count > 0)
+                    {
+                        if (MessageBox.Show("Do you want to save Group name?", "Entry Saving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                        {
+                            isSave = true;
+                            saveSenderInfoData = new List<WhatsAppSenderDetails>();
+                            DataGridViewRow drow = new DataGridViewRow();
+                            bool checkSenderName = false;
+                            for (int i = 0; i <= SenderDataGridView.Rows.Count - 1; i++)
+                            {
+                                senderInfo = new WhatsAppSenderDetails();
+                                drow = SenderDataGridView.Rows[i];
+                                if (Convert.ToBoolean(drow.Cells[3].Value) == true) //checking if  checked or not.  
+                                {
+
+                                    checkSenderName = true;
+                                    string loginUserName = drow.Cells[0].Value.ToString();
+                                    string senderName = drow.Cells[1].Value.ToString();
+                                    var cellmaxNoOfReplyMsg = drow.Cells[2];
+                                    if (cellmaxNoOfReplyMsg.Value != null)   //Check for null reference
+                                        totalReplyMsg = Convert.ToInt32(drow.Cells[2].Value.ToString());
+                                    else
+                                        totalReplyMsg = 0;
+                                    int id = Convert.ToInt32(drow.Cells[4].Value.ToString());
+                                    senderInfo.LoginUserName = loginUserName;
+                                    senderInfo.SenderName = senderName;
+                                    senderInfo.NoOfReplyMsg = totalReplyMsg;
+                                    senderInfo.Status = true;
+                                    senderInfo.Id = id;
+                                    saveSenderInfoData.Add(senderInfo);
+                                }
+                                else
+                                {
+                                    string loginUserName = drow.Cells[0].Value.ToString();
+                                    string senderName = drow.Cells[1].Value.ToString();
+                                    var cellmaxNoOfReplyMsg = drow.Cells[2];
+                                    if (cellmaxNoOfReplyMsg.Value != null)   //Check for null reference
+                                        totalReplyMsg = Convert.ToInt32(drow.Cells[2].Value.ToString());
+                                    else
+                                        totalReplyMsg = 0;
+                                    totalReplyMsg = Convert.ToInt32(drow.Cells[2].Value.ToString());
+                                    bool status = Convert.ToBoolean(drow.Cells[3].Value.ToString());
+                                    int id = Convert.ToInt32(drow.Cells[4].Value.ToString());
+                                    senderInfo.LoginUserName = loginUserName;
+                                    senderInfo.SenderName = senderName;
+                                    senderInfo.NoOfReplyMsg = totalReplyMsg;
+                                    senderInfo.Status = status;
+                                    senderInfo.Id = id;
+                                    saveSenderInfoData.Add(senderInfo);
+                                }
+                            }
+                            if (checkSenderName == true)
+                            {
+                                SqlQueryHelper.InsertSenderDetails(saveSenderInfoData);
+                                var allSenderInfo = SqlQueryHelper.GetAllSenderInfo(loginUserName);
+                                bindGroupInfoToGrid(allSenderInfo);
+                                checkBox1.Checked = false;
+                                MessageBox.Show(" Sender details successfully inserted !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                                btn_SaveSender.Enabled = true;
+                                numericReplyMsg.Enabled = true;
+                            }
+                            else
+                            {
+                                MessageBox.Show("Please select checkbox for save record  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                                btn_SaveSender.Enabled = true;
+                            }
+                        }
+                        else
+                        {
+                            checkBox1.Checked = false;
+                            btn_SaveSender.Enabled = true;
+                            numericReplyMsg.Enabled = true;
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Record is not available  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                        btn_SaveSender.Enabled = true;
+                    }
+
+                }
+            }
+            catch (Exception ex)
+            {
+            }
+        }
+        public void bindGroupInfoToGrid(List<WhatsAppSenderDetails> allSenderInfo)
+        {
+
+            SenderDataGridView.AutoGenerateColumns = false;
+            SenderDataGridView.Rows.Clear();
+            foreach (var item in allSenderInfo)
+            {
+                if (allSenderInfo.Count > 0)
+                {
+                    SenderDataGridView.Refresh();
+                    senderInfo.LoginUserName = item.LoginUserName;
+                    senderInfo.SenderName = item.SenderName;
+                    senderInfo.NoOfReplyMsg = item.NoOfReplyMsg;
+                    senderInfo.Id = item.Id;
+                    senderInfo.Status = item.Status;
+                    try
+                    {
+                        SenderDataGridView.Invoke(new Action(() => SenderDataGridView.Rows.Add(senderInfo.LoginUserName, senderInfo.SenderName, senderInfo.NoOfReplyMsg, senderInfo.Status, senderInfo.Id)));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Data Is Empty in Database");
+                }
+            }
+        }
+        public void btn_RemoveSender_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (SenderDataGridView.Rows.Count > 0)
+                {
+                    if (MessageBox.Show("Do you want to delete Group name?", "Entry Saving", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        int totlaDeleteCount = 0;
+                        List<DataGridViewRow> toDelete = new List<DataGridViewRow>();
+                        deleteSenderInfoData = new List<WhatsAppSenderDetails>();
+                        int totalElement = SenderDataGridView.Rows.Count;
+                        foreach (DataGridViewRow row in SenderDataGridView.Rows)
+                        {
+                            senderDetails = new WhatsAppSenderDetails();
+                            if (Convert.ToBoolean(row.Cells[3].Value) == true)
+                            {
+                                totlaDeleteCount++;
+                                int Id = Convert.ToInt32(row.Cells[4].Value.ToString());
+                                string loginUserName = row.Cells[0].Value.ToString();
+                                string senderName = row.Cells[1].Value.ToString();
+                                senderDetails.LoginUserName = loginUserName;
+                                senderDetails.Id = Id;
+                                senderDetails.SenderName = senderName;
+                                deleteSenderInfoData.Add(senderDetails);
+                                toDelete.Add(row);
+                            }
+                        }
+                        if (toDelete.Count > 0)
+                        {
+                            foreach (DataGridViewRow row in toDelete)
+                            {
+                                SenderDataGridView.Rows.Remove(row);
+                            }
+                            SenderDataGridView.Refresh();
+                            SqlQueryHelper.DeletSenderDetails(deleteSenderInfoData);
+                            var allSenderInfo = SqlQueryHelper.GetAllSenderInfo(loginUserName);
+                            if (allSenderInfo.Count > 0)
+                            {
+                                bindGroupInfoToGrid(allSenderInfo);
+                            }
+                            //ClearControlText();
+                        }
+                        else
+                        {
+                            {
+                                MessageBox.Show("Please select checkbox for delete record  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Record is not available  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                }
+                checkBox1.Checked = false;
+            }
+            catch (Exception)
+            {
+            }
+        }
+        public void tabControl1_Selected(object sender, TabControlEventArgs e)
+
+        {
+            if (e.TabPage.Text == "GrabSender")
+            {
+                if (isSave || isLoad)
+                {
+                    var allSenderInfo = SqlQueryHelper.GetAllSenderInfo(loginUserName);
+                    BeginInvoke(new Action(() => bindGroupInfoToGrid(allSenderInfo)));
+                    isLoad = false;
+                }
+            }
+            else if (e.TabPage.Text == "MainForm")
+            {
+                var allSenderInfo = SqlQueryHelper.GetAllSenderInfo(loginUserName);
+                if (allSenderInfo.Count == 0)
+                {
+                    if (SenderDataGridView.RowCount > 0)
+                    {
+                        MessageBox.Show("Please save  Sender details !", Application.ProductName, MessageBoxButtons.OK,
+                                                             MessageBoxIcon.Information);
+                        tabControl1.SelectTab(tabPage2);
+                    }
+                }
+            }
+            else
+            {
+            }
+
+        }
+        public void DisableControl()
+        {
+            this.BeginInvoke(new Action(() => btn_browse_AttachFIlepath.Enabled = false));
+            this.BeginInvoke(new Action(() => btn_OtherMessage_FilePath.Enabled = false));
+            this.BeginInvoke(new Action(() => btn_MessageFilePath.Enabled = false));
+            this.BeginInvoke(new Action(() => btn_StartProcess.Enabled = false));
+            this.BeginInvoke(new Action(() => txtFileDoesNotExist.Enabled = false));
+            this.BeginInvoke(new Action(() => txtFileExistEnableCus.Enabled = false));
+            this.BeginInvoke(new Action(() => txtMsgPathCusNotEnable.Enabled = false));
+            this.BeginInvoke(new Action(() => txtFileExistOtherMsg.Enabled = false));
+            this.BeginInvoke(new Action(() => txtOtherFileNotEnableCus.Enabled = false));
+            this.BeginInvoke(new Action(() => btn_SavepathAndMsg.Enabled = false));
+            this.BeginInvoke(new Action(() => numericReplyMsg.Enabled = false));
+            this.BeginInvoke(new Action(() => numericMinutes.Enabled = false));
+        }
+        public void EnableControl()
+        {
+            this.BeginInvoke(new Action(() => btn_browse_AttachFIlepath.Enabled = true));
+            this.BeginInvoke(new Action(() => btn_OtherMessage_FilePath.Enabled = true));
+            this.BeginInvoke(new Action(() => btn_MessageFilePath.Enabled = true));
+            this.BeginInvoke(new Action(() => btn_StartProcess.Enabled = true));
+            this.BeginInvoke(new Action(() => txtFileDoesNotExist.Enabled = true));
+            this.BeginInvoke(new Action(() => txtFileExistEnableCus.Enabled = true));
+            this.BeginInvoke(new Action(() => txtMsgPathCusNotEnable.Enabled = true));
+            this.BeginInvoke(new Action(() => txtFileExistOtherMsg.Enabled = true));
+            this.BeginInvoke(new Action(() => txtOtherFileNotEnableCus.Enabled = true));
+            this.BeginInvoke(new Action(() => btn_SavepathAndMsg.Enabled = true));
+            this.BeginInvoke(new Action(() => numericReplyMsg.Enabled = true));
+            this.BeginInvoke(new Action(() => numericMinutes.Enabled = true));
+
+        }
+        WhatsAppSenderDetails newUserDetails = new WhatsAppSenderDetails();
+        List<WhatsAppSenderDetails> saveNewUserInfoData = new List<WhatsAppSenderDetails>();
+        List<IWebElement> allReplyMsg = new List<IWebElement>();
+        List<string> allUnReadMsgList = new List<string>();
+        List<UnReadReplyMsg> allReplyInfo = new List<UnReadReplyMsg>();
+        List<string> ReplyMsgDetails = new List<string>();
+        List<string> allUnreadmsg = new List<string>();
+        List<WhatsAppSenderDetails> deleteSenderInfoData = new List<WhatsAppSenderDetails>();
+        WhatsAppSenderDetails senderDetails = new WhatsAppSenderDetails();
+        List<WhatsAppSenderDetails> WhatsAppSenderDetailsList = new List<WhatsAppSenderDetails>();
+        WhatsAppSenderDetails senderInfo = new WhatsAppSenderDetails();
+        static int countGridData = 0;
+        public string DriveName { get; private set; }
+        public bool folderStatus { get; private set; }
+        public bool resultMsgFile { get; private set; }
+        public bool resultOtherMsgFolder { get; private set; }
+        public string srcollText { get; private set; }
+        public string msgSentOrNot = string.Empty;
+        private string[] allFolder;
+        private double _waitSeconds = 3;
+        List<WhatsAppSenderDetails> updateSenderNoofReplyMsg = new List<WhatsAppSenderDetails>();
+        bool checkDefault = false;
+        private List<Data> datalist;
+
+        private void check_DefaultValue_CheckedChanged(object sender, EventArgs e)
+        {
+            if (check_DefaultValue.Checked)
+            {
+                checkDefault = true;
+            }
+            else
+            {
+                checkDefault = false;
+            }
+        }
+        List<WhatsAppSenderDetails> allSenderDetails = new List<WhatsAppSenderDetails>();
+        List<UnReadReplyMsg> allReplyMsgDetails = new List<UnReadReplyMsg>();
+        private void ExportAllReplyMessageDetails()
+        {
+            allReplyMsgDetails = new List<UnReadReplyMsg>();
+            if (UnReadDataGridView.RowCount > 0)
+            {
+                foreach (DataGridViewRow row in UnReadDataGridView.Rows)
+                {
+                    allReplyMsgDetails.Add(new UnReadReplyMsg()
+                    {
+                        LoginUserName = loginUserName,
+                        S_No = Convert.ToInt32(row.Cells[0].Value.ToString()),
+                        SenderBy = row.Cells[1].Value.ToString(),
+                        UnReadmsg = row.Cells[2].Value.ToString(),
+                        ReplyMessageStatus = row.Cells[3].Value.ToString(),
+                        FileExistPath = row.Cells[4].Value.ToString(),
+                        Date = row.Cells[5].Value.ToString(),
+                        Time= row.Cells[6].Value.ToString()
+                    });
+                }
+                bool fileSaveStatus = ExportAllReplyMsgIntoFile(allReplyMsgDetails);
+            }
+            else
+            {
+                MessageBox.Show("ReplyMessage details record is empty !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                return;
+            }
+        }
+        private bool ExportAllReplyMsgIntoFile(List<UnReadReplyMsg> allReplyMsgDetails)
+        {
+          
+          string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage"))
+            {
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage");
+            }
+            string filePath = Path.Combine(sourceFolder, "AllReplyMsgDetails" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+         
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            DataTable dt = allReplyMsgDetails.ToList().ToDataTable();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "SenderBy");
+                wb.SaveAs(filePath);
+            }
+            return true;
+        }
+        private void ExportAllSenderByDetails()
+        {
+            allSenderDetails = new List<WhatsAppSenderDetails>();
+            if (SenderDataGridView.RowCount > 0)
+            {
+                foreach (DataGridViewRow row in SenderDataGridView.Rows)
+                {
+                    allSenderDetails.Add(new WhatsAppSenderDetails()
+                    {
+                        LoginUserName = row.Cells[0].Value.ToString(),
+                        SenderName = row.Cells[1].Value.ToString(),
+                        NoOfReplyMsg = Convert.ToInt32(row.Cells[2].Value.ToString()),
+                        Status = Convert.ToBoolean(row.Cells[3].Value.ToString()),
+                        Id = Convert.ToInt32(row.Cells[4].Value.ToString()),
+                    });
+                }
+                bool fileSaveStatus = ExportSenderDetails(allSenderDetails);
+            }
+            else
+            {
+                MessageBox.Show("Sender details record  is empty !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                return;
+            }
+        }
+        private bool ExportSenderDetails(List<WhatsAppSenderDetails> allSenderDetails)
+        {
+
+            string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage"))
+            {
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage");
+            }
+            string filePath = Path.Combine(sourceFolder, "AllSenderByDetails" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+            }
+            DataTable dt = allSenderDetails.ToList().ToDataTable();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "AllSenderByDetails");
+                wb.SaveAs(filePath);
+            }
+            return true;
+        }
+        public bool ExportAllPathAndMessage(List<UnReadReplyPathAndMsg> allpathNadMessage)
+        {
+
+            string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+            if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage"))
+            {
+                Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage");
+            }
+            string filePath = Path.Combine(sourceFolder, "AllPathAndMsg" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+            if (File.Exists(filePath))
+            {
+                File.Delete(filePath);
+             
+            }
+            DataTable dt = allpathNadMessage.ToList().ToDataTable();
+            using (XLWorkbook wb = new XLWorkbook())
+            {
+                wb.Worksheets.Add(dt, "AllPathAndMessage");
+                wb.SaveAs(filePath);
+            }
+            return true;
+        }
+        List<LogStatus> allLogStatus = new List<LogStatus>();
+        private void ExportLogStatus()
+        {
+            allLogStatus = new List<LogStatus>();
+            var logStatus = lblLog.Text.Split(new char[] { '\r', '\n' });
+            for (int i = 1; i < logStatus.Count(); i++)
+            {
+                if (!string.IsNullOrEmpty(logStatus[i]))
+                {
+                    allLogStatus.Add(new LogStatus()
+                    {
+                        ApplicationLogStatus = logStatus[i],
+                        LoginUserName=loginUserName
+                    });
+                }
+            }
+            if (allLogStatus.Count() > 0)
+            {
+                using (var fileDilog = new SaveFileDialog())
+                {
+                    string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+                    if (!Directory.Exists(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage"))
+                    {
+                        Directory.CreateDirectory(Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage");
+                    }
+                    string filePath = Path.Combine(sourceFolder, "LogStatus" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                    DataTable dt = allLogStatus.ToList().ToDataTable();
+                    using (XLWorkbook wb = new XLWorkbook())
+                    {
+                        wb.Worksheets.Add(dt, "Customers");
+                        wb.SaveAs(filePath);
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Application status is empty !", Application.ProductName, MessageBoxButtons.OK,
+                                                            MessageBoxIcon.Information);
+                return;
+            }
+        }
+        private void ExportAllPathAndMsg()
+        {
+            bool valid = Validation();
+            if (!valid)
+            {
+                return;
+            }
+            allpathNadMessage = new List<UnReadReplyPathAndMsg>();
+            allpathNadMessage.Add(new UnReadReplyPathAndMsg()
+            {
+                LoginUserName = loginUserName,
+                CustomerPath = txtFilePath.Text.Trim(),
+                MessagePath = txtMsgFilePath.Text.Trim(),
+                OtherMessagePath = txtOtherMsgFilePath.Text.Trim(),
+                FileNotExist = txtFileDoesNotExist.Text.Trim(),
+                CustomerWithMessage = txtFileExistEnableCus.Text.Trim(),
+                CustomerWithOtherMessage = txtFileExistOtherMsg.Text.Trim(),
+                OtherMessageWithOutCus = txtOtherFileNotEnableCus.Text.Trim(),
+                MessageWithOutCus = txtMsgPathCusNotEnable.Text.Trim(),
+                NoOfReplyMessage = Convert.ToInt32(numericReplyMsg.Value),
+                TotalTime = Convert.ToInt32(numericMinutes.Value),
+                TotalDefaultReplyValue = Convert.ToInt32(numericDefaultValue.Value)
+            });
+            bool exportStatus = ExportAllPathAndMessage(allpathNadMessage);
+        }
+        List<WhatsAppSenderDetails> insertSenderDetails = new List<WhatsAppSenderDetails>();
+        private void btn_Import_SenderDetails_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                int count = 0;
+                datalist = new List<Data>();
+                string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+                string filePath = Path.Combine(sourceFolder, "AllSenderByDetails" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+                var fileExt = System.IO.Path.GetExtension(filePath);
+                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0)
+                {
+                    using (XLWorkbook workBook = new XLWorkbook(filePath))
+                    {
+
+                        IXLWorksheet workSheet = workBook.Worksheet(1);
+
+                        bool firstRow = true;
+                        foreach (IXLRow row in workSheet.Rows())
+                        {
+                            if (firstRow)
+                            {
+                                foreach (IXLCell cell in row.Cells())
+                                {
+                                    dt.Columns.Add(cell.Value.ToString());
+                                }
+                                firstRow = false;
+                            }
+                            else
+                            {
+                                insertSenderDetails = new List<WhatsAppSenderDetails>();
+                                count++;
+                                dt.Rows.Add();
+                                int i = 0;
+                                for (int j = 0; j < dt.Columns.Count; j++)
+                                {
+                                    var c = row.Cell(j + 1).Value.ToString();
+                                    dt.Rows[dt.Rows.Count - 1][j] = c;
+                                    i++;
+                                }
+                            }
+                        }
+                        for (int i = 0; i < dt.Rows.Count; i++)
+                        {
+                            string senderName = dt.Rows[i][0].ToString();
+                            if (!string.IsNullOrEmpty(senderName))
+                            {
+                                insertSenderDetails.Add(new WhatsAppSenderDetails()
+                                {
+                                    Id = Convert.ToInt32(dt.Rows[i][0].ToString()),
+                                    LoginUserName = dt.Rows[i][1].ToString(),
+                                    SenderName = dt.Rows[i][2].ToString(),
+                                    NoOfReplyMsg = Convert.ToInt32(dt.Rows[i][3].ToString()),
+                                    Status = Convert.ToBoolean(dt.Rows[i][4].ToString()),
+                                });
+                            }
+                            else
+                            {
+                                MessageBox.Show("This File is not valid!");
+                                return;
+                            }
+                        }
+                        SqlQueryHelper.UpdateSenderDetails(insertSenderDetails);
+                        var allSenderInfo = SqlQueryHelper.GetAllSenderInfo(loginUserName);
+                        bindGroupInfoToGrid(allSenderInfo);
+                        MessageBox.Show("Import Sender Details Successfully from file !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Could not find file") || ex.Message.Contains("Could not find a part of the path"))
+                {
+                    MessageBox.Show("SenderDetails file not found !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    return;
+                }
+            }
+        }
+        private void btn_Import_AllPath_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                int count = 0;
+                datalist = new List<Data>();
+                string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+                string filePath = Path.Combine(sourceFolder, "AllPathAndMsg" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+                var fileExt = System.IO.Path.GetExtension(filePath);
+                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0)
+                {
+                    using (XLWorkbook workBook = new XLWorkbook(filePath))
+                    {
+
+                        IXLWorksheet workSheet = workBook.Worksheet(1);
+
+                        bool firstRow = true;
+                        foreach (IXLRow row in workSheet.Rows())
+                        {
+
+                            if (firstRow)
+                            {
+
+                                foreach (IXLCell cell in row.Cells())
+                                {
+                                    dt.Columns.Add(cell.Value.ToString());
+                                }
+                                firstRow = false;
+                            }
+                            else
+                            {
+                                count++;
+                                dt.Rows.Add();
+                                int i = 0;
+                                for (int j = 0; j < dt.Columns.Count; j++)
+                                {
+                                    var c = row.Cell(j + 1).Value.ToString();
+                                    dt.Rows[dt.Rows.Count - 1][j] = c;
+                                    i++;
+                                }
+                            }
+                            if (count > 0)
+                            {
+                                string contactpath = dt.Rows[0][1].ToString();
+                                if (contactpath.Contains("\\"))
+                                {
+                                    txtFilePath.Text = dt.Rows[0][1].ToString();
+                                    txtMsgFilePath.Text = dt.Rows[0][2].ToString();
+                                    txtOtherMsgFilePath.Text = dt.Rows[0][3].ToString();
+                                    txtFileDoesNotExist.Text = dt.Rows[0][4].ToString();
+                                    txtFileExistEnableCus.Text = dt.Rows[0][5].ToString();
+                                    txtMsgPathCusNotEnable.Text = dt.Rows[0][6].ToString();
+                                    txtFileExistOtherMsg.Text = dt.Rows[0][7].ToString();
+                                    txtOtherFileNotEnableCus.Text = dt.Rows[0][8].ToString();
+                                    numericReplyMsg.Text = dt.Rows[0][9].ToString();
+                                    numericMinutes.Text = dt.Rows[0][10].ToString();
+                                    numericDefaultValue.Text = dt.Rows[0][11].ToString();
+                                    allpathNadMessage = new List<UnReadReplyPathAndMsg>();
+                                    allpathNadMessage.Add(new UnReadReplyPathAndMsg()
+                                    {
+                                        LoginUserName = loginUserName,
+                                        CustomerPath = txtFilePath.Text.Trim(),
+                                        MessagePath = txtMsgFilePath.Text.Trim(),
+                                        OtherMessagePath = txtOtherMsgFilePath.Text.Trim(),
+                                        FileNotExist = txtFileDoesNotExist.Text.Trim(),
+                                        CustomerWithMessage = txtFileExistEnableCus.Text.Trim(),
+                                        CustomerWithOtherMessage = txtFileExistOtherMsg.Text.Trim(),
+                                        OtherMessageWithOutCus = txtOtherFileNotEnableCus.Text.Trim(),
+                                        MessageWithOutCus = txtMsgPathCusNotEnable.Text.Trim(),
+                                        NoOfReplyMessage = Convert.ToInt32(numericReplyMsg.Value),
+                                        TotalTime = Convert.ToInt32(numericMinutes.Value),
+                                        TotalDefaultReplyValue = Convert.ToInt32(numericDefaultValue.Value)
+                                    });
+                                    SqlQueryHelper.InsertAllPathAndMessage(allpathNadMessage);
+
+
+                                }
+                                else
+                                {
+                                    MessageBox.Show("This file does not contains  All path and message details  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                                    return;
+                                }
+
+                            }
+
+                        }
+                        MessageBox.Show("Import All path and message details successfulyy from file !", Application.ProductName, MessageBoxButtons.OK,
+                                                 MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Could not find file") || ex.Message.Contains("Could not find a part of the path"))
+                {
+                    MessageBox.Show("AllPathAndMsg file not found !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    return;
+                }
+            }
+        }
+        private void btn_Import_Log_Status_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                int count = 0;
+                datalist = new List<Data>();
+                string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+                string filePath = Path.Combine(sourceFolder, "LogStatus" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+                var fileExt = System.IO.Path.GetExtension(filePath);
+                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0)
+                {
+                    using (XLWorkbook workBook = new XLWorkbook(filePath))
+                    {
+                        IXLWorksheet workSheet = workBook.Worksheet(1);
+                        bool firstRow = true;
+                        foreach (IXLRow row in workSheet.Rows())
+                        {
+                            if (firstRow)
+                            {
+                                foreach (IXLCell cell in row.Cells())
+                                {
+                                    dt.Columns.Add(cell.Value.ToString());
+                                }
+                                firstRow = false;
+                            }
+                            else
+                            {
+                                count++;
+                                dt.Rows.Add();
+                                int i = 0;
+                                for (int j = 0; j < dt.Columns.Count; j++)
+                                {
+                                    var c = row.Cell(j + 1).Value.ToString();
+                                    dt.Rows[dt.Rows.Count - 1][j] = c;
+                                    i++;
+                                }
+                            }
+                        }
+                        string logtxt = dt.Rows[0][0].ToString();
+                        if (logtxt.Contains(":"))
+                        {
+                            allLogStatus = new List<LogStatus>();
+                            lblLog.Text = "";
+                            for (int i = 0; i < dt.Rows.Count; i++)
+                            {
+                                string logMsg = dt.Rows[i][0].ToString();
+
+                                SaveLogStatus(logMsg);
+                                allLogStatus.Add(new LogStatus()
+                                {
+                                    ApplicationLogStatus = dt.Rows[i][0].ToString(),
+                                    LoginUserName = loginUserName
+                                });
+                            }
+                            SqlQueryHelper.InsertApplicationLogStatus(allLogStatus);
+                            MessageBox.Show("Import Application logstatus successfulyy from file !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                        }
+                        else
+                        {
+                            MessageBox.Show("This file does not contains Logstatus details  !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Could not find file") || ex.Message.Contains("Could not find a part of the path"))
+                {
+                    MessageBox.Show("Logstatus file not found !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    return;
+                }
+                else
+                {
+                    
+                }
+            }
+        }
+        private void SaveLogStatus(string logMsg)
+        {
+
+            lblLog.Text = lblLog.Text + Environment.NewLine + logMsg;
+            pnlLog.VerticalScroll.Value = pnlLog.VerticalScroll.Maximum;
+        }
+        private void button1_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                DataTable dt = new DataTable();
+                int count = 0;
+                datalist = new List<Data>();
+                string sourceFolder = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments) + "\\" + "WhatsAppUnReadReplyMessage";
+                string filePath = Path.Combine(sourceFolder, "AllReplyMsgDetails" + "_" + DateTime.Now.ToString("ddMMyyyy") + ".xlsx");
+                var fileExt = System.IO.Path.GetExtension(filePath);
+                if (fileExt.CompareTo(".xls") == 0 || fileExt.CompareTo(".xlsx") == 0)
+                {
+                    using (XLWorkbook workBook = new XLWorkbook(filePath))
+                    {
+
+                        IXLWorksheet workSheet = workBook.Worksheet(1);
+
+                        bool firstRow = true;
+                        foreach (IXLRow row in workSheet.Rows())
+                        {
+                            if (firstRow)
+                            {
+                                foreach (IXLCell cell in row.Cells())
+                                {
+                                    dt.Columns.Add(cell.Value.ToString());
+                                }
+                                firstRow = false;
+                            }
+                            else
+                            {
+                                insertSenderDetails = new List<WhatsAppSenderDetails>();
+                                count++;
+                                dt.Rows.Add();
+                                int i = 0;
+                                for (int j = 0; j < dt.Columns.Count; j++)
+                                {
+                                    var c = row.Cell(j + 1).Value.ToString();
+                                    dt.Rows[dt.Rows.Count - 1][j] = c;
+                                    i++;
+                                }
+                            }
+                        }
+                        foreach (DataRow row in dt.Rows)
+                        {
+                            string senderName = row["S_No"].ToString();
+                            if (!string.IsNullOrEmpty(senderName))
+                            {
+                                var srnum = row["S_No"].ToString();
+                                var loginuser = row["LoginUserName"].ToString();
+                                var sendby = row["SenderBy"].ToString();
+                                var unread = row["UnReadmsg"].ToString();
+                                var replymsg = row["ReplyMessageStatus"].ToString();
+                                var filenotexist = row["FileExistPath"].ToString();
+                                var date = row["Date"].ToString();
+                                var time = row["Time"].ToString();
+                                UnReadDataGridView.Rows.Add(srnum,loginuser,sendby,unread,replymsg,filenotexist,date,time);
+                            }
+                            else
+                            {
+                                MessageBox.Show("This File is not valid!");
+                                return;
+                            }
+                        }
+                        MessageBox.Show("Import AllReplyMsgDetails Successfully from file !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.Message.Contains("Could not find file") || ex.Message.Contains("Could not find a part of the path"))
+                {
+                    MessageBox.Show("AllReplyMsgDetails file not found !", Application.ProductName, MessageBoxButtons.OK,MessageBoxIcon.Information);
+                    return;
+                }
+            }
+        }
+
+        private void FrmWhatsAppUnReadReplyMsg_Shown(object sender, EventArgs e)
+        {
+            switch_On_radioButton.Checked = true;
+            switch_On_radioButton_Click(sender, e);
+        }
+
+        private void switch_On_radioButton_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+    }
+}
+
+

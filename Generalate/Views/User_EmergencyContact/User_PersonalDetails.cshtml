@@ -1,0 +1,204 @@
+﻿@using Generalate.Models;
+@model dynamic
+@{
+    ViewBag.Title = "User_PersonalDetails";
+    Layout = "~/Views/UserModule/_LayoutUser.cshtml";
+}
+
+
+<div class="form-horizontal" style="margin-left:30px; margin-right:30px;">
+    <br />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="row">
+        @*@Html.ActionLink("Back", "ViewAllReport")
+
+            <button type="button" class="btn btn-primary" id="printbtn">Print</button>*@
+
+        <br />
+        <br />
+
+        <div class="panel-group">
+            <div class="panel panel-primary">
+                <div class="tab panel-heading">
+                    <a style="color:white;">View</a>
+                    <br />
+                </div>
+                <div class="row" style="margin-left:30px; margin-right:30px;">
+                    <div class="col-sm-2">
+                        <img src="~/Images/cssr.png" style="height:150px; width:150px;" />
+                    </div>
+                    <div class="col-sm-8" style="margin-top:50px; text-align:center; color:brown;">
+                        @*<h2>THE CONGREGATION OF THE MISSIONARY BROTHERS OF </h2>
+                            <h2>SAINT FRANCIS OF ASSISI(C.M.S.F)</h2>*@
+                        @*<h2>Salesians of Don Bosco Province of Shillong</h2>*@
+                        <h2>Congregation Of The Most Holy Redeemer @*Province Of Bangaloor*@</h2>
+                        <h3>Province Of Bangalore</h3>
+                    </div>
+                    <div class="col-sm-2" style="margin-top:10px;" align="right">
+                        <img src="~/Images/ABC001.jpg" style="height:150px; width:150px;" id="personimg" />
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-left:30px; margin-right:30px;">
+                    <br />
+                    @{
+                        int i = 0;
+                    }
+
+                    <table class="table table-bordered">
+
+
+
+                        @try
+                        {
+                            foreach (tbl_PersonalDetails personal in Model.tbl_PersonalDetails)
+                            {
+
+                                if (i == 0)
+                                {
+                                    <tr><h4 style="color:dodgerblue">Personal Details</h4></tr>
+                                    i = 1;
+                                }
+
+                                <tr>
+                                    <th> Member ID </th>
+                                    <td> @personal.MemberID </td>
+
+                                    <th> Name </th>
+                                    <td>  @personal.Name</td>
+
+                                    <th> PAN Number </th>
+                                    <td>  @personal.NameBaptismial </td>
+
+
+
+
+                                </tr>
+
+                                <tr>
+                                    <th> Email ID </th>
+                                    <td> @personal.EmailID </td>
+
+                                    <th> Surname </th>
+                                    <td>  @personal.SirName </td>
+
+                                    @*<th> Image </th>
+                        <td>  @personal.Image </td>*@
+
+
+
+                                </tr>
+
+
+                                <tr>
+                                    <th> Mother Tongue </th>
+                                    <td> @personal.MotherTongue </td>
+
+                                    <th> Mobile Number </th>
+                                    <td> @personal.Mobile </td>
+
+                                    <th> Blood Group </th>
+                                    <td>  @personal.BloodGroup </td>
+
+
+                                </tr>
+
+                                <tr>
+                                    <th> Date of Birth </th>
+                                    <td>  @personal.DOB </td>
+
+                                    <th> Village/Town </th>
+                                    <td>  @personal.VillageTown </td>
+
+                                    <th> District </th>
+                                    <td>  @personal.District </td>
+
+                                </tr>
+
+                                <tr>
+                                    <th> State </th>
+                                    <td> @personal.State</td>
+
+                                    <th> Country </th>
+                                    <td> @personal.Country</td>
+
+                                    <th> Pincode </th>
+                                    <td>@personal.Pincode</td>
+
+
+                                </tr>
+
+
+                                <tr>
+                                    <th> Aadhar Number </th>
+                                    <td> @personal.AadharNo </td>
+
+                                    <th> Name as in Aadhar Card </th>
+                                    <td> @personal.NameasinAadharCard </td>
+
+                                    <th> Father's Name </th>
+                                    <td> @personal.FatherName </td>
+
+
+                                </tr>
+
+                                <tr>
+                                    <th> Mobile Number</th>
+                                    <td> @personal.FMobile </td>
+
+                                    <th> Mother's Name </th>
+                                    <td> @personal.MotherName </td>
+
+                                    <th> Mobile Number</th>
+                                    <td> @personal.MMobile </td>
+
+                                </tr>
+
+                                <tr>
+                                    <th> No of Brothers </th>
+                                    <td> @personal.NoOfBrother </td>
+
+                                    <th> No of Sisters </th>
+                                    <td> @personal.NoOfSister </td>
+
+                                    <th> Place in the Family </th>
+                                    <td> @personal.PlaceintheFamily </td>
+                                </tr>
+
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        
+        var url;
+        if (!url) url = window.location.href
+        var array = url.split('/');
+        var lastsegment = array[array.length - 1];
+        document.getElementById("personimg").src = "../../Images/" + lastsegment + ".jpg";
+
+
+        //$('#printbtn').click(function () {
+        //    window.open('http://localhost:8087/AllReports/IndexPrint/' + lastsegment);
+        //    //window.open('http://localhost:40757/AllReports/IndexPrint/' + lastsegment);
+        //});
+
+
+    });
+
+</script>

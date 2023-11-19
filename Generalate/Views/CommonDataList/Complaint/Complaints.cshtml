@@ -1,0 +1,286 @@
+﻿@model Generalate.Models.tbl_Complaint
+@using System.Configuration;
+
+<head>
+
+    <script>
+        function loadData() {
+            var domain = '@ConfigurationManager.AppSettings["domain"]'
+            var tb = document.getElementById('EmpInfo');
+            while (tb.rows.length > 1) {
+                tb.deleteRow(1);
+            }
+
+            $.getJSON("GetAll",
+                function (json) {
+                    var tr;
+
+                    //Append each row to html table
+                    for (var i = 0; i < json.length; i++) {
+                        tr = $('<tr />');
+                        tr.append("<td hidden='hidden'>" + json[i].ComplaintID + "</td>");
+                        tr.append('<td><a href="#"/' + json[i].ComplaintID + '>' + json[i].Name + '</a></td>');
+                        tr.append("<td>" + json[i].MemberID + "</td>");
+                        tr.append("<td>" + json[i].ComplaintFrom + "</td>");
+                        tr.append("<td>" + json[i].ComplaintDATE + "</td>");
+                        tr.append("<td>" + json[i].ComplaintNATURE + "</td>");
+                        tr.append("<td>" + json[i].Decesion + "</td>");
+                        var documentname = "";
+                        if (json[i].Spare1 !== null && json[i].Spare1 !== undefined) {
+                            documentname = "Download";
+                            var href = domain + "/Images/complaint/" + json[i].Spare1;
+                            tr.append('<td><a target="_blank" href="' + href + '">Download</a></td>');
+                        }
+                        else {
+                            tr.append('<td><a href="javascript:void(0);" onclick="imagenotfound();">Download</a></td>');
+                        }
+                        //tr.append('<td><a href="#" onclick="DisplayDoc(\'' + json[i].Spare1 + '\')"></a> | <a href="#" onclick="DisplayDocument(\'' + json[i].Spare1 + '\')">Details</a></td>')
+
+                        //tr.append('<td><a  href=../Images/Complaint/' + json[i].Spare1 + ' title=Complaint  download=Complaint' + json[i].ComplaintID + json[i].MemberID + '>' + documentname + '</a></td>');
+                        tr.append('<td><a href="#" onclick="return getbyID(' + json[i].ComplaintID + ')">Edit</a>| <a href="#" onclick="Delele(' + json[i].ComplaintID + ')">Delete</a></td>')
+                        //tr.append('<td><a  href=../Images/Complaint/' + json[i].Spare1 + ' title=Complaint  download=Complaint' + json[i].ComplaintID + json[i].MemberID + '>' + documentname + '</a></td>');
+                        //tr.append('<td><a href="#" onclick="return getbyID(' + json[i].ComplaintID + ')">Edit</a> | <a href="#" onclick="DisplayDoc(\'' + json[i].Document + '\')">Details</a> | <a href="#" onclick="Delele(' + json[i].ComplaintID + ')">Delete</a></td>')
+                        $('table').append(tr);
+
+                    }
+                    $('#EmpInfo').DataTable();
+                });
+        }
+
+        function imagenotfound() {
+            alert("No Document found");
+        }
+    </script>
+
+    @*Required Js File for Apartment*@
+    <script src="~/Scripts/additional/Complaintss.js?20082018"></script>
+    <script src="~/Scripts/jquery.form.js"></script>
+
+
+    @*Date Picker*@
+    <script type="text/javascript">
+        $(function ()
+        {
+            $('#ComplaintDATE').datepicker();
+        });
+
+
+        $(document).ready(function () {
+          
+            $("#myModal").on("hidden.bs.modal", function () {
+                clearTextBox();
+                clearOthercontrols();
+            });
+        });
+
+        function clearOthercontrols() {
+            var domain = '@ConfigurationManager.AppSettings["domain"]'
+            $("#Spare1").val("");
+            $("#imgCertificate").hide();
+            $("#imgCertificate a:first").attr("href", domain);
+        }
+
+        function deletedocument(id) {
+            if (confirm("Are you sure you want to delete document?")) {
+                var filename = $("#Spare1").val();
+                var ComplaintID = $("#ComplaintID").val();
+                var req = JSON.stringify({ filename: filename, ComplaintID: ComplaintID });
+                $.ajax({
+                    url: "../Complaint/Deletedocument",
+                    type: "POST",
+                    contentType: "application/json;charset=UTF-8",
+                    dataType: "json",
+                    data: req,
+                    success: function (result) {
+
+                        if (result == "1") {
+
+                            clearOthercontrols();
+                            alert("File deleted successfully");
+                        }
+                        else { alert("Error in file delete, try again"); }
+
+                    },
+                    error: function (errormessage) {
+                        //alert(errormessage.responseText);
+                    }
+                });
+
+            }
+            else {
+                return false;
+            }
+        }
+
+      
+
+    </script>
+<script>
+    $(document).ready(function () {
+        $("#tbl_PersonalDetails").change(function () {
+            // var a = $("#tbl_PersonalDetails option:selected").text();
+            var a = $("#tbl_PersonalDetails").val();
+            $("#Name").val(a);
+        });
+    });
+    </script>
+
+    <style>
+        /*to disply datepicker in modal*/
+        .datepicker {
+            z-index: 1151 !important;
+        }
+    </style>
+
+</head>
+
+@using (Html.BeginForm("Complaints", "Complaint", FormMethod.Post, new { enctype = "multipart/form-data", @id = "ComplaintForm"}) )
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(model => model.ComplaintID, new { htmlAttributes = new { @class = "form-control", Id = "ComplaintID" } })
+
+        <div class="" style="margin-left:30px; margin-right:30px;">
+            <div class="form-horizontal">
+                <br />
+ <div id="Willdialouge"></div>
+                <div id="obituarydialouge"></div>
+              
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add New Complaint</button>
+                @*<button type="button" class="btn btn-primary" id="printbtn">Print</button>*@
+                <div class="panel-group">
+                    <div class="panel panel-primary" style="margin-top:10px; background-color:#F4ECF7">
+
+                        
+                        <div class="tab panel-heading">
+                            <a style="color:white;">Complaint</a>
+                        </div>
+
+                        <div class="" style="margin-left:20px; margin-right:20px;">
+                            <div class="form-horizontal">
+                                <br />
+                                <table class="table table-striped  table-hover" id="EmpInfo" style="border:solid; border-color:#044244">
+                                    <thead>
+                                        <tr style="background-color:#044244; color:white">
+                                            <th hidden="hidden"> Id </th>
+                                            <th> Name </th>
+                                            <th> Member ID </th>
+                                            <th> Complaint From </th>
+                                            <th> Complaint Date </th>
+                                            <th> ComplaintNature </th>
+                                            <th> Decesion </th> 
+                                            <th> Document </th> 
+                                            <th> Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody"> </tbody>
+                                </table>
+                            </div>
+                            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title" id="myModalLabel">Complaint Form</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            @Html.HiddenFor(model => model.ComplaintID, new { htmlAttributes = new { @class = "form-control" } })
+                                            <div class="row">
+                                                <br />
+                                                <div class="col-sm-6">
+
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            Member ID
+                                                          @Html.DropDownList("tbl_PersonalDetails", ViewBag.tbl_PersonalDetails as SelectList, "Select")
+                                                            @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            Name
+                                                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", Id = "Name" } })
+                                                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            Complaint From
+                                                            @Html.EditorFor(model => model.ComplaintFrom, new { htmlAttributes = new { @class = "form-control", Id = "ComplaintFrom" } })
+                                                            @Html.ValidationMessageFor(model => model.ComplaintFrom, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            Complaint Date
+                                                            @Html.EditorFor(model => model.ComplaintDATE, new { htmlAttributes = new { @class = "form-control", Id = "ComplaintDATE" } })
+                                                            @Html.ValidationMessageFor(model => model.ComplaintDATE, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            Complaint Nature
+                                                            @Html.EditorFor(model => model.ComplaintNATURE, new { htmlAttributes = new { @class = "form-control", Id = "ComplaintNATURE" } })
+                                                            @Html.ValidationMessageFor(model => model.ComplaintNATURE, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            Decesion
+                                                            @Html.EditorFor(model => model.Decesion, new { htmlAttributes = new { @class = "form-control", Id = "Decesion" } })
+                                                            @Html.ValidationMessageFor(model => model.Decesion, "", new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10">
+                                                            Document
+                                                            @Html.HiddenFor(model => model.Spare3, new { htmlAttributes = new { @class = "form-control", Id = "Spare3" } })
+                                                            <input type="file" id="Document" />
+                                                            @Html.ValidationMessageFor(model => model.Spare3, "", new { @class = "text-danger" })
+
+                                                            <div id="imgCertificate" style="display:none;">
+                                                                <a href="@ConfigurationManager.AppSettings["domain"]">[Image Doc]</a>
+                                                                <a href="javascript:void(0);" onclick="deletedocument(1);" style="margin-left:20px;color:red; font-weight:bold;">X</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="form-group">
+                                                        <div class="col-md-10" align="right">
+                                                            <br />
+                                                            <button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>
+                                                            <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                                                            <button type="button" class="btn btn-success" id="closebtn" data-dismiss="modal">Close</button>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

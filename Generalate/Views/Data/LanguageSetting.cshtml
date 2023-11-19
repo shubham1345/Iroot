@@ -1,0 +1,432 @@
+﻿@using Generalate.Controllers;
+@using Generalate.Models;
+@{
+    ViewBag.Title = "LanguageSetting";
+}
+
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+
+    .fa {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+    }
+</style>
+@*<ul class="breadcrumb" style="margin-top:80px;">
+        <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+    </ul>*@
+
+@{
+    var tabPermissions = Session["tabPermissionList"] as List<Generalate.Models.TabPermissions>;
+    var viewpermissions = Session["ViewPagePermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+
+<div class="page-content-wrap" style="margin-top:100px">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li><a data-toggle="tab" href="#Languages" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Languages");}</span></a></li>
+                                    <li><a data-toggle="tab" href="#LanguageSetting" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Language_Settings");}</span></a></li>
+                                    <li><a data-toggle="tab" href="#TextBoxSetting" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("TextBox Settings");}  </span></a></li>
+
+                                </ul>
+                                 @*@{
+                                    var data = Session["RolePermissionTage"] as List<Tbl_RolePermission>;
+                                    var IdName = "";
+                                    var CountId = 0;
+                                    string CurrentPageName = ViewBag.CurrentPageName;
+                                    <ul class="nav nav-tabs" id="myTab">
+                                        @foreach (var item in data)
+                                                    {
+                                                        if (item.TagName== "Languages")
+                                                        {
+                                                <li class="active" id="CurrentTag"><a data-toggle="tab" href='#CurrentTag' class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Languages");}</span></a></li>
+                                            }
+                                            else
+                                            {
+                                                <li id="@IdName"><a href='@item.Url' class="sis_tab_a click"><span>@item.TagName</span></a></li>
+                                            }
+
+                                            CountId++;
+                                            if (CountId <= 1)
+                                            {
+                                                IdName = item.TagName.Replace(" ", "");
+                                            }
+
+                                        }
+                                    </ul>
+                                }*@
+                                <div class="tab-content tab_sis">
+                                    <div id="Languages" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1">
+                                                        <span>@{@HomeController.GetControlTextByControlId("Languages");}</span>
+                                                        <span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                    </div>
+                                                                    <form class="form-horizontal" id="Languages" action="/Data/AddLanguages" method="post" enctype="multipart/form-data">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-6" style="padding-left:20px">
+                                                                                    <div class="form-group">
+                                                                                        <label for="inputPassword3" class="col-sm-2 control-label"><span>@{@HomeController.GetControlTextByControlId("LanguageName");}:</span></label>
+                                                                                        <div class="col-sm-6">
+                                                                                            <input type="hidden" id="Lnaguage_Id" name="Lnaguage_Id" />
+                                                                                            <input type="text" id="Language_Name" name="Language_Name" required class="form-control" />
+                                                                                        </div>
+                                                                                    </div>
+
+
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-sm-6 col-sm-offset-2">
+                                                                                            @{ 
+                                                                                                var ispermisioncreate = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Settings");
+                                                                                                if(ispermisioncreate != null)
+                                                                                                {
+
+                                                                                            <input type="submit" id="SaveLanguage" class="btn btn-success" value="@{@HomeController.GetControlTextByControlId("Save");}">
+                                                                                                }
+                                                                                            }
+                                                                                            @* <button style="display:none" type="button" id="MainClear" onclick="return MainClearfn();" class="btn btn-success">@{@HomeController.GetControlTextByControlId("Clear");}</button>*@
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-right:10px;">
+                                                            <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                <table class="table table-striped table-bordered table-hover" id="LanguageTbl" style="margin-top:20px;">
+                                                                    <thead>
+                                                                        <tr style="background-color:#001f6b; color:white">
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("Language_Name");}</span> </th>
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="tbody">
+                                                                        @{
+                                                                            int L1 = 1;
+                                                                            foreach (var item in ViewBag.AllLanguages as IEnumerable<Generalate.Models.Tbl_Languages>)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td>@L1</td>
+                                                                                    <td>@item.Language_Name</td>
+                                                                                    <td>
+                                                                                        @{
+
+                                                                                            
+                                                                                                
+                                                                                                    var ispermissionedit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Settings");
+                                                                                                    if(ispermissionedit != null)
+                                                                                                    {
+
+                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer" data-val="@item.Lnaguage_Id" class="fa fa-edit DatalistEditMain"></i></button>
+                                                                                                    }
+                                                                                                    var ispermissiondel = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Settings");
+                                                                                                    if(ispermissiondel != null)
+                                                                                                    {
+
+                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Lnaguage_Id" class="fa fa-trash DatalistDeleteMain"></i></button>
+                                                                                                    }
+                                                                                                
+
+                                                                                            
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                L1++;
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="LanguageSetting" class="tab-pane fade">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="panel panel-primary">
+                                                    <div class="panel-heading" style="background-color:#29b2e1">
+                                                        <span>@{@HomeController.GetControlTextByControlId("Language Setting");}</span>
+                                                        <span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left circleimage" href="/Home/Admin"></a></span>
+                                                    </div>
+                                                    <div class="panel-body">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="box box-info">
+                                                                    <div class="box-header with-border">
+                                                                        @*  <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Add Settings");}</span> </h3>*@
+                                                                    </div>
+                                                                    <form class="form-horizontal" id="Languagesettingdata" action="/Data/AddLanguageSetting" method="post" enctype="multipart/form-data">
+                                                                        <div class="box-body">
+                                                                            <div class="row">
+                                                                                <div class="col-sm-6" style="padding-left:50px">
+                                                                                    <div class="form-group">
+                                                                                        <input type="hidden" id="Setting_Id" name="Setting_Id" />
+                                                                                        <label><span>@{@HomeController.GetControlTextByControlId("Select Languages");}</span><span class="mandatoryStar"> *</span></label>
+
+                                                                                        <select class="form-control" style="width:300px !important;" id="Language_Id" name="Language_Id">
+                                                                                            <option value="=0">---select Languages---</option>
+                                                                                            @{
+                                                                                                foreach (var item in ViewBag.AllLanguages as IEnumerable<Generalate.Models.Tbl_Languages>)
+                                                                                                {
+                                                                                                    <option value="@item.Lnaguage_Id">@item.Language_Name</option>
+                                                                                                }
+                                                                                            }
+                                                                                        </select>
+                                                                                        <input type="text" id="Language_Name" name="Language_Name" style="display:none" />
+                                                                                    </div>
+
+
+
+                                                                                </div>
+                                                                                <div class="col-sm-6">
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-sm-6">
+                                                                                            <label><span>@{@HomeController.GetControlTextByControlId("Status");}</span></label>
+                                                                                            <select class="form-control" id="Active" name="Active">
+                                                                                                <option value="1">@{@HomeController.GetControlTextByControlId("Active");}</option>
+                                                                                                <option value="0">@{@HomeController.GetControlTextByControlId("InActive");}</option>
+                                                                                            </select>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div style="margin-top:70px;text-align:right">
+                                                                                    <div class="form-group">
+                                                                                        <div class="col-sm-6 col-sm-offset-2">
+                                                                                            @{ 
+                                                                                                var isperlangset = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Settings");
+                                                                                                if(isperlangset != null)
+                                                                                                {
+                                                                                            <input type="submit" id="SaveLanguagesettings" class="btn btn-success" value="@{@HomeController.GetControlTextByControlId("Save");}">
+                                                                                                }
+                                                                                            }
+                                                                                            @* <button style="display:none" type="button" id="MainClear" onclick="return MainClearfn();" class="btn btn-success">@{@HomeController.GetControlTextByControlId("Clear");}</button>*@
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row" style="margin-right:10px;">
+                                                            <div class="col-sm-12" style="margin-top:40px; margin-left:10px;">
+                                                                <table class="table table-striped table-bordered table-hover" id="LanguageTbl" style="margin-top:20px;">
+                                                                    <thead>
+                                                                        <tr style="background-color:#001f6b; color:white">
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("Language_Name");}</span> </th>
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("Status");}</span> </th>
+                                                                            <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody class="tbody">
+                                                                        @{
+                                                                            int L2 = 1;
+                                                                            foreach (var item in ViewBag.AllLangSettings as IEnumerable<Generalate.Models.Tbl_Languagesetting>)
+                                                                            {
+                                                                                <tr>
+                                                                                    <td>@L2</td>
+                                                                                    <td>@item.Language_Name</td>
+                                                                                    <td>@item.Active</td>
+                                                                                    <td>
+                                                                                        @{
+
+                                                                                            var ispermissionedit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Settings");
+                                                                                            if(ispermissionedit != null)
+                                                                                            {
+
+                                                                                                    <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Setting_Id" class="fa fa-edit LanguageSettingsEdit"></i></button>
+                                                                                            }
+                                                                                            var ispermissiondel = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Settings");
+                                                                                            if(ispermissiondel != null)
+                                                                                            {
+
+                                                                                                <button><i style="font-size:15px; color:#29b2e1; cursor:pointer;" data-val="@item.Setting_Id" class="fa fa-trash LanguageSettingsDelete"></i></button>
+                                                                                            }
+
+
+                                                                                            
+                                                                                        }
+
+                                                                                    </td>
+                                                                                </tr>
+                                                                                L2++;
+                                                                            }
+                                                                        }
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section scripts{
+
+    <script>
+
+
+        $(".circleimage").mouseover(function () {
+            $(".circleimage").text("Back");
+        });
+        $(".circleimage").mouseout(function () {
+            $(".circleimage").text("");
+        });
+
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                localStorage.setItem('activeTab', $(this).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+
+        $(".LanguageSettingsEdit").on('click', function () {
+            var id = $(this).attr("data-val");
+            $("#SaveLanguagesettings").val("Update");
+            $("#Languagesettingdata").attr('action', '/Data/UpdateLanguageSetting');
+            //alert(id);
+            GetLanguageSettingByIdI(id);
+        });
+
+        function GetLanguageSettingByIdI(id) {
+            $.ajax({
+                url: "/Data/GetLanguageSettingByIdI?id=" + id,
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+                    if (result != null) {
+                        $("#Language_Id").val(result.Language_Id);
+                        $("#Language_Name").val(result.Language_Name);
+                        $("#Active").val(result.Active);
+                        $("#Setting_Id").val(result.Setting_Id);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+
+    </script>
+
+
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "200") {
+            $("#mymessage").html("<b>Data saved successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "204") {
+            $("#mymessage").html("<b>Some Error Occured !</b>");
+            $("#mymessage").css("color", "red");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "201") {
+            $("#mymessage").html("<b>Data Updated Successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+        //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "202") {
+            $("#mymessage").html("<b>Data Deleted Successfully !</b>");
+            $("#mymessage").css("color", "blue");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+
+}

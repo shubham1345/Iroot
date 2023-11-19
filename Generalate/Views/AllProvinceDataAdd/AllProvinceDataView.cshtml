@@ -1,0 +1,74 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "AllProvinceDataview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="container body" style="width: 1400px;">
+    <div class="main_container">
+        <div class="right_col" role="main" style="background-color:white;">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="dashboard_graph">
+                        <div class="row x_title">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4" style="padding-top:30px; margin-left:20px;">
+                                    <h4><span style="margin-right:50px;">@{@HomeController.GetControlTextByControlId("Revenue_Vows");}</span> &nbsp;<i class="fa fa-forward"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-bordered" style="margin-left:20px; width:1300px;" id="MyTable">
+                        <thead>
+                            <tr>
+                                <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                <th><span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                                <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                <th><span>@{@HomeController.GetControlTextByControlId("Superior");}</span></th>
+                                <th><span>@{@HomeController.GetControlTextByControlId("Duration");}</span></th>
+                                <th><span>@{@HomeController.GetControlTextByControlId("Witness");}</span></th>
+                                <th><span>@{@HomeController.GetControlTextByControlId("Document");}</span></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                                foreach (var item in ViewBag.AllMemberdata as IEnumerable<Generalate.Models.Tbl_RenewalVows>)
+                                {
+                            <tr>
+                                <td>@i</td>
+                                <td>@item.Name</td>
+                                <td>@item.MyId</td>
+                                <td>@item.Surname</td>
+                                <td>@item.Superior</td>
+                                <td>@item.Duration</td>
+                                <td>@item.Witness</td>
+                                <td>
+                                    @{
+                                        if (!string.IsNullOrWhiteSpace(@item.RenVowsDoc))
+                                        {
+                                            <a target="_blank" href="~/Image/RenewalImages/@item.RenVowsDoc"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                        }
+                                        else
+                                        {
+                                            <a target="_blank" href="~/Image/No-data-found.png">No Document</a>
+                                        }
+                                    }
+                                </td>
+                            </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

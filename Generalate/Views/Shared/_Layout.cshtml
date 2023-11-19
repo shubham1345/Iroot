@@ -1,0 +1,921 @@
+﻿@using Generalate.EnumData;
+@using Generalate.Models;
+@using Generalate.Controllers;
+<html>
+<head>
+    <!-- META SECTION -->
+    <title>@{@HomeController.GetControlTextByControlId("Copyright");}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="~/css/IconsCSS/icon.css" rel="stylesheet" />
+
+    <link rel="icon" href="img/fevicon.png" type="image/x-icon" />
+    <link href="~/Plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+    <link href="~/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/css/Dashboard/css/bootstrap/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/css/Dashboard/css/theme-default.css" rel="stylesheet" />
+    <link href="~/Content/dataTables.bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/multiple-select.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/css/assets/vendor/bootstrap/css/bootstrap.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/font-awesome/css/font-awesome.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/magnific-popup/magnific-popup.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/bootstrap-multiselect/bootstrap-multiselect.css" />
+    <link rel="stylesheet" href="~/css/assets/vendor/morris/morris.css" />
+
+    <style>
+        .dropdown-ul {
+            list-style-type: none;
+            margin: 0;
+            padding-right: 150px !important;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .dropdown-li {
+            float: left;
+        }
+
+        li a, .dropbtn {
+            display: inline-block;
+            color: white;
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+            li a:hover, .dropdown:hover .dropbtn {
+                color: black;
+            }
+
+        li.dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: white;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+                background-color: #001f6b;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #009be1;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        body .btn-primary {
+            color: #ffffff;
+            text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+            background-color: #0088cc;
+            border-color: #0088cc;
+        }
+    </style>
+    <style>
+        .dropdown-submenu {
+            position: relative;
+        }
+
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-submenu > a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #ccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+
+            .dropdown-submenu:hover > a:after {
+                border-left-color: #fff;
+            }
+
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+
+                .dropdown-submenu.pull-left > .dropdown-menu {
+                    left: -100%;
+                    margin-left: 10px;
+                    -webkit-border-radius: 6px 0 6px 6px;
+                    -moz-border-radius: 6px 0 6px 6px;
+                    border-radius: 6px 0 6px 6px;
+                }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="modal fade" id="myalertbox" style="margin-top:20%;" role="dialog">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close closemodel" data-dismiss="modal">&times;</button>@*Removed Class -closemodel*@
+                        <h4 class="modal-title">Message</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p id="mymessage"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default closemodel" data-dismiss="modal">Close</button>@*Removed Class -closemodel*@
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="LastClickedMenu" />
+    <div class="page-container page-navigation-top-fixed">
+        @*<div class="page-container page-navigation-top-fixed" style="height:102vh;">
+            *@
+            <div class="page-sidebar page-sidebar-fixed scroll">
+                <ul class="x-navigation" style="height:800px;overflow-y:scroll">
+                    <li class="xn-logo">
+                        <a href="/Home/Admin"><span>@{@HomeController.GetControlTextByControlId("SG");}</span></a>
+                        <a href="#" class="x-navigation-control"></a>
+                    </li>
+                    <li class="xn-profile">
+                        <a href="#" class="profile-mini">
+                            <img src="~/Images/diocon-logo-web.png" />
+                        </a>
+                        <div class="profile">
+                            <div class="profile-image">
+                                <img src="~/Image/Logo/dioconLogo.png" />
+                            </div>
+                            <div class="profile-data">
+                                <div class="profile-data-name"> </div>
+                            </div>
+                        </div>
+                    </li>
+
+                    @{
+                    string[] icons = { "fa fa-users", "fa fa-list - alt", "fa fa-bullseye", "fa fa-building", "fa fa-book", "fa fa-list - ol", "fa fa-cogs", "fa fa-bank", "fa-tachometer", "fa fa-dashboard", "fa fa-life - bouy", "fa fa-share - alt - square", "fa fa-podcast", "fa fa-snowflake - o", "fa fa-user - secret" };
+                    string[] icons1 = { "fa fa-users", "fa fa-list - alt", "fa fa-bullseye", "fa fa-building", "fa fa-book", "fa fa-list - ol", "fa fa-users", "fa fa-list - alt", "fa fa-bullseye", "fa fa-building", "fa fa-book", "fa fa-list - ol", "fa fa-users", "fa fa-list - alt", "fa fa-bullseye", "fa fa-building", "fa fa-book", "fa fa-list - ol" };
+                    //string[] icons = { "fa fa-users", "fa fa-list - alt", "fa fa-bullseye", "fa fa-building", "fa fa-book", "fa fa-list - ol", "fa fa-cogs", "fa fa-bank", "fa -id-card-o", "fa fa-cub", "f -tachometer", "fa fa-dashboard", "fa fa-life-bouy", "fa fa-share-alt-square", "fa fa-podcast", "fa fa-snowflake-o", "fa fa-user-secret" };
+
+                    int icnt = -1;
+
+
+                    var rolePermissionList = Session["rolePermissionList"] as List
+                    <RolePagePermission>
+                        ;
+                        try
+                        {
+                        foreach (int item in Enum.GetValues(typeof(SideParentMenuEnum)))
+                        {
+                        var RootName = Enum.GetName(typeof(SideParentMenuEnum), item);
+                        var rolePermissionListByRootId = rolePermissionList.Where(x => x.ParentId == item);
+                        if (rolePermissionListByRootId.ToList().Count > 0)
+                        {
+                        if (@RootName == "Dashboard")
+                        {
+                        foreach (var pageName in rolePermissionListByRootId)
+                        {
+
+                        <li><a href='@pageName.PageName'><span class="fa fa-user"></span>@HomeController.GetControlTextByControlId(@pageName.PageViewName)</a></li>
+                        }
+                        }
+                        else
+                        {
+                        icnt++;
+                        <li class="xn-openable">
+                            <a href="#"><span class="@icons[icnt]"></span><span class="xn-text">@HomeController.GetControlTextByControlId(@RootName)</span></a>
+                            @*<a href="#"><span class="fa fa-files-o"></span><span class="xn-text">@HomeController.GetControlTextByControlId(@RootName)</span></a>*@
+                            <ul>
+                                @foreach (var pageName in rolePermissionListByRootId)
+                                {
+                                @*
+                                <li><a href="@pageName.PageName"><span class="fa fa-user"></span>@HomeController.GetControlTextByControlId(@pageName.PageViewName)</a></li>*@
+                                <li><a href="@pageName.PageName"><span class=""></span>@HomeController.GetControlTextByControlId(@pageName.PageViewName)</a></li>
+
+                                }
+
+                            </ul>
+                        </li>
+                        }
+                        }
+                        }
+                        }
+                        catch (Exception ex)
+                        {
+                        }
+                        }
+
+                </ul>
+                @*<div id="mCSB_1_scrollbar_vertical" class="mCSB_scrollTools mCSB_1_scrollbar mCS-light mCSB_scrollTools_vertical" style="display: block;">
+                    <div class="mCSB_draggerContainer">
+                        <div id="mCSB_1_dragger_vertical" class="mCSB_dragger" style="position: absolute; min-height: 30px; height: 118px; top: 0px; display: block; max-height: 263px;" oncontextmenu="return false;">
+                            <div class="mCSB_dragger_bar" style="line-height: 30px;">
+                            </div>
+                        </div>
+                        <div class="mCSB_draggerRail"></div>
+                    </div>
+                </div>*@
+            </div>
+
+            <div class="page-content">
+                <ul class="x-navigation x-navigation-horizontal x-navigation-panel">
+                    <li class="xn-icon-button">
+                        <a href="#" class="x-navigation-minimize"><span class="fa fa-dedent"></span></a>
+                    </li>
+                    <div>
+                        <ul class="nav site-nav mytopmenu" style="margin-right:350px;">
+                            @{
+                            var topmenu = Session["TopMenuHeader"] as List
+                            <Tbl_Topmenuheader>
+                                ;
+                                var submenulist = Session["SubMenuList"] as List<Tbl_Submenuhead>;
+                                    var topmenupermission = Session["TopmenuPermission"] as List<Tbl_TopMenuPermission>;
+                                        if (topmenu != null)
+                                        {
+                                        var i = 1;
+                                        foreach (var item in topmenu as IEnumerable<Generalate.Models.Tbl_Topmenuheader>)
+                                            {
+                                            <li id="@item.Header_Name">
+                                                @if (i == 1)
+                                                {
+
+                                                <a href="javascript:;" class="active data">@{@HomeController.GetControlTextByControlId("" + item.Header_Name + "");}</a>
+                                                <div class="bottom_menu active">
+                                                    <ul>
+                                                        @{
+                                                            foreach (var submenu in submenulist as IEnumerable
+                                                            <Generalate.Models.Tbl_Submenuhead>
+                                                                )
+                                                            {
+                                                                var submenuimage = submenulist.FirstOrDefault(x => x.Submenu_Name == submenu.Page_name);
+
+
+
+                                                                if(submenuimage==null)
+                                                                {
+                                                                    submenuimage = new Tbl_Submenuhead();
+                                                                }
+                                                                if (submenuimage.File_Name != null)
+                                                                {
+                                                                    submenuimage.File_Name = submenuimage.File_Name;
+                                                                }
+                                                                else
+                                                                {
+                                                                    submenuimage.File_Name = "OfficialMeeting.png";
+                                                                }
+                                                                //if (submenu.HasPermission == true && submenu.TopMenuHeader_Id == item.Header_id)
+                                                                if (submenu.Topmenu_Id == item.Header_id)
+                                                                {
+                                                            <li id="@submenu.Page_name">
+                                                                <a class="icon_img" href="@submenu.Page_name"><img src="~/Image/TopmenuIcons/@submenuimage.File_Name" /><br /> @{@HomeController.GetControlTextByControlId("" + submenu.Submenu_Name + "");} </a>
+                                                            </li>
+                                                            }
+
+                                                            }
+                                                            }
+
+                                                    </ul>
+                                                </div>
+                                                }
+                                                else
+                                                {
+                                                <a href="javascript:;" class="data">@{@HomeController.GetControlTextByControlId("" + item.Header_Name + "");}</a>
+                                                <div class="bottom_menu">
+                                                    <ul>
+                                                        @{
+                                                        foreach (var submenu in submenulist as IEnumerable
+                                                        <Generalate.Models.Tbl_Submenuhead>
+                                                            )
+                                                            {
+                                                            var submenuimage = submenulist.FirstOrDefault(x => x.Submenu_Name == submenu.Page_name);
+
+                                                            if (submenuimage == null)
+                                                            {
+                                                            submenuimage = new Tbl_Submenuhead();
+                                                            }
+                                                            if (submenuimage.File_Name != null)
+                                                            {
+                                                            submenuimage.File_Name = submenuimage.File_Name;
+                                                            }
+                                                            else
+                                                            {
+                                                            submenuimage.File_Name = "OfficialMeeting.png";
+                                                            }
+                                                           // if (submenu.HasPermission == true && submenu.TopMenuHeader_Id == item.Header_id)
+                                                            if (submenu.Topmenu_Id == item.Header_id)
+                                                            {
+                                                            <li>
+                                                                <a class="icon_img" href="@submenu.Page_name"><img src="~/Image/TopmenuIcons/@submenuimage.File_Name" /><br /> @{@HomeController.GetControlTextByControlId("" + submenu.Submenu_Name + "");} </a>
+                                                            </li>
+                                                            }
+
+                                                            }
+                                                            }
+
+                                                    </ul>
+                                                </div>
+                                                }
+
+                                            </li>
+                                            i = 0;
+                                            }
+                                            }
+                                            }
+
+                        </ul>
+                    </div>
+
+                    <div>
+                        <li class="xn-icon-button pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                Logout
+                                <span class="fa fa-sign-out "></span>
+                            </a>
+                        </li>
+                        <li class="xn-icon-button pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                <span class="fa fa-question-circle mar-rgt-no font-size-18"></span>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                <span class="fa fa-home mar-rgt-no font-size-18"></span>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a href="#" class="mb-control size_1" data-box="#mb-signout">
+                                <span class="fa fa-envelope mar-rgt-no font-size-18"></span>
+                            </a>
+                        </li>
+                        <li class="pull-right">
+                            <a id="datetimepicker1" href="#" class="mb-control size_1" target="_self">
+                                <span class="fa fa-calendar-o mar-rgt-no font-size-18"></span>
+                            </a>
+
+                        </li>
+                    </div>
+                </ul>
+                @*<div class="Loader_111">
+                    <img src="~/Image/Logo/Loader.gif">
+                </div>*@
+                @RenderBody()
+            </div>
+
+            <section class="page-navigation-bottom-fixed">
+                <div class="container-fluid">
+                    <p style="text-align:center;padding:10px;color:#fff;"> Copyright &copy; 2020 - @{@HomeController.GetControlTextByControlId("Copyright");} Designed by <a href="http://www.iroots.in/">Iroots</a></p>
+                </div>
+            </section>
+        </div>
+        <div class="message-box animated fadeIn" data-sound="alert" id="mb-signout">
+            <div class="mb-container">
+                <div class="mb-middle">
+                    <div class="mb-title"><span class="fa fa-sign-out"></span> Log <strong>Out</strong> ?</div>
+                    <div class="mb-content">
+                        <p>Are you sure you want to log out?</p>
+                        <p>Press No if you want to continue work. Press Yes to logout current user.</p>
+                    </div>
+                    <div class="mb-footer">
+                        <div class="pull-right">
+                            <a href="/Home/Login?logout=True" class="btn btn-success btn-lg">Yes</a>
+                            <button class="btn btn-default btn-lg mb-control-close">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <script src="~/css/css1/js/plugins/jquery/jquery.min.js"></script>
+        <script>
+            $("#datetimepicker1").on('click', function () {
+                //alert("working");
+                window.location.href = '/Email/CalenderView';
+            });
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                function add() {
+                    // alert("zvzv");
+                }
+                $('#userregistration').click(function () {
+                    window.location.href = '../Home/UserRegistration'
+                });
+
+                $('#visitors').click(function () {
+                    window.location.href = '../Visitors/VisitorsEntry'
+                });
+
+                $('#flatowner').click(function () {
+                    window.location.href = '../FlatOwner/CreateFlatOwners'
+                });
+
+                $('#flatresident').click(function () {
+                    window.location.href = '../FlatResident/CreateFlatResident'
+                });
+
+                $('#registerstaff').click(function () {
+                    window.location.href = '../StaffRegistration/Staff'
+                });
+
+                $('#attendance').click(function () {
+                    window.location.href = '../StaffRegistration/Staff'
+                });
+            });
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('a[class="data"]').on('click', function (e) {
+                    localStorage.setItem('activeTab', $(this).attr('href'));
+                });
+                var activeTab = localStorage.getItem('activeTab');
+                if (activeTab) {
+                    $('#mytopmenu a[href="' + activeTab + '"]').tab('show');
+                }
+            });
+        </script>
+
+        <script>
+            $(document).ready(function () {
+                $("#ProOffMeetPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').show();
+                    $("#ProOffMeetProUnique2 a").click();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+
+                $("#ProCounPro").on('click', function () {
+                    //$("#LastClickedMenu").val('22');
+                    //alert($("#LastClickedMenu").val());
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $("#ProCounProUnique2 a").click();
+                    $(".nav-tabs").find('#ProCounProUnique2').show();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProCommiPro").on('click', function () {
+                    //$("#LastClickedMenu").val('23');
+                    //alert($("#LastClickedMenu").val());
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').show();
+                    $("#ProCommiProUnique2 a").click();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProVowsPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').show();
+                    $("#ProVowsProUnique2 a").click();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+
+                });
+                $("#ProHVisitPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').show();
+                    $("#ProHVisitProUnique2 a").click();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProTransPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').show();
+                    $("#ProTransProUnique2 a").click();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProComPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').show();
+                    $("#ProComProUnique2 a").click();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProInstPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').show();
+                    $("#ProInstProUnique2 a").click();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProSocPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').show();
+                    $("#ProSocProUnique2 a").click();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProTrustPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').show();
+                    $("#ProTrustProUnique2 a").click();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                });
+                $("#ProStaffPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').show();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').hide();
+                    $("#ProStaffProUnique2 a").click();
+
+                });
+
+                $("#ProCouncilCountPro").on('click', function () {
+                    $(".nav-tabs").find('#ProOffMeetProUnique2').hide();
+                    $(".nav-tabs").find('#ProCounProUnique2').hide();
+                    $(".nav-tabs").find('#ProCommiProUnique2').hide();
+                    $(".nav-tabs").find('#ProVowsProUnique2').hide();
+                    $(".nav-tabs").find('#ProHVisitProUnique2').hide();
+                    $(".nav-tabs").find('#ProTransProUnique2').hide();
+                    $(".nav-tabs").find('#ProComProUnique2').hide();
+                    $(".nav-tabs").find('#ProInstProUnique2').hide();
+                    $(".nav-tabs").find('#ProSocProUnique2').hide();
+                    $(".nav-tabs").find('#ProTrustProUnique2').hide();
+                    $(".nav-tabs").find('#ProStaffProUnique2').hide();
+                    $(".nav-tabs").find('#ProCouncilCountProUnique2').show();
+                    $("#ProCouncilCountProUnique2 a").click();
+                });
+
+
+            });
+        </script>
+        <script>
+
+            $(document).ready(function () {
+                $("#CongGenOffMeet").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').show();
+                    $("#GeneralateUnique1 a").click();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenCouncil").on('click', function () {
+                    //alert("HERE");
+                    //$(this).addClass("active");
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $("#CouncilUnique1 a").click();
+                    $(".nav-tabs").find('#CouncilUnique1').show();
+                    // $("#CouncilUnique1").attr('active', true);
+                    $(".nav-tabs").find('#CommissionUnique1').show();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#GeneralUnique_new").on('click', function () {
+                    //alert("HERE");
+                    //$(this).addClass("active");
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $("#Cong1 a").click();
+                    $(".nav-tabs").find('#Cong1').show();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    // $("#CouncilUnique1").attr('active', true);
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenCommis").on('click', function () {
+                    //alert("dd");
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').show();
+                    $("#CommissionUnique1 a").click();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenComm").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').show();
+                    $("#CommUnique1 a").click();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenInst").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').show();
+                    $("#add1Unique1 a").click();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenSociety").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').show();
+                    $("#SocietyUnique1 a").click();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenTrust").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').show();
+                    $("#addUnique1 a").click();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenStaff").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').show();
+                    $("#StaffUnique1 a").click();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+
+                });
+                $("#CongGenCalender").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').show();
+                    $(".nav-tabs").find('#CouncilCountUnique1').hide();
+                    $("#CalenderUnique1 a").click();
+                });
+
+                $("#CongCouncilCount").on('click', function () {
+                    $(".nav-tabs").find('#GeneralateUnique1').hide();
+                    $(".nav-tabs").find('#CouncilUnique1').hide();
+                    $(".nav-tabs").find('#CommissionUnique1').hide();
+                    $(".nav-tabs").find('#CommUnique1').hide();
+                    $(".nav-tabs").find('#add1Unique1').hide();
+                    $(".nav-tabs").find('#SocietyUnique1').hide();
+                    $(".nav-tabs").find('#addUnique1').hide();
+                    $(".nav-tabs").find('#StaffUnique1').hide();
+                    $(".nav-tabs").find('#CalenderUnique1').hide();
+                    $(".nav-tabs").find('#CouncilCountUnique1').show();
+                    $("#CouncilCountUnique1 a").click();
+                });
+
+            });
+
+
+        </script>
+        <script src="~/css/assets/vendor/jquery/jquery.js"></script>
+        <script src="~/css/assets/vendor/jquery-browser-mobile/jquery.browser.mobile.js"></script>
+        <script src="~/css/assets/vendor/bootstrap/js/bootstrap.js"></script>
+        <script src="~/css/assets/vendor/nanoscroller/nanoscroller.js"></script>
+        <script src="~/css/assets/vendor/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+        <script src="~/css/assets/vendor/magnific-popup/magnific-popup.js"></script>
+        <script src="~/css/assets/vendor/jquery-placeholder/jquery.placeholder.js"></script>
+        @*
+        <script src="~/css/assets/javascripts/theme.js"></script>*@
+        <script src="~/css/assets/javascripts/theme.custom.js"></script>
+        <script src="~/css/assets/javascripts/theme.init.js"></script>
+        <script src="~/css/assets/javascripts/ui-elements/examples.modals.js"></script>
+        <script src="~/Content/Js/jquery-1.10.2.js"></script>
+        <script src="~/Content/Js/jquery-ui.js"></script>
+        <script src="~/css/Dashboard/js/plugins/jquery/jquery-ui.min.js"></script>
+        <script src="~/css/Dashboard/js/plugins/bootstrap/bootstrap.min.js"></script>
+        <script src="~/css/Dashboard/js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
+        <script src="~/css/Dashboard/js/plugins.js"></script>
+        <script src="~/css/Dashboard/js/actions.js"></script>
+        <script src="~/Content/jquery.dataTables.min.js"></script>
+        <script src="~/Content/dataTables.bootstrap.min.js"></script>
+        <script src="~/Content/jquery-ui.js"></script>
+        <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+        <script src="~/js/jquery.nicescroll.js"></script>
+        <script src="~/Scripts/Topmenujs.js"></script>
+        <script>
+            $.urlParam = function (name) {
+                var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+                if (results == null) {
+                    return null;
+                }
+                return decodeURI(results[1]) || 0;
+            }
+            $('[data-toggle="tooltip"]').tooltip();
+        </script>
+        <script>
+            $(".datepicker").datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy",
+                yearRange: '1600:3000'
+            });
+        </script>
+        <script type="text/javascript">
+
+        </script>
+
+        <script>
+
+            function myFunction() {
+                document.getElementById("myDropdown").classList.toggle("show");
+            }
+            window.onclick = function (event) {
+
+                if (event.target.matches != undefined)
+                    if (!event.target.matches('.dropbtn')) {
+                        var dropdowns = document.getElementsByClassName("dropdown-content");
+                        var i;
+                        for (i = 0; i < dropdowns.length; i++) {
+                            var openDropdown = dropdowns[i];
+                            if (openDropdown.classList.contains('show')) {
+                                openDropdown.classList.remove('show');
+                            }
+                        }
+                    }
+            }
+
+        </script>
+        @*
+        <script>
+            var pageURL = $(location).attr("href");
+            if (pageURL.includes("ProvinceList2")) {
+
+                $("#CongregationOpen a").removeClass("active");
+                // add class to the one we clicked
+                $("#ProvinceOpen a").addClass("active");
+            }
+        </script>*@
+
+        @RenderSection("scripts", required: false);
+        @RenderSection("scripts1", required: false);
+        <style>
+            .mandatoryStar {
+                color: red
+            }
+
+            .datepicker {
+                color: black
+            }
+        </style>
+</body>
+</html>

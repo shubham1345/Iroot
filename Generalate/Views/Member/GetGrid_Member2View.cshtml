@@ -1,0 +1,1936 @@
+﻿@model Generalate.Models.Tbl_Cong
+@using Generalate.Controllers;
+@{
+    ViewBag.Title = "GetGrid_member2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    var viewpermissions = Session["ViewPagePermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<link href="~/Content/DropDownSelect2/fSelect.css" rel="stylesheet" />
+<div class="modal fade" id="myModal3" style="" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="margin-top:60px;">
+        <div class="modal-content" style="width:1050px;">
+            <div class="modal-header">
+                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Community");}</span></h4>
+            </div>
+            <div class="modal-body">
+                <div class="row" style="margin-top:20px; margin-right:10px;">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered" id="TblPersionalDetails" >
+                            @try
+                            {
+                                <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Community");}</span></h4></tr>
+                                <tr>
+                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("District/Sector/Region");}</span></th>
+                                    <td style="width:30%"><span id="DisSecRegCommunity"></span></td>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Community_Code");}</span></th>
+                                    <td><span id="CommunityCodeCommunity"></span></td>
+                                </tr>
+                                <tr>
+                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Community_Name");}</span></th>
+                                    <td style="width:30%"><span id="CommunityNameCommunity"></span></td>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                                    <td><span id="PlaceCommunity"></span></td>
+                                </tr>
+                                <tr>
+                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                    <td style="width:30%"><span id="PhoneCommunity"></span></td>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                                    <td><span id="CountryCommunity"></span></td>
+                                </tr>
+                                <tr>
+                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                    <td style="width:30%"><span id="EmailCommunity"></span></td>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Active/Inactive");}</span></th>
+                                    <td><span id="ActiveCommunity"></span></td>
+                                </tr>
+                                <tr>
+                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></th>
+                                    <td style="width:30%"><span id="DioceseNameCommunity"></span></td>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></th>
+                                    <td><span id="ActivitiesCommunity"></span></td>
+                                </tr>
+                                <tr>
+                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                    <td style="width:30%"><span id="AddressCommunity"></span></td>
+                                    <th><span>Vision</span></th>
+                                    <td><span id="VissionCommunity"></span></td>
+                                </tr>
+                                <tr>
+                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Mission");}</span></th>
+                                    <td style="width:30%"><span id="MissionCommunity"></span></td>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                    <td><a target="_blank" id="FileCommunity" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                </tr>
+                            }
+                            catch (Exception ex)
+                            {
+
+                            }
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*@using (Html.BeginForm("ExportToExcel", "Member", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+
+        <div>
+            <button id="fileDow" @*style="display:none" type="submit" value="Export" class="btn-primary">Export</button>
+        </div>
+
+    }*@
+
+<div class="page-content-wrap">
+
+    <div class="row">
+        <form class="form-horizontal" action="/Member/ViewAllMemberDetails" method="post" id="InstitutiionForm" enctype="multipart/form-data">
+            <ul class="breadcrumb" style="margin-top:80px;">
+                <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+            </ul>
+            <div class="col-md-12">
+                <div class="panel panel-primary">
+
+                    @*<button id="fileDow" @*style="display:none" type="button" value="Export" class="btn-primary">Export</button>*@
+
+                    <div class="panel-body">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                    <ul style="display:none" class="nav nav-tabs" id="myTab">
+                                        <li class="active"><a data-toggle="tab" href="#Generalate" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></a></li>
+                                    </ul>
+                                    <div class="tab-content tab_sis">
+                                        <div id="Generalate" class="tab-pane fade in active">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-primary">
+                                                        @*<div class="panel-heading" style="background-color:#29b2e1"><span>Legal Status</span></div>*@
+                                                        <div class="panel-body" style="height:auto;">
+                                                            <div class="row">
+                                                                <div class="col-md-12">
+                                                                    <div class="box box-info">
+
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="col-md-5">
+                                                                                    <ol class="breadcrumb" role="navigation" style="background-color:#ffffff !important"><li class="breadcrumb-item active"></li></ol>
+                                                                                </div>
+                                                                                <div class="col-md-5">
+                                                                                    <div class="ss-values" id="MultiSearchDiv">
+
+                                                                                    </div>
+
+                                                                                    <input style="display:none" id="myInput" style="width:100%" type="text" name="myCountry" placeholder=@HomeController.GetControlTextByControlId("Search")>@*<button id="idSearchByKeys" style="width:20%" class="btn btn-primary" type="button"><i class="fa fa-search"></i>Apply</button>*@
+                                                                                    <input type="text" id="SearchTxt" class="o_searchview_input" accesskey="Q" placeholder=@HomeController.GetControlTextByControlId("Search") role="" aria-haspopup="true" aria-keyshortcuts="Alt+Shift+Q">
+                                                                                    <input type="hidden" id="isFilterPorC" />@*1 for Parent 2 for child*@
+                                                                                    <input type="hidden" id="strFilterTypeData" />
+                                                                                    <input type="hidden" value="" id="ageFilterGroupByData" />
+                                                                                </div>
+                                                                                <div class="col-md-2" id="clearfilterdiv" style="padding-bottom:10px; display:none">
+                                                                                    <button type="button" class="btn btn-primary" id="ClearFilter"> <span id="FileterText">Remove Filter</span>✘</button>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="row">
+                                                                            <div class="col-md-12">
+                                                                                <div class="col-md-5">
+                                                                                    <div class="o_list_buttons" role="toolbar" aria-label="Main actions">
+                                                                                        <button type="button" class="btn btn-primary o_list_button_save" accesskey="s" aria-keyshortcuts="Alt+Shift+s" style="display:none">
+
+                                                                                            <i class="d-inline d-sm-none fa fa-floppy-o" title="Save"></i>
+                                                                                            <span class="d-none d-sm-inline">Save</span>
+
+                                                                                        </button>
+                                                                                        <button type="button" class="btn btn-secondary o_list_button_discard" accesskey="j" aria-keyshortcuts="Alt+Shift+j" style="display:none">
+
+                                                                                            <i class="d-inline d-sm-none fa fa-times" title="Discard"></i>
+                                                                                            <span class="d-none d-sm-inline">Discard</span>
+
+                                                                                        </button>
+
+                                                                                        @{
+                                                                                            var ispermissioncreate = viewpermissions.FirstOrDefault(x => x.Createpermission == true && x.PageName == "Members");
+                                                                                            if (ispermissioncreate != null)
+                                                                                            {
+                                                                                                <button type="button" class="btn btn-primary o_list_button_add" accesskey="c" data-original-title="" title="" aria-keyshortcuts="Alt+Shift+c" style="position: relative;">
+
+
+                                                                                                    <a href="/Member/MemberInfoById_Primary?memberId=0" class="CreateButton"><i class="d-inline d-sm-none fa fa-plus" title="Create"></i><span class="d-none d-sm-inline">@{@HomeController.GetControlTextByControlId("Create");}</span></a>
+
+
+                                                                                                </button>
+                                                                                            }
+                                                                                        }
+
+
+                                                                                        <div class="dropdown" id="Formation">
+                                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                                                <span class=""></span>
+                                                                                                @{@HomeController.GetControlTextByControlId("Select");}
+                                                                                                <span class="caret"></span>
+                                                                                            </button>
+                                                                                            <ul class="dropdown-menu">
+                                                                                                <li><a href="#" id="formationId">@{@HomeController.GetControlTextByControlId("Formation");}</a></li>
+                                                                                                <li><a href="#" id="Province_flt">@{@HomeController.GetControlTextByControlId("Province");}</a></li>
+                                                                                                <li><a href="#" id="Country_flt">@{@HomeController.GetControlTextByControlId("Country");}</a></li>
+                                                                                                <li><a href="#" id="State_flt">@{@HomeController.GetControlTextByControlId("State");}</a></li>
+                                                                                                <li><a href="#" id="City_flt">@{@HomeController.GetControlTextByControlId("City");}</a></li>
+                                                                                                <li><a href="#" id="Continent_flt">@{@HomeController.GetControlTextByControlId("Continent");}</a></li>
+                                                                                                <li><a href="#" id="District_flt">@{@HomeController.GetControlTextByControlId("District");}</a></li>
+                                                                                                <li><a href="#" id="Language_flt">@{@HomeController.GetControlTextByControlId("Language");}</a></li>
+                                                                                                <li><a href="/Member/AgeView" id="AverageAge_flt">@{@HomeController.GetControlTextByControlId("AverageAge");}</a></li>
+
+                                                                                            </ul>
+                                                                                        </div>
+
+                                                                                        @*<button type="button" class="btn btn-secondary o_button_import" accesskey="I" aria-keyshortcuts="Alt+Shift+I" style="position: relative;">
+                                                                                                @{@HomeController.GetControlTextByControlId("Import");}
+                                                                                            </button>*@
+
+
+
+
+                                                                                        <button type="button" id="ExportMemberData" class="btn btn-secondary fa fa-download o_list_export_xlsx" title="Export All" accesskey="X" aria-keyshortcuts="Alt+Shift+X" style="position: relative;"><a href="#">@{@HomeController.GetControlTextByControlId("Download");}</a></button>
+
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-7">
+                                                                                    <div class="col-md-6" style="text-align:left">
+                                                                                        <div class="dropdown">
+                                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                                                <span class="fa fa-filter"></span>
+                                                                                                @{@HomeController.GetControlTextByControlId("Filters");}
+                                                                                                <span class="caret"></span>
+                                                                                            </button>
+                                                                                            <ul class="dropdown-menu">
+                                                                                                @*<li onclick="GetGrid()"><a href="#">@{@HomeController.GetControlTextByControlId("Total_Member");}</a></li>*@
+                                                                                                @*<li onclick="GetGridCandidates();"><a href="#">@{@HomeController.GetControlTextByControlId("Candidates");}</a></li>*@
+                                                                                                <li class="dropdown-submenu">
+                                                                                                    <a class="test" tabindex="-1" href="#">@{@HomeController.GetControlTextByControlId("Formation");}<span class="caret"></span></a>
+                                                                                                    <ul class="dropdown-menu" style="display: none">
+                                                                                                        @if (ViewBag.FilterStageOfFormation != null && ViewBag.FilterStageOfFormation.Count != 0)
+                                                                                                        {
+                                                                                                            for (int i = 0; i < ViewBag.FilterStageOfFormation.Count; i++)
+                                                                                                            {
+                                                                                                                <li class="Flt_Sub" id="Flt_Sub_@ViewBag.FilterStageOfFormation[i].FormationId"><a tabindex="-1" href="#">@ViewBag.FilterStageOfFormation[i].Name</a></li>
+                                                                                                            }
+                                                                                                        }
+
+                                                                                                    </ul>
+                                                                                                </li>
+                                                                                                <li class="dropdown-submenu">
+                                                                                                    <a class="test" tabindex="-1" href="#">@{@HomeController.GetControlTextByControlId("Profession");}<span class="caret"></span></a>
+                                                                                                    <ul class="dropdown-menu" style="display: none">
+
+                                                                                                        @if (ViewBag.FilterStageOfVows != null && ViewBag.FilterStageOfVows.Count != 0)
+                                                                                                        {
+                                                                                                            for (int i = 0; i < ViewBag.FilterStageOfVows.Count; i++)
+                                                                                                            {
+                                                                                                                <li class="Flt_Sub" id="Flt_Sub_@ViewBag.FilterStageOfVows[i].Id"><a tabindex="-1" href="#">@ViewBag.FilterStageOfVows[i].Name</a></li>
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </ul>
+                                                                                                </li>
+
+                                                                                                <li class="Flt_Main_EternalLife"><a href="#">@{@HomeController.GetControlTextByControlId("EternalLife");}</a></li>
+                                                                                                <li class="Flt_Main_Separated"><a href="#">@{@HomeController.GetControlTextByControlId("Separated");}</a></li>
+                                                                                                <li><a href="#">Archived</a></li>
+                                                                                                <li><a href="#" class="dropdown-item">Add Custom Filter</a></li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                        <div class="dropdown">
+                                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                                                                                                <span class="fa fa-bars"></span>
+                                                                                                @{@HomeController.GetControlTextByControlId("Group By");}
+                                                                                                <span class="caret"></span>
+                                                                                            </button>
+                                                                                            <ul class="dropdown-menu">
+                                                                                                <li class="dropdown-submenu">
+                                                                                                    <a class="test" href="#">Province<span class="caret"></span></a>
+                                                                                                    <ul class="dropdown-menu" id="uu">
+                                                                                                        <li>
+                                                                                                            <a class="pro">
+                                                                                                                <div class="row pro" id="listmenu" style="min-width:250px;min-height:50px">
+                                                                                                                    <div class="col-sm-12 pro">
+                                                                                                                        <div class="form-group pro">
+                                                                                                                            <label style="width:100%; text-align:center" for="inputPassword3" class="col-sm-4 control-label pro"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></label>
+                                                                                                                            <div class="col-sm-12 pro" style="width:100% !important">
+                                                                                                                                <select class="form-control pro" name="" style="width:100%" id="ProvinceName_New"></select>
+                                                                                                                            </div>
+                                                                                                                        </div>
+                                                                                                                    </div>
+
+                                                                                                                </div>
+                                                                                                            </a>
+                                                                                                        </li>
+                                                                                                    </ul>
+                                                                                                </li>
+                                                                                                @*<li>
+                                                                                                        <a class="dropdown-item" href="#">Province</a>
+                                                                                                        <ul class="dropdown-menu dropdown-submenu">
+                                                                                                            <li>
+                                                                                                                <a class="dropdown-item" href="#">Submenu item 1</a>
+                                                                                                            </li>
+                                                                                                        </ul>
+                                                                                                    </li>*@
+
+                                                                                            </ul>
+                                                                                        </div>
+
+                                                                                        <div class="dropdown">
+                                                                                            <button class="btn btn-secondary dropdown-toggle" type="button" data-toggle="dropdown">
+                                                                                                <span class="fa fa-star"></span>
+                                                                                                @{@HomeController.GetControlTextByControlId("Favorites");}
+                                                                                                <span class="caret"></span>
+                                                                                            </button>
+                                                                                            <ul class="dropdown-menu">
+                                                                                                <li><a href="#">Save Current Search</a></li>
+                                                                                            </ul>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-3" style="text-align:right">
+                                                                                        <div class="o_pager">
+                                                                                            <span class="o_pager_counter">
+                                                                                                <span class="o_pager_value"><input id="StartingId" class="numberonly" value="1" style="width:25%; border:none;" />-   <input id="LastId" class="numberonly" value="10" style="width:30%; border:none" /></span> / <span id="totalcount" class="o_pager_limit">@ViewBag.totalCount</span>
+                                                                                            </span>
+                                                                                            @*<span class="btn-group" aria-atomic="true">*@
+                                                                                            <button type="button" id="previousData"><</button>
+                                                                                            <button type="button" id="nextData">></button>
+                                                                                            @*</span>*@
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-3" style="text-align:right">
+                                                                                        <button type="button" accesskey="l" class="btn btn-secondary fa fa-lg fa-list-ul o_cp_switch_list  active" aria-label="View list" data-view-type="list" title="" tabindex="-1" data-original-title="View list" aria-keyshortcuts="Alt+Shift+l" style="position: relative;"></button>
+                                                                                        <button type="button" class="btn btn-secondary fa fa-lg fa-bar-chart o_cp_switch_graph " aria-label="View graph" data-view-type="graph" title="" tabindex="-1" data-original-title="View graph"></button>
+                                                                                        <button type="button" class="btn btn-secondary fa fa-lg fa-table o_cp_switch_pivot " aria-label="View pivot" data-view-type="pivot" title="" tabindex="-1" data-original-title="View pivot"></button>
+                                                                                    </div>
+
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <br />
+                                                                        </div>
+                                                                        <div class="row">
+                                                                            <input value="1" id="Dynamic_Checkbox" type="hidden" />
+                                                                            <div id="mySidenav" class="sidenav" style="">
+                                                                                <div style="border-style:solid">
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-1" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("Surname");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-2" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("Baptismal_Name");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-3" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("DOB");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-4" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("Country");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-5" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("Province_Name");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-6" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("File_No");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-7" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("Place_Of_Birth");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-8" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("Nationality");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-9" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("MobileNo");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-10" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("EmailId");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-11" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("MotherTounge");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-12" class="notdivhide">
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("Designations");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="row notdivhide">
+                                                                                        <div class="col-md-12">
+                                                                                            <div class="col-md-1">
+                                                                                                <input type="checkbox" checked id="checkbox-grid-13" class="notdivhide" />
+                                                                                            </div>
+                                                                                            <div class="col-md-9">
+                                                                                                @{@HomeController.GetControlTextByControlId("GenFileNo");}
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                            <div class="col-md-12">
+                                                                                <div id="PartialTable" class="ui-sortable-table"></div>
+                                                                                <div id="statiscs" style="display:none">
+                                                                                    <!-- Modal -->
+
+
+
+                                                                                </div>
+                                                                                <div id="MembersViewList" style="display:none;border:1px solid black">
+                                                                                    <!-- Modal -->
+
+
+
+                                                                                </div>
+                                                                                <div class="modal fade" id="memberList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                                                                                    <div class="modal-dialog" role="document">
+                                                                                        <div class="modal-content" style="width:840px">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title" id="exampleModalLongTitle">Members List</h5>
+                                                                                                <div id="listMembers">
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                ...
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                                                                <button type="button" class="btn btn-primary exportExcelAge">Export to excel</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+
+    <script src="~/Content/Dropdown3/fSelect.js"></script>
+
+    @*<script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>*@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.8/js/select2.min.js" defer></script>
+    @*<script src="~/css/Dashboard/addmember.js"></script>
+        <script src="~/Scripts/additional/AddAcademic.js"></script>
+        <script src="~/Scripts/additional/Healths.js"></script>
+        <script src="~/Scripts/additional/FamilyDetailsJS.js"></script>
+        <script src="~/css/Dashboard/FormationJS.js"></script>
+        <script src="~/Scripts/CompainsJS.js"></script>*@
+    <script src="~/Content/multiple-select.min.js"></script>
+    @*<script src="~/Scripts/additional/AppointmentJS.js"></script>*@
+
+    @*<script src="~/Scripts/additional/MemberInfoById.js"></script>*@
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.0/js/jquery.dataTables.min.js"></script>
+
+
+
+    <script>
+        $(document).ready(function () {
+            $('.dropdown-submenu a.test').on("click", function (e) {
+                $(this).next('ul').toggle();
+                e.stopPropagation();
+                e.preventDefault();
+            });
+            $('li.Flt_Sub').on('click', function (e) {
+                var Formationid = $(this).attr('id').replace('Flt_Sub_', '');
+                //console.log("formationid", Formationid);
+                $('#isFilterPorC').val('2');
+                $('#strFilterTypeData').val(Formationid);
+                 $("#StartingId").val('1');
+                 $("#LastId").val('10');
+                 $("#SearchTxt").val('');
+                GetGrid();
+                $('#clearfilterdiv').show();
+
+            });
+            $(".Flt_Main_EternalLife").on('click', function () {
+                $('#isFilterPorC').val('1');
+                $('#strFilterTypeData').val('1');
+                $("#StartingId").val('1');
+                $("#LastId").val('10');
+                $("#SearchTxt").val('');
+                GetGrid();
+                $("#FileterText").text("EternalLife");
+
+                $('#clearfilterdiv').show();
+            });
+            $(".Flt_Main_Separated").on('click', function () {
+                $('#isFilterPorC').val('1');
+                $('#strFilterTypeData').val('2');
+                $("#StartingId").val('1');
+                $("#LastId").val('10');
+                $("#SearchTxt").val('');
+                GetGrid();
+                $("#FileterText").text("Separated");
+
+                $('#clearfilterdiv').show();
+            });
+            $('#ClearFilter').on('click', function () {
+                $('#isFilterPorC').val('');
+                $('#strFilterTypeData').val('');
+                $("#StartingId").val('1');
+                $("#LastId").val('10');
+                $("#SearchTxt").val('');
+                $('#clearfilterdiv').hide();
+                GetGrid();
+            });
+        });
+        $(document).ready(function () {
+            var order = $(this).val();
+            var sorted = $('tbody tr').sort(function (a, b) {
+                var a = new Date($(a).find('td:last-child').text().split('-').join(' '));
+                var b = new Date($(b).find('td:last-child').text().split('-').join(' '));
+
+                return order == 'desc' ? b - a : a - b;
+            })
+                 $('tbody').html(sorted)  
+                    $("tr").each(function (i) {     
+                    $(this).find('td:first-child').text(i)
+                })
+            GetGrid();
+
+            GetAllProvinceView();
+            $("#checkedAll").change(function () {
+                if (this.checked) {
+                    $(".checkSingle").each(function () {
+                        this.checked = true;
+                    });
+                } else {
+                    $(".checkSingle").each(function () {
+                        this.checked = false;
+                    });
+                }
+            });
+            $("#ProvinceName_New").on('change', function () {
+                GetGrid();
+            })
+            $(".pro").on('click', function (event) {
+                event.stopPropagation();
+            });
+            $('body').on('mouseover', '.select2-search--dropdown', function (event) {
+                event.stopPropagation();
+            });
+            $('body').on('mouseleave', '.uu', function (event) {
+                $("#listmenu").show();
+               
+                //console.log(listmenu)
+                event.stopPropagation();
+            });
+            //$('#idSearchByKeys').on('click', function () {
+            //    var AllKeys = [];
+            //    $('.ss-value-text').each(function () {
+            //        var key = $(this).text();
+            //        AllKeys.push(key);
+            //    });
+            //    if (AllKeys.length != 0) {
+            //        //alert(AllKeys);
+            //        GetGrid(AllKeys);
+            //    }
+            //    else {
+            //        GetGrid();
+            //    }
+            //});
+
+        });
+        $("#checkbox-grid-1").on('click', function () {
+            if ($('input#checkbox-grid-1').prop('checked')) {
+                $(".hide-1").show();
+            }
+            else {
+                $(".hide-1").hide();
+            }
+        });
+        $("#checkbox-grid-2").on('click', function () {
+            if ($('input#checkbox-grid-2').prop('checked')) {
+                $(".hide-2").show();
+            }
+            else {
+                $(".hide-2").hide();
+            }
+        });
+        $("#checkbox-grid-3").on('click', function () {
+            if ($('input#checkbox-grid-3').prop('checked')) {
+                $(".hide-3").show();
+            }
+            else {
+                $(".hide-3").hide();
+            }
+        });
+        $("#checkbox-grid-4").on('click', function () {
+            if ($('input#checkbox-grid-4').prop('checked')) {
+                $(".hide-4").show();
+            }
+            else {
+                $(".hide-4").hide();
+            }
+        });
+        $("#checkbox-grid-5").on('click', function () {
+            if ($('input#checkbox-grid-5').prop('checked')) {
+                $(".hide-5").show();
+            }
+            else {
+                $(".hide-5").hide();
+            }
+        });
+        $("#checkbox-grid-6").on('click', function () {
+            if ($('input#checkbox-grid-6').prop('checked')) {
+                $(".hide-6").show();
+            }
+            else {
+                $(".hide-6").hide();
+            }
+        });
+        $("#checkbox-grid-7").on('click', function () {
+            if ($('input#checkbox-grid-7').prop('checked')) {
+                $(".hide-7").show();
+            }
+            else {
+                $(".hide-7").hide();
+            }
+        });
+        $("#checkbox-grid-8").on('click', function () {
+            if ($('input#checkbox-grid-8').prop('checked')) {
+                $(".hide-8").show();
+            }
+            else {
+                $(".hide-8").hide();
+            }
+        });
+        $("#checkbox-grid-9").on('click', function () {
+            if ($('input#checkbox-grid-9').prop('checked')) {
+                $(".hide-9").show();
+            }
+            else {
+                $(".hide-9").hide();
+            }
+        });
+        $("#checkbox-grid-10").on('click', function () {
+            if ($('input#checkbox-grid-10').prop('checked')) {
+                $(".hide-10").show();
+            }
+            else {
+                $(".hide-10").hide();
+            }
+        });
+        $("#checkbox-grid-11").on('click', function () {
+            if ($('input#checkbox-grid-11').prop('checked')) {
+                $(".hide-11").show();
+            }
+            else {
+                $(".hide-11").hide();
+            }
+        });
+        $("#checkbox-grid-12").on('click', function () {
+            if ($('input#checkbox-grid-12').prop('checked')) {
+                $(".hide-12").show();
+            }
+            else {
+                $(".hide-12").hide();
+            }
+        });
+
+        $("#checkbox-grid-13").on('click', function () {
+            if ($('input#checkbox-grid-13').prop('checked')) {
+                $(".hide-13").show();
+            }
+            else {
+                $(".hide-13").hide();
+            }
+        });
+
+        $('.numberonly').keypress(function (e) {
+
+            var charCode = (e.which) ? e.which : event.keyCode
+
+            if (String.fromCharCode(charCode).match(/[^0-9]/g))
+
+                return false;
+
+        });
+        $("#StartingId").on('focusout', function () {
+            var firstItem = $("#StartingId").val();
+            var lastItem = $("#LastId").val();
+            if (firstItem != '' && lastItem != '') {
+                GetGrid();
+            }
+        });
+
+        $("#LastId").on('focusout', function () {
+            var firstItem = $("#StartingId").val();
+            var lastItem = $("#LastId").val();
+            if (firstItem != '' && lastItem != '') {
+
+                GetGrid();
+            }
+        });
+        $("#SearchTxt").on('input', function () {
+            if ($("#example").is(":visible")) {
+                GetGrid();
+
+            }
+            if ($("#MembersViewList").is(":visible")) {
+                GetMembersViewList();
+            }
+
+        });
+        $("#previousData").on('click', function () {
+            var firstItem = $("#StartingId").val();
+            var lastItem = $("#LastId").val();
+
+            if (firstItem != 1) {
+                $("#StartingId").val(firstItem * 1 - 10);
+                $("#LastId").val(lastItem * 1 - 10);
+                if ($("#example").is(":visible")) {
+                    GetGrid();
+                }
+                if ($("#MembersViewList").is(":visible")) {
+                    GetMembersViewList();
+                }
+
+            }
+
+        });
+        $("#nextData").on('click', function () {
+            var firstItem = $("#StartingId").val();
+            var lastItem = $("#LastId").val();
+            //debugger;
+            var totalcount = $("#totalcount").text();
+            console.log("firstitem", firstItem);
+            console.log("lastItem", lastItem);
+            console.log("totalcount", totalcount);
+
+            //Getfirstlast(firstItem, lastItem, totalcount);
+            //alert(lastItem);
+            //alert(totalcount);
+            //if (lastItem == '' || lastItem == null)
+            {
+                //if (lastItem <= totalcount)
+                {
+                    //alert("Working");
+                    $("#StartingId").val(firstItem * 1 + 10);
+                    $("#LastId").val(lastItem * 1 + 10);
+                    var sid = $("#StartingId").val();
+                    var lid = $("#LastId").val();
+                    console.log("StartingId", sid);
+                    console.log("lastid", lid);
+                    if ($("#example").is(":visible")) {
+                        GetGrid();
+                    }
+                    if ($("#MembersViewList").is(":visible")) {
+                        GetMembersViewList();
+                    }
+                }
+            }
+
+
+        });
+        //function Getfirstlast(firstItem, lastItem, totalcount)
+        //{
+        //    //alert(totalcount);
+        //    //if (lastItem <= totalcount)
+        //    //if (firstItem != null && lastItem != null)
+        //    {
+        //        //alert("Working")
+        //        $("#StartingId").val(firstItem * 1 + 10);
+        //        $("#LastId").val(lastItem * 1 + 10);
+        //        if ($("#example").is(":visible")) {
+        //            GetGrid();
+        //        }
+        //        if ($("#MembersViewList").is(":visible")) {
+        //            GetMembersViewList();
+        //        }
+        //    }
+        //}
+
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+            //alert(document.getElementById("mySidenav").style.width);
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+            var ListType = $('#Dynamic_Checkbox').val();
+
+            var checkedlist = '';
+            $('input[class=notdivhide]').each(function () {
+                var sThisVal = (this.checked ? $(this).val() : "");
+                if (sThisVal == 'on') {
+                    checkedlist += $(this).attr("id").replace('checkbox-grid-', '') + ',';
+                }
+            });
+            //alert(checkedlist);
+            var ListData = checkedlist.replace(/,\s*$/, "");
+            jQuery.ajax({
+                url: '/Member/SetDynamicColumn',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ ListType: ListType, ListData: ListData}),
+                success: function (result) {
+
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+        function closeNavExp() {
+            document.getElementById("mySidenav_Dynamic2").style.width = "0";
+            var ListType = 3;
+            var checkedlist = '';
+            $('input[class=notdivhide2]').each(function () {
+                var sThisVal = (this.checked ? $(this).val() : "");
+                if (sThisVal == 'on') {
+                    checkedlist += $(this).attr("id").replace('checkbox-grid2-', '') + ',';
+                }
+            });
+            //alert(checkedlist);
+            var ListData = checkedlist.replace(/,\s*$/, "");
+            jQuery.ajax({
+                url: '/Member/SetDynamicColumn',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ ListType: ListType, ListData: ListData }),
+                success: function (result) {
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+        $(".o_cp_switch_graph").on('click', function () {
+            GetStatics();
+            $("#example").hide();
+            $("#statiscs").show();
+            $("#MembersViewList").hide();
+            $("#formation").show();
+            $(".o_list_button_add").hide();
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+        });
+        $(".o_cp_switch_list").on('click', function () {
+            $("#example").show();
+            $("#statiscs").hide();
+            $("#MembersViewList").hide();
+            $("#formation").hide();
+            $(".o_list_button_add").show();
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+        });
+        $(".o_cp_switch_pivot").on('click', function () {
+            GetMembersViewList();
+            $("#example").hide();
+            $("#statiscs").hide();
+            $("#MembersViewList").show();
+            $(this).siblings().removeClass('active');
+            $(this).addClass('active');
+
+        });
+
+        $('body').click(function (evt) {
+            //alert(evt.target.id);
+            console.log(evt);
+            if (evt.target.id == "mySidenav")
+                return;
+            else if (evt.target.className == "notdivhide" || evt.target.className == "notdivhide2") {
+                return;
+            }
+
+            else if (document.getElementById("mySidenav").style.width == '250px') {
+                closeNav();
+                return;
+            }
+            else if (evt.target.id == "ExportGrid") {
+                //$('#mySidenav_Dynamic2').toggle();
+                //closeNavExp();
+                return;
+            }
+            else if (document.getElementById("mySidenav_Dynamic2").style.width == '250px') {
+                //$('#mySidenav_Dynamic2').toggle();
+                closeNavExp();
+                return;
+            }
+            else {
+                //closeNav();
+                return;
+            }
+            //For descendants of menu_content being clicked, remove this check if you do not want to put constraint on descendants.
+            if ($(evt.target).closest('#menu_content').length)
+                return;
+
+            //Do processing of click event here for every element except with id menu_content
+
+        });
+        $("#ExportMemberData").on('click', function () {
+            var firstItem = $("#StartingId").val();
+            var lastItem = $("#LastId").val();
+            var SearchTxt = $("#SearchTxt").val();
+            var grp = $("#ProvinceName_New").val();
+
+            alert(grp);
+            var FilterType = $('#isFilterPorC').val();
+            var FilterData = $('#strFilterTypeData').val();
+            window.location.replace("../Member/ExportToExcel?" +"grp="+grp);
+            @*jQuery.ajax({
+                url: '/Member/ExportToExcel',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                data: JSON.stringify({ name: 'Deep', firstItem: firstItem, lastItem: lastItem, SearchTxt: SearchTxt, grp: grp, FilterType: FilterType, FilterData: FilterData }),
+                success: function (result) {
+
+                    //alert(@{@HomeController.GetControlTextByControlId("Data Downloaded Successfully");});
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });*@
+        });
+        function GetAllProvinceView() {
+            $.ajax({
+                url: "/Home/GetAllProvinceView",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    console.log(response2);
+                    
+                    $('tbody').html(sorted)
+                    $("tr").each(function (i) {
+                        $(this).find('td:first-child').text(i)
+                    })
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceName_New').html('').select({ data: [{ id: '', text: '' }] });
+                        $("#ProvinceName_New").append($("<option></option>").val(0).html('------- @{ @HomeController.GetControlTextByControlId("Select") ;} ------'));
+                        allDate2.push({ id: '0', text: '-- @{ @HomeController.GetControlTextByControlId("Select") ;} --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName });
+                            $("#ProvinceName_New").append($("<option></option>").val(response2[i].ProvinceName).html(response2[i].ProvinceName));
+                            //allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + " " + response2[i].Place });
+                        }
+                        //$("#ProvinceName_New").html('').select({
+                        //    data: allDate2
+                        //});
+                    }
+                    $("#ProvinceName_New").select2();
+                    $('#ProvinceName_New').on('mouseover', function (event) {
+                        // Do something
+                        event.stopPropagation();
+                    });
+
+                   // return false;
+
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        //$("#srcname").on('input', function () {
+        //    GetGrid('name', "");
+        //});
+
+        function searchbycolumn(event,column) {
+            if (event.keyCode === 13) {
+                //return;
+                GetGrid(column);
+
+            }
+        }
+
+
+        function GetGrid(columnname, Keys) {            
+
+            var firstItem = $("#StartingId").val();
+            //console.log("getgridcalled", Keys,columnname);
+            var SepSearchtxt = "";
+            var EterSearchtxt = "";
+            var ForSearchtxt = "";
+            var lastItem = $("#LastId").val();
+            var SearchTxt = $("#SearchTxt").val();
+            var srcnameval = $("#srcname").val();
+            var srcsurnameval = $("#srcsurname").val();
+            var srcbapnameval = $("#srcbapname").val();
+            var srcdobval = $("#srcdob").val();
+            var srccontryval = $("#srccountry").val();
+            var srcprovince = $("#srcprovince").val();
+            var srcfileno = $("#srcfileno").val();
+            var srcplaceofbirthval = $("#srcplaceofbirth").val();
+            var srcnationality = $("#srcnationality").val();
+            var srcmobileno = $("#srcmobileno").val();
+            var srcemail = $("#srcemail").val();
+            var srcmothertongue = $("#srcmothertongue").val();
+            var srcdesignations = $("#srcdesignations").val();
+            var srcgenfileno = $("#srcgenfileno").val();
+            var memberid = $("#memberid").val();
+            var provincename = $("#provincename").val();
+            var name1 = $("#sepname").val();
+            var sirname = $("#sirname").val();
+            var title = $("#title").val();
+            var age = $("#age").val();
+            var date = $("#date").val();
+            var description = $("#description").val();
+            var eterprovincename = $("#Eteprovincename").val();
+            var etername = $("#Etename").val();
+            var etersirname = $("#Etesirname").val();
+            var Etedate = $("#Etedate").val();
+            var Eteage = $("#Eteage").val();
+            var Etetime = $("#Etetime").val();
+            var Etecause = $("#Etecause").val();
+            var Etelastnature = $("#Etelastnature").val();
+            var Etelastplace = $("#Etelastplace").val();
+            var Etedescription = $("#Etedescription").val();
+            var forsrcname = $("#forsrcname").val();
+            var forsrcsurname = $("#forsrcsurname").val();
+            var forsrcbapname = $("#forsrcbapname").val();
+            var forsrcdob = $("#forsrcdob").val();
+            var forsrccountry = $("#forsrccountry").val();
+            var forsrcprovince = $("#forsrcprovince").val();
+            var forsrcfileno = $("#forsrcfileno").val();
+            var forsrcplaceofbirth = $("#forsrcplaceofbirth").val();
+            var forsrcnationality = $("#forsrcnationality").val();
+            var forsrcmobileno = $("#forsrcmobileno").val();
+            var forsrcemail = $("#forsrcemail").val();
+            var forsrcmothertongue = $("#forsrcmothertongue").val();
+            var forsrcdesignations = $("#forsrcdesignations").val();
+            var forsrcgenfileno = $("#forsrcgenfileno").val();
+            
+            switch (columnname) {
+                case "name":
+                    SearchTxt = $("#srcname").val();
+                    break;
+                case "surname":
+                    SearchTxt = $("#srcsurname").val();
+                    break;
+                case "bapname":
+                    SearchTxt = $("#srcbapname").val();
+                    break;
+                case "dob":
+                    SearchTxt = $("#srcdob").val();
+                    break;
+                case "country":
+                    SearchTxt = $("#srccountry").val();
+                    break;
+                case "province":
+                    SearchTxt = $("#srcprovince").val();
+                    break;
+                case "fileno":
+                    SearchTxt = $("#srcfileno").val();
+                    break;
+                case "placeofbirth":
+                    SearchTxt = $("#srcplaceofbirth").val();
+                    break;
+                case "nationality":
+                    SearchTxt = $("#srcnationality").val();
+                    break;
+                case "mobileno":
+                    SearchTxt = $("#srcmobileno").val();
+                    break;
+                case "email":
+                    SearchTxt = $("#srcemail").val();
+                    break;
+                case "mothertongue":
+                    SearchTxt = $("#srcmothertongue").val();
+                    break;
+                case "designations":
+                    SearchTxt = $("#srcdesignations").val();
+                    break;
+                case "genfileno":
+                    SearchTxt = $("#srcgenfileno").val();
+                    break;
+                case "memberid1":
+                    SearchTxt = $("#memberid").val();
+                    break;
+                case "SepSearchtxt":
+                    SepSearchtxt = $("#provincename").val();
+                    break;
+                case "name1":
+                    SepSearchtxt = name1;
+                    break;
+                case "sirname1":
+                    SepSearchtxt = $("#sirname").val();
+                    break;
+                case "title1":
+                    SepSearchtxt = $("#title").val();
+                    break;
+                case "age1":
+                    SepSearchtxt = $("#age").val();
+                    break;
+                case "date1":
+                    SepSearchtxt = $("#date").val();
+                    break;
+                case "description1":
+                    SepSearchtxt = $("#description").val();
+                    break;
+                case "eterprov":
+                    EterSearchtxt = eterprovincename;
+                    break;
+                case "etername":
+                    EterSearchtxt = etername;
+                    break;
+                    console.log("eternalname", EterSearchtxt);
+                case "etersirname":
+                    EterSearchtxt = etersirname;
+                    break;
+                case "eterdate":
+                    EterSearchtxt = Etedate;
+                    break;
+                case "eterage":
+                    EterSearchtxt = Eteage;
+                    break;
+                case "etertime":
+                    EterSearchtxt = Etetime;
+                    break;
+                case "etercause":
+                    EterSearchtxt = Etecause;
+                    break;
+                case "eterlastnature":
+                    EterSearchtxt = Etelastnature;
+                    break;
+                case "eterlastplace":
+                    EterSearchtxt = Etelastplace;
+                    break;
+                case "eterdescription":
+                    EterSearchtxt = Etedescription;
+                    break;
+                case "forname":
+                    ForSearchtxt: forsrcname;
+                    break;
+                case "forsurname":
+                    ForSearchtxt: forsrcsurname;
+                    break;
+                case "forbapname":
+                    ForSearchtxt: forsrcbapname;
+                    break;
+                case "fordob":
+                    ForSearchtxt: forsrcdob;
+                    break;
+                case "forcountry":
+                    ForSearchtxt: forsrccountry;
+                    break;
+                case "forprovince":
+                    ForSearchtxt: forsrcprovince;
+                    break;
+                case "forfileno":
+                    ForSearchtxt: forsrcfileno;
+                    break;
+                case "forplaceofbirth":
+                    ForSearchtxt: forsrcplaceofbirth;
+                    break;
+                case "fornationality":
+                    ForSearchtxt: forsrcnationality;
+                    break;
+                case "forformobileno":
+                    ForSearchtxt: forsrcmobileno;
+                    break;
+                case "foremail":
+                    ForSearchtxt: forsrcemail;
+                    break;
+                case "formothertongue":
+                    ForSearchtxt: forsrcmothertongue;
+                    break;
+                case "fordesignations":
+                    ForSearchtxt: forsrcdesignations;
+                    break;
+                case "forgenfileno":
+                    ForSearchtxt: forsrcgenfileno;
+                    break;
+                default:
+                    break;
+
+            }
+            //if (columnname == 'name') {
+            //    SearchTxt = $("#srcname").val();
+            //    console.log("srcname", SearchTxt);
+            //}
+            var grp = $("#ProvinceName_New").val();
+            //alert(Keys);
+            //alert(firstItem);
+            //alert(lastItem);
+            var FilterType = $('#isFilterPorC').val();
+            var FilterData = $('#strFilterTypeData').val();
+            //alert("kdnv");
+
+                jQuery.ajax({
+                    url: '/Member/GetGrid_Member2',
+                    type: "POST",
+                    contentType: "application/json; charset=utf-8",
+                    data: JSON.stringify({ name: 'Deep', firstItem: firstItem, lastItem: lastItem, SearchTxt: SearchTxt, grp: grp, FilterType: FilterType, FilterData: FilterData, Keys: Keys, column: columnname, SepSearchtxt: SepSearchtxt, EterSearchtxt: EterSearchtxt, ForSearchtxt: ForSearchtxt}),
+                    success: function (result) {                        
+                        //console.log("partialtable", result);
+                        //console.log(result);
+                        //$("#PartialTable").empty();
+                        $("#PartialTable").html(result);
+                        
+                        //$("PartialTable").find('tbody');
+                      
+                        //if (result != null) {
+                        //    var i = 1;
+                        //    response.forEach(function (data) {
+                        //        var row = "<tr><td>" + i + "</td>";
+                        //        row = row + "  <td> " + data.FileNo + "</td>";
+                        //        row = row + "  <td> " + data.Name + "</td>";
+                        //        if (data.DOB === null)
+                        //            row = row + "  <td> </td>";
+                        //        else
+                        //            row = row + "  <td> " + data.DOB + "</td>";
+
+                        //        row = row + "  <td> " + data.FirstVowDate + "</td>";
+                        //        row = row + "  <td> " + data.FinalVowDate + "</td>";
+                        //        row = row + "</tr>";
+
+                        //        $('#PartialTable').append(row);
+                        //        i = i + 1;
+                        //    });
+                        //}
+                                               
+                        $("#srcname").val(srcnameval);
+                        $("#srcsurname").val(srcsurnameval);
+                        $("#srcbapname").val(srcbapnameval);
+                        $("#srcdob").val(srcdobval);
+                        $("#srccountry").val(srccontryval);
+                        $("#srcprovince").val(srcprovince);
+                        $("#srcfileno").val(srcfileno);
+                        $("#srcplaceofbirth").val(srcplaceofbirthval);
+                        $("#srcnationality").val(srcnationality);
+                        $("#srcmobileno").val(srcmobileno);
+                        $("#srcemail").val(srcemail);
+                        $("#srcmothertongue").val(srcmothertongue);
+                        $("#srcdesignations").val(srcdesignations);
+                        $("#srcgenfileno").val(srcgenfileno);
+                        $("#memberid").val(memberid);
+                        $("#provincename").val(provincename);
+                        $("#sepname").val(name1);
+                        $("#sirname").val(sirname);
+                        $("#title").val(title);
+                        $("#age").val(age);
+                        $("#date").val(date);
+                        $("#description").val(description);
+
+
+                        $("#forsrcname").val(forsrcname);
+                        $("#forsrcsurname").val(forsrcsurname);
+                        $("#forsrcbapname").val(forsrcbapname);
+                        $("#forsrcdob").val(forsrcdob);
+                        $("#forsrccountry").val(forsrccountry);
+                        $("#forsrcprovince").val(forsrcprovince);
+                        $("#forsrcfileno").val(forsrcfileno);
+                        $("#forsrcplaceofbirth").val(forsrcplaceofbirth);
+                        $("#forsrcnationality").val(forsrcnationality);
+                        $("#forsrcmobileno").val(forsrcmobileno);
+                        $("#forsrcemail").val(forsrcemail);
+                        $("#forsrcmothertongue").val(forsrcmothertongue);
+                        $("#forsrcdesignations").val(forsrcdesignations);
+                        $("#forsrcgenfileno").val(forsrcgenfileno);
+
+                        var countData = $('#DynamicTotalCount').val();
+                        $("#totalcount").text(countData);
+                        $('.notdivhide').prop("checked", true);
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+
+
+            @*alert('@ViewBag.totalCount');
+            $("#totalcount").html(@ViewBag.totalCount);*@
+        }
+        function GetGridCandidates() {
+            var firstItem = $("#StartingId").val();
+            var lastItem = $("#LastId").val();
+            var SearchTxt = $("#SearchTxt").val();
+            var grp = $("#ProvinceName_New").val();
+            //alert("kdnv");
+            jQuery.ajax({
+                url: '/Member/Candidates2New',
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                //data: JSON.stringify({ name: 'Deep', firstItem: firstItem, lastItem: lastItem, SearchTxt: SearchTxt, grp: grp }),
+                success: function (result) {
+
+                    $("#PartialTable").empty();
+                    $("#PartialTable").html(result);
+                    $('.notdivhide').prop("checked", true);
+
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+            @* alert('@ViewBag.totalCount');
+            $("#totalcount").html(@ViewBag.totalCount);*@
+        }
+        function deleteMember(id) {
+            //var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Member/DeleteGetMemberById?id=" + id;
+            }
+        }
+        $(document.body).on('click', '.provinceClass', function () {
+            var spantext = $(this).find('span').text();
+            if (spantext.indexOf("+") > 1 || spantext.indexOf("-") > 1) {
+                //alert(spantext.indexOf("+"));
+            $(this).find('span').text(function (_, value) { return value == '+' ? '-' : '+' });
+            }
+            var age = $(this).parent().nextUntil('tr.provinceClass');
+            age.each(function () {
+                if ($(this).is(":visible")) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+           
+
+
+        });
+        $(document.body).on('click', '.openMemeberModal', function () {
+            var data = $(this).attr('id');
+            var arr = data.split('|');
+            var province = "";
+            var age = "";
+            var fromAge = $("#fromAge").val();
+            var toAge = $("#toAge").val();
+            var GroupByFilter = $('#ageFilterGroupByData').val();
+            if (arr.length == 1) {
+                province = data;
+            }
+            if (arr.length > 1) {
+                age = arr[1];
+                province = arr[0];
+            }
+
+            jQuery.ajax({
+                url: '/Member/MembersList?provinceName=' + province + '&age=' + age + '&fromAge=' + fromAge + '&toAge=' + toAge + '&GroupByFilter=' + GroupByFilter,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+
+                success: function (result) {
+                    //alert(result);
+                    $("#listMembers").empty();
+                    $("#listMembers").html(result);
+                    $('#memberList').modal('show');
+                },
+                error: function (err) {
+                    alert(err.statusText);
+
+                }
+            });
+        });
+
+        $(document.body).on('click', '.exportExcelAge', function () {
+            var province = $("#prvncName").val();
+            var age = $("#agefilter").val();
+            var fromAge = $("#fromAge").val();
+            var toAge = $("#toAge").val();
+            var GroupBy = $('#ageFilterGroupByData').val();
+            window.location.href = '/Member/ExportFilteredDataToExcel?provinceName=' + province + '&age=' + age + '&fromAge=' + fromAge + '&toAge=' + toAge + '&GroupBy=' + GroupBy;
+            $('#memberList').modal('hide');
+
+        });
+        $(document.body).on('click', '.ageFilter', function () {
+            var fromAge = $("#fromAge").val();
+            var toAge = $("#toAge").val();
+            if (fromAge == '') {
+                alert("Please select from date");
+                return;
+            }
+
+            $("#spinner-border").show();
+            GetStatics(fromAge, toAge, "", $('#ageFilterGroupByData').val());
+
+        });
+        $(document.body).on('click', '#formationId', function () {
+            $('#ageFilterGroupByData').val('');
+            GetStatics("","","true","");
+
+        });
+        $(document.body).on('click', '#Province_flt', function () {
+            $('#ageFilterGroupByData').val('');
+            GetStatics("", "", "","");
+
+        });
+        $(document.body).on('click', '#Country_flt', function () {
+            $('#ageFilterGroupByData').val('Country');
+            GetStatics("", "", "", "Country");
+
+        });
+        $(document.body).on('click', '#Continent_flt', function () {
+            $('#ageFilterGroupByData').val('Continent');
+            GetStatics("", "", "", "Continent");
+
+        });
+        $(document.body).on('click', '#Language_flt', function () {
+            $('#ageFilterGroupByData').val('Language');
+            GetStatics("", "", "", "Language");
+
+        });
+        $(document.body).on('click', '#District_flt', function () {
+            $('#ageFilterGroupByData').val('District');
+            GetStatics("", "", "", "District");
+
+        });
+        $(document.body).on('click', '#City_flt', function () {
+            $('#ageFilterGroupByData').val('City');
+            GetStatics("", "", "", "City");
+
+        });
+        $(document.body).on('click', '#State_flt', function () {
+            $('#ageFilterGroupByData').val('State');
+            GetStatics("", "", "", "State");
+
+        });
+
+        function GetStatics(fromAge = '', toAge = '', fromation = '', GroupByData='') {
+            jQuery.ajax({
+                url: '/Member/GetMemebersWithAge?fromAge=' + fromAge + '&toAge=' + toAge + '&stageOfFormation=' + fromation + '&GroupByData=' + GroupByData,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+
+                success: function (result) {
+                    $("#statiscs").empty();
+                    $("#statiscs").html(result);
+                    $("#spinner-border").hide();
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                    $("#spinner-border").hide();
+                }
+            });
+        }
+        function GetMembersViewList() {
+            var firstItem = $("#StartingId").val();
+            var lastItem = $("#LastId").val();
+            var SearchTxt = $("#SearchTxt").val();
+            jQuery.ajax({
+                url: '/Member/MembersViewList?SearchTxt=' + SearchTxt + '&first=' + firstItem + '&last=' + lastItem,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+
+                success: function (result) {
+                    $("#MembersViewList").empty();
+                    $("#MembersViewList").html(result);
+
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });
+        }
+    </script>
+}
+
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+
+    .o_control_panel .breadcrumb {
+        font-size: 15px;
+    }
+
+    .o_control_panel .breadcrumb, .o_control_panel .o_cp_left {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1 1 auto;
+        flex: 1 1 auto;
+    }
+
+        .o_control_panel .breadcrumb > li {
+            display: inline-block;
+            max-width: 90%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            vertical-align: top;
+        }
+
+    .breadcrumb-item.active {
+        color: #777777;
+    }
+
+    .o_searchview_input {
+        width: 100%;
+        border: none;
+        border-bottom: 1px solid #3b7495 !important;
+    }
+
+    .sidenav {
+        /*height: 1%;*/
+        width: 0;
+        position: absolute;
+        z-index: 1;
+        top: 0;
+        right: 0;
+        background-color: #fff;
+        overflow-x: hidden;
+        transition: 0.5s;
+        padding-top: 0px;
+    }
+
+        .sidenav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 25px;
+            color: #818181;
+            display: block;
+            transition: 0.3s;
+        }
+
+            .sidenav a:hover {
+                color: #f1f1f1;
+            }
+
+        .sidenav .closebtn {
+            position: absolute;
+            top: 0;
+            left: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+    .CreateButton:hover {
+        color: white;
+    }
+
+    .CreateButton {
+        color: white;
+    }
+    /*.table tr {
+        cursor: pointer;
+    }
+
+    .hiddenRow {
+        padding: 0 4px !important;
+        background-color: #eeeeee;
+        font-size: 13px;
+    }*/
+    .provinceCount {
+        display: none;
+    }
+</style>
+
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        font: 16px Arial;
+    }
+
+    /*the container must be positioned relative:*/
+    .autocomplete {
+        position: relative;
+        display: inline-block;
+    }
+
+    input {
+        border: 1px solid transparent;
+        background-color: #f1f1f1;
+        padding: 10px;
+        font-size: 16px;
+    }
+
+        input[type=text] {
+            background-color: #f1f1f1;
+            width: 100%;
+        }
+
+        input[type=submit] {
+            background-color: DodgerBlue;
+            color: #fff;
+            cursor: pointer;
+        }
+
+    .autocomplete-items {
+        position: absolute;
+        border: 1px solid #d4d4d4;
+        border-bottom: none;
+        border-top: none;
+        z-index: 99;
+        /*position the autocomplete items to be the same width as the container:*/
+        top: 100%;
+        left: 0;
+        right: 0;
+    }
+
+        .autocomplete-items div {
+            padding: 10px;
+            cursor: pointer;
+            background-color: #fff;
+            border-bottom: 1px solid #d4d4d4;
+        }
+
+            /*when hovering an item:*/
+            .autocomplete-items div:hover {
+                background-color: #e9e9e9;
+            }
+
+    /*when navigating through the items using the arrow keys:*/
+    .autocomplete-active {
+        background-color: DodgerBlue !important;
+        color: #ffffff;
+    }
+
+    #fromAge {
+        width: auto;
+        border-color: #004778;
+        height: 25px;
+    }
+
+    #toAge {
+        width: auto;
+        border-color: #004778;
+        height: 25px;
+    }
+
+    #ageFilter {
+    }
+</style>
+<style>
+    .ss-main .ss-multi-selected {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+        flex-direction: row;
+        cursor: pointer;
+        min-height: 30px;
+        width: 100%;
+        padding: 0 0 0 3px;
+        border: 1px solid #dcdee2;
+        border-radius: 4px;
+        background-color: #fff;
+        outline: 0;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        -webkit-transition: background-color .2s;
+        transition: background-color .2s;
+    }
+
+    .ss-values {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        -webkit-box-pack: start;
+        -ms-flex-pack: start;
+        justify-content: flex-start;
+        -webkit-box-flex: 1;
+        -ms-flex: 1 1 100%;
+        flex: 1 1 100%;
+        width: calc(100% - 30px);
+    }
+
+    .ss-value {
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        font-size: 12px;
+        padding: 3px 5px;
+        margin: 3px 5px 3px 0;
+        color: #fff;
+        background-color: #5897fb;
+        border-radius: 4px;
+        -webkit-animation-name: scaleIn;
+        animation-name: scaleIn;
+        -webkit-animation-duration: .2s;
+        animation-duration: .2s;
+        -webkit-animation-timing-function: ease-out;
+        animation-timing-function: ease-out;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+
+    .ss-value-delete {
+        margin: 0 0 0 5px;
+        cursor: pointer;
+    }
+</style>
+<script>
+    function ApplyKeys() {
+        var AllKeys = [];
+        $('.ss-value-text').each(function () {
+            var key = $(this).text();
+            AllKeys.push(key);
+        });
+        if (AllKeys.length != 0) {
+            //alert(AllKeys);
+            GetGrid("",AllKeys);
+        }
+        else {
+            GetGrid("");
+        }
+    }
+    function CloseSubFilter(val) {
+        //alert(val);
+        $('#div-' + val).remove();
+        var AllKeys = [];
+        $('.ss-value-text').each(function () {
+            var key = $(this).text();
+            AllKeys.push(key);
+        });
+        if (AllKeys.length != 0) {
+            //alert(AllKeys);
+            GetGrid("",AllKeys);
+        }
+        else {
+            GetGrid("");
+        }
+    }
+    function autocomplete(inp, arr) {
+        /*the autocomplete function takes two arguments,
+        the text field element and an array of possible autocompleted values:*/
+        var currentFocus;
+        /*execute a function when someone writes in the text field:*/
+        inp.addEventListener("input", function (e) {
+            var a, b, i, val = this.value;
+            /*close any already open lists of autocompleted values*/
+            closeAllLists();
+            if (!val) { return false; }
+            currentFocus = -1;
+            /*create a DIV element that will contain the items (values):*/
+            a = document.createElement("DIV");
+            a.setAttribute("id", this.id + "autocomplete-list");
+            a.setAttribute("class", "autocomplete-items");
+            /*append the DIV element as a child of the autocomplete container:*/
+            this.parentNode.appendChild(a);
+            /*for each item in the array...*/
+            for (i = 0; i < arr.length; i++) {
+                /*check if the item starts with the same letters as the text field value:*/
+                if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+                    /*create a DIV element for each matching element:*/
+                    b = document.createElement("DIV");
+                    /*make the matching letters bold:*/
+                    b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+                    b.innerHTML += arr[i].substr(val.length);
+                    /*insert a input field that will hold the current array item's value:*/
+                    b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+                    /*execute a function when someone clicks on the item value (DIV element):*/
+                    b.addEventListener("click", function (e) {
+                        /*insert the value for the autocomplete text field:*/
+                        inp.value = this.getElementsByTagName("input")[0].value;
+                        /*close the list of autocompleted values,
+                        (or any other open lists of autocompleted values:*/
+                        closeAllLists();
+                    });
+                    a.appendChild(b);
+                }
+            }
+        });
+        /*execute a function presses a key on the keyboard:*/
+        inp.addEventListener("keydown", function (e) {
+            var x = document.getElementById(this.id + "autocomplete-list");
+            if (x) x = x.getElementsByTagName("div");
+            if (e.keyCode == 40) {
+                /*If the arrow DOWN key is pressed,
+                increase the currentFocus variable:*/
+                currentFocus++;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 38) { //up
+                /*If the arrow UP key is pressed,
+                decrease the currentFocus variable:*/
+                currentFocus--;
+                /*and and make the current item more visible:*/
+                addActive(x);
+            } else if (e.keyCode == 13) {
+                /*If the ENTER key is pressed, prevent the form from being submitted,*/
+                e.preventDefault();
+                if (currentFocus > -1) {
+                    /*and simulate a click on the "active" item:*/
+                    if (x) x[currentFocus].click();
+                    var arr = '';
+                    while (arr.length < 5) {
+                        var r = Math.floor(Math.random() * 100) + 1;
+                        if (arr.indexOf(r) === -1) arr = arr+r;
+                    }
+                    //alert(arr);
+                    var addHtml = '<div id="div-' + arr + '"><div class="ss-value" data-id="23480919" > <span class="ss-value-text">' + x[currentFocus].innerText + '</span><span class="ss-value-delete" onclick="CloseSubFilter(\'' + arr + '\')">x</span></div></div>';
+                    $('#MultiSearchDiv').append(addHtml);
+                    $('#myInput').val('');
+                    ApplyKeys();
+                    //alert(x[currentFocus].innerText);
+                    //alert(currentFocus);
+
+                }
+            }
+        });
+
+        function addActive(x) {
+            /*a function to classify an item as "active":*/
+            if (!x) return false;
+            /*start by removing the "active" class on all items:*/
+            removeActive(x);
+            if (currentFocus >= x.length) currentFocus = 0;
+            if (currentFocus < 0) currentFocus = (x.length - 1);
+            /*add class "autocomplete-active":*/
+            x[currentFocus].classList.add("autocomplete-active");
+        }
+        function removeActive(x) {
+            /*a function to remove the "active" class from all autocomplete items:*/
+            for (var i = 0; i < x.length; i++) {
+                x[i].classList.remove("autocomplete-active");
+            }
+        }
+        function closeAllLists(elmnt) {
+            /*close all autocomplete lists in the document,
+            except the one passed as an argument:*/
+            var x = document.getElementsByClassName("autocomplete-items");
+            for (var i = 0; i < x.length; i++) {
+                if (elmnt != x[i] && elmnt != inp) {
+                    x[i].parentNode.removeChild(x[i]);
+                }
+            }
+        }
+        /*execute a function when someone clicks in the document:*/
+        document.addEventListener("click", function (e) {
+            closeAllLists(e.target);
+        });
+    }
+
+    /*An array containing all the country names in the world:*/
+    //var countries = ["Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Anguilla", "Antigua & Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia & Herzegovina", "Botswana", "Brazil", "British Virgin Islands", "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde", "Cayman Islands", "Central Arfrican Republic", "Chad", "Chile", "China", "Colombia", "Congo", "Cook Islands", "Costa Rica", "Cote D Ivoire", "Croatia", "Cuba", "Curacao", "Cyprus", "Czech Republic", "Denmark", "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Falkland Islands", "Faroe Islands", "Fiji", "Finland", "France", "French Polynesia", "French West Indies", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Gibraltar", "Greece", "Greenland", "Grenada", "Guam", "Guatemala", "Guernsey", "Guinea", "Guinea Bissau", "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Isle of Man", "Israel", "Italy", "Jamaica", "Japan", "Jersey", "Jordan", "Kazakhstan", "Kenya", "Kiribati", "Kosovo", "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Macau", "Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", "Moldova", "Monaco", "Mongolia", "Montenegro", "Montserrat", "Morocco", "Mozambique", "Myanmar", "Namibia", "Nauro", "Nepal", "Netherlands", "Netherlands Antilles", "New Caledonia", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea", "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Reunion", "Romania", "Russia", "Rwanda", "Saint Pierre & Miquelon", "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia", "South Africa", "South Korea", "South Sudan", "Spain", "Sri Lanka", "St Kitts & Nevis", "St Lucia", "St Vincent", "Sudan", "Suriname", "Swaziland", "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Timor L'Este", "Togo", "Tonga", "Trinidad & Tobago", "Tunisia", "Turkey", "Turkmenistan", "Turks & Caicos", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States of America", "Uruguay", "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Virgin Islands (US)", "Yemen", "Zambia", "Zimbabwe"];
+    var strcountries = '@ViewBag.SearchKeyList';
+    var countries = strcountries.split(',-');
+    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+    autocomplete(document.getElementById("myInput"), countries);
+</script>

@@ -1,0 +1,26 @@
+﻿@using Generalate.Controllers;
+<link href="~/css/CalenderCss/CalenderCss.css" rel="stylesheet" />
+<section class="panel">
+    <div class="panel-body bg-primary">
+        <div class="widget-summary">
+            <div class="widget-summary-col widget-summary-col-icon">
+                <div class="summary-icon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+            <div class="widget-summary-col">
+                <div class="summary">
+                    <h3 class="title"><span>@{@HomeController.GetControlTextByControlId("Events");}</span></h3>
+                    <div class="info">
+                        <p class="amount" id="date">@System.DateTime.Now.ToString("dd-MM-yyyy")</p>
+                    </div>
+                </div>
+                <div class="summary-footer">
+                    @*<button type="button" data-toggle="modal" data-target="#CalenderViewmyModal">View All</button>*@
+                    <a  href="/Home/GetEvents" class="text-uppercase" style="cursor:pointer;"><span>@{@HomeController.GetControlTextByControlId("viewall");}</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+

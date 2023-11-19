@@ -1,0 +1,129 @@
+using OfficeOpenXml;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+namespace AutomationInWindows
+{
+    public partial class ResourceTracker : Form
+    {
+        public ResourceTracker()
+        {
+            InitializeComponent();
+
+            string FileName = @"D:\ControlBookFormulation\TCS Master Resource Plan.1.18.17_RK.xlsx";
+            ExcelPackage package = new ExcelPackage(new System.IO.FileInfo(FileName));
+            for (int i = 0; i < package.Workbook.Worksheets.Count; i++)
+            {
+                ExcelWorksheet workSheet = package.Workbook.Worksheets.ElementAt(i);
+                tabControl1.TabPages.Add(workSheet.ToString());
+            }
+
+            dataGridView1.DataSource = ToDataTable(package, tabControl1.TabPages[0].Text);
+        }
+        private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string sheetname = tabControl1.SelectedTab.Text;
+
+            string FileName = @"D:\ControlBookFormulation\TCS Master Resource Plan.1.18.17_RK.xlsx";
+            ExcelPackage package = new ExcelPackage(new System.IO.FileInfo(FileName));
+            dataGridView1.DataSource = ToDataTable(package, sheetname);
+        }
+        public DataTable ToDataTable(ExcelPackage package, string sheetname)
+        {
+
+            DataSet ds = new DataSet();
+            ExcelWorksheet workSheet = package.Workbook.Worksheets[sheetname];
+            DataTable table = new DataTable(workSheet.Name);
+            int IndexOfEmpId = 0;
+            int i = 1;
+            foreach (var firstRowCell in workSheet.Cells[1, 1, 1, workSheet.Dimension.End.Column])
+            {
+                table.Columns.Add(firstRowCell.Text);
+                if (firstRowCell.Text == "Emp ID")
+                {
+                    IndexOfEmpId = i;
+                }
+                i++;
+            }
+            List<string> empList = new List<string>();
+            for (var rowNumber = 2; rowNumber < workSheet.Dimension.End.Row; rowNumber++)
+            {
+                var row = workSheet.Cells[rowNumber, 1, rowNumber, workSheet.Dimension.End.Column];
+                string EmployeeName = workSheet.Cells[rowNumber, IndexOfEmpId].Text.ToString();
+                empList.Add(EmployeeName);
+                //
+                var newRow = table.NewRow();
+                foreach (var cell in row)
+                {
+                    try
+                    {
+                        newRow[cell.Start.Column - 1] = cell.Value;
+                    }
+                    catch (Exception ex) { }
+                }
+                table.Rows.Add(newRow);
+            }
+            CheckEmployeeIdInControlBook(empList);
+
+            // ds.Tables.Add(table);
+            return table;
+        }
+
+
+
+        private void CheckEmployeeIdInControlBook(List<string> EmployeeList)
+        {
+            string FileName = @"D:\ControlBookFormulation\ControlBook.xlsx";
+           
+            ExcelPackage packageCB = new ExcelPackage(new System.IO.FileInfo(FileName));
+
+            ExcelWorksheet workSheet = packageCB.Workbook.Worksheets.ElementAt(1);
+            MessageBox.Show(workSheet.Name);
+            int IndexOfEmpId = 0;
+            int j = 1;
+            foreach (var firstRowCell in workSheet.Cells[11, 1, 11, workSheet.Dimension.End.Column])
+            {
+
+                if (StripTagsRegex(firstRowCell.Text) == "Employee  ID #")
+                {
+                    IndexOfEmpId = j;
+                }
+                j++;
+            }
+            for (var rowNumber = 12; rowNumber < workSheet.Dimension.End.Row; rowNumber++)
+            {
+                var row = workSheet.Cells[rowNumber, 1, rowNumber, 17];
+                string EmployeeIdCB = workSheet.Cells[rowNumber, IndexOfEmpId].Text.ToString();
+                foreach (var EmployeeIdRC in EmployeeList)
+                {
+                    if (EmployeeIdRC == EmployeeIdCB&&!String.IsNullOrEmpty(EmployeeIdRC))
+                    {
+                        MessageBox.Show(EmployeeIdRC);
+                        workSheet.Cells[rowNumber, IndexOfEmpId].Style.Fill.PatternType = OfficeOpenXml.Style.ExcelFillStyle.Solid;
+                        workSheet.Cells[rowNumber, IndexOfEmpId].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.Yellow);
+                    }
+                }
+
+
+            }
+            string FileNameNEW = @"D:\ControlBookFormulation\ControlBookNEW.xlsx";
+            packageCB.SaveAs(new System.IO.FileInfo(FileNameNEW));
+          
+        }
+        public static string StripTagsRegex(string source)
+        {
+            return Regex.Replace(source, @"\t|\n|\r", "");
+
+
+        }
+
+    }
+}           

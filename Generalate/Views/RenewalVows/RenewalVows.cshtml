@@ -1,0 +1,143 @@
+﻿
+@{
+    ViewBag.Title = "RenewalVows";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container body" style="width: 1400px;">
+    <div class="main_container">
+        <div class="right_col" role="main" style="background-color:white;">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="dashboard_graph">
+                        <div class="row x_title">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4" style="padding-top:30px;">
+                                    <h4> Renewal Vows  &nbsp;<i class="fa fa-forward"></i></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 table-responsive">
+                    <table class="table table-bordered" id="MyTable">
+                        <thead>
+                            <tr>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">S.No</th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Member ID</th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Name</th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Date</th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Superior</th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Duration</th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Witness</th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Select<input type="checkbox" Id="Mycheckforall" style="margin-left:18px;" /></th>
+                                <th style="color: #FFFFFF;background-color: #41BDE2;">Document</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                int i = 1;
+                                foreach (var item in ViewBag.AllMemberdata as IEnumerable<Generalate.Models.tbl_PersonalDetails>)
+
+                                {
+                                    <tr>
+                                        <td>@i</td>
+                                        @*<td>@item.ProvinceName</td>*@
+                                        <td>@item.MemberID</td>
+                                        <td>@item.Name</td>
+                                        <td><input type="text" name="Surname" /></td>
+                                        <td><input type="text" name="Superior" /></td>
+                                        <td><input type="text" name="Duration" /></td>
+                                        <td><input type="text" name="Witness" /></td>
+                                        <td><input type="checkbox" class='checkbox' id="PerCheck" value="True" name="Check" /></td>
+                                        <td><input type="file" name="MyImages" /></td>
+                                    </tr>
+                                    i++;
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <button style="margin-right: 50px; margin-bottom: 20px;" type="button" class="btn btn-success pull-right" id="btnsaverenvows">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+    {
+    <script>
+
+        $('#Date').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2070'
+        });
+
+        $("#Mycheckforall").change(function () {
+            var checked = $(this).is(':checked');
+            if (checked) {
+                $(".checkbox").each(function () {
+                    $(this).prop("checked", true);
+                });
+            } else {
+                $(".checkbox").each(function () {
+                    $(this).prop("checked", false);
+                });
+            }
+        });
+        $(".checkbox").click(function () {
+
+            if ($(".checkbox").length == $(".checkbox:checked").length) {
+                $("#Mycheckforall").prop("checked", true);
+            } else {
+                $("#Mycheckforall").removeAttr("checked");
+            }
+
+        });
+
+        $("#btnsaverenvows").on("click", function () {
+            debugger
+          //debugger;
+            var result = {};
+            var datalist = [];
+            $("#MyTable tbody tr").each(function () {
+                var object = {};
+                var formData = new FormData();
+              //debugger;
+                var checkBox = $(this).find('input[type="checkbox"]').is(':checked');
+                if (checkBox == true) {
+                  //debugger;
+                    var data = new FormData();
+                    data.append('MemberID', $(this).find('td').eq(1).html());
+                    data.append('Name', $(this).find('td').eq(2).html());
+                    data.append('Date', $(this).find('td').eq(3).find('input[type="text"]').val());
+                    data.append('Superior', $(this).find('td').eq(4).find('input[type="text"]').val());
+                    data.append('Duration', $(this).find('td').eq(5).find('input[type="text"]').val());
+                    data.append('Witness', $(this).find('td').eq(6).find('input[type="text"]').val());
+                    data.append('IsChecked', 'yes');
+                    var files = $(this).find('td').eq(8).find('input[type="file"]').get(0).files;
+                    if (files.length > 0) {
+                        data.append("FileName", $(this).find('td').eq(8).find('input[type="file"]').get(0).files[0]);
+                    }
+                    debugger
+                    $.ajax({
+                        url: "/RenewalVows/AddRenewalVows",
+                        type: "POST",
+                        processData: false,
+                        contentType: false,
+                        data: data,
+                        success: function (response) {
+                        },
+                        error: function (er) {
+                        }
+
+                    });
+                }
+            });
+            alert("Record Save Successfully !");
+            window.location.reload();
+        });
+    </script>
+}

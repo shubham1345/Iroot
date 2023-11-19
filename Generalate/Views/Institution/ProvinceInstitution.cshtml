@@ -1,0 +1,77 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "ProvinceInstitution";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Add_Institution");}</span></div>
+                <div class="panel-body">
+                  
+                    <div class="box box-info">
+                        <div class="box-body overflow-daily" style="height:auto;">
+                            <div class="row" style="margin-top:20px;">
+                                <div style="margin-top:40PX" class="col-sm-12">
+                                    <a href="@Url.Action("Create","Institution")" class="btn">create</a>
+                                    <table class="table table-striped table-bordered table-hover" id="TblInstitution" style="margin-top:20px;">
+                                        <thead>
+                                            <tr style="background-color:#001f6b; color:white">
+                                                <th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Type");}</span> </th>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Document");}</span> </th>
+                                                @*<th><span>@{@HomeController.GetControlTextByControlId("Other_Doc");}</span> </th>*@
+                                                <th><span>Active / InActive</span> </th>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Action");}</span> </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbody">
+                                            @{
+                                                int ji = 1;
+                                                foreach (var item in @ViewBag.allinstitution as IEnumerable<Generalate.Models.Tbl_ParisInstitutionDetails>)
+                                                {
+                                                    <tr>
+                                                        <td>@ji</td>
+                                                        <td>@item.InstitutionType</td>
+                                                        <td>@item.Name</td>
+                                                        <td>
+                                                            @{
+                                                                if (!string.IsNullOrWhiteSpace(@item.FileName))
+                                                                {
+                                                                    <a target="_blank" href="~/Image/Institution/@item.FileName">View</a>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <a target="_blank" href="~/Image/No-data-found.png">View</a>
+                                                                }
+                                                            }
+                                                        </td>
+                                                        <td>@item.ActiveCkeck</td>
+                                                        <td>
+                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditInstitution"></i></button>
+                                                            <a href="/Institution/Edit?Id=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-trash-o InstitutionDelete"></i></a>
+                                                            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" onclick="clickInstitutionView(@item.Id);" data-val="@item.Id" class="fa fa-eye InstitutionView"></i></button>
+                                                        </td>
+                                                    </tr>
+                                                    ji++;
+                                                }
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+@section Scripts{
+    <script>
+        $(document).ready(function ()
+        {
+            $("#TblInstitution").DataTable();
+        });
+    </script>
+}

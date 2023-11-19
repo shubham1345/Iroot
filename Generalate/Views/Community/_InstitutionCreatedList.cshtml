@@ -1,0 +1,460 @@
+﻿@model Generalate.Models.Tbl_Cong
+@using Generalate.Controllers;
+
+@{
+    var viewpermissions = Session["TopmenuPermission"] as List<Generalate.Models.Tbl_TopMenuPermission>;
+}
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%" >
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th class=" AllShow hide-1" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th class=" AllShow hide-2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                <th class=" AllShow hide-3" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Province");}</span></th>
+                <th class=" AllShow hide-4" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                <th class=" AllShow hide-5" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Community Code");}</span></th>
+                <th class=" AllShow hide-6" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("District/Sector");}</span></th>
+                <th class=" AllShow hide-7" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Place");}</span></th>
+                <th class=" AllShow hide-8" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Country");}</span></th>
+                <th class=" AllShow hide-9" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                <th class=" AllShow hide-10" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Postal Code");}</span></th>
+                <th class=" AllShow hide-11" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Continent");}</span></th>
+                <th class=" AllShow hide-12" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Type of Community");}</span></th>
+                <th class=" AllShow hide-13" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Status");}</span></th>
+                <th class=" AllShow hide-14" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Diocese Name");}</span></th>
+                <th class=" AllShow hide-15" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Activities");}</span></th>
+                <th class=" AllShow hide-16" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                <th class=" AllShow hide-17" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Vision");}</span></th>
+                <th class=" AllShow hide-18" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Mission");}</span></th>
+                <th class=" AllShow hide-19" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Start Date");}</span></th>
+                <th class=" AllShow hide-20" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Close Date");}</span></th>
+                <th class=" AllShow hide-21" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Suspension Date");}</span></th>
+                <th class=" AllShow hide-22" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Restarting Date");}</span></th>
+                <th class=" AllShow hide-23" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Note/Remark");}</span></th>
+                <th class=" AllShow hide-24" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Active_/_InActive");}</span></th>
+                <th class=" AllShow hide-25" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = ViewBag.StartIndex;
+                foreach (var item in @ViewBag.allinstitution as IEnumerable<Generalate.Models.Tbl_Cong>)
+                {
+                    <tr>
+                        <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                        <td style="display:none" class="AllShow hide-1">@ji</td>
+                        <td style="display:none" class="AllShow hide-2"><a href="~/Community/Create?Id=@item.Id">@item.CongregationName</a></td>
+                        <td style="display:none" class="AllShow hide-3">@item.ProvinceName</td>
+                        <td style="display:none" class="AllShow hide-4">@item.Phone</td>
+                        <td style="display:none" class="AllShow hide-5">@item.CommCode</td>
+                        <td style="display:none" class="AllShow hide-6">@item.DisSec</td>
+                        <td style="display:none" class="AllShow hide-7">@item.Place</td>
+                        <td style="display:none" class="AllShow hide-8">@item.Country</td>
+                        <td style="display:none" class="AllShow hide-9">@item.EmailId</td>
+                        <td style="display:none" class="AllShow hide-10">@item.PostalCode</td>
+                        <td style="display:none" class="AllShow hide-11">@item.Continent</td>
+                        <td style="display:none" class="AllShow hide-12">@item.CommunityType</td>
+                        <td style="display:none" class="AllShow hide-13">@item.Status</td>
+                        <td style="display:none" class="AllShow hide-14">@item.Diocese</td>
+                        <td style="display:none" class="AllShow hide-15">@item.Activities</td>
+                        <td style="display:none" class="AllShow hide-16">@item.Address</td>
+                        <td style="display:none" class="AllShow hide-17">@item.Vission</td>
+                        <td style="display:none" class="AllShow hide-18">@item.Mission</td>
+                        <td style="display:none" class="AllShow hide-19">@item.StartDate</td>
+                        <td style="display:none" class="AllShow hide-20">@item.EndDate</td>
+                        <td style="display:none" class="AllShow hide-21">@item.SuspensionDate</td>
+                        <td style="display:none" class="AllShow hide-22">@item.RestartDate</td>
+                        <td style="display:none" class="AllShow hide-23">@item.Remark</td>
+
+                        @if (item.Status == 1)
+                        {
+                            <td style="display:none" class="AllShow hide-24">Active</td>
+                        }
+                        @if (item.Status == 3)
+                        {
+                            <td style="display:none" class="AllShow hide-24">InActive</td>
+                        }
+
+                            <td style="display:none" class="AllShow hide-25">
+
+                                @{
+                                    var ispermissionedit = viewpermissions.FirstOrDefault(x => x.Editpermission == true && x.PageName == "Community");
+                                    if (ispermissionedit != null)
+                                    {
+
+                                        <button type="button"><a href="~/Community/Create?Id=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditInstitution"></i></a></button>
+                                    }
+
+                                    var ispermissiondelete = viewpermissions.FirstOrDefault(x => x.Deletepermission == true && x.PageName == "Community");
+                                    if (ispermissiondelete != null)
+                                    {
+
+                                        <a onclick=" return confirm('Are you sure,you want to delete this record?')" href="/Community/DeleteParisInstitutionDetails?Id=@item.Id"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-trash-o InstitutionDelete"></i></a>
+                                    }
+
+                                    var ispermissionview = viewpermissions.FirstOrDefault(x => x.Viewpermission == true && x.PageName == "Community");
+                                    if (ispermissionview != null)
+                                    {
+
+                                        <button type="button"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye CommunityView"></i></button>
+                                    }
+
+                                }
+
+                            </td>
+                        <td></td>
+                    </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+    <div id="mySidenav_Dynamic" class="sidenav" style="display:none">
+        <div style="border-style:solid">
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-1" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("S_No");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-2" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Name");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-3" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Province");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-4" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Phone");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-5" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Community Code");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-6" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("District/Sector");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-7" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Place");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-8" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Country");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-9" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Email");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-10" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Postal Code");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-11" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Continent");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-12" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Type of Community");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-13" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Status");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-14" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Diocese Name");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-15" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Activities");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-16" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Address");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-17" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Vision");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-18" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Mission");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-19" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Start Date");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-20" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Close Date");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-21" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Suspension Date");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-22" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Restarting Date");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-23" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Note/Remark");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-24" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Active_/_InActive");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-25" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Action");}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <input type="hidden" id="DynamicTotalCount" value="@ViewBag.allinstitutionTotalCount" />
+</div>
+<script>
+    $(document).ready(function () {
+        $('.CommunityView').on("click", function () {
+            $('#myModal3').modal('show');
+            var id = $(this).attr("data-val");
+            //alert(id);
+            GetAllCommunityById1(id);
+            GetAllCommunityMemberById1(id);
+        });
+        $("#mySidenav").empty();
+        $("#mySidenav").html($('#mySidenav_Dynamic').html());
+        $('#mySidenav_Dynamic').empty();
+        var dynamiColData = '@ViewBag.ColumnShowComm';
+        //var dynamiColData = '';
+
+        if (dynamiColData != '') {
+            var CommaSepData = dynamiColData.split(',');
+            $.each(CommaSepData, function (index, value) {
+                $("#checkbox-grid-" + CommaSepData[index]).attr('checked', 'true');
+                $(".hide-" + CommaSepData[index]).show();
+            });
+        }
+        else {
+            $('input[class=notdivhide]').each(function () {
+                $(this).attr('checked', 'true');
+            });
+            $('.AllShow').show();
+        }
+        $('input[class=notdivhide]').on('click', function () {
+            var id = $(this).attr("id").replace('checkbox-grid-', '');
+            if ($(this).is(':checked')) {
+                $(".hide-" + id).show();
+            }
+            else {
+                $(".hide-" + id).hide();
+            }
+        });
+    });
+    function GetAllCommunityById1(id) {
+        $.ajax({
+            url: "/IdGenerate/GetAllCommunityById1?id=" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                $("#DisSecRegCommunity").text(data[0].DisSec);
+                $("#CommunityCodeCommunity").text(data[0].CommCode);
+                $("#CommunityNameCommunity").text(data[0].CongregationName);
+                $("#PlaceCommunity").text(data[0].Place);
+                $("#PhoneCommunity").text(data[0].Phone);
+                $("#CountryCommunity").text(data[0].Country);
+                $("#EmailCommunity").text(data[0].EmailId);
+                $("#ActiveCommunity").text(data[0].ActiveCkeck);
+                $("#DioceseNameCommunity").text(data[0].Diocese);
+                $("#ActivitiesCommunity").text(data[0].Activities);
+                $("#AddressCommunity").text(data[0].Address);
+                $("#VissionCommunity").text(data[0].Vission);
+                $("#MissionCommunity").text(data[0].Mission);
+
+                $("#FileCommunity").attr("href", "/Images/CommunitiesSocialCentresDoc/" + data[0].File);
+            },
+            error: function (er) {
+            }
+        });
+    }
+
+    function GetAllCommunityMemberById1(id) {
+        $.ajax({
+            url: "/IdGenerate/GetAllCommunityMembersById?id=" + id,
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (data) {
+                if (data != null) {
+                    var i = 1;
+                    $('#tblMemberDetails tbody').html("");
+                    data.forEach(function (user) {
+                        var row = "<tr><td>" + user.Name + "</td><td>" + user.FromDate + "</td><td>" + user.ToDate + "</td><td>" + user.DesignationType + "</td></tr>";
+                        $('#tblMemberDetails tbody').append(row);
+                        i = i + 1;
+                    });
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+
+</script>

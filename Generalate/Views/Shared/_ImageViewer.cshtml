@@ -1,0 +1,31 @@
+﻿@using Gnostice.Documents.Extensions.MVC;
+<div class="col-md-12">
+    @{
+        DocumentViewerSettings oViewerSettings = new DocumentViewerSettings();
+        oViewerSettings.Width = System.Web.UI.WebControls.Unit.Percentage(100);
+        oViewerSettings.Height = System.Web.UI.WebControls.Unit.Percentage(100);
+        //Gnostice.Documents.Framework.ActivateLicense("7648-70EE-88B0-8FD8-EC3A-64C9-C879-50C2-50AD-8415-8FE0-DDE9");
+        Gnostice.Documents.Framework.ActivateLicense("0CA6-E5C6-AC51-A901-ADAF-59B3-9F09-497A-3367-114E-E79E-3087");
+        
+    //Html.Gnostice().DocumentViewer(oViewerSettings).LoadDocument(Server.MapPath("~/App_Data/") + "pdf.pdf").Render();
+    
+        if (ViewBag.FileContent != null)
+            {
+            Html.Gnostice().DocumentViewer(oViewerSettings).LoadDocument(ViewBag.FileContent).Render();
+            }
+
+        if (ViewBag.PFileContent != null)
+        {
+            Html.Gnostice().DocumentViewer(oViewerSettings).LoadDocument(ViewBag.PFileContent).Render();
+        }
+   
+    }
+</div>
+
+@{
+    Html.Gnostice().RenderStyleSheets();
+    Html.Gnostice().RenderScripts();
+}
+
+
+

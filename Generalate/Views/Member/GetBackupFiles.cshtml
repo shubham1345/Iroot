@@ -1,0 +1,60 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "Database Backup Files";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="breadcrumb">
+    <li class="pull-right"><a style="font-size: 30px;" class="fa fa-angle-double-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1">Database Backup Files</div>
+                <div style="text-align:right">
+                    <span><a style="font-size: 25px; color:#3e8dd1;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <!-- Horizontal Form -->
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Database Backup Files</h3>
+                                </div>
+                                <div class="box-body">
+
+                                    @{int i = 1; }
+                                    @foreach (var fullPath in ViewBag.Files as List<string>)
+                                    {
+                                        var fileName = Path.GetFileName(fullPath);
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                @i
+                                            </div>
+                                            <div class="col-sm-3">
+                                                @fileName
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <a href="~/DatabaseBackupFiles/@fileName" download>Download DB File</a>
+                                            </div>
+                                        </div><br />
+
+                                        i++;
+                                    }
+
+                                </div>
+                            </div>
+                            <!-- /.box -->
+                            <!-- general form elements disabled -->
+                            <!-- /.box -->
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

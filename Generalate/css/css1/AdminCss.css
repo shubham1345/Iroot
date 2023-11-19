@@ -1,0 +1,95 @@
+﻿.pad-no {
+    padding: 0px !important;
+}
+.pad-all-fifteen {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 22px;
+    padding-bottom: 22px;
+    font-weight: bold;
+}
+.bg-success-2 {
+    background-color: #a9d08e;
+    color: #fff;
+}
+.mar-btm-no {
+    margin-bottom: -10px !important;
+}
+.bg-success-1 {
+    background-color: #ccff99;
+    color: #0033cc;
+}
+.bg-info-2 {
+    background-color: #ff7c80;
+    color: #fff !important;
+}
+.bg-info-1 {
+    background-color: #f8cbad;
+    color: #0033cc;
+}
+.clr-white {
+    color: #fff
+}
+.bg-pink-1 {
+    background-color: #ffccff;
+    color: #0033cc;
+}
+
+.bg-pink-dark {
+    background-color: #9bc2e6;
+    color: #fff !important;
+}
+
+.bg-pink-dark-1 {
+    background-color: #ddebf7;
+    color: #0033cc;
+}
+
+.bg-blue-bacup {
+    background-color: #004778;
+    color: #fff;
+    border: 1px solid #004778;
+}
+
+.bg-blue-admin {
+    background-color: #004778;
+    color: #fff;
+    border: 1px solid #004778;
+}
+.clearfix {
+    zoom: 1;
+}
+
+    .clearfix:before,
+    .clearfix:after {
+        content: "";
+        display: table;
+    }
+
+    .clearfix:after {
+        clear: both;
+    }
+.pad-all {
+    padding: 10px !important;
+}
+.mar-top-twelve {
+    margin-top: 12px !important;
+}
+.bg-blue-bacup {
+    background-color: #004778;
+    color: #fff;
+    border: 1px solid #004778;
+}
+.daily-report {
+    background-color: #004778;
+    padding: 10px;
+    text-align: center;
+    color: #fff;
+    margin-bottom: 0px;
+}
+
+.overflow-daily {
+    height: 109px;
+    overflow-y: auto;
+    padding-top: 10px;
+}

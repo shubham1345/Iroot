@@ -1,0 +1,113 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "AllProvinceData";
+
+}
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <span>@{@HomeController.GetControlTextByControlId("Province_Data");}</span>
+                    <input type="button" class="btn btn-success pull-right" value=@HomeController.GetControlTextByControlId("Print") id="btnPrint" />
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="FromDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("From Date");}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-5">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="ToDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("To Date");}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-success pull-right" id="btnSearch" value="@{@HomeController.GetControlTextByControlId("Filter");}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="tblSocDiv">
+                                <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                    <h2><b>@{@HomeController.GetControlTextByControlId("Brothers Of St. Gabriel");}</b></h2>
+                                    <h2>@{@HomeController.GetControlTextByControlId("Casa Generalizia");}</h2>
+                                    <h2>@{@HomeController.GetControlTextByControlId("Via Trionfale 12840 - 00135 Roma");}</h2>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                    <table class="table table-bordered" id="tblProdata" style="margin-top:50px;"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script>
+        $('#btnPrint').on("click", function () {
+            $('#tblSocDiv').printThis();
+        });
+    </script>
+
+    <script>
+        $('#ToDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2050'
+        });
+
+        $('#FromDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2050'
+        });
+    </script>
+
+    <script>
+        GetReportData("", "");
+        $("#btnSearch").on("click", function () {
+            var FromDate = $("#FromDate").val();
+            var ToDate = $("#ToDate").val();
+
+            if (FromDate == "" || ToDate == "") {
+                alert("Please Select FromDate or ToDate !");
+                return false;
+            }
+           // alert(FromDate + " - " + ToDate)
+            GetReportData(FromDate, ToDate);
+        });
+
+        function GetReportData(FromDate, ToDate) {
+            $.ajax({
+                url: "/AllProvinceData/AllProvinceDataReport?FromDate=" + FromDate + "&ToDate=" + ToDate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $("#tblProdata").html("");
+                    $("#tblProdata").html(result);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+}

@@ -1,0 +1,2116 @@
+﻿@using Generalate.Controllers;
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<link href="~/css/Dashboard/css/theme.css" rel="stylesheet" />
+
+<style>
+    .panel-title {
+        color: #33353f;
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 20px;
+        padding: 0;
+        text-transform: none;
+    }
+
+    .mar-btm {
+        margin-bottom: 15px;
+    }
+
+    .panel-subtitle {
+        color: #808697;
+        font-size: 12px;
+        line-height: 1.2em;
+        margin: 7px 0 0;
+        padding: 0;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+
+</style>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-sm-12 bg-white pad-no pad-top">
+                        <div class="col-md-5">
+                            <h2 class="dtl-title" style="margin-top:15px;"><span>@{@HomeController.GetControlTextByControlId("DetailsofMembers");}</span></h2>
+                            <div class="tabs tabs-dark">
+                                <ul class="nav nav-tabs nav-justified">
+                                    <li class="active">
+                                        <a href="#primarymember" data-toggle="tab">
+                                            <i class="fa fa-star"></i> <span>@{@HomeController.GetControlTextByControlId("Primary_Member");}</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#ministry" data-toggle="tab">
+                                            <i class="fa fa-star-o"></i><span>@{@HomeController.GetControlTextByControlId("Ministry_Details");}</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <div class="tab-content">
+                                    <div id="primarymember" class="tab-pane active">
+                                        <div class="col-sm-12 pad-no mar-btm mar-top">
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-primary">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Total_Member");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" id="TotalMember" style="color:white; margin-top:10px;">@ViewBag.AllMembersCount</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-extra5">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("First_Profession");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" id="TotalFirstProfession" style="color:white; margin-top:10px;">@ViewBag.All1stProfession</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-12 pad-no">
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-extra1">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Ordination");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" id="TotalOrdination" style="color:white; margin-top:10px;">@ViewBag.AllOrdined</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-secondary">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Separation");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" id="TotalSapration" style="color:white; margin-top:10px;">@ViewBag.AllSapration</h4>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+
+                                    <div id="ministry" class="tab-pane">
+                                        <div class="col-sm-12 pad-no mar-btm mar-top">
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-extra2">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Appointment");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" id="TotalAppointment" style="color:white; margin-top:10px;">@ViewBag.AllAppointment</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-extra3">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Academics");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" id="TotalAcademic" style="color:white; margin-top:10px;">@ViewBag.AllAcademy</h4>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-sm-12 pad-no">
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-extra4">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Complaint");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" style="color:white; margin-top:20px;" id="TotalComplaint">@ViewBag.AllComplain</h4>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="member-main bg-quartenary">
+                                                    <h4 class="mar-btm-no text-center" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("Death_Record");}</span></h4>
+                                                    <h4 class="mar-btm-no text-center" style="color:white; margin-top:10px;" id="TotalDiedMember">@ViewBag.AllDeathRecordCount</h4>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="clearfix"></div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 pad-no" style="margin-top:40px;">
+                                    <section class="panel panel-danger">
+                                        <header class="panel-heading">
+                                            <div class="panel-actions">
+                                                <a href="#" class="fa fa-caret-down"></a>
+                                            </div>
+                                            <h2 class="panel-title"><i class="fa fa-bell"></i>&nbsp; <span>@{@HomeController.GetControlTextByControlId("Meetings_Reminders");}</span></h2>
+                                        </header>
+                                        <div class="panel-body brd-panel overflow-daily" style="height:410px;">
+                                            <div id="AppoData"></div>
+                                            <div id="RemindData"></div>
+                                        </div>
+                                    </section>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-7">
+                            <div class="radio mar-top-no">
+                                <input id="generalateradio" class="magic-radio" type="radio" name="inline-form-radio1" checked>
+                                <label for="generalateradio" style="margin-top:15px;"><span>@{@HomeController.GetControlTextByControlId("Generalate");}</span></label>
+                                <input id="provinceradio" class="magic-radio" type="radio" name="inline-form-radio1">
+                                <label for="provinceradio" style="margin-top:15px;"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></label>
+                            </div>
+
+                            <div class="col-md-12 pad-no">
+                                <div class="tabs tabs-dark">
+                                    <ul class="nav nav-tabs nav-justified">
+                                        <li class="active">
+                                            <a href="#popular3" data-toggle="tab"><i class="fa fa-certificate"></i> <span>@{@HomeController.GetControlTextByControlId("Apostolate");}</span></a>
+                                        </li>
+                                        <li>
+                                            <a href="#recent3" data-toggle="tab"><i class="fa fa-file-o"></i> <span>@{@HomeController.GetControlTextByControlId("Governance");}</span></a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div id="popular3" class="tab-pane active">
+                                            <h2 style="color: #33353f;font-size: 17px;font-weight: 400;line-height: 20px;padding: 0;text-transform: none;"> <span>@{@HomeController.GetControlTextByControlId("Education");}</span></h2>
+                                            <p style="margin-bottom: 17px;color: #808697; font-size: 13px; line-height: 1.2em;margin: 7px 0 0;padding: 0;">
+                                                The Apostolate of Education We
+                                                envisage an education which fosters formation,
+                                                transformation and integration of creation.
+                                            </p>
+                                            <a class="mb-xs mt-xs mr-xs modal-basic btn btn-primary" data-toggle="modal" data-target="#modalBasic" style="color: #ffffff;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);background-color: #0088cc;border-color: #0088cc;">
+                                                View Details
+                                            </a>
+                                        </div>
+
+                                        <div id="recent3" class="tab-pane">
+                                            <p><span>@{@HomeController.GetControlTextByControlId("Governance");}</span></p>
+                                            <p>
+                                                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
+                                                veniam, quis nostrud exercitat.
+                                            </p>
+                                            <a class="mb-xs mt-xs mr-xs modal-basic btn btn-primary" data-toggle="modal" data-target="#modalBasic1" style="color: #ffffff;text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);background-color: #0088cc;border-color: #0088cc;">
+                                                View Details
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 col-lg-12 col-xl-4 pad-no">
+                                <div class="row">
+                                    <div class="col-md-5 col-xl-12" style="width:30%;">
+                                        <section class="panel">
+                                            <div class="panel-body bg-quartenary">
+                                                <div class="widget-summary">
+                                                    <div class="widget-summary-col widget-summary-col-icon">
+                                                        <div class="summary-icon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-summary-col">
+                                                        <div class="summary">
+                                                            <h4 class="title"><span>@{@HomeController.GetControlTextByControlId("Birth_Day");}</span></h4>
+                                                            <div class="info">
+                                                                <p class="amount" id="date">@System.DateTime.Now.ToString("dd-MM-yyyy")</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="summary-footer">
+                                                            <a class="text-uppercase" id="TotalBirthMember" style="cursor:pointer;"><span>@{@HomeController.GetControlTextByControlId("viewall");}</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-md-3 col-xl-12" style="width:30%">
+                                        <section class="panel">
+                                            <div class="panel-body bg-success">
+                                                <div class="widget-summary">
+                                                    <div class="widget-summary-col widget-summary-col-icon">
+                                                        <div class="summary-icon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-summary-col">
+                                                        <div class="summary">
+                                                            <h4 class="title"><span>@{@HomeController.GetControlTextByControlId("Feast_Day");}</span></h4>
+                                                            <div class="info">
+                                                                <p class="amount" id="date">@System.DateTime.Now.ToString("dd-MM-yyyy")</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="summary-footer">
+                                                            <a class="text-uppercase" id="TotalFeastday" style="cursor:pointer;"><span>@{@HomeController.GetControlTextByControlId("viewall");}</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-md-3 col-xl-12" style="width:32%">
+                                        <section class="panel">
+                                            <div class="panel-body bg-danger">
+                                                <div class="widget-summary">
+                                                    <div class="widget-summary-col widget-summary-col-icon">
+                                                        <div class="summary-icon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-summary-col">
+                                                        <div class="summary">
+                                                            <h4 class="title"><span>@{@HomeController.GetControlTextByControlId("EternalDay");}</span></h4>
+                                                            <div class="info">
+                                                                <p class="amount" id="date">@System.DateTime.Now.ToString("dd-MM-yyyy")</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="summary-footer">
+                                                            <a class="text-uppercase" id="TotalEternal" style="cursor:pointer;"><span>@{@HomeController.GetControlTextByControlId("viewall");}</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3 col-xl-12" style="width:35%">
+                                        <section class="panel">
+                                            <div class="panel-body bg-secondary">
+                                                <div class="widget-summary">
+                                                    <div class="widget-summary-col widget-summary-col-icon">
+                                                        <div class="summary-icon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-summary-col">
+                                                        <div class="summary">
+                                                            <h4 class="title"><span>@{@HomeController.GetControlTextByControlId("Jubilee");}</span></h4>
+                                                            <div class="info">
+                                                                <p class="amount" id="date">@System.DateTime.Now.ToString("dd-MM-yyyy")</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="summary-footer">
+                                                            <a class="text-uppercase" id="TotalJubileedata" style="cursor:pointer;"><span>@{@HomeController.GetControlTextByControlId("viewall");}</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                    <div class="col-md-3 col-xl-12" style="width:32%">
+                                        <section class="panel">
+                                            <div class="panel-body bg-primary">
+                                                <div class="widget-summary">
+                                                    <div class="widget-summary-col widget-summary-col-icon">
+                                                        <div class="summary-icon">
+                                                            <i class="fa fa-calendar"></i>
+                                                        </div>
+                                                    </div>
+                                                    <div class="widget-summary-col">
+                                                        <div class="summary">
+                                                            <h4 class="title"><span>@{@HomeController.GetControlTextByControlId("Ordination");}</span></h4>
+                                                            <div class="info">
+                                                                <p class="amount" id="date">@System.DateTime.Now.ToString("dd-MM-yyyy")</p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="summary-footer">
+                                                            <a class="text-uppercase" id="TotalOrdinationData" style="cursor:pointer;"><span>@{@HomeController.GetControlTextByControlId("viewall");}</span></a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </section>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalBasic" style="width:1420px; margin-left:90px; margin-top:50px; z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Schools And Colleges</h2>
+            </header>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-none">
+                            <thead>
+                                <tr style="color:#ffffff ;background-color: #0088cc ;border-color: #0088cc;">
+                                    <th></th>
+                                    <th>Central Administer</th>
+                                    <th>Brazzaville</th>
+                                    <th>Canada</th>
+                                    <th>Spain</th>
+                                    <th>France</th>
+                                    <th>Bengaluru</th>
+                                    <th>Delhi</th>
+                                    <th>North East India</th>
+                                    <th>Hyderabad</th>
+                                    <th>Pune</th>
+                                    <th>Ranchi</th>
+                                    <th>Trichy</th>
+                                    <th>Yercaud</th>
+                                    <th>Kinshasa</th>
+                                    <th>Malaysia-Singapore</th>
+                                    <th>Province Of East Africa</th>
+                                    <th>Senegal</th>
+                                    <th>Thailand</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="bg-bcl">Pre-Primary/ Nursery</td>
+                                    <td>@ViewBag.AllPrePri</td>
+                                    <td>@ViewBag.AllPrePri1</td>
+                                    <td>@ViewBag.AllPrePri2</td>
+                                    <td>@ViewBag.AllPrePri3</td>
+                                    <td>@ViewBag.AllPrePri4</td>
+                                    <td>@ViewBag.AllPrePri5</td>
+                                    <td>@ViewBag.AllPrePri6</td>
+                                    <td>@ViewBag.AllPrePri7</td>
+                                    <td>@ViewBag.AllPrePri8</td>
+                                    <td>@ViewBag.AllPrePri9</td>
+                                    <td>@ViewBag.AllPrePri10</td>
+                                    <td>@ViewBag.AllPrePri11</td>
+                                    <td>@ViewBag.AllPrePri12</td>
+                                    <td>@ViewBag.AllPrePri13</td>
+                                    <td>@ViewBag.AllPrePri14</td>
+                                    <td>@ViewBag.AllPrePri15</td>
+                                    <td>@ViewBag.AllPrePri16</td>
+                                    <td>@ViewBag.AllPrePri17</td>
+                                    <td>@ViewBag.AllPrePri18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Primary</td>
+                                    <td>@ViewBag.AllPri</td>
+                                    <td>@ViewBag.AllPri1</td>
+                                    <td>@ViewBag.AllPri2</td>
+                                    <td>@ViewBag.AllPri3</td>
+                                    <td>@ViewBag.AllPri4</td>
+                                    <td>@ViewBag.AllPri5</td>
+                                    <td>@ViewBag.AllPri6</td>
+                                    <td>@ViewBag.AllPri7</td>
+                                    <td>@ViewBag.AllPri8</td>
+                                    <td>@ViewBag.AllPri9</td>
+                                    <td>@ViewBag.AllPri10</td>
+                                    <td>@ViewBag.AllPri11</td>
+                                    <td>@ViewBag.AllPri12</td>
+                                    <td>@ViewBag.AllPri13</td>
+                                    <td>@ViewBag.AllPri14</td>
+                                    <td>@ViewBag.AllPri15</td>
+                                    <td>@ViewBag.AllPri16</td>
+                                    <td>@ViewBag.AllPri17</td>
+                                    <td>@ViewBag.AllPri18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Middle School</td>
+                                    <td>@ViewBag.AllMidShl</td>
+                                    <td>@ViewBag.AllMidShl1</td>
+                                    <td>@ViewBag.AllMidShl2</td>
+                                    <td>@ViewBag.AllMidShl3</td>
+                                    <td>@ViewBag.AllMidShl4</td>
+                                    <td>@ViewBag.AllMidShl5</td>
+                                    <td>@ViewBag.AllMidShl6</td>
+                                    <td>@ViewBag.AllMidShl7</td>
+                                    <td>@ViewBag.AllMidShl8</td>
+                                    <td>@ViewBag.AllMidShl9</td>
+                                    <td>@ViewBag.AllMidShl10</td>
+                                    <td>@ViewBag.AllMidShl11</td>
+                                    <td>@ViewBag.AllMidShl12</td>
+                                    <td>@ViewBag.AllMidShl13</td>
+                                    <td>@ViewBag.AllMidShl14</td>
+                                    <td>@ViewBag.AllMidShl15</td>
+                                    <td>@ViewBag.AllMidShl16</td>
+                                    <td>@ViewBag.AllMidShl17</td>
+                                    <td>@ViewBag.AllMidShl18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">High School</td>
+                                    <td>@ViewBag.AllHighShl</td>
+                                    <td>@ViewBag.AllHighShl1</td>
+                                    <td>@ViewBag.AllHighShl2</td>
+                                    <td>@ViewBag.AllHighShl3</td>
+                                    <td>@ViewBag.AllHighShl4</td>
+                                    <td>@ViewBag.AllHighShl5</td>
+                                    <td>@ViewBag.AllHighShl6</td>
+                                    <td>@ViewBag.AllHighShl7</td>
+                                    <td>@ViewBag.AllHighShl8</td>
+                                    <td>@ViewBag.AllHighShl9</td>
+                                    <td>@ViewBag.AllHighShl10</td>
+                                    <td>@ViewBag.AllHighShl11</td>
+                                    <td>@ViewBag.AllHighShl12</td>
+                                    <td>@ViewBag.AllHighShl13</td>
+                                    <td>@ViewBag.AllHighShl14</td>
+                                    <td>@ViewBag.AllHighShl15</td>
+                                    <td>@ViewBag.AllHighShl16</td>
+                                    <td>@ViewBag.AllHighShl17</td>
+                                    <td>@ViewBag.AllHighShl18</td>
+
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Hr. Sec./ PU College</td>
+                                    <td>@ViewBag.AllSecPU</td>
+                                    <td>@ViewBag.AllSecPU1</td>
+                                    <td>@ViewBag.AllSecPU2</td>
+                                    <td>@ViewBag.AllSecPU3</td>
+                                    <td>@ViewBag.AllSecPU4</td>
+                                    <td>@ViewBag.AllSecPU5</td>
+                                    <td>@ViewBag.AllSecPU6</td>
+                                    <td>@ViewBag.AllSecPU7</td>
+                                    <td>@ViewBag.AllSecPU8</td>
+                                    <td>@ViewBag.AllSecPU9</td>
+                                    <td>@ViewBag.AllSecPU10</td>
+                                    <td>@ViewBag.AllSecPU11</td>
+                                    <td>@ViewBag.AllSecPU12</td>
+                                    <td>@ViewBag.AllSecPU13</td>
+                                    <td>@ViewBag.AllSecPU14</td>
+                                    <td>@ViewBag.AllSecPU15</td>
+                                    <td>@ViewBag.AllSecPU16</td>
+                                    <td>@ViewBag.AllSecPU17</td>
+                                    <td>@ViewBag.AllSecPU18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">CBSE School</td>
+                                    <td>@ViewBag.AllCBSC</td>
+                                    <td>@ViewBag.AllCBSC1</td>
+                                    <td>@ViewBag.AllCBSC2</td>
+                                    <td>@ViewBag.AllCBSC3</td>
+                                    <td>@ViewBag.AllCBSC4</td>
+                                    <td>@ViewBag.AllCBSC5</td>
+                                    <td>@ViewBag.AllCBSC6</td>
+                                    <td>@ViewBag.AllCBSC7</td>
+                                    <td>@ViewBag.AllCBSC8</td>
+                                    <td>@ViewBag.AllCBSC9</td>
+                                    <td>@ViewBag.AllCBSC10</td>
+                                    <td>@ViewBag.AllCBSC11</td>
+                                    <td>@ViewBag.AllCBSC12</td>
+                                    <td>@ViewBag.AllCBSC13</td>
+                                    <td>@ViewBag.AllCBSC14</td>
+                                    <td>@ViewBag.AllCBSC15</td>
+                                    <td>@ViewBag.AllCBSC16</td>
+                                    <td>@ViewBag.AllCBSC17</td>
+                                    <td>@ViewBag.AllCBSC18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">College</td>
+                                    <td>@ViewBag.AllCollege</td>
+                                    <td>@ViewBag.AllCollege1</td>
+                                    <td>@ViewBag.AllCollege2</td>
+                                    <td>@ViewBag.AllCollege3</td>
+                                    <td>@ViewBag.AllCollege4</td>
+                                    <td>@ViewBag.AllCollege5</td>
+                                    <td>@ViewBag.AllCollege6</td>
+                                    <td>@ViewBag.AllCollege7</td>
+                                    <td>@ViewBag.AllCollege8</td>
+                                    <td>@ViewBag.AllCollege9</td>
+                                    <td>@ViewBag.AllCollege10</td>
+                                    <td>@ViewBag.AllCollege11</td>
+                                    <td>@ViewBag.AllCollege12</td>
+                                    <td>@ViewBag.AllCollege13</td>
+                                    <td>@ViewBag.AllCollege14</td>
+                                    <td>@ViewBag.AllCollege15</td>
+                                    <td>@ViewBag.AllCollege16</td>
+                                    <td>@ViewBag.AllCollege17</td>
+                                    <td>@ViewBag.AllCollege18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">
+                                        Training College B.Ed. ,
+                                        M.Ed. &amp; D.Ed.
+                                    </td>
+                                    <td>@ViewBag.AllCollegeBMD</td>
+                                    <td>@ViewBag.AllCollegeBMD1</td>
+                                    <td>@ViewBag.AllCollegeBMD2</td>
+                                    <td>@ViewBag.AllCollegeBMD3</td>
+                                    <td>@ViewBag.AllCollegeBMD4</td>
+                                    <td>@ViewBag.AllCollegeBMD5</td>
+                                    <td>@ViewBag.AllCollegeBMD6</td>
+                                    <td>@ViewBag.AllCollegeBMD7</td>
+                                    <td>@ViewBag.AllCollegeBMD8</td>
+                                    <td>@ViewBag.AllCollegeBMD9</td>
+                                    <td>@ViewBag.AllCollegeBMD10</td>
+                                    <td>@ViewBag.AllCollegeBMD11</td>
+                                    <td>@ViewBag.AllCollegeBMD12</td>
+                                    <td>@ViewBag.AllCollegeBMD13</td>
+                                    <td>@ViewBag.AllCollegeBMD14</td>
+                                    <td>@ViewBag.AllCollegeBMD15</td>
+                                    <td>@ViewBag.AllCollegeBMD16</td>
+                                    <td>@ViewBag.AllCollegeBMD17</td>
+                                    <td>@ViewBag.AllCollegeBMD18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Community College</td>
+                                    <td>@ViewBag.AllComClg</td>
+                                    <td>@ViewBag.AllComClg1</td>
+                                    <td>@ViewBag.AllComClg2</td>
+                                    <td>@ViewBag.AllComClg3</td>
+                                    <td>@ViewBag.AllComClg4</td>
+                                    <td>@ViewBag.AllComClg5</td>
+                                    <td>@ViewBag.AllComClg6</td>
+                                    <td>@ViewBag.AllComClg7</td>
+                                    <td>@ViewBag.AllComClg8</td>
+                                    <td>@ViewBag.AllComClg9</td>
+                                    <td>@ViewBag.AllComClg10</td>
+                                    <td>@ViewBag.AllComClg11</td>
+                                    <td>@ViewBag.AllComClg12</td>
+                                    <td>@ViewBag.AllComClg13</td>
+                                    <td>@ViewBag.AllComClg14</td>
+                                    <td>@ViewBag.AllComClg15</td>
+                                    <td>@ViewBag.AllComClg16</td>
+                                    <td>@ViewBag.AllComClg17</td>
+                                    <td>@ViewBag.AllComClg18</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Distance Education</td>
+                                    <td>@ViewBag.AllDisEdu</td>
+                                    <td>@ViewBag.AllDisEdu1</td>
+                                    <td>@ViewBag.AllDisEdu2</td>
+                                    <td>@ViewBag.AllDisEdu3</td>
+                                    <td>@ViewBag.AllDisEdu4</td>
+                                    <td>@ViewBag.AllDisEdu5</td>
+                                    <td>@ViewBag.AllDisEdu6</td>
+                                    <td>@ViewBag.AllDisEdu7</td>
+                                    <td>@ViewBag.AllDisEdu8</td>
+                                    <td>@ViewBag.AllDisEdu9</td>
+                                    <td>@ViewBag.AllDisEdu10</td>
+                                    <td>@ViewBag.AllDisEdu11</td>
+                                    <td>@ViewBag.AllDisEdu12</td>
+                                    <td>@ViewBag.AllDisEdu13</td>
+                                    <td>@ViewBag.AllDisEdu14</td>
+                                    <td>@ViewBag.AllDisEdu15</td>
+                                    <td>@ViewBag.AllDisEdu16</td>
+                                    <td>@ViewBag.AllDisEdu17</td>
+                                    <td>@ViewBag.AllDisEdu18</td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-default modal-dismiss" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
+
+    <div class="modal fade" id="modalBasic1" style="width:1000px; margin-left:250px; margin-top:50px; z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <section class="panel">
+            <header class="panel-heading">
+                <h2 class="panel-title">Governance</h2>
+            </header>
+            <div class="panel-body">
+                <div class="col-md-12">
+                    <div class="table-responsive">
+                        <table class="table table-bordered mb-none">
+                            <thead>
+                                <tr style="color: #0088cc ;background-color: #ffffff;border-color: #0088cc;">
+                                    <th></th>
+                                    <th><b>Total</b></th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td class="bg-bcl">Central Administer</td>
+                                    <td>@ViewBag.AllGoverner</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Brazzaville</td>
+                                    <td>@ViewBag.AllGoverner1</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Canada</td>
+                                    <td>@ViewBag.AllGoverner2</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Spain</td>
+                                    <td>@ViewBag.AllGoverner3</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">France</td>
+                                    <td>@ViewBag.AllGoverner4</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Bengaluru</td>
+                                    <td>@ViewBag.AllGoverner5</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Delhi</td>
+                                    <td>@ViewBag.AllGoverner6</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">North East India</td>
+                                    <td>@ViewBag.AllGoverner7</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Hyderabad</td>
+                                    <td>@ViewBag.AllGoverner8</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Pune</td>
+                                    <td>@ViewBag.AllGoverner9</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Ranchi</td>
+                                    <td>@ViewBag.AllGoverner10</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Trichy</td>
+                                    <td>@ViewBag.AllGoverner11</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Yercaud</td>
+                                    <td>@ViewBag.AllGoverner12</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Kinshasa</td>
+                                    <td>@ViewBag.AllGoverner13</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Malaysia-Singapore</td>
+                                    <td>@ViewBag.AllGoverner14</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Province Of East Africa</td>
+                                    <td>@ViewBag.AllGoverner15</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Senegal</td>
+                                    <td>@ViewBag.AllGoverner16</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl">Thailand</td>
+                                    <td>@ViewBag.AllGoverner17</td>
+
+                                </tr>
+                                <tr>
+                                    <td class="bg-bcl"><b>Grand Total</b></td>
+                                    <td><b>@ViewBag.AllGoverner18</b></td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <footer class="panel-footer">
+                <div class="row">
+                    <div class="col-md-12 text-right">
+                        <button type="button" class="btn btn-default modal-dismiss" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </footer>
+        </section>
+    </div>
+
+    <div class="modal fade" id="myModal2" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Profile</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewTotalMember"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal3" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Profile</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewSapration"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal4" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Profile</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewEternalDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal5" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Profile</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewHealthDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal6" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewFamilyDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal7" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewSacramentDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal8" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewAppointDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal9" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewAcademicDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal10" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewFormationDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal11" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>View Details</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewComlainsDetails"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal12" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Birthday</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewBirthMember"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal13" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Feastday</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewFeastMember"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal14" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Eternal Day</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewEternaldayMember"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal15" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>First Profession</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewFirstProfession"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal16" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Novitiate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewPerProfession"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal17" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Ordination</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewOrdination"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal18" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Novitiate</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewPerProfession"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal19" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Ordination</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewOrdination"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal20" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>From Date</th>
+                                        <th>To Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewOrdination1"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="myModal21" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Manage Field Value</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name</th>
+                                        <th>Date</th>
+                                        <th>Jubilee Type</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ViewPerProfesion"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script src="~/css/Dashboard/AdminDashboardJS.js"></script>
+
+    @*totalMember*@
+    <script>
+        $(function () {
+            $("#TotalMember").on("click", function () {
+                GetAllPrileViewData();
+            });
+        })
+
+        function GetAllPrileViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllPrileViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewTotalMember').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/Home/MemberDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewTotalMember').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal2").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+
+                }
+            });
+        }
+        $("#Databasebackup").on("click", function () {
+            $.ajax({
+                url: "/Member/DatabaseBackup",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    alert(response);
+                },
+                error: function (er) {
+                }
+            });
+        })
+    </script>
+
+    @*totalSapration*@
+    <script>
+        $(function () {
+            $("#TotalSapration").on("click", function () {
+                GetAllSaprationViewData();
+            });
+        })
+
+        function GetAllSaprationViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllSaprationViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewSapration').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberID != null && data.MemberID != "") {
+                                    url = "/HomeUser/SaprationDetails?id=" + data.MemberID;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewSapration').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal3").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+
+                }
+            });
+        }
+
+    </script>
+
+    @*totalEternal*@
+    <script>
+        $(function () {
+            $("#TotalDiedMember").on("click", function () {
+                GetAllEternalViewData();
+            });
+        })
+
+        function GetAllEternalViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllEternalViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewEternalDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberID != null && data.MemberID != "") {
+                                    url = "/Home/DeathRecord?id=" + data.MemberID;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewEternalDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal4").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+
+                }
+            });
+        }
+
+    </script>
+
+    @*totalhealth*@
+    <script>
+        $(function () {
+            $("#TotalHealth").on("click", function () {
+                GetAllHealthViewData();
+            });
+        })
+
+        function GetAllHealthViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllHealthViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewHealthDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberID != null && data.MemberID != "") {
+                                    url = "/HomeUser/HealthDetails?id=" + data.MemberID;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewHealthDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal5").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*tatalCandidate*@
+    <script>
+        $(function () {
+            $("#TotalCandidate").on("click", function () {
+                GetCandidacy();
+            });
+        })
+
+        function GetCandidacy() {
+            $.ajax({
+                url: "/HomeUser/GetCandidacy",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewFamilyDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/PerProfessionDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+
+                                $('#ViewFamilyDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal6").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalsacrament*@
+    <script>
+        $(function () {
+            $("#TotalSacrament").on("click", function () {
+                GetAllSacramentViewData();
+            });
+        })
+
+        function GetAllSacramentViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllSacramentViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewSacramentDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/SacramentDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewSacramentDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal7").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalappointment*@
+    <script>
+        $(function () {
+            $("#TotalAppointment").on("click", function () {
+                GetAllAppointViewData();
+            });
+        })
+
+        function GetAllAppointViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllAppointViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewAppointDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/AppointmentDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewAppointDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal8").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalacademic*@
+    <script>
+        $(function () {
+            $("#TotalAcademic").on("click", function () {
+                GetAllAcademicViewData();
+            });
+        })
+
+        function GetAllAcademicViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllAcademicViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewAcademicDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/AcademicDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewAcademicDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal9").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalformation*@
+    <script>
+        $(function () {
+            $("#TotalFormation").on("click", function () {
+                GetAllFormationViewData();
+            });
+        })
+
+        function GetAllFormationViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllFormationViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewFormationDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/FormationDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewFormationDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal10").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalcomlains*@
+    <script>
+        $(function () {
+            $("#TotalComplaint").on("click", function () {
+                GetAllComplainViewData();
+            });
+        })
+
+        function GetAllComplainViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllComplainViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewComlainsDetails').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/ComplaintDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewComlainsDetails').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal11").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*ToalFirstProfession*@
+    <script>
+        $(function () {
+            $("#TotalFirstProfession").on("click", function () {
+                GetFirstProfesssion();
+            });
+        })
+
+        function GetFirstProfesssion() {
+            $.ajax({
+                url: "/HomeUser/GetFirstProfesssion",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewFirstProfession').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/FirstProfessionDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewFirstProfession').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal15").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*TotalNovitiate*@
+    <script>
+        $(function () {
+            $("#TotalNovitiate").on("click", function () {
+                GetPerNovitiate();
+            });
+        })
+
+        function GetPerNovitiate() {
+            $.ajax({
+                url: "/HomeUser/GetPerNovitiate",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewPerProfession').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/PerProfessionDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewPerProfession').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal16").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalbirthmember*@
+    <script>
+        $(function () {
+            $("#TotalBirthMember").on("click", function () {
+                GetAllBirthViewData();
+            });
+        })
+
+        function GetAllBirthViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllBirthViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewBirthMember').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.DOB + "</td></tr>";
+                                $('#ViewBirthMember').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal12").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalfeastmember*@
+    <script>
+        $(function () {
+            $("#TotalFeastday").on("click", function () {
+                GetAllFeastViewData();
+            });
+        })
+
+        function GetAllFeastViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllFeastViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewFeastMember').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.Feastday + "</td></tr>";
+                                $('#ViewFeastMember').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal13").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totaleternalmember*@
+    <script>
+        $(function () {
+            $("#TotalEternal").on("click", function () {
+                GetAllEternalDayViewData();
+            });
+        })
+
+        function GetAllEternalDayViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllEternalDayViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewEternaldayMember').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.Date + "</td></tr>";
+                                $('#ViewEternaldayMember').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal14").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalappo*@
+    <script>
+        $(document).ready(function () {
+            AppoData();
+        });
+        function AppoData() {
+            $.ajax({
+                url: "/HomeUser/AppoData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (AppoData) {
+                  //debugger;
+                    if (AppoData != null) {
+                      //debugger;
+                        var html = "";
+                        AppoData.forEach(function (user) {
+                          //debugger;
+
+                            html = html + "<p class='bg-default pad-all-ten'>";
+                            html = html + "<span>" + user.Description + "</span>";
+                            html = html + "<span class='mar-top db-clr text-right'>" + user.Date + "</span>";
+                            html = html + "</p>";
+
+                        });
+                        $('#AppoData').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*totalremind*@
+    <script>
+        $(document).ready(function () {
+            RemindData();
+        });
+
+        function RemindData() {
+            $.ajax({
+                url: "/HomeUser/RemindData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (AppoData) {
+                  //debugger;
+                    if (AppoData != null) {
+                      //debugger;
+                        var html = "";
+
+                        AppoData.forEach(function (user) {
+                          //debugger;
+                            html = html + "<p class='bg-default1 pad-all-ten'>";
+                            html = html + "<span>" + user.Description + "</span>";
+                            html = html + "<span class='mar-top db-clr text-right'>" + user.Date + "</span>";
+                            html = html + "</p>";
+
+                        });
+                        $('#RemindData').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*TotalOrdined*@
+    <script>
+        $(function () {
+            $("#TotalOrdination").on("click", function () {
+                GetOrdination();
+            });
+        })
+
+        function GetOrdination() {
+            $.ajax({
+                url: "/HomeUser/GetOrdination",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewOrdination').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Profile";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/HomeUser/PerProfessionDetails?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Profile";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+
+                                $('#ViewOrdination').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal17").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*TotalProfession*@
+    <script>
+        $(function () {
+            $("#TotalJubileedata").on("click", function () {
+                GetAllJubileeViewData();
+            });
+        })
+
+        function GetAllJubileeViewData() {
+            $.ajax({
+                url: "/HomeUser/GetAllJubileeViewData",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewPerProfesion').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.Date + "</td><td>" + data.JubliiType + "</td></tr>";
+                                $('#ViewPerProfesion').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal21").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    @*TotalOrdination*@
+    <script>
+        $(function () {
+            $("#TotalOrdinationData").on("click", function () {
+                GetOrdination1();
+            });
+        })
+
+        function GetOrdination1() {
+            $.ajax({
+                url: "/HomeUser/GetOrdination1",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewOrdination1').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.FromDate + "</td><td>" + data.ToDate + "</td></tr>";
+                                $('#ViewOrdination1').append(row);
+                                i = i + 1;
+                            }
+                            $("#myModal20").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+}
+

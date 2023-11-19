@@ -1,0 +1,103 @@
+﻿@model Generalate.Models.Tbl_Complains
+@{
+    ViewBag.Title = "ViewComplain";
+}
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="panel panel-primary">
+                                    <div class="panel-heading" style="background-color:#29b2e1">View Complain</div>
+                                    <div class="panel-body" id="printDiv">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <!-- Horizontal Form -->
+                                                <div class="box box-info">
+                                                    <div class="box-header with-border text-center">
+                                                        <h4 class="box-title"> Name and Sirname </h4>
+                                                    </div>
+                                                    <form class="form-horizontal">
+                                                        <div class="box-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-10">
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" class="col-sm-10 control-label">Date:</label>
+                                                                        <div class="col-sm-2">
+                                                                            <label for="inputPassword3" class="control-label">@Model.Date</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-6 control-label">Title:</label>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="inputPassword3" class="control-label">@Model.Title</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-6 control-label">Recieved From:</label>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="inputPassword3" class="control-label">@Model.ComplaintReceived</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-6 control-label">Nature Of The Complaint:</label>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="inputPassword3" class="control-label">@Model.NatureofTheComplaint</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-6 control-label">Involved In:</label>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="inputPassword3" class="control-label">@Model.InvolvedIn</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-6 control-label">Decision:</label>
+                                                                        <div class="col-sm-6">
+                                                                            <label for="inputPassword3" class="control-label">@Model.Decision</label>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-6 control-label">Document:</label>
+                                                                        <div class="col-sm-4">
+                                                                            <a href="~/Image/Compains/@Model.FileName" class="control-label" download="true">@Model.FileName</a>
+                                                                        </div>
+                                                                        <div class="col-sm-2">
+                                                                            
+                                                                            <input name="b_print" type="button" class="ipt" onClick="printdiv('printDiv');" value=" Print ">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                                <!-- /.box -->
+                                                <!-- general form elements disabled -->
+                                                <!-- /.box -->
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

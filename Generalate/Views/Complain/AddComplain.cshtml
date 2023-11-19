@@ -1,0 +1,305 @@
+﻿@model IEnumerable<Generalate.Models.Tbl_Complains>
+@{
+    ViewBag.Title = "Add Complain";
+}
+
+<ul class="breadcrumb">
+    <li><a href="#">Dashboard</a></li>
+    <li><a href="index.html">ComplainList</a></li>
+</ul>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color:#29b2e1">Add Complain<span style="margin-left:35%;color:white;font-weight:bold;"> @{@ViewBag.name} @{@ViewBag.id}</span></div>
+                <div class="panel-body">
+                    <div class="container-fluid">
+
+
+                        @*tabs*@
+                        <div class="row">
+                            <!-- row started -->
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <!-- col-msx-12 started -->
+                                <ul class="nav nav-tabs">
+                                    <li class="active"><a data-toggle="tab" href="#Compain" class="sis_tab_a click">Compain Details</a></li>
+
+                                    <li><a data-toggle="tab" href="#Summary" class="sis_tab_a click_2">Summary</a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="Compain" class="tab-pane fade in active">
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form"> Compain Details</h4>
+                                                <form id="FormComplain" action="/Complain/AddComplain" method="post" enctype="multipart/form-data">
+                                                    <input type="hidden" id="ID" name="Id" value="" />
+                                                    <div class="col-sm-6" style="border-right: 1px solid #eee">
+                                                        <!-- col-sm-6 started -->
+                                                        <div class="form-group">
+                                                            <label>Date :</label>
+                                                            <input type="text" id="Date" name="c" class="form-control" placeholder="Choose Date" readonly>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Title  :</label>
+                                                            <input type="text" id="Title" name="Title" placeholder="Enter Title" class="form-control">
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Discription  :</label>
+                                                            <textarea id="Discription" placeholder="Enter Some Discription" name="Discription" class="form-control" rows="5"></textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Nature of The Complaint  :</label>
+                                                            <input type="text" id="NatureofTheComplaint" placeholder="Nature of The Complaint" name="NatureofTheComplaint" class="form-control">
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Complaint Received From :</label>
+                                                            <input type="text" id="ComplaintReceived" placeholder="Complaint Received From" name="ComplaintReceived" class="form-control">
+                                                        </div>
+                                                    </div><!-- col-sm-6 closed -->
+                                                    <div class="col-sm-6">
+                                                        <!-- col-sm-6 started -->
+                                                        <div class="form-group">
+                                                            <label>Decision : </label>
+                                                            <textarea id="Decision" name="Decision" class="form-control" rows="3" maxlength="300"></textarea>
+                                                        </div>
+
+                                                        <div class="form-group">
+                                                            <label>Involved In : </label>
+                                                            <textarea style="color:black;" id="InvolvedIn" name="InvolvedIn" class="form-control" rows="3" readonly></textarea>
+                                                            @*<input type="text" id="InvolvedIn" name="InvolvedIn" class="form-control" readonly />*@
+                                                            <br />
+
+                                                            <label>Select Members : </label>
+                                                            <select id="select" class="dropdown" multiple="multiple">
+
+                                                                @foreach (var item in @ViewBag.AllMembers as IEnumerable<Generalate.Models.tbl_PersonalDetails>)
+                                                                {
+                                                                    <option value="@item.Name @item.SirName">@item.Name @item.SirName</option>
+                                                                }
+                                                            </select>
+
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>File : </label>
+                                                            <input type="file" id="file" class="form-control" name="file" accept=".docx,.png,.jpg,.pdf,.jpeg">
+                                                        </div>
+
+                                                        @*<h4 class="std_head well-sm jss_form"> Father Details</h4>*@
+                                                        <button type="submit" class="btn btn-success" id="btnComplainSave" @*onclick="return Add();"*@> Save</button>
+                                                        @*<button type="submit" class="btn btn-success" id="btnUpdate1" data-val=""> Update</button>*@
+
+                                                        <button type="button" class="btn btn-danger pull-right" onclick="clearall();" id="btnClear"> Clear</button>
+                                                    </div><!-- col-sm-6 closed -->
+                                                </form>
+                                            </div><!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <br />
+                                        <hr />
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="FormationTbl" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            <th> S.No. </th>
+                                                            <th>  Date</th>
+                                                            <th> Tital </th>
+                                                            <th> Description</th>
+                                                            <th> NatureofTheComplaint </th>
+                                                            <th> ComplaintReceived</th>
+                                                            <th> Decision</th>
+                                                            <th> InvolvedIn</th>
+                                                            <th> File Name</th>
+                                                            <th> Action</th>
+
+                                                            @*<th> View Pdf </th>*@
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @{
+                                                            int i = 1;
+                                                            foreach (var item in Model as IEnumerable<Generalate.Models.Tbl_Complains>)
+                                                            {
+                                                                <tr>
+                                                                    <td>@i</td>
+                                                                    <td>@item.Date</td>
+                                                                    <td>@item.Title</td>
+                                                                    <td>@item.Discription</td>
+                                                                    <td>@item.NatureofTheComplaint</td>
+                                                                    <td>@item.ComplaintReceived</td>
+                                                                    <td>@item.Decision</td>
+                                                                    <td>@item.InvolvedIn</td>
+
+                                                                    <td>
+                                                                        @{
+                                                                            if (!string.IsNullOrWhiteSpace(@item.FileName))
+                                                                            {
+                                                                                <a target="_blank" href="~/Image/Compains/@item.FileName">View</a>
+
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a target="_blank" href="~/Image/No-data-found.png">View</a>
+
+                                                                            }
+                                                                        }
+
+                                                                    </td>
+                                                                    <td>
+                                                                        <button class="btn btn-success EditComplain" data-val="@item.Id">Edit</button>
+                                                                        <button class="btn btn-danger DeleteComplain" data-val="@item.Id">Delete</button>
+                                                                        <a href="/Complain/ViewComplain?id=@item.Id" class="btn btn-default">View Complain</a>
+                                                                    </td>
+                                                                </tr>
+                                                                i++;
+                                                            }
+                                                        }
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                    <div id="Summary" class="tab-pane fade">
+                                        <!-- tab-pane fade started -->
+                                        <div class="row">
+                                            <!-- col-sm-12 started -->
+                                            <div class="col-sm-12">
+                                                <!-- col-sm-12 started -->
+                                                <h4 class="std_head well-sm jss_form">Summary </h4>
+
+                                            </div>
+
+                                            <!-- col-sm-12 closed -->
+                                        </div><!-- row closed -->
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <table class="table table-striped  table-hover" id="SummaryTable" style="margin-top:20px;">
+                                                    <thead>
+                                                        <tr style="background-color:#001f6b; color:white">
+                                                            @*<th> S.No. </th>*@
+                                                            <th> S.No. </th>
+                                                            <th> Tital </th>
+                                                            <th> Description</th>
+                                                            <th>  Date</th>
+
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody class="tbody">
+                                                        @*@{
+                                                                int j = 1;
+                                                                foreach (var item in @ViewBag.summaryData as IEnumerable<Generalate.Models.Tbl_Paris>)
+                                                                {
+                                                                    <tr>
+                                                                        <td>@j.</td>
+                                                                        <td>@item.Tial</td>
+                                                                        <td>@item.Description</td>
+                                                                        <td>@item.Date</td>
+
+                                                                    </tr>
+                                                                    j++;
+                                                                }
+                                                            }*@
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div><!-- tab-pane fade in active closed -->
+                                </div><!-- 1st row closed -->
+                            </div> <!-- container fluid closed -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+        {
+
+    <script src="~/Scripts/CompainsJS.js"></script>
+    <script>
+        $(".outsidelink").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click").css({ 'background-color': '#691a61', 'color': '#fff' });
+        });
+    </script>
+    <script>
+        $(".outsidelink_1").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_1").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".outsidelink_2").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_2").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click_1").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".outsidelink_3").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_3").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click_2").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".outsidelink_4").click(function () {
+            $(".nav li").removeClass("active");
+            $(".click_4").css({ 'background-color': '#691a61', 'color': '#fff' });
+            $(".click_3").css({ 'background-color': '#f5f5f5', 'color': '#000' });
+
+        });
+    </script>
+    <script>
+        $(".nav li").click(function () {
+            $(".this").css('background-color', '#5BC0DE');
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#FormationTbl').DataTable();
+            $('#LandTable').DataTable();
+            $('#SummaryTable').DataTable();
+
+            $('#Date').datepicker({
+                changeMonth: true,
+                changeYear: true,
+                dateFormat: "dd/mm/yy",
+                yearRange: '1970:2020'
+            });
+
+        });
+    </script>
+
+    @*<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>*@
+    @*<script src="https://unpkg.com/multiple-select@1.3.1/dist/multiple-select.min.js"></script>*@
+    <script src="~/Content/multiple-select.min.js"></script>
+   
+    <script>
+        $(function () {
+            $('#select').multipleSelect({
+                width: 348,
+                allSelectedText: 'All'
+            })
+        })
+
+        $("#select").on("change", function () {
+            var selectedValues = [];
+            $("#select :selected").each(function () {
+                selectedValues.push($(this).val());
+            });
+            $("#InvolvedIn").val(selectedValues);
+        });
+    </script>
+}

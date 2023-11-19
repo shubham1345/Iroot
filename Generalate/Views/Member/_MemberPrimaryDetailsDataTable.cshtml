@@ -1,0 +1,857 @@
+﻿@using Generalate.Controllers;
+@{ Layout = null;}
+@{
+    var tabPermissions = Session["tabPermissionList"] as List<Generalate.Models.TabPermissions>;
+}
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+
+                @{int count = 1; }
+                @foreach (var heading in ViewBag.TableHeading as List<string>)
+                {
+
+                    <th class="hide-@count" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId(heading);}</span></th>
+                    count = count + 1;
+                }
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = 1;
+                if (ViewBag.allOfficialDocument != null)
+                {
+                    foreach (var item in @ViewBag.allOfficialDocument)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@ji</td>
+                            @*<td>@item.Name</td>*@
+
+                            <td class="hide-1">@item.DocType1</td>
+                            <td class="hide-2">@item.NameAndNo1</td>
+                            <td class="hide-3">
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.Document1))
+                                    {
+                                        <a target="_blank" href="~/Image/OfficialDoc/@item.Document1"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit OfficialEdit12"></i></button>
+                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o OfficialDelete12"></i></button>
+                            </td>
+                        </tr>
+                        ji++;
+                    }
+                }
+                if (ViewBag.FamilyDetails != null)
+                {
+                    int i = 1;
+                    foreach (var item in ViewBag.FamilyDetails as IEnumerable<Generalate.Models.FamilyDetails>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@i</td>
+                            <td class="hide-1">@item.MemberName</td>
+                            <td class="hide-2">@item.Relationship</td>
+                            <td class="hide-3">
+                                @{
+                                    var isPermissionFamilyEdit = tabPermissions.FirstOrDefault(x => x.TabName == "FamilyEdit");
+                                    if (isPermissionFamilyEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit FamilyEdit"></i></button>
+                                    }
+                                    var isPermissionFamilyDelete = tabPermissions.FirstOrDefault(x => x.TabName == "FamilyDelete");
+                                    if (isPermissionFamilyDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o FamilyDelete"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        i++;
+                    }
+                }
+
+                if (ViewBag.sacrament != null)
+                {
+                    int ii = 1;
+                    foreach (var item in ViewBag.sacrament as IEnumerable<Generalate.Models.Sacraments>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@ii</td>
+                            <td class="hide-1">@{@HomeController.GetControlTextByControlId(item.Sacrament, "Sacrament");}</td>
+                            <td class="hide-2">@item.Date</td>
+                            <td class="hide-3">@item.Remarks</td>
+                            <td class="hide-4">
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.File))
+                                    {
+                                        <a target="_blank" href="~/Image/Sacrament/@item.File"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                }
+                            </td>
+                            <td class="hide-5">
+                                @{
+                                    var isPermissionSacramentEdit = tabPermissions.FirstOrDefault(x => x.TabName == "SacramentEdit");
+                                    if (isPermissionSacramentEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit ScramentEdit"></i></button>
+                                    }
+                                    var isPermissionSacramentDelete = tabPermissions.FirstOrDefault(x => x.TabName == "SacramentDelete");
+                                    if (isPermissionSacramentDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o ScramentDelete"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        ii++;
+                    }
+                }
+                if (ViewBag.health != null)
+                {
+                    int b = 1;
+                    foreach (var item in ViewBag.health as IEnumerable<Generalate.Models.tbl_Health>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@b</td>
+                            <td class="hide-1">@item.Doctor</td>
+                            <td class="hide-2">@item.Diagnosis</td>
+                            <td class="hide-3">@item.Hospital</td>
+                            <td class="hide-4">
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.Spare1))
+                                    {
+                                        <a target="_blank" href="~/Image/Health/@item.Spare1"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                }
+                            </td>
+                            <td class="hide-5">
+                                @{
+                                    var isPermissionHealthEdit = tabPermissions.FirstOrDefault(x => x.TabName == "HealthEdit");
+                                    if (isPermissionHealthEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.HealthId" class="fa fa-edit HealthEdit"></i></button>
+
+                                    }
+                                    var isPermissionHealthDelete = tabPermissions.FirstOrDefault(x => x.TabName == "HealthDelete");
+                                    if (isPermissionHealthDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.HealthId" class="fa fa-trash-o HealthDelete"></i></button>
+
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        b++;
+                    }
+                }
+                if (ViewBag.allFormationD != null)
+                {
+                    int i12 = 1;
+                    foreach (var item in ViewBag.allFormationD as IEnumerable<Generalate.Models.Tbl_formationsDetails>)
+
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@i12</td>
+                            <td class="hide-1">@{@HomeController.GetControlTextByControlId(item.StageOfFormation, "Stage of Formation");}</td>
+                            <td class="hide-2">@item.FromDate
+                                @*<input type="text" id="ToDate" name="ToDate" readonly class="form-control datepicker">*@
+                                    
+                            </td>
+                            <td class="hide-3">@item.ToDate
+                                @*<input type="text" id="ToDate" name="ToDate" readonly class="form-control datepicker">*@
+                            </td>
+                            <td class="hide-4">
+                                @{
+                                    if (item.FileName == null || item.FileName == "")
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/Formation/@item.FileName"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                }
+                            </td>
+                            @if (item.Community == "0")
+                            {
+                                <td class="hide-5"></td>
+                            }
+                            else
+                            {
+                                <td class="hide-6">@{@HomeController.GetControlTextByControlId(item.Community, "Stage of Formation");}</td>
+                            }
+                            @*<td class="currentstatus" id="curr_@item.Id">@item.Status</td>*@
+                            <td>
+                                <select class="form-control newstatus" id="drp_@item.Id" @*value="@item.Status"*@>
+                                    @*<option value="select">---select---</option>*@
+                                    @{
+                                        if (item.Status == "1")
+                                        {
+                                            <option value="1">Active</option>
+                                            <option value="0">Completed</option>
+
+                                        }
+                                        else
+                                        {
+
+                                            <option value="0">Completed</option>
+                                            <option value="1">Active</option>
+
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success BtnUpdate" data-id="Main_@item.Id">Update</button>
+                            </td>
+                            @*<td>@item.Formators</td>*@
+                            @*<td>
+                                    <button class="btn btn-danger ViewFormatioDoc">View</button>
+                                </td>*@
+                            <td class="hide-5">
+                                @{
+                                    var isPermissionFormationEdit = tabPermissions.FirstOrDefault(x => x.TabName == "FormationEdit");
+                                    if (isPermissionFormationEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditFormation"></i></button>
+                                    }
+                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteFormation"></i></button>
+                                }
+                            </td>
+                        </tr>
+                        i12++;
+                    }
+                }
+                if (ViewBag.allAcedemy != null)
+                {
+                    int m = 1;
+                    foreach (var item in ViewBag.allAcedemy as IEnumerable<Generalate.Models.tbl_Academy>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@m</td>
+                            <td class="hide-1">@{@HomeController.GetControlTextByControlId(item.course, "Course");}</td>
+                            <td class="hide-2">@item.university</td>
+                            <td class="hide-3">@item.fromdate</td>
+                            <td class="hide-4">@item.todate</td>
+                            <td class="hide-5">
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.doc))
+                                    {
+                                        <a target="_blank" href="~/Image/Academy/@item.doc"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                }
+                            </td>
+                            <td class="hide-6">
+                                @{
+                                    var isPermissionAcademicsEdit = tabPermissions.FirstOrDefault(x => x.TabName == "AcademicsEdit");
+                                    if (isPermissionAcademicsEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.acaid" class="fa fa-edit EditAcademy"></i></button>
+                                    }
+                                    var isPermissionAcademicsDelete = tabPermissions.FirstOrDefault(x => x.TabName == "AcademicsDelete");
+                                    if (isPermissionAcademicsDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.acaid" class="fa fa-trash-o DeleteAcademy"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        m++;
+                    }
+                }
+                if (ViewBag.allComplains != null)
+                {
+                    int v = 1;
+                    foreach (var item in ViewBag.allComplains as IEnumerable<Generalate.Models.Claustration>)
+                    {
+
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@v</td>
+                            <td class="hide-1">@item.ClaustrationPurpose</td>
+                            <td class="hide-2">@item.ClaustrationFromDate</td>
+                            <td class="hide-3">@item.ClaustrationToDate</td>
+                            <td class="hide-4">@item.ClaustrationPlace</td>
+                            <td class="hide-5">
+                                @item.ClaustrationCommunity
+                            </td>
+                            <td class="hide-6">
+                                @{
+                                    var isPermissionRemarksEdit = tabPermissions.FirstOrDefault(x => x.TabName == "RemarksEdit");
+                                    if (isPermissionRemarksEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditClaustration1"></i></button>
+                                    }
+                                    var isPermissionRemarksDelete = tabPermissions.FirstOrDefault(x => x.TabName == "RemarksDelete");
+                                    if (isPermissionRemarksDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteClaustration1"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        v++;
+                    }
+                }
+                if (ViewBag.Sepration != null)
+                {
+                    int c = 1;
+                    foreach (var item in ViewBag.Sepration as IEnumerable<Generalate.Models.tbl_SeperationFromTheCongregation>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@c</td>
+                            <td class="hide-1">@item.Title</td>
+                            <td class="hide-2">@item.SeperationDate</td>
+                            <td class="hide-3">
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.File))
+                                    {
+                                        <a target="_blank" href="~/Images/Separation/@item.File"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                }
+                            </td>
+                            <td class="hide-3">
+                                @{
+                                    var isPermissionSeparationEdit = tabPermissions.FirstOrDefault(x => x.TabName == "SeparationEdit");
+                                    if (isPermissionSeparationEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.SeperationId" class="fa fa-edit btnSeprationEdit"></i></button>
+                                    }
+                                    var isPermissionSeparationDelete = tabPermissions.FirstOrDefault(x => x.TabName == "SeparationDelete");
+                                    if (isPermissionSeparationDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.SeperationId" class="fa fa-trash-o btnSeprationDelete"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        c++;
+                    }
+                }
+                if (ViewBag.allpassed != null)
+                {
+                    int db = 1;
+                    foreach (var item in ViewBag.allpassed as IEnumerable<Generalate.Models.tbl_Passed>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@db</td>
+                            <td class="hide-1">@item.Date</td>
+                            <td class="hide-2">
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.DeathCertificate))
+                                    {
+                                        <a target="_blank" href="~/Image/Death/@item.DeathCertificate"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                    }
+                                }
+                            </td>
+                            <td class="hide-3">
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(@item.Spare1))
+                                    {
+                                        <a target="_blank" href="~/Image/Death/@item.Spare1"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                    }
+                                }
+                            </td>
+                            <td class="hide-4">
+                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberID" class="fa fa-eye ObituaryReport"></i></button>
+
+                            </td>
+                            <td class="hide-5">
+                                @{
+                                    var isPermissionEternalLifeEdit = tabPermissions.FirstOrDefault(x => x.TabName == "EternalLifeEdit");
+                                    if (isPermissionEternalLifeEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.PassedId" class="fa fa-edit DeathEdit"></i></button>
+                                    }
+
+                                    var isPermissionEternalLifeDelete = tabPermissions.FirstOrDefault(x => x.TabName == "EternalLifeDelete");
+                                    if (isPermissionEternalLifeEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.PassedId" class="fa fa-trash-o DeathDelete"></i></button>
+                                    }
+                                    //<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.MemberID" class="fa fa-eye ObituaryReport"></i></button>
+
+                                }
+                            </td>
+                        </tr>
+                        db++;
+                    }
+
+                }
+                if (ViewBag.Archive != null)
+                {
+                    int i1 = 1;
+                    foreach (var item in ViewBag.Archive as IEnumerable<Generalate.Models.tbl_Archive>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@i1</td>
+                            <td class="hide-1">@item.MemberId</td>
+                            <td class="hide-2">@item.FileNo</td>
+                            <td class="hide-3">@item.ArchiveNo</td>
+                            <td class="hide-4">@item.Description</td>
+                            <td class="hide-5">
+                                @{
+                                    var isPermissionArchiveEdit = tabPermissions.FirstOrDefault(x => x.TabName == "ArchiveEdit");
+                                    if (isPermissionArchiveEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditArchive"></i></button>
+                                    }
+                                    var isPermissionArchiveDelete = tabPermissions.FirstOrDefault(x => x.TabName == "ArchiveDelete");
+                                    if (isPermissionArchiveDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteArchive"></i></button>
+                                    }
+                                }
+
+                            </td>
+                        </tr>
+                        i1++;
+                    }
+
+                }
+                if (ViewBag.allVows != null)
+                {
+                    int i120 = 1;
+                    foreach (var item in ViewBag.allVows as IEnumerable<Generalate.Models.Tbl_formationsDetails>)
+
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@i120</td>
+                            <td class="hide-1">@item.StageOfFormation</td>
+                            <td class="hide-2">@item.VowsDate</td>
+                            @if (@item.Community == "0")
+                            {
+                                <td class="hide-3"></td>
+                            }
+                            else
+                            {
+                                <td class="hide-3">@item.Community</td>
+                            }
+                            <td class="hide-4">@item.Place</td>
+                            <td class="hide-5">-</td>
+                            <td class="hide-6">-</td>
+                            @*<td class="hide-7">-</td>*@
+                            <td class="hide-7">
+                                @{
+                                    if (item.FileName == null || item.FileName == "")
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/Formation/@item.FileName"><span>@{@HomeController.GetControlTextByControlId("View");}</span> </a>
+                                    }
+                                }
+                            </td>
+                            <td>
+                                <select class="form-control" id="drp_@item.Id" value="@item.Status">
+                                    @{
+                                        if (item.Status == "1")
+                                        {
+                                            <option value="1">Active</option>
+                                            <option value="0">Completed</option>
+
+                                        }
+                                        else
+                                        {
+
+                                            <option value="0">Completed</option>
+                                            <option value="1">Active</option>
+
+                                        }
+                                    }
+                                </select>
+
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success BtnUpdate" data-id="Main_@item.Id">Update</button>
+                            </td>
+                            @*<td>
+                                    <button class="btn btn-danger ViewFormatioDoc">View</button>
+                                </td>*@
+                            <td class="hide-8">
+                                @{
+                                    var isPermissionFormationEdit = tabPermissions.FirstOrDefault(x => x.TabName == "FormationEdit");
+                                    if (isPermissionFormationEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit EditVows"></i></button>
+                                    }
+                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteFormation"></i></button>
+                                }
+                            </td>
+                        </tr>
+                        i120++;
+                    }
+                }
+
+                //==== Changes[23-04-23] ===
+
+                if (ViewBag.AllMemberdata2 != null)
+                {
+                    int i1110 = 1;
+                    foreach (var item2 in @ViewBag.AllMemberdata2 as IEnumerable<Generalate.Models.Tbl_RenewalVows>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@i1110</td>
+                            <td>@{@HomeController.GetControlTextByControlId("Renewal of Vows");}</td>
+                            <td>@item2.Surname</td>
+                            <td>@item2.Duration</td>
+                            <td>@item2.Superior</td>
+                            <td>-</td>
+                            <td>@item2.Witness</td>
+                            <td>
+                                @{
+                                    if (!string.IsNullOrWhiteSpace(item2.RenVowsDoc))
+                                    {
+                                        <a target="_blank" href="~/Image/RenewalVows/@item2.RenVowsDoc">View</a>
+                                    }
+                                    else
+                                    {
+                                        <a target="_blank" href="~/Image/No-data-found.png">View</a>
+                                    }
+                                }
+                            </td>
+                            @*<td>
+            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item2.Id" onclick="updateRenuVows(@item2.Id)" class="fa fa-edit ReneVowsEdit1213"></i></button>
+            <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item2.Id" onclick="deleteRenuVows(@item2.Id)" class="fa fa-trash-o DeleteRenewalVows"></i></button>
+        </td>*@
+
+                            <td>
+                                <select class="form-control" id="drp_@item2.Id" value="">
+                                    <option value="0">Completed</option>
+                                    <option value="1">Active</option>
+                                </select>
+
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-success BtnUpdate" data-id="Main_@item2.Id">Update</button>
+                            </td>
+                            @*<td>
+            <button class="btn btn-danger ViewFormatioDoc">View</button>
+        </td>*@
+                            <td class="hide-8">
+                                @{
+                                    var isPermissionFormationEdit = tabPermissions.FirstOrDefault(x => x.TabName == "FormationEdit");
+                                    if (isPermissionFormationEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item2.Id" class="fa fa-edit EditVows"></i></button>
+                                    }
+                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item2.Id" class="fa fa-trash-o DeleteFormation"></i></button>
+                                }
+                            </td>
+
+                        </tr>
+                        i1110++;
+                    }
+                }
+                //=== End Changes ===
+
+
+                if (ViewBag.allRetire != null)
+                {
+                    int j2 = 1;
+                    foreach (var item in ViewBag.allRetire as IEnumerable<Generalate.Models.tbl_Retirement>)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@j2</td>
+                            <td class="hide-1">@item.DOR</td>
+                            <td class="hide-2">@item.Age</td>
+                            <td class="hide-3">@item.Reason</td>
+                            <td class="hide-4">
+                                @{
+                                    var isPermissionRetirementEdit = tabPermissions.FirstOrDefault(x => x.TabName == "RetirementEdit");
+                                    if (isPermissionRetirementEdit != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.RetirementId" class="fa fa-edit EditRetire"></i></button>
+                                    }
+                                    var isPermissionRetirementDelete = tabPermissions.FirstOrDefault(x => x.TabName == "RetirementDelete");
+                                    if (isPermissionRetirementDelete != null)
+                                    {
+                                        <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.RetirementId" class="fa fa-trash-o DeleteRetire"></i></button>
+                                    }
+                                }
+                            </td>
+                        </tr>
+                        j2++;
+                    }
+                }
+                if (ViewBag.CommAppData != null)
+                {
+                    ji = ViewBag.PageCountSR;
+                    foreach (var item in @ViewBag.CommAppData)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@ji</td>
+                            @*<td>@item.Name</td>*@
+
+                            <td class="hide-1">@item.FromDate</td>
+                            <td class="hide-2">@item.ToDate</td>
+                            <td class="hide-3">@item.Name</td>
+                            <td class="hide-4">@item.CommunityType</td>
+                            <td class="hide-5">@item.DesignationType</td>
+                            <td class="hide-6">@item.Place</td>
+                            <td class="hide-7">
+                                <select class="form-control" id="drp_@item.Id">
+                                    @{
+                                        if (item.Status == "Active")
+                                        {
+                                            <option value="Active">Active</option>
+                                            <option value="Completed">Completed</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="Completed">Completed</option>
+                                            <option value="Active">Active</option>
+                                        }
+                                    }
+                                </select>
+                            </td>
+                            <td class="hide-8">
+                                <button type="button" class="btn btn-success btnappupdate" data-id="Main_@item.Id">Update</button>
+                            </td>
+                            <td class="hide-9">
+                                <button class="showdiv"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit AppointmentEdit" onclick=updateCommAppointment(@item.Id)></i></button>
+                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o AppointmentDelete" onclick=deleteCommAppointment(@item.Id)></i></button>
+                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye AppointmentView" onclick=viewCommAppointment(@item.Id)></i></button>
+                            </td>
+                            <td></td>
+                        </tr>
+                        ji++;
+                    }
+                    <input type="hidden" id="AppCommCount" value="@ViewBag.AppCommCount" />
+
+                }
+                if (ViewBag.InstAppData != null)
+                {
+                    ji = ViewBag.PageCountSR2;
+                    foreach (var item in @ViewBag.InstAppData)
+                    {
+                        <tr>
+                            <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                            <td>@ji</td>
+                            @*<td>@item.Name</td>*@
+                            
+                            <td class="hide-1">@item.FromDate</td>
+                            <td class="hide-2">@item.ToDate</td>
+                            <td class="hide-3">@item.Name</td>
+                            <td class="hide-4">@item.InsDesignationType</td>
+                            <td class="hide-5">@item.InstitutionType</td>
+                            <td class="hide-6">
+                                <button class="showdiv2"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit AppointmentEdit" onclick=updateInstAppointment(@item.Id)></i></button>
+                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o AppointmentDelete" onclick=deleteInstAppointment(@item.Id)></i></button>
+                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye AppointmentView" onclick=viewInstAppointment(@item.Id)></i></button>
+                            </td>
+                            <td></td>
+                        </tr>
+                        ji++;
+                    }
+                    <input type="hidden" id="InstCommCount" value="@ViewBag.AppInstCount" />
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+
+
+
+    $(document).ready(function () {
+        $('.showdiv').on('click', function () {
+            //alert();
+            $('#AddCommAppDiv').show();
+            $('#ViewCommAppDiv').hide();
+        });
+        $('.showdiv2').on('click', function () {
+            $('#AddInstAppDiv').show();
+            $('#ViewInstAppDiv').hide();
+        });
+        $('#InstutionAppointment1').on('click', function () {
+            $('#AddInstAppDiv').hide();
+            $('#ViewInstAppDiv').show();
+        });
+
+
+
+    });
+
+    $(".BtnUpdate").on('click', function () {
+
+        //var $item = $(this).closest("tr");   // Finds the closest row <tr>
+        //var $tds = $item.find("td");
+
+        var countid = $(this).attr("data-id");
+        countid = countid.replace('Main_', '');
+
+        //var new_status = $(".newstatus").val();
+        var newstatus = $('#drp_' + countid).val();
+        //var currentstatus = $('#curr_' + countid).text();
+
+        if (newstatus == "select") {
+            alert("Please Select Status");
+        }
+        else {
+            $.ajax({
+                url: "/EntryLife/UpdateCurrentstatus",
+                data: { countid: countid, newstatus: newstatus },
+                type: "GET",
+                datatype: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+                    if (result == "Success") {
+                        alert("Updated Successfully");
+                        location.reload();
+                    }
+                    else {
+                        alert("Data Not Updated");
+                        location.reload();
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+
+
+    });
+
+    $(".DeleteFormation").on('click', function () {
+        var id = $(this).attr("data-val");
+        if (confirm("Do you want to delete ?")) {
+            window.location.href = "/EntryLife/DeleteFormationById?id=" + id;
+        }
+    });
+
+    $(".btnappupdate").on('click', function () {
+        var countid = $(this).attr("data-id");
+        countid = countid.replace('Main_', '');
+        var newstatus = $("#drp_" + countid).val();
+        $.ajax({
+            url: "/Member/Updateappstatus",
+            data: { countid: countid, newstatus: newstatus },
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (result) {
+                if (result == "Success") {
+                    alert("Updated Successfully");
+                    location.reload();
+                }
+                else if (result == "Same") {
+                    alert("Current Status and New status are same,Please select New status");
+                }
+                else {
+                    alert("Data Not Updated");
+                    location.reload();
+                }
+
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+
+    });
+
+    $(".EditClaustration1").on('click', function () {
+        $(".commonGrid").hide();
+        $(".membrDetails").show();
+        $("#Formclaustration").attr('action', '/Member/UpdateClaustrations');
+        var id = $(this).attr("data-val");
+        $(".panel-body").scrollTop(0);
+        $("#btnClaustrationSave").text("Update");
+
+        GetClaustrationsById(id);
+        //alert(id);
+    });
+
+    function GetClaustrationsById(id) {
+
+        $.ajax({
+            url: "/Member/GetClustrations?Id=" + id,
+            type: "GET",
+            datatype: "json",
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+                if (data != null) {
+                    console.log("ID", data.Id);
+                    $("#MemberId").val(data.MemberId);
+                    $("#MemberName").val(data.MemberName);
+                    $("#ProvinceName").val(data.ProvinceName);
+                    $(".claustrationid").val(data.Id);
+                    $("#ClaustrationFromDate").val(data.ClaustrationFromDate);
+                    $("#ClaustrationToDate").val(data.ClaustrationToDate);
+                    $("#ClaustrationPurpose").val(data.ClaustrationPurpose);
+                    $("#ClaustrationPlace").val(data.ClaustrationPlace);
+                    $("#ClaustrationCommunity").val(data.ClaustrationCommunity);
+                    $("#Claustrationdecree").val(data.Claustrationdecree);
+                    $("#ClaustrationMotivation").val(data.ClaustrationMotivation);
+                    $("#ClaustrationStatus").val(data.ClaustrationStatus);
+                    $("#ClaustrationRemarks").val(data.ClaustrationRemarks);
+                }
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+    }
+
+    $(".DeleteClaustration1").on('click', function () {
+        var id = $(this).attr("data-val");
+        var cnf = confirm("Are You Sure, you want to delete?");
+        if (cnf == true) {
+            window.location.href = "/Member/DeleteClustrations?Id=" + id;
+        }
+    });
+
+</script>

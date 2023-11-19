@@ -1,0 +1,180 @@
+﻿
+@using Generalate.Controllers;
+@{
+    ViewBag.Title = "SaprateProData";
+
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb">
+    <li class="pull-right"><a style="font-size: 30px;" class="fa fa-angle-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <span>@{@HomeController.GetControlTextByControlId("Province_Data");}</span>
+                    <input type="button" class="btn btn-success pull-right" value="Print" id="btnPrint" />
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <select type="dropdown" class="form-control" style="width:300px !important;" name="ProvinceDrop" id="ProvinceDrop" placeholder="Province Name"></select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="FromDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("From Date");}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control" id="ToDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("To Date");}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-success pull-right" id="btnSearch" value="@{@HomeController.GetControlTextByControlId("Filter");}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="tblSocDiv">
+                                <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                    <h2 class="std_head well-sm jss_form" ><b>@{@HomeController.GetControlTextByControlId("Statistics of the Province");}</b></h2>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-sm-12 col-xs-12 table-responsive">
+                                    <table class="table table-bordered" id="tblProdata" style="margin-top:50px;"></table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script>
+        $('#btnPrint').on("click", function () {
+            $('#tblSocDiv').printThis();
+        });
+    </script>
+
+    <script>
+        $('#ToDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2050'
+        });
+
+        $('#FromDate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2050'
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            GetAllProvinceNew();
+        });
+
+        function GetAllProvinceNew() {
+            $.ajax({
+                url: "/Home/GetAllProvinceNew",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceDrop').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text:"-- @{@HomeController.GetControlTextByControlId("New Province Name");} "});
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place});
+                        }
+                        $("#ProvinceDrop").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    <script>
+        GetReportData("", "","");
+        $("#btnSearch").on("click", function () {
+            var FromDate = $("#FromDate").val();
+            var ToDate = $("#ToDate").val();
+            var province = $("#ProvinceDrop option:selected").val();
+           
+            if (FromDate == "" || ToDate == "" || province == 0 || province == "") {
+                alert("Please Select FromDate or ToDate !");
+                return false;
+            }
+            GetReportData(FromDate, ToDate, province);
+        });
+
+        function GetReportData(FromDate, ToDate, province) {
+            $.ajax({
+                url: "/SaprateProData/SaprateProstaticData?FromDate=" + FromDate + "&ToDate=" + ToDate + "&Province=" + province,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $("#tblProdata").html("");
+                    $("#tblProdata").html(result);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $("#ProvinceDrop").on("change", function () {
+            var province = $("#ProvinceDrop option:selected").val();
+            if (province != '' && province != 0) {
+                GetStaticData(province);
+            }
+        });
+
+        function GetStaticData(province) {
+            $.ajax({
+                url: "/SaprateProData/SaprateProstaticData1?province=" + province,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    $("#tblProdata").html("");
+                    $("#tblProdata").html(result);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+
+    </script>
+}
+<style>
+    #ToDate, #FromDate {
+        color: black
+    }
+</style>
+

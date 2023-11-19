@@ -1,0 +1,207 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "Utilities";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<div class="page-content-wrap" style="margin-top:100px">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12 overflow-daily" style="margin-right:-5px;margin-left:5px;height:600px;">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <span>@{@HomeController.GetControlTextByControlId("Import Excel");}</span>
+                    <span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left" href="/Home/Admin" id="circleimage"></a></span>
+                </div>
+                <div class="panel-body">
+
+                    <div class="row" style="margin-top:30px">
+                        <div class="col-md-12" style="margin-top:30px">
+                            <div class="box box-info">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></label>
+                                        <div class="col-sm-4">
+                                            <select class="form-control" style="width:350px;" name="ProvinceName" id="ProvinceName"></select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="inputPassword3" class="col-sm-2 control-label"> <span>@{@HomeController.GetControlTextByControlId("Utilities");}</span></label>
+                                        <div class="col-sm-4">
+                                            <select type="text" style="width:350px;" class="form-control uti" name="Utilies" id="Utilities">
+                                                <option value="0">---Select Items---</option>
+                                                <option value="Primary">Primary</option>
+                                                <option value="Family">Family</option>
+                                                <option value="Sacrament">Sacrament</option>
+                                                <option value="Health">Health</option>
+                                                <option value="Formation">Formation</option>
+                                                <option value="Academics">Academics</option>
+                                                <option value="Appointment">Appointment</option>
+                                                <option value="Remarks">Remarks/Feedback</option>
+                                                <option value="Retirement">Retirement</option>
+                                                <option value="Insurance">Insurance</option>
+                                                <option value="Separation">Separation</option>
+                                                <option value="Eternal">Eternal Life</option>
+                                                <option value="Archive">Archive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    @*<div class="form-group">
+                                    <div class="col-sm-4">
+                                        <button type="submit" class="btn btn-info pull-right" id="btnSave"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                    </div>
+                                </div>*@
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="margin-top:30px">
+                        @*<div class="col-sm-4">
+                        <a href="~/ExcelSampleFiles/UPloadSampleFile.xlsx" download>Download Sample Excel</a>
+                    </div>*@
+                        <div class="col-sm-3">
+                            <label class="pull-right">Upload Excel</label>
+                        </div>
+                        <div class="col-sm-4">
+                            <input class="pull-right btn btn-success btn-sm" type="button" value="Upload" id="uploadExceldata" />
+                            <input class="pull-right" type="file" accept=".xlsx" id="uploadExcelfile" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="memberList" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content" style="width:840px">
+                        <div class="modal-header">
+                            <h4 class="modal-title" id="exampleModalLongTitle">Wrong Uploaded Data List(These rows are not saved)</h4>
+                            <h5 class="modal-title" id="exampleModalLongTitle">-------------------------------------------------------------------------------------------</h5>
+                            <div id="listMembers">
+
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" onclick="refreshpage();" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script>
+
+        $("#circleimage").mouseover(function () {
+            $("#circleimage").text("Back");
+        });
+        $("#circleimage").mouseout(function () {
+            $("#circleimage").text("");
+        });
+
+        $(document).ready(function () {
+            GetAllProvinceView();
+        });
+
+        function GetAllProvinceView() {
+            $.ajax({
+                url: "/Home/GetAllProvinceView",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceName').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- Select Name --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + " " + response2[i].Place });
+                        }
+                        $("#ProvinceName").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+    <script>
+        $('#uploadExceldata').click(function () {
+          //debugger;
+            var province = $("#ProvinceName option:selected").val();
+            var utilities = $(".uti").val();
+            alert(utilities);
+
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#uploadExcelfile").get(0);
+                var files = fileUpload.files;
+
+                var fileData = new FormData();
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                // Adding one more key to FormData object
+                //fileData.append('username', ‘Manas’);
+
+                $.ajax({
+                    url: '/Utilities/UploadMemberExcelFile?province=' + province + "&utilities=" + utilities,
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                        if (result == "") {
+                            var iscode = $.cookie("iscode");
+                                $("#mymessage").html("<b>Data saved successfully !</b>");
+                                $("#mymessage").css("color", "green");
+                                $('#myalertbox').modal({
+                                    backdrop: 'static'
+                                });
+                                $("#myalertbox").modal("show");
+                                $.cookie('iscode', null, { path: '/' })
+                            $(".closemodel").on("click", function () {
+                                location.reload();
+                            });
+                           // alert("Excel upload Successfully");
+                            //  window.location.reload();
+                        } else if (result == "0") {
+                           // alert("Some Error Occure");
+                            
+                                $("#mymessage").html("<b>Some Error Occured !</b>");
+                                $("#mymessage").css("color", "red");
+                                $('#myalertbox').modal({
+                                    backdrop: 'static'
+                                });
+                                $("#myalertbox").modal("show");
+                                $.cookie('iscode', null, { path: '/' })
+                            $(".closemodel").on("click", function () {
+                                location.reload();
+                            });
+                        }
+                        else{
+                            $("#listMembers").empty();
+                            $("#listMembers").html(result);
+                            $('#memberList').modal('show');
+                    }
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+        });
+    </script>
+    
+}

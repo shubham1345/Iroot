@@ -1,0 +1,8 @@
+﻿
+@media print {
+    .pagebreak{
+        display:block;
+        page-break-inside:avoid;
+    }
+
+}

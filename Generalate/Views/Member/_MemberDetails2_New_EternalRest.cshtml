@@ -1,0 +1,407 @@
+﻿
+
+@model Generalate.Models.tbl_PersonalDetails
+@using Generalate.Controllers;
+@using System.Linq;
+<input id="DynamicTotalCount" type="hidden" value="@ViewBag.DynamicTotalCount" />
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th class="AllShow hide-1" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                <th class="AllShow hide-2" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                <th class="AllShow hide-3" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                <th class="AllShow hide-4" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                <th class="AllShow hide-7" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                <th class="AllShow hide-8" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Age");}</span></th>
+                <th class="AllShow hide-9" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Time");}</span></th>
+                <th class="AllShow hide-10" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Cause");}</span></th>
+                <th class="AllShow hide-11" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Last Nature Rites");}</span></th>
+                <th class="AllShow hide-12" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Last Place Rites");}</span></th>
+                <th class="AllShow hide-13" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                <th class="AllShow hide-14" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("ObituryNotice");}</span></th>
+                <th class="AllShow hide-5" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("View_Details");}</span></th>
+                <th class="AllShow hide-6" style="background-color:#29b2e1;color:white;display:none"> <span>@{@HomeController.GetControlTextByControlId("Add_Profile");}</span></th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td class="AllShow hide-2" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Eteprovincename" onkeyup="searchbycolumn(event,'eterprov')" class="searchclass" />
+                        <span onclick="cleareterprovincename()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-3" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etename" onkeyup="searchbycolumn(event,'etername')" class="searchclass" />
+                        <span onclick="clearetename()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-4" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etesirname" onkeyup="searchbycolumn(event,'etersirname')" class="searchclass" />
+                        <span onclick="clearetersirname()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                
+                <td class="AllShow hide-7" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etedate" onkeyup="searchbycolumn(event,'eterdate')" class="searchclass" />
+                        <span onclick="cleareterdate()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-8" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Eteage" onkeyup="searchbycolumn(event,'eterage')" class="searchclass" />
+                        <span onclick="cleareterage()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-9" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etetime" onkeyup="searchbycolumn(event,'etertime')" class="searchclass" />
+                        <span onclick="clearetertime()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-10" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etecause" onkeyup="searchbycolumn(event,'etercause')" class="searchclass" />
+                        <span onclick="clearetercause()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-11" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etelastnature" onkeyup="searchbycolumn(event,'eterlastnature')" class="searchclass" />
+                        <span onclick="cleareterlastnature()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-12" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etelastplace" onkeyup="searchbycolumn(event,'eterlastplace')" class="searchclass" />
+                        <span onclick="cleareterlastplace()" class="clearbutton">X</span>
+                    </div>
+                </td>
+                <td class="AllShow hide-13" style="color:white;display:none">
+                    <div class="buttonwrapper">
+                        <input type="text" id="Etedescription" onkeyup="searchbycolumn(event,'eterdescription')" class="searchclass" />
+                        <span onclick="cleareterdescription()" class="clearbutton">X</span>
+                    </div>
+                </td>
+              
+                
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = ViewBag.StartValue;
+                foreach (var item in @ViewBag.EternalRest)
+                {
+            <tr>
+                <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                <td style="display:none" class="AllShow hide-1">@ji</td>
+                <td style="display:none" class="AllShow hide-2">@item.ProvinceName</td>
+                <td style="display:none" class="AllShow hide-3"> <a href="../Member/MemberInfoById_Primary?memberId=@item.MemberID&Name=&SirName=">@item.Name</a></td>
+                <td style="display:none" class="AllShow hide-4">@item.SirName</td>
+                <td style="display:none" class="AllShow hide-7">@item.Date</td>
+                <td style="display:none" class="AllShow hide-8">@item.age</td>
+                <td style="display:none" class="AllShow hide-9">@item.time</td>
+                <td style="display:none" class="AllShow hide-10">@item.Cause</td>
+                <td style="display:none" class="AllShow hide-11">@item.LastNatureRites</td>
+                <td style="display:none" class="AllShow hide-12">@item.LastPlaceRites</td>
+                <td style="display:none" class="AllShow hide-13">@item.Description</td>
+                <td style="display:none" class="AllShow hide-14">
+                    <a href="/Member/ObituryNotice?id=@item.MemberID">
+                        <i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-eye"></i>
+                    </a>
+                </td>
+                <td style="display:none" class="AllShow hide-5"><a href="/Home/DeathRecord?id=@item.MemberID">View Details</a></td>
+                <td style="display:none" class="AllShow hide-6"><a href="/Member/MemberInfoById?memberId=@item.MemberID">Add profile</a></td>
+
+                <td></td>
+            </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+    <div id="mySidenav_Dynamic" class="sidenav" style="display:none">
+        <div style="border-style:solid">
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-1" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("S_No");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-2" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Province_Name");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-3" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Name");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-4" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Surname");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-7" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Date");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-8" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Age");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-9" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Time");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-10" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Cause");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-11" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Last Nature Rites");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-12" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Last Place Rites");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-13" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Description");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-14" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Obitury_Notice");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-5" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("View_Details");}
+                    </div>
+                </div>
+            </div>
+            <div class="row notdivhide">
+                <div class="col-md-12">
+                    <div class="col-md-1">
+                        <input type="checkbox" id="checkbox-grid-6" class="notdivhide">
+                    </div>
+                    <div class="col-md-9">
+                        @{@HomeController.GetControlTextByControlId("Add_Profile");}
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="text-align:center">
+                <div class="col-md-12">
+                    @*<button type="button">@{@HomeController.GetControlTextByControlId("Save");}</button>*@
+                    @*<div class="col-md-1">
+                    <input type="checkbox" checked id="checkbox-grid-6" class="notdivhide">
+                </div>
+                <div class="col-md-9">
+                    @{@HomeController.GetControlTextByControlId("Add_Profile");}
+                </div>*@
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+
+<style>
+
+    .buttonwrapper {
+        display: inline-block;
+    }
+
+    .searchclass {
+        background-color: transparent;
+        border: 1px solid #dcdce5;
+        height: 7%;
+        color: black;
+        border-radius: 15px;
+    }
+
+    .clearbutton {
+        margin-left: -20%;
+        border: none;
+        background-color: white;
+        color: dodgerblue;
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        //alert($('#mySidenav_Dynamic').html());
+        $('#Dynamic_Checkbox').val('2')
+        $("#mySidenav").empty();
+        $("#mySidenav").html($('#mySidenav_Dynamic').html());
+        $('#mySidenav_Dynamic').empty();
+        var dynamiColData = '@ViewBag.ColumnShow';
+        //var dynamiColData = '';
+        
+        if (dynamiColData != '') {
+            var CommaSepData = dynamiColData.split(',');
+            $.each(CommaSepData, function (index, value) {
+                $("#checkbox-grid-" + CommaSepData[index]).attr('checked', 'true');
+                $(".hide-" + CommaSepData[index]).show();
+            });
+        }
+        else {
+            $('input[class=notdivhide]').each(function () {
+                $(this).attr('checked', 'true');
+            });
+            $('.AllShow').show();
+        }
+        $('input[class=notdivhide]').on('click', function () {
+            var id = $(this).attr("id").replace('checkbox-grid-', '');
+            if ($(this).is(':checked')) {
+                $(".hide-" + id).show();
+            }
+            else {
+                $(".hide-" + id).hide();
+            }
+        });
+    });
+
+
+    function cleareterprovincename() {
+        $("#Eteprovincename").val('');
+        GetGrid();
+    }
+
+
+    function clearetename() {
+        $("#Etename").val('');
+        GetGrid();
+    }
+
+
+    function clearetersirname() {
+        $("#Etesirname").val('');
+        GetGrid();
+    }
+
+
+    function cleareterdate() {
+        $("#Etedate").val('');
+        GetGrid();
+    }
+
+
+    function cleareterage() {
+        $("#Eteage").val('');
+        GetGrid();
+    }
+
+
+    function clearetertime() {
+        $("#Etetime").val('');
+        GetGrid();
+    }
+
+
+    function clearetercause() {
+        $("#Etecause").val('');
+        GetGrid();
+    }
+
+
+    function cleareterlastnature() {
+        $("#Etelastnature").val('');
+        GetGrid();
+    }
+
+
+    function cleareterlastplace() {
+        $("#Etelastplace").val('');
+        GetGrid();
+    }
+
+
+    function cleareterdescription() {
+        $("#Etedescription").val('');
+        GetGrid();
+    }
+
+
+   
+
+</script>

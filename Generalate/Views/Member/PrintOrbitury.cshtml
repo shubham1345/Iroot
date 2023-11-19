@@ -1,0 +1,269 @@
+﻿@using Generalate.Controllers;
+
+@{
+    ViewBag.Title = "PrintOrbitury";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title></title>
+    <link href="~/Content/ReportCss/sb-admin-2.min.css" rel="stylesheet" />
+    <link href="~/Content/ReportCss/style.css" rel="stylesheet" />
+
+    <style>
+
+
+        table.table tr td {
+            page-break-inside: avoid !important;
+            page-break-after: always;
+            page-break-before: always;
+        }
+
+        table.print-friendly tr td, table.print-friendly tr th {
+            page-break-inside: avoid !important;
+            page-break-after: always;
+            page-break-before: always;
+            /*margin-bottom:4px;
+            margin-top:1px;*/
+        }
+    </style>
+
+</head>
+<body id="page-top">
+    <div class="container" style="font-family:'Segoe UI'; color:black">
+        <div class="search-items" style="display:none">
+            <div class="discharge-border" style="font-family:'Segoe UI';color:black">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <img src="~/Image/Logo/dioconLogo.png" alt="logo icon" width="80px" style="display:inline-block;padding-top: 25px;">
+                        </div>
+                        <div class="col-xs-8" style="text-align:center">
+                            <h3 class="title-of-labprintHead">SG</h3>
+                            <h5 class="title-of-labprint" style="text-transform:uppercase"></h5>
+                            <h6 class="title-of-labprint">Ph No: 07342512933</h6>
+                            <h4 class="title-of-labprint" style="text-transform:uppercase">@{@HomeController.GetControlTextByControlId("Orbitury Notice Report");}</h4>
+                        </div>
+                        <div class="col-xs-2">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="page-content-wrap" style="margin-top:50px">
+            <div class="row" style="margin-right:-5px;margin-left:-5px;">
+                <div class="col-md-12">
+                    <div class="panel panel-primary">
+                        @*<div class="col-sm-12" style="margin-top:30px;">
+                                <b>Select Language :</b>
+                                <label class="radio-inline"><input type="radio" checked id="RDenglish"><b>English</b></label>
+                                <label class="radio-inline"><input type="radio" id="RDfrench"><b>French</b></label>
+                                <label class="radio-inline"><input type="radio" id="RDboth"><b>Both</b></label>
+
+                                <input type="button" class="btn btn-success pull-right" style="margin-right:30px; margin-top:20px;" value="Print" id="btnPrint1" />
+                                <input type="button" class="btn btn-success pull-right" style="margin-right:30px; margin-top:20px; display:none;" value="Print" id="btnPrint2" />
+                                <input type="button" class="btn btn-success pull-right" style="margin-right:30px; margin-top:20px; display:none;" value="Print" id="btnPrint3" />
+                            </div>*@
+                        <div class="row" id="ObituryDivfinal" style="border-style: groove;">
+                            <div id="englishPanel">
+                                <div class="row" style="margin-left:30px;margin-right:30px;">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                        <h4 style="text-align:center;" id="lngenglish"><b></b></h4>
+                                        <div class="row" id="ObituryDiv">
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-6" style="margin-left:80px;float:left; text-align:left;">
+                                                    <p><b>@ViewBag.CongName</b></p>
+                                                    <p><b>@ViewBag.CongAddress</b></p>
+                                                    <p>Phone:@ViewBag.CongTel</p>
+                                                    <p>Fax:@ViewBag.CongFax</p>
+                                                </div>
+                                                <div class="col-sm-4" style="float:right" align="right">
+                                                    <img alt="" src="~/Image/Primarydetails/@ViewBag.Photo" style="height:200px; width:200px;" id="uploadimage" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12" style="text-align:center;margin-left:-45px;">
+                                                <p><b>@{@HomeController.GetControlTextByControlId("OBITURY NOTICE");} </b></p>
+                                            </div>
+
+                                            <div class="page-content-wrap">
+                                                <div class="row" style="margin-right:250px;margin-left:250px;">
+                                                    <div class="col-md-12">
+                                                        <div class="panel panel-primary">
+                                                            <div class="panel-body">
+                                                                <div class="row" style="border-style: groove;">
+                                                                    <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                                                        <div class="row">
+                                                                            <div class="col-sm-12">
+                                                                                <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                                                                    <p>@{@HomeController.GetControlTextByControlId("The Superior General,");} </p>
+                                                                                    <p>@{@HomeController.GetControlTextByControlId("The Provincial Superior,");} </p>
+                                                                                    <p>@{@HomeController.GetControlTextByControlId("And the Brothers of the");} <b> @ViewBag.ProvinceName,</b></p>
+                                                                                    <p>@{@HomeController.GetControlTextByControlId("recommend to our prayers the soul of");} </p>
+                                                                                    <p><b>@ViewBag.name @ViewBag.sirname</b></p>
+                                                                                    <p>@{@HomeController.GetControlTextByControlId("Who passed away on ");} <b>@ViewBag.Date</b>@{@HomeController.GetControlTextByControlId("at");}  <b>@ViewBag.LastPlaceRites (@ViewBag.Country)</b> .</p>
+                                                                                    <p>@{@HomeController.GetControlTextByControlId("He was");} <b>@ViewBag.Age</b>@{@HomeController.GetControlTextByControlId("years old and has been in the religious life for");}  <b>@ViewBag.Year</b>@{@HomeController.GetControlTextByControlId("years");} .</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12" style="margin-top:30px; text-align:center;margin-left:-50px">
+                                                <p><b>@{@HomeController.GetControlTextByControlId("“He who believes in me, though he dies, will live”");} </b></p>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-6" style="margin-top:30px; margin-left:80px; text-align:left;">
+                                                    <p><b>@System.DateTime.Now.ToString("dd-MM-yyyy")</b></p>
+                                                    <p><b>@{@HomeController.GetControlTextByControlId("The Secretary General");}</b></p>
+                                                    <p>@ViewBag.SecretaryGeneral</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="panel-body panel" style="display:none;" id="frenchPanel">
+                                <div class="row">
+                                    <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                        <h4 style="text-align:center;" id="lngfrench"><b>French</b></h4>
+                                        @*<div class="panel panel-primary">*@
+                                        <div class="row" id="ObituryDiv1">
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-6" style="margin-left:80px; text-align:left;">
+                                                    <p><b>@ViewBag.CongName</b></p>
+                                                    <p><b>@ViewBag.CongAddress</b></p>
+                                                    <p>Phone:@ViewBag.CongTel</p>
+                                                    <p>Fax:@ViewBag.CongFax</p>
+                                                </div>
+                                                <div class="col-sm-4" style="" align="right">
+                                                    <img alt="" src="~/Image/Primarydetails/@ViewBag.Photo" style="height:100px; width:100px;" id="uploadimage" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12" style="text-align:center;">
+                                                <p><b>AVIS DE DÉCÈS</b></p>
+                                            </div>
+
+                                            <div class="page-content-wrap">
+                                                <div class="row" style="margin-right:250px;margin-left:250px;">
+                                                    <div class="col-md-12">
+                                                        <div class="panel panel-primary">
+                                                            <div class="panel-body">
+                                                                <div class="row">
+                                                                    <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                                                        <div class="row" id="ObituryDiv">
+                                                                            <div class="col-sm-12">
+                                                                                <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                                                                    <p>Le Supérieur général,</p>
+                                                                                    <p>le Supérieur provincial,</p>
+                                                                                    <p>et les Frères de la province de<b> @ViewBag.ProvinceName,</b></p>
+                                                                                    <p>recommandent à nos prières le repos de l'âme du</p>
+                                                                                    <p><b>@ViewBag.name @ViewBag.sirname</b></p>
+                                                                                    <p>décédé le <b>@ViewBag.Date</b> à La <b>@ViewBag.LastPlaceRites (@ViewBag.Country)</b> .</p>
+                                                                                    <p>Il était âgé de<b>@ViewBag.Age</b> ans, dont <b>@ViewBag.Year</b>ans de vie religieuse.</p>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12" style="margin-top:30px; text-align:center;">
+                                                <p><b>"Celui qui croit en moi, même s'il meurt, vivra".</b></p>
+                                            </div>
+                                            <div class="col-sm-12">
+                                                <div class="col-sm-10" style="margin-top:30px; text-align:right;">
+                                                    <p><b>Rome, le @System.DateTime.Now.ToString("dd-MM-yyyy")</b></p>
+                                                    <p><b>Le Secrétaire général </b></p>
+                                                    <p>@ViewBag.SecretaryGeneral</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @*</div>*@
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @* <p style="text-align: right;padding-bottom: 60px;font-family:'Segoe UI';font-size:20px; font:bold; color:black">Orbitury Notice</p>*@
+</body>
+</html>
+
+
+
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script>
+        $('#btnPrint1').on("click", function () {
+            //$('#ObituryDiv').printThis();
+            var id = '@ViewBag.memberId';
+            window.location.href = "/Member/PrintOrbitury?id=" + id;
+        });
+        $('#btnPrint2').on("click", function () {
+             var id = '@ViewBag.memberId';
+            window.location.href = "/Member/PrintOrbitury?id=" + id;
+            //$('#ObituryDiv1').printThis();
+        });
+        $('#btnPrint3').on("click", function () {
+             var id = '@ViewBag.memberId';
+            window.location.href = "/Member/PrintOrbitury?id=" + id;
+            //$('#ObituryDivfinal').printThis();
+            //$("#lngfrench").css("display", "none");
+            //$("#lngenglish").css("display", "none");
+        });
+    </script>
+    <script>
+        $('#RDenglish').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#RDfrench").attr("checked", false);
+                $("#RDboth").attr("checked", false);
+                $("#englishPanel").css("display", "block");
+                $("#frenchPanel").css("display", "none");
+                $("#btnPrint1").css("display", "block");
+                $("#btnPrint2").css("display", "none");
+                $("#btnPrint3").css("display", "none");
+            }
+        });
+        $('#RDfrench').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#RDenglish").attr("checked", false);
+                $("#RDboth").attr("checked", false);
+                $("#frenchPanel").css("display", "block");
+                $("#englishPanel").css("display", "none");
+                $("#btnPrint1").css("display", "none");
+                $("#btnPrint2").css("display", "block");
+                $("#btnPrint3").css("display", "none");
+            }
+        });
+        $('#RDboth').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#RDfrench").attr("checked", false);
+                $("#RDenglish").attr("checked", false);
+                $("#frenchPanel").css("display", "block");
+                $("#englishPanel").css("display", "block");
+                $("#btnPrint1").css("display", "none");
+                $("#btnPrint2").css("display", "none");
+                $("#btnPrint3").css("display", "block");
+            }
+        });
+    </script>
+}
+
+

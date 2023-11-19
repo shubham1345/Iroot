@@ -1,0 +1,429 @@
+﻿.widget-summary {
+    display: table;
+    width: 100%;
+}
+
+    .widget-summary:after {
+        content: "";
+        display: table;
+        clear: both;
+    }
+
+    .widget-summary .widget-summary-col {
+        display: table-cell;
+        vertical-align: top;
+        width: 100%;
+    }
+
+        .widget-summary .widget-summary-col.widget-summary-col-icon {
+            width: 1%;
+        }
+
+    .widget-summary .summary-icon {
+        margin-right: 15px;
+        font-size: 42px;
+        font-size: 4.2rem;
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
+        text-align: center;
+        color: #fff;
+        -webkit-border-radius: 55px;
+        border-radius: 55px;
+    }
+
+    .widget-summary .summary {
+        min-height: 65px;
+        word-break: break-all;
+    }
+
+        .widget-summary .summary .title {
+            margin: 0;
+            font-size: 16px;
+            font-size: 1.6rem;
+            line-height: 22px;
+            line-height: 2.2rem;
+            color: #333333;
+            font-weight: 500;
+        }
+
+        .widget-summary .summary .info {
+            font-size: 14px;
+            font-size: 1.4rem;
+            line-height: 30px;
+            line-height: 3rem;
+        }
+
+            .widget-summary .summary .info span {
+                vertical-align: middle;
+            }
+
+        .widget-summary .summary .amount {
+            margin-right: .2em;
+            font-size: 24px;
+            font-size: 2.4rem;
+            font-weight: 600;
+            color: #333333;
+            vertical-align: middle;
+        }
+
+    .widget-summary .summary-footer {
+        padding: 5px 0 0;
+        border-top: 1px dotted #ddd;
+        text-align: right;
+    }
+
+.bg-primary .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-primary .widget-summary .summary .title,
+.bg-primary .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-primary .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-primary .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-secondary .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-secondary .widget-summary .summary .title,
+.bg-secondary .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-secondary .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-secondary .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-tertiary .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-tertiary .widget-summary .summary .title,
+.bg-tertiary .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-tertiary .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-tertiary .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-quartenary .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-quartenary .widget-summary .summary .title,
+.bg-quartenary .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-quartenary .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-quartenary .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-success .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-success .widget-summary .summary .title,
+.bg-success .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-success .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-success .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-warning .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-warning .widget-summary .summary .title,
+.bg-warning .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-warning .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-warning .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-danger .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-danger .widget-summary .summary .title,
+.bg-danger .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-danger .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-danger .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-info .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-info .widget-summary .summary .title,
+.bg-info .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-info .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-info .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+.bg-dark .widget-summary .summary-icon {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.bg-dark .widget-summary .summary .title,
+.bg-dark .widget-summary .summary .amount {
+    color: white;
+}
+
+.bg-dark .widget-summary .summary-footer {
+    border-top: 1px solid #fff;
+    border-top-color: rgba(255, 255, 255, 0.2);
+}
+
+    .bg-dark .widget-summary .summary-footer a {
+        color: white;
+        opacity: 0.6;
+    }
+
+@media only screen and (min-width: 480px) {
+    .widget-summary.widget-summary-xlg {
+        padding: 5px 0;
+    }
+
+        .widget-summary.widget-summary-xlg .summary-icon {
+            width: 110px;
+            height: 110px;
+            line-height: 110px;
+            font-size: 48px;
+            font-size: 4.8rem;
+        }
+
+        .widget-summary.widget-summary-xlg .summary {
+            min-height: 80px;
+        }
+
+            .widget-summary.widget-summary-xlg .summary .title {
+                font-size: 20px;
+                font-size: 2rem;
+                line-height: 28px;
+                line-height: 2.8rem;
+            }
+
+            .widget-summary.widget-summary-xlg .summary .info {
+                font-size: 16px;
+                font-size: 1.6rem;
+                line-height: 30px;
+                line-height: 3rem;
+            }
+
+            .widget-summary.widget-summary-xlg .summary .amount {
+                font-size: 28px;
+                font-size: 2.8rem;
+            }
+}
+
+.widget-summary.widget-summary-lg {
+    padding: 0;
+}
+
+    .widget-summary.widget-summary-lg .summary-icon {
+        width: 90px;
+        height: 90px;
+        line-height: 90px;
+        font-size: 42px;
+        font-size: 4.2rem;
+    }
+
+    .widget-summary.widget-summary-lg .summary {
+        min-height: 65px;
+    }
+
+        .widget-summary.widget-summary-lg .summary .title {
+            font-size: 16px;
+            font-size: 1.6rem;
+            line-height: 22px;
+            line-height: 2.2rem;
+        }
+
+        .widget-summary.widget-summary-lg .summary .info {
+            font-size: 14px;
+            font-size: 1.4rem;
+            line-height: 30px;
+            line-height: 3rem;
+        }
+
+        .widget-summary.widget-summary-lg .summary .amount {
+            font-size: 24px;
+            font-size: 2.4rem;
+        }
+
+.widget-summary.widget-summary-md {
+    padding: 0;
+}
+
+    .widget-summary.widget-summary-md .summary-icon {
+        width: 70px;
+        height: 70px;
+        line-height: 70px;
+        font-size: 32px;
+        font-size: 3.2rem;
+    }
+
+    .widget-summary.widget-summary-md .summary {
+        min-height: 0;
+        margin-top: 12px;
+    }
+
+        .widget-summary.widget-summary-md .summary .title {
+            font-size: 12px;
+            font-size: 1.2rem;
+            line-height: 18px;
+            line-height: 1.8rem;
+        }
+
+        .widget-summary.widget-summary-md .summary .info {
+            font-size: 11px;
+            font-size: 1.1rem;
+            line-height: 22px;
+            line-height: 2.2rem;
+        }
+
+        .widget-summary.widget-summary-md .summary .amount {
+            font-size: 18px;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+    .widget-summary.widget-summary-md .summary-footer {
+        display: none;
+    }
+
+.widget-summary.widget-summary-sm {
+    padding: 0;
+}
+
+    .widget-summary.widget-summary-sm .summary-icon {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 22px;
+        font-size: 2.2rem;
+    }
+
+    .widget-summary.widget-summary-sm .summary {
+        min-height: 0;
+        margin-top: 4px;
+    }
+
+        .widget-summary.widget-summary-sm .summary .title {
+            font-size: 12px;
+            font-size: 1.2rem;
+            line-height: 18px;
+            line-height: 1.8rem;
+        }
+
+        .widget-summary.widget-summary-sm .summary .info {
+            font-size: 11px;
+            font-size: 1.1rem;
+            line-height: 18px;
+            line-height: 1.8rem;
+        }
+
+        .widget-summary.widget-summary-sm .summary .amount {
+            font-size: 16px;
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+    .widget-summary.widget-summary-sm .summary-footer {
+        display: none;
+    }
+
+.widget-summary.widget-summary-xs {
+    padding: 0;
+}
+
+    .widget-summary.widget-summary-xs .summary-icon {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 18px;
+        font-size: 1.8rem;
+    }
+
+    .widget-summary.widget-summary-xs .summary {
+        min-height: 0;
+    }
+
+        .widget-summary.widget-summary-xs .summary .title {
+            font-size: 12px;
+            font-size: 1.2rem;
+            line-height: 40px;
+        }
+
+        .widget-summary.widget-summary-xs .summary .info {
+            display: none;
+        }
+
+    .widget-summary.widget-summary-xs .summary-footer {
+        display: none;
+    }

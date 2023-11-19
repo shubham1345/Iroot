@@ -1,0 +1,285 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using Excel= Microsoft.Office.Interop.Excel;
+using System.Data;
+using System.Text.RegularExpressions;
+namespace MyInteropLib
+{
+    public partial class ResourceTracker : Form
+    {
+
+        public static DataSet ds=new DataSet();
+        public ResourceTracker()
+        {
+            InitializeComponent();
+            Excel.Application objXL = null;
+            Excel.Workbook objWB = null;
+            objXL = new Excel.Application();
+            string FileName = @"D:\ControlBookFormulation\Copy of TCS Master Resource Plan.1.18.17_RK.xlsx";
+            objWB = objXL.Workbooks.Open(FileName);
+            foreach (Excel.Worksheet worksheet in objWB.Worksheets)
+            {
+                tabControlRT.TabPages.Add(worksheet.Name);
+            }
+            //ds = ToDataSet();
+            dataGridView1.DataSource = ToDataTable(tabControlRT.TabPages[0].Text.ToString());
+        }
+        //public static DataTable ToDataTable(string SheetName)
+        //{
+        //    return ds.Tables[SheetName];
+        //}
+
+        public static DataTable ToDataTable(string SheetName)
+        {
+            //Instance reference for Excel Application
+
+            //Workbook refrence
+            Excel.Application objXL = null;
+            Excel.Workbook objWB = null;
+            DataTable dt = null;
+            string FileName = @"D:\ControlBookFormulation\Copy of TCS Master Resource Plan.1.18.17_RK.xlsx";
+
+            try
+            {
+
+                objXL = new Excel.Application();
+                objWB = objXL.Workbooks.Open(FileName);
+               
+                    //MessageBox.Show(SheetName);
+                    Excel.Worksheet objSHT = (Excel.Worksheet)objWB.Worksheets.get_Item((object)SheetName);
+                    int rows = objSHT.UsedRange.Rows.Count;
+                    int cols = objSHT.UsedRange.Columns.Count;
+                     dt = new DataTable(SheetName);
+                    int noofrow = 1;
+
+                    //If 1st Row Contains unique Headers for datatable include this part else remove it
+                    //Start
+                    int RTColomnHeader = 0;
+                    for (int c = 1; c <= cols; c++)
+                    {
+                        string colname = objSHT.Cells[1, c].Text;
+                        dt.Columns.Add(colname);
+                        if (colname == "Emp ID")
+                        {
+                            RTColomnHeader = objSHT.UsedRange.Find(colname).Column;
+                        }
+                        noofrow = 2;
+                    }
+                    //END
+
+                    List<string> empList = new List<string>();
+                    for (int r = noofrow; r <= rows; r++)
+                    {
+                        DataRow dr = dt.NewRow();
+                        for (int c = 1; c <= cols; c++)
+                        {
+                            dr[c - 1] = objSHT.Cells[r, c].Text;
+
+                        }
+                        string EmployeeId = objSHT.Cells[r, RTColomnHeader].Text;
+                        empList.Add(EmployeeId);
+
+                        dt.Rows.Add(dr);
+                    }
+                    ds.Tables.Add(dt);
+                    CheckEmployeeIdInControlBook(dt);
+
+                    //Closing workbook
+                    objWB.Close();
+                    //Closing excel application
+                    objXL.Quit();
+            
+
+
+                }
+              
+            catch (Exception ex)
+            {
+                objWB.Saved = true;
+                //Closing work book
+                objWB.Close();
+                //Closing excel application
+                objXL.Quit();
+                //Response.Write("Illegal permission");
+            }
+            return dt;
+        }
+        public static DataSet ToDataSet()
+        {
+            //Instance reference for Excel Application
+
+            //Workbook refrence
+            Excel.Application objXL = null;
+            Excel.Workbook objWB = null;
+            string FileName = @"D:\ControlBookFormulation\Copy of TCS Master Resource Plan.1.18.17_RK.xlsx";
+           
+            try
+            {
+
+                objXL = new Excel.Application();
+                objWB = objXL.Workbooks.Open(FileName);
+                foreach (Excel.Worksheet worksheet in objWB.Worksheets)
+                {
+                    string SheetName = worksheet.Name;
+                    //MessageBox.Show(SheetName);
+                    Excel.Worksheet objSHT = (Excel.Worksheet)objWB.Worksheets.get_Item((object)SheetName);
+                    int rows = objSHT.UsedRange.Rows.Count;
+                    int cols = objSHT.UsedRange.Columns.Count;
+                    DataTable dt = new DataTable(SheetName);
+                    int noofrow = 1;
+
+                    //If 1st Row Contains unique Headers for datatable include this part else remove it
+                    //Start
+                    int RTColomnHeader = 0;
+                    for (int c = 1; c <= cols; c++)
+                    {
+                        string colname = objSHT.Cells[1, c].Text;
+                        dt.Columns.Add(colname);
+                        if (colname == "Emp ID")
+                        {
+                            RTColomnHeader = objSHT.UsedRange.Find(colname).Column;
+                        }
+                        noofrow = 2;
+                    }
+                    //END
+
+                    List<string> empList = new List<string>();
+                    for (int r = noofrow; r <= rows; r++)
+                    {
+                        DataRow dr = dt.NewRow();
+                        for (int c = 1; c <= cols; c++)
+                        {
+                            dr[c - 1] = objSHT.Cells[r, c].Text;
+                           
+                        }
+                        string EmployeeId = objSHT.Cells[r, RTColomnHeader].Text;
+                        empList.Add(EmployeeId);
+
+                        dt.Rows.Add(dr);
+                    }
+                    ds.Tables.Add(dt);
+                    CheckEmployeeIdInControlBook(dt);
+
+
+                  
+
+                }
+                //Closing workbook
+                objWB.Close();
+                //Closing excel application
+                objXL.Quit();
+            }
+            catch (Exception ex)
+            {
+                objWB.Saved = true;
+                //Closing work book
+                objWB.Close();
+                //Closing excel application
+                objXL.Quit();
+                //Response.Write("Illegal permission");
+            }
+            return ds;
+        }
+        public static void CheckEmployeeIdInControlBook(DataTable dt)
+        {
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string name = row[0].ToString();
+                string description = row[1].ToString();
+                string icoFileName = row[2].ToString();
+                string installScript = row[3].ToString();
+
+            }
+            Excel.Application objXL = null;
+            Excel.Workbook objWB = null;
+            string FileName = @"D:\ControlBookFormulation\ControlBook1.xlsx";
+
+            try
+            {
+
+                objXL = new Excel.Application();
+                objWB = objXL.Workbooks.Open(FileName);
+                foreach (Excel.Worksheet worksheet in objWB.Worksheets)
+                {
+                    string SheetName = worksheet.Name;
+                    //MessageBox.Show(SheetName);
+                    if (SheetName == "2) Monthly Earned Hours-Working")
+                    {
+                        Excel.Worksheet objSHT = (Excel.Worksheet)objWB.Worksheets.get_Item((object)SheetName);
+                        Excel.Range range = objSHT.get_Range("A11", "Q405");
+                        int rows = range.Rows.Count;
+                        int cols = range.Columns.Count;
+                        int CBColomnHeader = 0;
+                        int noofrow = 0;
+                        for (int c = 1; c <= cols; c++)
+                        {
+                            string colname = objSHT.Cells[11, c].Text;
+
+                            if (StripTagsRegex(colname) == "Employee ID #")
+                            {
+                                CBColomnHeader = objSHT.UsedRange.Find(StripTagsRegex(colname)).Column;
+                            }
+                            noofrow = 12;
+                        }
+                        for (int r = noofrow; r <= rows; r++)
+                        {
+                            string EmployeeIDCB = objSHT.Cells[r, CBColomnHeader].Text;
+                            foreach (DataRow row in dt.Rows)
+                            {
+
+                                for (int c = 1; c <= cols; c++)
+                                {
+                                    if (row["Emp ID"].ToString() == EmployeeIDCB && !String.IsNullOrEmpty(row["Emp ID"].ToString()))
+                                    {
+                                        ((Excel.Range)objSHT.Cells[r, c]).Interior.Color = ColorTranslator.ToOle(Color.Green);
+                                    }
+                                    else
+                                    {
+                                        
+                                    }
+
+                                }
+                            }
+
+                        }
+                        int date = DateTime.Now.Second;
+                        string FileNamenew = @"E:\ControlBookFormulation\ControlBook"+date+".xlsx";
+                        objWB.SaveAs(FileNamenew);
+                        objWB.Close(true, null, null);
+                        objXL.Quit();
+                    }
+
+                  
+
+                }
+               
+
+
+            }
+
+            catch (Exception ex)
+            {
+
+            }
+        }
+        public static string StripTagsRegex(string source)
+        {
+            return Regex.Replace(source, @"\t|\n|\r", "");
+
+
+        }
+        private void tabControlRT_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            string sheetname = tabControlRT.SelectedTab.Text;
+            dataGridView1.DataSource = ToDataTable(sheetname);
+        }
+    }
+}

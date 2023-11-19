@@ -1,0 +1,17 @@
+﻿@model Generalate.Models.Tbl_Cong
+@using Generalate.Controllers;
+@{
+
+    ViewBag.Title = "CreateCommunity";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<form >*@
+@Html.Partial("_CreateOrUpdate", Model)
+
+@*</form>*@
+@section Scripts{
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+}

@@ -1,0 +1,108 @@
+﻿@using Generalate.Controllers;
+@model Generalate.Models.DataListItems2
+@{
+    ViewBag.Title = "RenewalDetails";
+}
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Appointment/Appointment/@ViewBag.Id"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12">
+                <div id="prientbox">
+                    <div class="col-sm-12">
+                        <div class="panel-group" style="background-color:#001f6b">
+                            <div class="panel panel-primary">
+                                <div class="tab panel-heading" style="background-color:#001f6b;text-align:center;">
+                                    <a class="hidden-print" style="color:white;"><span>@{@HomeController.GetControlTextByControlId("All_Reports");}</span></a>
+                                </div>
+                                <div class="col-sm-12" style="margin-top:20px;">
+                                    <input type="button" class="btn btn-success pull-right hidden-print" value="Print" id="btnPrint" />
+                                </div>
+                                <div id="PersonalDetailDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                    <table class="table table-bordered" id="TblPersionalDetails">
+                                        @try
+                                        {
+                                            <tr><h4 class="hidden-print" style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Renewal_Details");}</span></h4></tr>
+                                            <tr>
+                                                <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Title");}</span></th>
+                                                <td style="width:30%"><span id="DataListItemName">@Model.DataListItemName</span></td>
+                                                <th style="width:17%"> <span>@{@HomeController.GetControlTextByControlId("Date");}</span> </th>
+                                                <td><span id="Date">@Model.ToDate</span>  </td>
+                                            </tr>
+                                            <tr>
+                                                <th><span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                <td><span id="Description">@Model.Description</span></td>
+                                                <th></th>
+                                                <td><span id="Description"></span>  </td>
+                                            </tr>
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script>
+
+        $('#btnPrint').on("click", function () {
+            $("#tblSocDiv").css("display", "none");
+            $("#PrinttblSocDiv").css("display", "block");
+
+            $('#prientbox').printThis({
+                afterPrint: function () {
+                    $("#tblSocDiv").css("display", "block");
+                    $("#PrinttblSocDiv").css("display", "none");
+                }
+            });
+        });
+    </script>
+
+    <script>
+
+        $(document).ready(function () {
+
+          //debugger;
+            $('#tblSoc').DataTable();
+            $('#TbInst').DataTable();
+            $('#Tblcomm').DataTable();
+            $('#TblParis').DataTable();
+            return false;
+        });
+
+        $('#fromdate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020',
+            onSelect: function (selected) {
+                $("#todate").datepicker("option", "minDate", selected)
+            }
+        });
+
+        $('#todate').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1970:2020',
+            onSelect: function (selected) {
+                $("#fromdate").datepicker("option", "maxDate", selected)
+            }
+        });
+    </script>
+}
+
+
+

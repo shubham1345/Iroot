@@ -1,0 +1,103 @@
+﻿@using Generalate.Controllers;
+@using Generalate.Models
+
+@{
+    var fromAge = ViewBag.FromAge != null ? ViewBag.FromAge : "";
+    var toAge = ViewBag.ToAge != null ? ViewBag.ToAge : "";
+}
+
+<div>
+    <label>From Age:</label><input type="text" id="fromAge" value="@fromAge" />
+    <label>To Age:</label><input type="text" id="toAge" value="@toAge" />
+    <input type="button" class="ageFilter" value="Filter" />
+</div>
+<table class="table table-condensed" style="border-collapse:collapse;">
+    @if (ViewBag.Formation == null)
+    {
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Province Name</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+    }
+    else
+    {
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Province Name</th>
+
+                @foreach (DataListItems formation in ViewBag.AllFormation)
+                {
+                    <th>@formation.Name</th>
+                }
+                @foreach (Tbl_ProfessionDetails prof in ViewBag.ProfDetails)
+                {
+                    <th>@prof.Name</th>
+                }
+
+            </tr>
+        </thead>
+    }
+
+    <tbody>
+
+
+        @if (ViewBag.ProvinceGroup != null)
+        {
+            int j = 1;
+            var AllData = ViewBag.FinalList;
+            for (int i = 0; i < ViewBag.ProvinceGroup.Count; i++)
+            {
+                <tr class="provinceClass">
+                    <td>@j</td>
+                    <td>
+                        @ViewBag.ProvinceGroup[j - 1][0].ProvinceName
+                        @if (ViewBag.FilteredDate != null)
+                        {
+                            <span>+</span>
+                        }
+
+                    </td>
+                    @for (int k = 0; k < ViewBag.AllFormation.Count + ViewBag.ProfDetails.Count; k++)
+                    {
+                        <td>@AllData[j, k]</td>
+                    }
+                </tr>
+                j++;
+            }
+
+
+        }
+        @if (ViewBag.FilteredDate != null)
+        {
+            int j = 1;
+            foreach (FilterAge i in ViewBag.FilteredDate)
+            {
+
+                <tr>
+                    <td>@j</td>
+                    <td class="provinceClass">@i.Name  <span>+</span></td>
+                    <td><a href="#" class="openMemeberModal" id="@i.Name">@i.Count</a></td>
+                </tr>
+                foreach (AgeCount ju in i.AgeCounts)
+                {
+                    <tr class="provinceCount">
+                        <td></td>
+                        <td>@ju.Age</td>
+                        <td><a href="#" class="openMemeberModal" id="@i.Name|@ju.Age">@ju.Count</a></td>
+                    </tr>
+                }
+                j++;
+
+
+
+            }
+        }
+
+
+    </tbody>
+</table>
+

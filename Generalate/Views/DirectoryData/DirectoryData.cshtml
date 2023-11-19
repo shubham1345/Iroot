@@ -1,0 +1,1332 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "DirectoryData";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <span>@{@HomeController.GetControlTextByControlId("Directory_Data");}</span>
+                    <input type="button" class="btn btn-success pull-right" value=@{@HomeController.GetControlTextByControlId("Print");} id="btnPrint" />
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <select type="dropdown" class="form-control" style="width:300px !important;" name="ProvinceDrop" id="ProvinceDrop" placeholder="Province Name"></select>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control datepicker" id="FromDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("From Date");}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <input type="text" class="form-control datepicker" id="ToDate" readonly placeholder="@{@HomeController.GetControlTextByControlId("To Date");}">
+                                    </div>
+                                </div>
+                                <div class="col-sm-2">
+                                    <div class="form-group">
+                                        <input type="submit" class="btn btn-success pull-right" id="btnfilter" value="@{@HomeController.GetControlTextByControlId("Filter");}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" id="tblSocDiv">
+                                <div class="col-sm-12" style="text-align:center; margin-top:30px;">
+                                    @*<p><b>PROVINCE OF DELHI</b></p>*@
+                                    <div class="row" id="provincename"></div>
+                                </div>
+                                <div class="col-sm-12" style="text-align:center;">
+                                    <h2 class="std_head well-sm jss_form"><b>@{@HomeController.GetControlTextByControlId("CONTENTS");}</b></h2>
+                                </div>
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-right:50px;margin-left:50px;">
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblProdata" style="margin-top:30px; width: 80%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>S.No.</th>
+                                                                        <th colspan='3' scope='colgroup'>@{@HomeController.GetControlTextByControlId("Particulars")}</th>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>1.</td>
+                                                                        <td colspan='3' scope='colgroup'>@{@HomeController.GetControlTextByControlId("Provincial Administrator")}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>2.</td>
+                                                                        <td colspan='3' scope='colgroup'>@{@HomeController.GetControlTextByControlId("Province Commission")}</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>3.</td>
+                                                                        <td colspan='3' scope='colgroup'> @{@HomeController.GetControlTextByControlId("Institutions and Communities in States and Dioceses")} </td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <td>4.</td>
+                                                                        <td colspan='3' scope='colgroup'>@{@HomeController.GetControlTextByControlId("Communities")}  (@System.DateTime.Now.ToString("yyyy"))</td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope='col'></th>
+                                                                        <th scope='col'>@{@HomeController.GetControlTextByControlId("Code")} </th>
+                                                                        <th scope='col'> @{@HomeController.GetControlTextByControlId("Name Of the Communities")} </th>
+                                                                        <th scope='col'> @{@HomeController.GetControlTextByControlId("Place")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="row" id="allcomdata"></tbody>
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th></th>
+                                                                        <th colspan='3' scope='colgroup' style="text-align:center;"> @{@HomeController.GetControlTextByControlId("Distrinct / Sector / Region")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="row" id="allDistSecdata"></tbody>
+                                                                <tr>
+                                                                    <td>5.</td>
+                                                                    <td colspan='3' scope='colgroup'> @{@HomeController.GetControlTextByControlId("Particular of Brothers")} </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>6.</td>
+                                                                    <td colspan='3' scope='colgroup'> @{@HomeController.GetControlTextByControlId("Mobile Numbers and E-mail Ids")} </td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>7.</td>
+                                                                    <td colspan='3' scope='colgroup'> @{@HomeController.GetControlTextByControlId("Novices and pre-Novitiate")} </td>
+                                                                </tr>
+
+                                                            </table>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*ProvinceDetails*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-right:250px;margin-left:250px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("PROVINCIAL")} </b></p>
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("ADMINISTRATION")} </b></p>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12" style="text-align:center;">
+                                                                <p> @{@HomeController.GetControlTextByControlId("ADDRESS (Provincial House)")} </p>
+                                                                <label id="ProvinceAddress"></label>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12" style="text-align:center;">
+                                                                <p><b> @{@HomeController.GetControlTextByControlId("Provincial Mobile:")}  <label id="ProvinceMobile"></label></b></p>
+                                                                <p><b> @{@HomeController.GetControlTextByControlId("E-mail:")}  <label id="ProvinceEmail"></label></b></p>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12" id="myprocommiti">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*ProvinceComission*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-right:50px;margin-left:50px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("PROVINCE COMMISSIONS")} </b></p>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-12" id="ProCouncil">
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*DistSecComission*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12" id="DistSecComission">
+                                            @*<div class="panel panel-primary">
+                                                <div class="panel-body" id="">
+                                                    
+                                                </div>
+                                            </div>*@
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*<div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12" id="">
+                                           
+                                        </div>
+                                    </div>
+                                </div>*@
+
+                                @*instandCommunityintheDio*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("INSTITUTION AND COMMUNITIES IN")}  </b></p>
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("STATES AND DIOCESE")}  </b></p>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData123" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Diocese")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Name Of The Community")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Total No. Of Institution")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Total Communities")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                @*<tr>
+                                            <td rowspan = '3' scope='rowgroup'></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td rowspan = '3' ></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>*@
+
+                                                                <tbody id="InsComDioData"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*FormationCommunities*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("FORMATION AND COMMUNITIES")} </b></p>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><b> @{@HomeController.GetControlTextByControlId("S. NO")} </b></th>
+                                                                        <th><b> @{@HomeController.GetControlTextByControlId("Communities")} </b></th>
+                                                                        <th><b> @{@HomeController.GetControlTextByControlId("brothers")} </b></th>
+                                                                    </tr>
+
+
+                                                                </thead>
+
+                                                                <tbody id="forCommunity"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*FormationCommunities*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("DISTRICT / SECTOR / REGION COMMUNITIES")} </b></p>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th><b> @{@HomeController.GetControlTextByControlId("S. NO")} </b></th>
+                                                                        <th><b> @{@HomeController.GetControlTextByControlId("Communities")} </b></th>
+                                                                        <th><b> @{@HomeController.GetControlTextByControlId("brothers")} </b></th>
+                                                                    </tr>
+
+
+                                                                </thead>
+
+                                                                <tbody id="forDistCommunity"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*BrothersOutSideProvince*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("Brothers Outside the Province")} </b></p>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+
+                                                                </thead>
+                                                                <tbody id="BroOutSidePro"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*perVowsD*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            @*<p><b>PROVINCE OF DELHI</b></p>*@
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("BROTHERS WITH PERPETUAL VOWS")} </b></p>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("S. No.")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("File No.")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Sister Name")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Date Of Birth")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("First Vows")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Final_Vows")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="PerVowsData"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*TempVowsD*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            @*<p><b>PROVINCE OF DELHI</b></p>*@
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("BROTHERS WITH TEMPORARY VOWS")} </b></p>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("S. No.")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("File No.")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Brothers")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Date Of Birth")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("First Vows")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tempvowsdata"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*EmailAndTelD*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            @*<p><b>PROVINCE OF DELHI</b></p>*@
+                                                            <div class="row" id="provincename1"></div>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th style="text-align:center;" colspan='4' scope='colgroup'> @{@HomeController.GetControlTextByControlId("Phone Number And Email Address")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="EmailandPhone"> </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*NOVICES AND PRE-NOVICESD*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-right:250px;margin-left:250px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            @*<p><b>PROVINCE OF DELHI</b></p>*@
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("NOVICES AND PRE-NOVICES")} </b></p>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12" style="text-align:center; margin-top:50px;">
+                                                                <p><b> @{@HomeController.GetControlTextByControlId("I Year Novices")} </b></p>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-12" style="text-align:center;">
+                                                                    <div class="row" id="1stnovitiate"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="row">
+                                                            <div class="col-sm-12" style="text-align:center; margin-top:50px;">
+                                                                <p><b> @{@HomeController.GetControlTextByControlId("II Year Novices")} </b></p>
+                                                            </div>
+                                                            <div class="row" id="2ndnovitiate">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row">
+                                                        <div class="col-sm-12" style="text-align:center; margin-top:50px;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("Pre Novices")} </b></p>
+                                                        </div>
+                                                        <div class="row" id="prenovitiate">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*Total Number of Brothers and Novices*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("Number of Brothers and Novices")} </b></p>
+                                                        </div>
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblTotal" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Perpetual Vows")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Temporary Vows")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Total No. Of Brothers")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("2nd Year Novices")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("1st Year Novices")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Pre Novices")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="tblTotalCaldata"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*Departed Brothers of the ProvinceD*@
+                                <div class="page-content-wrap">
+                                    <div class="row" style="margin-right:220px; margin-left:50px;">
+                                        <div class="col-md-12">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-body">
+                                                    <div class="row" style="margin-left:20px;">
+                                                        <div class="col-sm-12" style="text-align:center;">
+                                                            <p><b> @{@HomeController.GetControlTextByControlId("Eternal Brothers of the Province")} </b></p>
+                                                        </div>
+
+                                                        <div class="col-md-12 col-sm-12 col-xs-12 table-responsive" style="margin-right:50px;margin-left:50px;">
+                                                            <table class="table table-bordered" id="tblData" style="margin-top:30px; width: 90%;">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("S. No.")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Brother's Name")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Date")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Place")} </th>
+                                                                        <th> @{@HomeController.GetControlTextByControlId("Reason")} </th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody id="EternalBrothers"></tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/js/printThis.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script>
+        $('#btnPrint').on("click", function () {
+            $('#tblSocDiv').printThis();
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            GetAllProvinceNew();
+        });
+
+        function GetAllProvinceNew() {
+            $.ajax({
+                url: "/Home/GetAllProvinceNew",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceDrop').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '@{ @HomeController.GetControlTextByControlId("Province Name") ;}' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#ProvinceDrop").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $("#btnfilter").on("click", function () {
+            var province = $("#ProvinceDrop option:selected").val();
+            var fromdate = $("#FromDate").val();
+            var todate = $("#ToDate").val();
+            if (fromdate == "" || todate == "" || province == "") {
+                alert("Please Select Province Name And FromDate or ToDate !");
+                return false;
+            }
+            GetProvinceData(province, fromdate, todate);
+            GetProvinceData1(province, fromdate, todate);
+            GetCommunityData(province, fromdate, todate);
+            GetEmailandPhone(province, fromdate, todate);
+            GetPerpetualVows(province, fromdate, todate);
+            GetTemporaryVows(province, fromdate, todate);
+            GetProvinceAddress(province, fromdate, todate);
+            GetProvinceMobile(province, fromdate, todate);
+            GetProvinceEmail(province, fromdate, todate);
+            GetEternalBrothers(province, fromdate, todate);
+            Get1stnovitiate(province, fromdate, todate);
+            Get2ndnovitiate(province, fromdate, todate);
+            GetPreNovitiate(province, fromdate, todate);
+            GetForPlace(province, fromdate, todate);
+            GetComOutSideBro(province, fromdate, todate);
+            GetTotalCalculation(province, fromdate, todate);
+            GetInstituteCommunity(province, fromdate, todate);
+            GetProCommission(province, fromdate, todate);
+            GetAllAgeCalculation(province, fromdate, todate);
+            GetProvinceSuperior(province, fromdate, todate);
+            GetDistSec(province, fromdate, todate);
+            GetForDistSec(province, fromdate, todate);
+            GetDistSecComission(province, fromdate, todate);
+        });
+
+        function GetProvinceData(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetProvinceData?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#provincename').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                            html = html + "<p1><b>" + user.Name + "</b></p1>";
+                        });
+                        $('#provincename').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetCommunityData(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetCommunityData?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#allcomdata').html("");
+                    if (response != null) {
+
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + " " + "</td><td>" + data.CommCode + "</td><td>" + data.CongregationName + "</td><td>" + data.Place + "</td></tr>";
+                            $('#allcomdata').append(row);
+                        });
+
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetEmailandPhone(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetEmailandPhone?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#EmailandPhone').html("");
+                    if (response != null) {
+
+                        var i = 1;
+                        response.forEach(function (data) {
+
+                            //var row = "<tr><td scope='colgroup'>" + i + "</td><td scope='colgroup'>" + data.Baptismialname + "</td><td scope='colgroup'>" + data.emailid + "</td><td scope='colgroup'>" + data.mobilenumber + "</td></tr>";
+                            var row = "<tr><td scope='colgroup'>" + i + "</td><td scope='colgroup'>" + data.Name + " " + data.SurName + "</td><td scope='colgroup'>" + data.emailid + "</td><td scope='colgroup'>" + data.mobilenumber + "</td></tr>";
+                            $('#EmailandPhone').append(row);
+                            i = i + 1;
+
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetProvinceData1(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetProvinceData1?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#provincename1').html("");
+                    if (response != null) {
+
+                        var html = "";
+                        response.forEach(function (user) {
+                            html = html + "<p1><b>" + user.Name + "</b></p1>";
+                        });
+                        $('#provincename1').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetPerpetualVows(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetPerpetualVows?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#PerVowsData').html("");
+                    if (response != null) {
+
+                        var i = 1;
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + i + "</td>";
+                            row = row + "  <td> " + data.FileNo + "</td>";
+                            row = row + "  <td> " + data.Name + "</td>";
+                            if (data.DOB === null)
+                                row = row + "  <td> </td>";
+                            else                               
+                            row = row + "  <td> " + data.DOB + "</td>";
+
+                            row = row + "  <td> " + data.FirstVowDate + "</td>";
+                            row = row + "  <td> " + data.FinalVowDate + "</td>";
+                            row = row +"</tr>";
+
+                            $('#PerVowsData').append(row);
+                            i = i + 1;
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetTemporaryVows(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetTemporaryVows?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#tempvowsdata').html("");
+                    if (response != null) {
+
+                        var i = 1;
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + i + "</td><td>" + data.FileNo + "</td><td>" + data.Name + "</td><td>" + data.DOB + "</td><td>" + data.FirstVowDate + "</td></tr>";
+                            $('#tempvowsdata').append(row);
+                            i = i + 1;
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetProvinceAddress(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetProvinceAddress?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#ProvinceAddress').html("");
+                    if (response != null) {
+
+                        var html = "";
+                        response.forEach(function (user) {
+                            html = html + "<p1><b>" + user.Place + "</b></p1>";
+                        });
+                        $('#ProvinceAddress').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetProvinceMobile(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetProvinceMobile?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#ProvinceMobile').html("");
+                    if (response != null) {
+
+                        var html = "";
+                        response.forEach(function (user) {
+                            html = html + "<p1><b>" + user.Phone + "</b></p1>";
+                        });
+                        $('#ProvinceMobile').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetProvinceEmail(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetProvinceEmail?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#ProvinceEmail').html("");
+                    if (response != null) {
+
+                        var html = "";
+                        response.forEach(function (user) {
+                            html = html + "<p1><b>" + user.EmailId + "</b></p1>";
+                        });
+                        $('#ProvinceEmail').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetEternalBrothers(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetEternalBrothers?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#EternalBrothers').html("");
+                    if (response != null) {
+
+                        var i = 1;
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.Date + "</td><td>" + data.Place + "</td><td>" + data.Reason + "</td></tr>";
+                            $('#EternalBrothers').append(row);
+                            i = i + 1;
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function Get1stnovitiate(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/Get1stnovitiate?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#1stnovitiate').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            html += "<p>" + user.Name + "</p>";
+                        });
+                        $('#1stnovitiate').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function Get2ndnovitiate(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/Get2ndnovitiate?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#2ndnovitiate').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            html += "<p>" + user.Name + "</p>";
+                        });
+                        $('#2ndnovitiate').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetPreNovitiate(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetPreNovitiate?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#prenovitiate').html("");
+                    if (response != null) {
+
+                        var html = "";
+                        response.forEach(function (user) {
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            //html += "<div class='col-sm-6'>";
+                            html += "<p>" + user.Name + "</p>";
+                            // html += "</div class='col-sm-6'>";
+                        });
+                        $('#prenovitiate').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetForPlace(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetForPlace?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ForPlace').html("");
+                    if (response != null) {
+
+                        var html = "";
+                        response.forEach(function (data) {
+                            var brotherdata = "";
+                            if (data.BrotherData.length > 0) {
+                                data.BrotherData.forEach(function (brother) {
+                                    var brotherRow = "<p><lavel><b>" + brother.Knowname + brother.SurName + "</b></label>" + "-" + brother.DesignationType + "," + "</br><span>" + "Phone:" + brother.mobilenumber + "</span>" + "," + "</br > <span>" + "EmailId:" + brother.emailid + "</span></p>";
+                                    brotherdata += brotherRow;
+                                })
+                            }
+
+                            var row = "<tr>";
+                            row += "<td rowspan='2' scope='rowgroup'>" + data.CommunityCode + "</td>";
+                            row += "<th> <label>" + data.Place + "</label></th>";
+                            row += "<th><label>" + data.CommunityName + "</label></th>";
+                            row += "</tr>";
+                            row += "<tr>";
+                            row += "<td><p>" + data.ComAddress + "</p></td>";
+                            row += "<td><p>" + brotherdata + "</p></td>";
+                            row += "</tr>";
+                            $("#forCommunity").append(row);
+                        });
+                        $('#ForPlace').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetComOutSideBro(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetComOutSideBro?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response != null) {
+
+                        response.forEach(function (data) {
+                            var brotherdata = "";
+                            if (data.BrotherData.length > 0) {
+                                data.BrotherData.forEach(function (brother) {
+                                    var brotherRow = "<p><lavel><b>" + brother.Knowname + brother.SurName + "</b></label>" + "-" + brother.DesignationType + "," + "</br><span>" + "Phone:" + brother.mobilenumber + "</span>" + "," + "</br > <span>" + "EmailId:" + brother.emailid + "</span></p>";
+                                    brotherdata += brotherRow;
+                                })
+                            }
+
+                            var row = "<tr>";
+                            row += "<td rowspan='2' scope='rowgroup'>" + data.CommunityCode + "</td>";
+                            row += "<th> <label>" + data.Place + "</label></th>";
+                            row += "<th><label>" + data.CommunityName + "</label></th>";
+                            row += "</tr>";
+                            row += "<tr>";
+                            row += "<td><p>" + data.ComAddress + "</p></td>";
+                            row += "<td><p>" + brotherdata + "</p></td>";
+                            row += "</tr>";
+                            $("#BroOutSidePro").append(row);
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetTotalCalculation(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetTotalCalculation?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#tblTotalCaldata').html("");
+                    if (response != null) {
+
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + data.TotalPerVows + "</td><td>" + data.TotalTempVows + "</td><td>" + data.TotalNoBrothers + "</td><td>" + data.Total2ndNov + "</td><td>" + data.Total1stNov + "</td><td>" + data.TotalPreNov + "</td></tr>";
+                            $('#tblTotalCaldata').append(row);
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetInstituteCommunity(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetInstituteCommunity?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ForPlace').html("");
+                    if (response != null) {
+
+                        var html = "";
+                        response.forEach(function (data) {
+                            var community = "";
+                            if (data.Community.length > 0) {
+                                data.Community.forEach(function (diocom) {
+                                    var Row = "<p>" + diocom.CommunityName + "</p>";
+                                    community += Row;
+                                })
+                            }
+
+                            var row = "<tr>";
+                            row += "<td  rowspan scope='rowgroup'><label>" + data.DioceseName + "(" + data.State + ")" + "</label></td>";
+                            row += "<td>" + community + "</td>";
+                            row += "<td>" + data.InstCount + "</td>";
+                            row += "<td>" + data.CommunityCount + "</td>";
+                            row += "</tr>";
+                            //row = "<tr>";
+                            //row += "<td></td>";
+                            //row += "<td>" + "Total" +"</td>";
+                            //row += "<td>" + data.TotalInstCount + "</td>";
+                            //row += "<td>" + data.TotalCommunityCount + "</td>";
+                            //row += "</tr>";
+                            $("#InsComDioData").append(row);
+                        });
+                        $('#ForPlace').html(html);
+                    }
+                },
+
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetProCommission(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetProCommission?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#ProCouncil').html("");
+                    if (response != null) {
+                        response.forEach(function (user) {
+                            var html = "";
+                            html = "<div class='col-md-6'>";
+                            html += "<div class='panel panel-primary'>";
+                            html += "<div class='panel-body'>";
+                            html += "<div class='row' style='margin-right:50px;margin-left:50px;'>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            html += "<p><b>" + user.Responsibility + "</b></p>";
+                            html += "</div>";
+                            html += "<div class='row'>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+
+                            user.MemberData.forEach(function (member) {
+                                if (member.DesignationName == "Convenor") {
+                                    html += "<p><b>" + member.MemberName + "-" + member.DesignationName + "</b></p>";
+
+                                } else {
+                                    html += "<p>" + member.MemberName + "</p>";
+                                }
+                            });
+
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                            $('#ProCouncil').append(html);
+                        });
+
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetAllAgeCalculation(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetAllAgeCalculation?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+
+                    $('#agedatas').html("");
+                    if (response != null) {
+
+                        var i = 1;
+                        response.forEach(function (data) {
+                            var row = "<tr><td>" + "AnyNameDemo" + "</td><td>" + "DemoName" + "</td><td>" + data.Average + "</td></tr>";
+                            $('#agedatas').append(row);
+                            i = i + 1;
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetProvinceSuperior(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetProvinceSuperior?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#myprocommiti').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                           html += "<div class='row' style='margin-right:50px;margin-left:50px;'>";
+                           html += "<div class='col-sm-12' style='text-align:center;'>";
+                           html += "<p>" + user.DesignationName + ":" + "<b>" + user.MemberName + "</b></p>";
+                           html += "</div>";
+                           html += "</div>";
+                        });
+                        $('#myprocommiti').append(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetDistSec(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetDistSec?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#allDistSecdata').html("");
+                    if (response != null) {
+                        response.forEach(function (data) {
+                            var comnamedata = "";
+                            if (data.CommunityData.length > 0) {
+                                data.CommunityData.forEach(function (comname) {
+                                    var comnameRow =
+                                        "<tr><td scope='col'>" + " " + "</td><td scope='col'>" + comname.CommunityCode + "</td><td scope='col'>" + comname.CommunityName + "</td><td scope='col'>" + comname.Place + "</td></tr>";
+                                    comnamedata += comnameRow;
+                                })
+                            }
+
+                            var row = "<tr>";
+                            row += "<th colspan='4' scope='colgroup' style='text-align:center;'>" + data.DistName + "</th>";
+                            row += "</tr>";
+                            row += "<td>" + comnamedata + "</td>";
+                            $("#allDistSecdata").append(row);
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetForDistSec(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetForDistSec?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (data) {
+                            var brotherdata1 = "";
+                            var Communities = "";
+                          //debugger;
+                            
+                                //data.FormationCommunities.forEach(function (community) {
+                                //    var CommunitiesRow =
+                                //    "<tr>"
+                                //    "<td rowspan='2' scope='rowgroup'>" + community.CommunityCode + "</td>"
+                                //    "<th><label>" + community.Place + "</label></th>"
+                                //    "<th><label>" + community.CommunityName + "</label></th>"
+                                //    "</tr>"
+                                //    "<tr>"
+                                //    "<td><p>" + community.ComAddress + "</p></td>"
+                                //    if (community.BrotherData1.length > 0) {
+                                //        community.BrotherData1.forEach(function (brothers) {
+                                //            var brotherRow1 = "<p><lavel><b>" + brothers.Knowname + brothers.SurName + "</b></label>" + "-" + brothers.DesignationType + "," + "</br><span>" + "Phone:" + brothers.mobilenumber + "</span>" + "," + "</br > <span>" + "EmailId:" + brothers.emailid + "</span></p>";
+                                //            brotherdata1 += brotherRow1;
+                                //        })
+                                //    }
+                                //    "<td><p>" + brotherdata1 + "</p></td>"
+                                //    "</tr>"
+                                //    Communities += CommunitiesRow;
+                                //})
+                          
+
+                            var row = "<tr>";
+                            row += "<th colspan='3' scope='colgroup' style='text-align:center;'>" + data.DistName + "</th>";
+                            row += "</tr>";
+                          //debugger;
+                            data.FormationCommunities.forEach(function (community) {
+                                row += "<tr>";
+                                row += "<td rowspan='2' scope='rowgroup'>" + community.CommunityCode + "</td>";
+                                row +="<th><label>" + community.Place + "</label></th>";
+                                row +="<th><label>" + community.CommunityName + "</label></th>";
+                                row += "</tr>";
+                                row += "<tr>";
+                              //debugger;
+                                row +="<td><p>" + community.ComAddress + "</p></td>";
+                                if (community.BrotherData1.length > 0) {
+                                  //debugger;
+                                    community.BrotherData1.forEach(function (brothers) {
+                                        var brotherRow1 = "<p><lavel><b>" + brothers.Knowname + brothers.SurName + "</b></label>" + "-" + brothers.DesignationType + "," + "</br><span>" + "Phone:" + brothers.mobilenumber + "</span>" + "," + "</br > <span>" + "EmailId:" + brothers.emailid + "</span></p>";
+                                        brotherdata1 += brotherRow1;
+                                    })
+                                }
+                                row += "<td><p>" + brotherdata1 + "</p></td>";
+                                row += "</tr>";
+                            })
+                            //row += "<td>" + Communities + "</td>";
+                            $("#forDistCommunity").append(row);
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        function GetDistSecComission(province, fromdate, todate) {
+            $.ajax({
+                url: "/DirectoryData/GetDistSecComission?province=" + province + "&fromdate=" + fromdate + "&todate=" + todate,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                    $('#DistSecComission').html("");
+                    if (response != null) {
+                        var html = "";
+                        response.forEach(function (user) {
+                           html += "<div class='panel panel-primary'>";
+                            html += "<div class='panel-body'>";
+                            html += "<div class='row' style='margin-right:50px;margin-left:50px;'>";
+                            html += "<div class='col-sm-12' style='text-align: center; '>";
+                            html += "<p><b>" + user.DistSecName + "</b></p>";
+                            html += "</div>";
+                            html += "<div class='row'>";
+                            html += "<div class='col-sm-12'>";
+                            user.Responsibilities.forEach(function (responsibility) {
+
+                            html += "<div class='col-md-6'>";
+                            html += "<div class='panel panel-primary'>";
+                            html += "<div class='panel-body'>";
+                            html += "<div class='row' style='margin-right:50px;margin-left:50px;'>";
+                            html += "<div class='col-sm-12' style='text-align:center;'>";
+                            html += "<p><b>" + responsibility.Responsibility + "</p>";
+                                html += "</div>";
+                                html += "<div class='row'>";
+                                html += "<div class='col-sm-12' style='text-align:center;'>";
+
+                                responsibility.MemberData1.forEach(function (member) {
+                                    if (member.DesignationName == "Convenor") {
+                                        html += "<p><b>" + member.MemberName + "-" + member.DesignationName + "</b></p>";
+
+                                    } else {
+                                        html += "<p>" + member.MemberName + "</p>";
+                                    }
+                                });
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                                html += "</div>";
+                            });
+                          
+                            html += "</div>";
+                            html += "</div>";
+                            html += "</div>";
+                         
+                            html += "</div>";
+                            html += "</div>";
+                        });
+                        $('#DistSecComission').html(html);
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+}
+
+<style>
+    #ToDate, #FromDate {
+        color: black
+    }
+</style>
+

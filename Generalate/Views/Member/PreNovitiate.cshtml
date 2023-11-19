@@ -1,0 +1,304 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "Candidates2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+
+<style>
+    .overflow-daily_EnterToNovdatatbl {
+        overflow-y: auto;
+        padding-top: 10px;
+        overflow-x: hidden;
+    }
+</style>
+
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:89px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title"> @{ @HomeController.GetControlTextByControlId("Pre_Novitiate") ;}</h3>
+                                </div>
+
+                                @*dropdown code*@
+                                @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="form-group">
+                                                <label><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></label>
+                                                <select class="form-control" id="DioProvince1" style="width:595px !important;" name="ProvinceName"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                @*end dropdown code*@
+
+                                <div class="modal-body">
+                                    @*<div class="row">
+                                            <div class="col-sm-10" style="text-align:right">
+                                                <div class="form-group">
+                                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-print pull-right" id="btnPrintEnterToNov"></i></button>
+                                                </div>
+                                            </div>
+                                        </div>*@
+                                    <div class="row" style="margin-top: 10px;" id="EnterToNovdatatbl1">
+                                        <div class="col-sm-12 overflow-daily_EnterToNovdatatbl">
+                                            <table class="table table-bordered" id="EnterToNovdatatbl">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@{@HomeController.GetControlTextByControlId("S.No");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("SurName");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Province_Name");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("View_Profile");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Add_Details");}</th>
+                                                    </tr>
+                                                </thead>
+                                                @*<tbody></tbody>*@
+                                                <tbody id="ViewEnterToNovDetails"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                    <div class="row" style="margin-top: 10px;" id="EnterToNovdatatbl2">
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered" id="EnterToNovdatatbl1">
+                                                <thead>
+                                                    <tr>
+                                                        <th>@{@HomeController.GetControlTextByControlId("S.No");}</th>
+                                                        <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                    </tr>
+                                                </thead>
+                                                @*<tbody></tbody>*@
+                                                <tbody id="ViewEnterToNovDetails1"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+
+
+    <script>
+        $(document).ready(function () {
+            $("#Memdatatbl2").css("display", "none");
+            $("#Memdatatbl1").css("display", "none");
+            $("#Insttbl1").css("display", "none");
+            $("#Insttbl2").css("display", "none");
+            $("#tblParishes1").css("display", "none");
+            $("#tblParishes2").css("display", "none");
+            $("#tblcomdata1").css("display", "none");
+            $("#tblcomdata2").css("display", "none");
+            $("#tblSocData1").css("display", "none");
+            $("#tblSocData2").css("display", "none");
+            $("#tblOrdindata2").css("display", "none");
+            $("#tblRetire2").css("display", "none");
+            $("#deathdatatbl2").css("display", "none");
+            $("#departdatatbl2").css("display", "none");
+            $("#NovPPdatatbl2").css("display", "none");
+            $("#EnterToNovdatatbl2").css("display", "none");
+        });
+    </script>
+
+    <script>
+        $('#btnPrintEnterToNov').on("click", function () {
+            $('#EnterToNovdatatbl2').printThis();
+            $("#EnterToNovdatatbl2").css("display", "block");
+            $("#EnterToNovdatatbl1").css("display", "none");
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+            //call method for dropdown
+            GetAllProvince();
+
+            GetAllEnterToNov("0");
+
+
+        });
+
+        $("#DioProvince1").on("change", function () {
+            var selectedVal = $("#DioProvince1 option:selected").val();
+            LoadEnterToNov(selectedVal);
+        });
+        function LoadEnterToNov(province)
+        {
+            $('#EnterToNovdatatbl').DataTable().destroy();
+            // $('#EnterToNovdatatbl1').DataTable().destroy();
+            datatable = $('#EnterToNovdatatbl')
+                .DataTable({
+                    "sAjaxSource": "/Member/GetAllEnterToNov?province=" + province,
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": false,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "fnRowCallback": function (nRow, aData, iDisplayIndex) {
+                        var oSettings = this.fnSettings();
+                        $("td:first", nRow).html(oSettings._iDisplayStart + iDisplayIndex + 1);
+                        return nRow;
+                    },
+                    "columns": [
+                        {
+                            "defaultContent": ""
+                        },
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "SurName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                         @if (HttpContext.Current.Session["UserName"].ToString() == "admin")
+                        {
+
+                        <text>
+                        {
+                            "data": "ProvinceName",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        </text>
+                        }
+                        {
+                            "data": "MemberId",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a href=/Home/MemberDetails?id=' + data + '>View Details</a>';
+                                }
+                                else {
+                                    return '<a target="_blank" href="#">No Profile</a>';
+                                }
+                            }
+                        },
+
+                        {
+                            "data": "MemberId",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a href=/Member/MemberInfoById?memberId=' + data + '>Add Details</a>';
+                                }
+                                else {
+                                    return '<a target="_blank" href="#">Add Details</a>';
+                                }
+                            }
+                        },
+
+
+                    ]
+                });
+
+        }
+        LoadEnterToNov("0");
+        //function GetAllEnterToNov(province) {
+        //    $('#ViewEnterToNovDetails').html("");
+        //    $('#ViewEnterToNovDetails1').html("");
+        //    $.ajax({
+        //        url: "/Home/GetAllEnterToNov?province=" + province,
+        //        type: "GET",
+        //        contentType: "application/json;charset=utf-8",
+        //        dataType: "json",
+        //        success: function (response) {
+        //            //debugger;
+        //            $('#ViewEnterToNovDetails').html("");
+        //            $('#ViewEnterToNovDetails1').html("");
+        //            if (response != null) {
+        //                var i = 1;
+        //                var html = "";
+        //                response.forEach(function (data) {
+        //                    if (data != null) {
+        //                        var url = "";
+        //                        var url2 = "";
+        //                        var isView = "No Profile";
+        //                        var isView2 = "No Profile";
+        //                        if (data.MemberId != null && data.MemberId != "") {
+        //                            if (url = "/Home/MemberDetails?id=" + data.MemberId) {
+        //                                isView = "View Details";
+        //                            }
+
+        //                            if (url2 = "/Member/MemberInfoById?memberId=" + data.MemberId) {
+        //                                isView2 = "Add Details";
+        //                            }
+
+        //                        } else {
+        //                            url = "#";
+        //                            isView = "No Profile";
+        //                            url2 = "#";
+        //                            isView2 = "Add Details";
+        //                        }
+        //                        // html += "<tr><td>" + i + "</td><td>" + data.Name + "</td><td>" + data.ProvinceName + "</td><td><a href='" + url + "'>" + isView + "</a></td><td><a href='" + url2 + "'>" + isView2 + "</a></td></tr>";
+        //                        html += "<tr><td>" + i + "</td><td><a href='/Member/MemberInfoById?memberId=" + data.MemberId + "&Name=&SirName='>" + data.Name + "</a></td><td>" + data.ProvinceName + "</td><td><a href='" + url + "'>" + isView + "</a></td><td><a href='" + url2 + "'>" + isView2 + "</a></td></tr>";
+        //                        var row1 = "<tr><td>" + i + "</td><td>" + data.Name + "</td></tr>";
+        //                        //$('#ViewEnterToNovDetails').append(row);
+        //                        $('#ViewEnterToNovDetails1').append(row1);
+        //                        i = i + 1;
+        //                    }
+        //                    $('#EnterToNovdatatbl').DataTable().destroy();
+        //                    $('#EnterToNovdatatbl').find('tbody').html('');
+        //                    $('#EnterToNovdatatbl').find('tbody').append(html);
+        //                    $('#EnterToNovdatatbl').DataTable().draw();
+        //                    $("#myModal24").modal('show');
+        //                });
+        //            }
+        //        },
+        //        error: function (er) {
+        //        }
+        //    });
+        //}
+
+        function GetAllProvince() {
+            $.ajax({
+                url: "/Home/GetAllProvince",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#DioProvince1').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- @{@HomeController.GetControlTextByControlId("Select_Province_Name");} --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#DioProvince1").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+    </script>
+}
+

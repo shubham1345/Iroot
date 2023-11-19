@@ -1,0 +1,67 @@
+﻿@model Generalate.Models.tbl_FinancialReportDoc
+@{
+    Layout = null;
+}
+<head>
+
+    <script src="~/Scripts/jquery-1.10.2.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css">
+
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        $.getJSON("GetAll",
+        function (json) {
+            var tr;
+
+            //Append each row to html table
+            for (var i = 0; i < json.length; i++) {
+                tr = $('<tr />');
+                tr.append("<td hidden='hidden'>" + json[i].FinancialReportId + "</td>");
+                //tr.append('<td><a href=ViewProfile/' + json[i].GId + '>' + json[i].MemberID + '</a></td>');
+                tr.append("<td>" + json[i].DoccumentName + "</td>");
+                
+
+                tr.append("<td>" + json[i].Title + "</td>");
+                tr.append("<td>" + json[i].Date + "</td>");
+                tr.append("<td>" + json[i].File + "</td>");
+                //tr.append("<td>" + json[i].Landline + "</td>");
+                //tr.append("<td>" + json[i].EmailID + "</td>");
+                //tr.append("<td>" + json[i].Address + "</td>");
+                $('table').append(tr);
+
+            }
+        });
+    });
+
+    </script>
+
+</head>
+
+<div class="form-horizontal">
+
+    <div class="container">
+        <div class="form-horizontal">
+            <br />
+            <table class="table table-striped  table-hover" id="EmpInfo">
+                <thead>
+                    <tr style="background-color:#001f6b; color:white">
+                        <th hidden="hidden"> Id </th>
+                        <th> DoccumentName </th>
+                        
+                        <th>Title</th>
+                        <th> Date </th>
+                        <th> File </th>
+                        @*<th> Landline </th>
+                            <th> EmailID </th>
+                            <th> Address </th>*@
+                    </tr>
+                </thead>
+                <tbody class="tbody"> </tbody>
+            </table>
+        </div>
+
+    </div>
+</div>
+

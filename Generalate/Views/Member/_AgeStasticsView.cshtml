@@ -1,0 +1,212 @@
+﻿@using Generalate.Controllers;
+@using Generalate.Models
+
+@{
+    var fromAge = ViewBag.FromAge != null ? ViewBag.FromAge : "";
+    var toAge = ViewBag.ToAge != null ? ViewBag.ToAge : "";
+}
+
+<div>
+    <label>From Age:</label><input type="text" id="fromAge" value="@fromAge" />
+    <label>To Age:</label><input type="text" id="toAge" value="@toAge" />
+    <input type="button" class="ageFilter" value="Filter" />
+</div>
+<table class="table table-condensed" style="border-collapse:collapse;">
+    @if (ViewBag.Formation == null)
+    {
+        <thead>
+            <tr>
+                <th>#</th>
+                @if (ViewBag.GroupByData == "")
+                {
+                    <th>Province Name</th>
+                }
+                else if (ViewBag.GroupByData == "Country")
+                {
+                    <th>Country</th>
+                }
+                else if (ViewBag.GroupByData == "State")
+                {
+                    <th>State</th>
+                }
+                else if (ViewBag.GroupByData == "City")
+                {
+                    <th>City</th>
+                }
+                else if (ViewBag.GroupByData == "Continent")
+                {
+                    <th>Continent</th>
+                }
+                else if (ViewBag.GroupByData == "District")
+                {
+                    <th>District</th>
+                }
+                else if (ViewBag.GroupByData == "Language")
+                {
+                    <th>Language</th>
+                }
+                <th>Count</th>
+            </tr>
+        </thead>
+    }
+    else
+    {
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Province Name</th>
+
+                @foreach (DataListItems formation in ViewBag.AllFormation)
+                {
+                    <th>@formation.Name</th>
+                }
+                @foreach (Tbl_ProfessionDetails prof in ViewBag.ProfDetails)
+                {
+                    <th>@prof.Name</th>
+                }
+
+            </tr>
+        </thead>
+    }
+
+    <tbody>
+
+
+        @if (ViewBag.ProvinceGroup != null)
+        {
+            int j = 1;
+            foreach (List<GetAllPrileView> i in ViewBag.ProvinceGroup)
+            {
+                var id = "demo" + j;
+                <tr class="provinceClass">
+                    <td>@j</td>
+                    <td>
+                        @if (ViewBag.GroupByData == "")
+                        {
+                            <span>@i[0].ProvinceName</span>
+                        }
+                        else if (ViewBag.GroupByData == "Country")
+                        {
+                            <span>@i[0].Country</span>
+                        }
+                        else if (ViewBag.GroupByData == "State")
+                        {
+                            <span>@i[0].State</span>
+                        }
+                        else if (ViewBag.GroupByData == "City")
+                        {
+                            <span>@i[0].City</span>
+                        }
+                        else if (ViewBag.GroupByData == "District")
+                        {
+                            <span>@i[0].District</span>
+                        }
+                        else if (ViewBag.GroupByData == "Continent")
+                        {
+                            <span>@i[0].Continent</span>
+                        }
+                        else if (ViewBag.GroupByData == "Language")
+                        {
+                            <span>@i[0].MotherTongue</span>
+                        }
+
+                        @if (ViewBag.FilteredDate != null)
+                        {
+                            <span>+</span>
+                        }
+
+                    </td>
+                    @if (ViewBag.Formation == null)
+                    {
+                        @*<td><a href="#" class="openMemeberModal" id="@i[0].ProvinceName">@i.Count</a></td>*@
+                        if (ViewBag.GroupByData == "")
+                        {
+                            <td><a href="#" class="openMemeberModal" id="@i[0].ProvinceName">@i.Count</a></td>
+                        }
+                        else if (ViewBag.GroupByData == "Country")
+                        {
+                            <td><a href="#" class="openMemeberModal" id="@i[0].Country">@i.Count</a></td>
+                        }
+                        else if (ViewBag.GroupByData == "State")
+                        {
+                            <td><a href="#" class="openMemeberModal" id="@i[0].State">@i.Count</a></td>
+                        }
+                        else if (ViewBag.GroupByData == "City")
+                        {
+                            <td><a href="#" class="openMemeberModal" id="@i[0].City">@i.Count</a></td>
+                        }
+                        else if (ViewBag.GroupByData == "District")
+                        {
+                            <td><a href="#" class="openMemeberModal" id="@i[0].District">@i.Count</a></td>
+                        }
+                        else if (ViewBag.GroupByData == "Continent")
+                        {
+                            <td><a href="#" class="openMemeberModal" id="@i[0].Continent">@i.Count</a></td>
+                        }
+                        else if (ViewBag.GroupByData == "Language")
+                        {
+                            <td><a href="#" class="openMemeberModal" id="@i[0].MotherTongue">@i.Count</a></td>
+                        }
+                    }
+                    @if (ViewBag.Formation != null)
+                    {
+                        List<Tbl_formationsDetails> sof = ViewBag.usergrp as List<Tbl_formationsDetails>;
+                        List<Tbl_formationsDetails> sof1 = ViewBag.ProfessionDetail as List<Tbl_formationsDetails>;
+                        var memberIds = sof1.Select(jq => jq.MemberId).ToList();
+                        var vows = sof1.Where(x => x.StageOfFormation == "5").Select(jq => jq.MemberId).ToList();
+
+                        foreach (DataListItems formation in ViewBag.AllFormation)
+                        {
+                            <td>@sof.Where(x => x.StageOfFormation == formation.FormationId && !memberIds.Contains(x.MemberId)).Count()</td>
+                        }
+                        foreach (Tbl_ProfessionDetails prof in ViewBag.ProfDetails)
+                        {
+                            if (prof.Id == 4)
+                            {
+                                <td>@sof1.Where(x => x.StageOfFormation == prof.Id.ToString() && !vows.Contains(x.MemberId)).Count()</td>
+                            }
+                            else
+                            {
+                                <td>@sof1.Where(x => x.StageOfFormation == prof.Id.ToString()).Count()</td>
+                            }
+
+                        }
+                    }
+                </tr>
+
+                j++;
+
+
+            }
+
+        }
+        @if (ViewBag.FilteredDate != null)
+        {
+            int j = 1;
+            foreach (FilterAge i in ViewBag.FilteredDate)
+            {
+
+                <tr>
+                    <td>@j</td>
+                    <td class="provinceClass">@i.Name  <span>+</span></td>
+                    <td><a href="#" class="openMemeberModal" id="@i.Name">@i.Count</a></td>
+                </tr>
+                foreach (AgeCount ju in i.AgeCounts)
+                {
+                    <tr class="provinceCount">
+                        <td></td>
+                        <td>@ju.Age</td>
+                        <td><a href="#" class="openMemeberModal" id="@i.Name|@ju.Age">@ju.Count</a></td>
+                    </tr>
+                }
+                j++;
+
+
+
+            }
+        }
+
+
+    </tbody>
+</table>
+

@@ -1,0 +1,294 @@
+﻿
+@{
+    ViewBag.Title = "CalenderView";
+}
+
+<style>
+    #calendar {
+        max-width: 2100px;
+        margin: 0 auto;
+    }
+</style>
+
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<link href="~/css/main.css" rel="stylesheet" />
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+
+<div class="page-content-wrap">
+
+    @*<div class="row">
+            <div id="calendar"></div>
+        </div>*@
+
+    @*<section id="main-content">
+            <section class="wrapper"><div id='calendar'></div></section>
+        </section>*@
+
+    <section id="container">
+        <section id="main-content">
+            <section class="wrapper"><div id='calendar'></div></section>
+        </section>
+    </section>
+
+</div>
+
+
+@section scripts{
+    <script src="~/Scripts/main.js"></script>
+    <script src="~/css/Dashboard/js/plugins.js"></script>
+
+    <script>
+
+        $(document).ready(function () {
+            var Events = [];
+            $('#calendar').fullCalendar({
+                Events: function (start, end, timezone, callback) {
+                    $.ajax({
+                        url: "/Email/GetMonthlyEvent",
+                        type: "GET",
+                        dataType: "json",
+                        contentType: "application/json;charset=utf-8",
+                        success: function (result) {
+                            $.each(function (response) {
+                                Events.push({
+                                    title: "Birthday",
+                                    description: "Age" + response.Age + "",
+                                    start: moment(response.DOB),
+                                    end: response.DOB != null ? moment(response.DOB) : null
+
+                                });
+                            });
+                                callback(Events);
+                        }
+                    });
+                }
+            });
+        });
+
+        //$(document).ready(function () {
+        //    var Events = [];
+
+        //    $.ajax({
+        //        url: "/Email/GetMonthlyEvent",
+        //        type: "GET",
+        //        dataType: "json",
+        //        contentType: "application/json;charset=utf-8",
+        //        success: function (result) {
+        //            $.each(function (response) {
+        //                Events.push({
+        //                    title: "Birthday",
+        //                    description: "Age" + response.Age + "",
+        //                    start: moment(response.DOB),
+        //                    end: response.DOB != null ? moment(response.DOB) : null
+
+        //                });
+        //            });
+        //            GenetateCalender(Events);
+        //        },
+        //        error: function (errormessage) {
+        //            alert(errormessage.responseText);
+        //        }
+
+        //    });
+
+        //    function GenetateCalender(Events) {
+
+        //        //document.addEventListener('DOMContentLoaded', function () {
+        //        //    var calendarEl = document.getElementById('calendar');
+
+        //        //    var calendar = new FullCalendar.Calendar(calendarEl, {
+        //        //        editable: true,
+        //        //        events: Events
+        //        //    });
+        //        //    calendar.render();
+        //        //});
+        //        $('#calendar').fulCalendar('destroy');
+        //        $('#calendar').fullCalendar({
+        //            contentHeight: 400,
+        //            defaultDate: new date(),
+        //            timeFormat: 'h(:mm)a',
+        //            header: {
+        //                left: 'prev,next today',
+        //                center: 'title',
+        //                right: 'month,basicWeek,basicDay,agenda'
+        //            },
+        //            eventLimit: true,
+        //            eventColor: '#378006',
+        //            events: Events
+        //        })
+
+        //    }
+
+        //});
+    </script>
+    @*<script>
+        $(document).ready(function () {
+            $(document).ready(function () {
+                InitializeCalendar();
+            });
+            function InitializeCalendar() {
+                debugger;
+                $.ajax({
+                    type: "POST",
+                    contentType: "application/json",
+                    url: "/Email/GetMonthlyEvent",
+                    dataType: "json",
+                    success: function (data) {
+                        //debugger;
+
+                        $('#calendar').empty();
+                        $('#calendar').fullCalendar({
+                            header: {
+                                left: 'prev,next today',
+                                center: 'title',
+                                right: 'month,agendaWeek,agendaDay'
+                            },
+                            //weekNumbers: true,
+                            height: 600,
+                            width: 100,
+                            allDayText: 'Events',
+                            selectable: true,
+                            overflow: 'auto',
+                            editable: true,
+                            firstDay: 1,
+                            slotEventOverlap: true,
+                            events: $.map(data.d, function (item, i) {
+
+                                //-- here is the event details to show in calendar view.. the data is retrieved via ajax call will be accessed here
+                                var eventStartDate = new Date(parseInt(item.DOB));
+                                var eventEndDate = new Date(parseInt(item.DOB));
+
+                                var event = new Object();
+                                //event.id = item.slotID;
+                                //event.start = new Date(eventStartDate.getFullYear(), eventStartDate.getMonth(), eventStartDate.getDate(), eventStartDate.getHours(), 0, 0, 0);
+                                //event.end = new Date(eventEndDate.getFullYear(), eventEndDate.getMonth(), eventEndDate.getDate(), eventEndDate.getHours() + 1, 0, 0, 0);
+                                event.start = eventStartDate;
+                                event.end = eventEndDate;
+
+                                event.title = "Birthday";
+                                event.description = "Age" + item.DOB + "";
+                                //event.allDay = item.AllDayEvent;
+                                event.backgroundColor = item.color;
+                                event.allDay = true;
+                                return event;
+                            })
+                        });
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        //-- log error
+                    }
+                });
+            }
+        })
+        function formatAMPM(date) {
+            var hours = date.getHours();
+            var minutes = date.getMinutes();
+            var ampm = hours >= 12 ? 'pm' : 'am';
+            hours = hours % 12;
+            hours = hours ? hours : 12; // the hour '0' should be '12'
+            minutes = minutes < 10 ? '0' + minutes : minutes;
+            var strTime = hours + ':' + minutes + ' ' + ampm;
+            return strTime;
+        }
+    </script>*@
+    <script>
+       
+        //document.addEventListener('DOMContentLoaded', function () {
+        //    $.ajax({
+        //        url: "/Email/GetMonthlyEvent",
+        //        type: "GET",
+        //        dataType: "json",
+        //        contentType: "application/json;charset=utf-8;",
+        //        success: function (result) {
+        //            var calendarEl = document.getElementById('calendar');
+        //            var calendar = new FullCalendar.Calendar(calendarEl, {
+        //                editable: true,
+        //                events: [
+        //                    {
+        //                        title: 'Church Day',
+        //                        start: '2022-01-16',
+        //                        end: '2022-01-19',
+        //                        backgroundColor: "red",
+        //                        daysOfWeek: ['0']
+        //                    }
+        //                ]
+        //            });
+
+        //            calendar.render();
+        //        }
+        //    });
+        //});
+           
+
+                //        //var globalObj = typeof globalThis !== 'undefined' ? globalThis : window; // // TODO: streamline when killing IE11 support
+                //        //if (globalObj.FullCalendarVDom) {
+                //        //    console.warn('FullCalendar VDOM already loaded');
+                //        //}
+                //        //else {
+                //        //    globalObj.FullCalendarVDom = {
+                //        //        Component: p,
+                //        //        createElement: a$1,
+                //        //        render: N,
+                //        //        createRef: h,
+                //        //        Fragment: y,
+                //        //        createContext: createContext$1,
+                //        //        createPortal: I,
+                //        //        flushToDom: flushToDom$1,
+                //        //        unmountComponentAtNode: unmountComponentAtNode$1,
+                //        //    };
+                //        //}
+
+    </script>
+    <script>
+
+        function GenerateCalender(calenderevents) {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                editable: true,
+                events: calenderevents
+            });
+            calendar.render();
+        }
+
+        document.addEventListener('DOMContentLoaded',function () {
+            var Events = [];
+            $.ajax({
+                url: "/Email/GetMonthlyEvent",
+                type: "GET",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                success: function (result) {
+                    //alert(result);
+                    //console.log(result);
+                    //$.each(result, function (index, value) {
+                    //    //console.log((value));
+                    //    Events.push({
+                    //        title: "Birthday",
+                    //        description: "Age" + value.Age + "",
+                    //        start:'2022-06-01',// value.DOB,
+                    //        end: '2022-06-05',// value.DOB,
+                    //        //start: moment(value.DOB),
+                    //        //end: value.DOB != null ? moment(value.DOB) : null,
+                    //        backgroundColor: "red",
+
+                    //    });
+                    //});
+                    if (result != null) {
+
+                        GenerateCalender(result);
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+
+            });
+           
+        });
+    </script>
+}
+
+
+

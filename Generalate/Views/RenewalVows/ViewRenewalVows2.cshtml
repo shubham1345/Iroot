@@ -1,0 +1,453 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "ViewRenewalVows";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+
+<div class="container body" style="width: 1350px;">
+    <div class="main_container">
+
+        <div class="right_col" role="main" style="background-color:white;">
+
+            <div class="row" style="margin-top:70px;">
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="dashboard_graph">
+                        <div class="row x_title">
+                            <div class="col-sm-12">
+                                <div class="col-sm-4" style="padding-top:30px; margin-left:10px;">
+                                    <h4><span style="margin-right:50px;">@{@HomeController.GetControlTextByControlId("Revenue_Vows");}</span> &nbsp;<i class="fa fa-forward"></i></h4>
+                                </div>
+
+                                <div class="col-sm-7" style="padding-top:30px;">
+                                    @*<a class="icon_img" href="/Home/ProvinceList2?page=VowsRemewal"><img class="icon_img" src="/Image/NavListImg/vowsrenewal.png" />Vows Renewal </a>*@
+                                    <button class="btn btn-info pull-right"><a href="/Home/ProvinceList2?page=VowsRemewal" class="button_a">Back</a></button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-sm-2">
+                            <select type="dropdown" class="form-control" style="width:200px !important;" id="ProvinceNameRenuval123" onchange="ChangeProvinceNameRenuval123();GetAllProvinceVowsRenewal12()" placeholder="Province Name"></select>
+                        </div>
+                    </div>
+                    <div class="col-sm-12">
+                        <div class="col-sm-2">
+                            <select type="dropdown" class="form-control" style="width:200px !important;" onchange="ChangeProvinceNameRenuval123();" name="ProvinceNameRenuval1" id="ProvinceNameRenuval1" placeholder="Province Name"></select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style=" margin-left:10px; margin-right:30px;">
+                    <div class="col-sm-12 table-responsive">
+                        <table class="table table-bordered" style=" margin-left:10px; margin-right:50px;" id="MyTable">
+                            <thead>
+                                <tr>
+                                    @*<th><span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>*@
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Superior");}</span></th>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Duration");}</span></th>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Witness");}</span></th>
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Document");}</span></th>
+                                    @*<th><span>@{@HomeController.GetControlTextByControlId("Manage");}</span></th>*@
+                                    <th><span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                                </tr>
+                            </thead>
+                            @*<tbody>
+                                @{
+                                    int i = 1;
+                                    foreach (var item in @ViewBag.AllMemberdata2 as IEnumerable<Generalate.Models.Tbl_RenewalVows>)
+                                    {
+                                        <tr>
+                                            <td>@i</td>
+                                            <td>@item.Name</td>
+                                            <td>@item.FileNo</td>
+                                            <td>@item.CreatedDate</td>
+                                            <td>@item.Surname</td>
+                                            <td>@item.Superior</td>
+                                            <td>@item.Duration</td>
+                                            <td>@item.Witness</td>
+                                            <td>
+                                                @{
+                                                    if (!string.IsNullOrWhiteSpace(@item.RenVowsDoc))
+                                                    {
+                                                        <a target="_blank" href="~/Image/RenewalVows/">View</a>
+                                                    }
+                                                    else
+                                                    {
+                                                        <a target="_blank" href="~/Image/No-data-found.png">View</a>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-edit ReneVowsEdit1213"></i></button>
+                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-trash-o DeleteRenewalVows"></i></button>
+                                                @*<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.Id" class="fa fa-eye RenewalVowsView"></i></button>*@
+                            @*</td>
+                                            </tr>
+                                            i++;
+                                        }
+                                    }
+                                </tbody>*@
+                        </table>
+                    </div>
+                </div>
+                <div class="modal fade" id="MyModal" style="z-index: 10000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel">Edit Renewal Vows</h4>
+                            </div>
+                            <div class="modal-body" id="MyModalBody">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <form id="MyDataForm" method="post" enctype="multipart/form-data">
+                                            <fieldset id="SubmitForm">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Date :</label>
+                                                        <input type="hidden" id="Id" name="Id" class="form-control" />
+                                                        <input type="hidden" id="Name" name="Name" class="form-control" />
+                                                        <input type="hidden" id="MyId" name="MyId" class="form-control" />
+                                                        <input type="hidden" id="MemberId" name="MemberId" class="form-control" />
+                                                        <input type="hidden" id="FileNo" name="FileNo" class="form-control" />
+                                                        <input type="text" id="RenewalDate" name="Surname" readonly class="form-control">
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>TO Date :</label>
+                                                        <input type="hidden" id="Id" name="Id" class="form-control" />
+                                                        <input type="hidden" id="Name" name="Name" class="form-control" />
+                                                        <input type="hidden" id="MyId" name="MyId" class="form-control" />
+                                                        <input type="hidden" id="MemberID" name="MemberID" class="form-control" />
+                                                        <input type="text" id="ToDate" name="ToDate" readonly class="form-control">
+                                                    </div>
+                                                    @*<div class="form-group">
+                                                            <label>Place  :</label>
+                                                            <input type="text" id="Place" name="Place" class="form-control" />
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Community  :</label>
+                                                            <input type="text" id="Community" name="Community" class="form-control" />
+                                                        </div>*@
+                                                    <div class="form-group">
+                                                        <label>Place  :</label>
+                                                        <input type="text" id="Superior" name="Superior" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Community  :</label>
+                                                        <input type="text" id="Duration" name="Duration" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Witness  :</label>
+                                                        <input type="text" id="Witness" name="Witness" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Renewal Year  :</label>
+                                                        <input type="text" id="RenewalYear" name="RenewalYear" class="form-control" />
+                                                    </div>
+                                                    <div class="form-group">
+                                                        <label>Upload Doccument : </label>
+                                                        <input type="file" id="RenVowsDoc" name="RenVowsDoc" accept=".png,.jpg,.pdf,.jpeg">
+                                                        <label name="RenVowsDoc" id="RenVowsDoc"></label>
+                                                    </div>
+                                                    <button type="submit" class="btn btn-success" id="btnsanerene" @*onclick="return Adds();*@>Save</button>
+                                                </div>
+                                            </fieldset>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="myModal1" style="z-index: 000000 !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="margin-top:60px;">
+                        <div class="modal-content" style="width:1050px;">
+                            <div class="modal-header">
+                                <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Revenue_Vows");}</span></h4>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row" style="margin-top:20px; margin-right:10px;">
+                                    <div class="col-sm-12">
+                                        <table class="table table-bordered" id="TblPersionalDetails">
+                                            @try
+                                            {
+                                                <tr><h4 style="color:#009be1"><span>@{@HomeController.GetControlTextByControlId("Revenue_Vows");}</span></h4></tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Member_Name");}</span></th>
+                                                    <td><span id="BrotherNameRevenue"></span></td>
+                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("File_No");}</span></th>
+                                                    <td style="width:30%"><span id="FileNoRevenue"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                    <td style="width:30%"><span id="DateRevenue"></span></td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Superior");}</span></th>
+                                                    <td><span id="SuperiorRevenue"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Duration");}</span></th>
+                                                    <td style="width:30%"><span id="DurationRevenue"></span></td>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("Witness");}</span></th>
+                                                    <td><span id="WitnessRevenue"></span></td>
+                                                </tr>
+                                                <tr>
+                                                    <th><span>@{@HomeController.GetControlTextByControlId("ProvinceName");}</span></th>
+                                                    <td><span id="ProvinceNameRevenue"></span></td>
+                                                    <th style="width:17%"><span>@{@HomeController.GetControlTextByControlId("Document");}</span></th>
+                                                    <td style="width:30%"><a target="_blank" id="DocumentRevenue" href="#"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a></td>
+                                                </tr>
+                                            }
+                                            catch (Exception ex)
+                                            {
+
+                                            }
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+        {
+    <script src="~/Scripts/additional/ProvinceData.js"></script>
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script type="text/javascript">
+        function GetAllProvinceVowsRenewal12() {
+            $.ajax({
+                url: "/Home/GetAllProvinceVowsRenewal1",
+                type: "GET",
+                data: { id: $('#ProvinceNameRenuval123').val() },
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceNameRenuval1').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- Select Member Name --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].MemberID, text: response2[i].Name });
+                        }
+                        $("#ProvinceNameRenuval1").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+        function GetAllProvinceVowsRenewal() {
+            $.ajax({
+                url: "/Home/GetAllProvinceVowsRenewal",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceNameRenuval123').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#ProvinceNameRenuval123").html('').select2({
+                            data: allDate2
+                        });
+                    }
+
+                    //  GetAllProvinceVowsRenewal12();
+                },
+                error: function (er) {
+                }
+            });
+        }
+        function ChangeProvinceNameRenuval123() {
+            var province = $("#ProvinceNameRenuval123 option:selected").val();
+            var name = $('#ProvinceNameRenuval1 option:selected').text();
+
+            if (name == '-- Select Member Name --') {
+                name = "";
+            }
+            GetAllRenewalVows(province, name);
+        }
+
+        $(".DeleteRenewalVows").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/RenewalVows/DeleteRenewalVows?id=" + id;
+            }
+        });
+        $(".ReneVowsEdit1213").on('click', function () {
+            debugger;
+            $("#MyModal").modal();
+            $('#MyDataForm').attr('action', '/RenewalVows/UpdateRenewalVows');
+            var id = $(this).attr("data-val");
+            $("#btnsanerene").text("Update");
+            GetRenewalVows(id);
+        });
+        function updateRenuVows(id) {
+            $("#MyModal").modal();
+            $('#MyDataForm').attr('action', '/RenewalVows/UpdateRenewalVows');
+            //var id = $(this).attr("data-val");
+            $("#btnsanerene").text("Update");
+            GetRenewalVows(id);
+        }
+        function deleteRenuVows(id) {
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/RenewalVows/DeleteRenewalVows?id=" + id;
+            }
+        }
+        function GetAllRenewalVows(provinceName, Name) {
+            $('#MyTable').DataTable().destroy();
+            datatable = $('#MyTable')
+                .DataTable({
+                    "sAjaxSource": "/RenewalVows/GetAllRenewalVows?provinceName=" + provinceName + "&Name=" + Name,
+                    "retrieve": true,
+                    "bServerSide": true,
+                    "bProcessing": true,
+                    "bSearchable": false,
+                    "order": [[1, 'asc']],
+                    "autoWidth": false,
+                    "columns": [
+                        {
+                            "data": "Name",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "FileNo",
+                            "autoWidth": false,
+                            "width": "200px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Surname",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Superior",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Duration",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "Witness",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "searchable": true
+                        },
+                        {
+                            "data": "RenVowsDoc",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "render": function (data, type, row) {
+                                if (data != null && data != '') {
+                                    return '<a target="_blank" href="/Image/RenewalImages/' + data + '">View</a>';
+                                }
+                                else {
+                                    return '<a target="_blank" href="/Image/No-data-found.png">View</a>';
+                                }
+                            }
+                        },
+                        {
+                            "data": "Id",
+                            // "autoWidth": true,
+                            //"width": "100px",
+                            "render": function (data, type, row) {
+                                return '<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="' + data + '" class="fa fa-edit ReneVowsEdit1213" onclick=updateRenuVows(' + data + ')></i></button>&nbsp<button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="' + data + '" class="fa fa-trash-o DeleteRenewalVows" onclick=deleteRenuVows(' + data + ')></i></button>';
+                            }
+                        },
+                    ]
+
+
+                });
+        }
+
+        GetAllRenewalVows('', '');
+
+        function GetRenewalVows(id) {
+            $.ajax({
+                url: "/RenewalVows/GetRenewalVows?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    debugger;
+                    $("#Id").val(result.Id);
+                    $("#MyId").val(result.MyId);
+                    $("#MemberId").val(result.MemberId);
+                    $("#Name").val(result.Name);
+                    $("#FileNo").val(result.FileNo);
+                    $("#RenewalDate").val(result.Surname);
+                    $("#Superior").val(result.Superior);
+                    $("#Duration").val(result.Duration);
+                    $("#Witness").val(result.Witness);
+                    $("#RenVowsDoc").val(result.RenVowsDoc);
+                    //$("#Place").val("");
+                    //$("#Community").val("");
+                    $("#RenewalYear").val(result.RenewalYear);
+                    $("#ToDate").val(result.ToDate);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+    </script>
+
+    <script>
+        $('.RenewalVowsView').on("click", function () {
+            $('#myModal1').modal('show');
+            var id = $(this).attr("data-val");
+            GetAllRenewalById1(id);
+        });
+        function GetAllRenewalById1(id) {
+            $.ajax({
+                url: "/IdGenerate/GetAllRenewalById1?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (data) {
+                    $("#BrotherNameRevenue").text(data.Name);
+                    $("#FileNoRevenue").text(data.FileNo);
+                    $("#DateRevenue").text(data.Surname);
+                    $("#SuperiorRevenue").text(data.Superior);
+                    $("#DurationRevenue").text(data.Duration);
+                    $("#WitnessRevenue").text(data.Witness);
+                    $("#ProvinceNameRevenue").text(data.ProvinceName);
+                    $("#DocumentRevenue").attr("href", "/Image/Renewal/" + data.RenVowsDoc);
+                },
+                error: function (er) {
+                }
+            });
+        }
+        GetAllProvinceVowsRenewal();
+    </script>
+}
+
+

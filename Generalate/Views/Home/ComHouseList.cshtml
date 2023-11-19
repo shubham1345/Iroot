@@ -1,0 +1,252 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "ComHouseList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<style>
+    .Mytooltip:hover {
+        margin-bottom: 500px;
+        cursor: pointer;
+    }
+</style>
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="panel-heading" style="background-color:#29b2e1">
+                    <div class="row">
+                        <div class="col-sm-12"><span style="color:white;font-weight:bold; margin-left:30px;"><span>@{@ViewBag.ComHouseName}</span> <span>(@ViewBag.ComHouseId)</span>  </span> </div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel panel-default">
+                                        <div class="panel-body">
+                                            <div class="container-fluid">
+                                                <div class="row">
+                                                    <div class="col-sm-12">
+                                                        <form id="ComHouseForm" action="/Home/AddComHouseData" method="post" enctype="multipart/form-data">
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label> <span>@{@HomeController.GetControlTextByControlId("Title");}</span></label>
+                                                                    <input type="hidden" id="MyID" name="ComId" value="@ViewBag.ComHouseId" />
+                                                                    <input type="hidden" id="ProvinceName" name="ProvinceName" value="@ViewBag.ProvinceName" />
+                                                                    <input type="text" id="Tital" name="other1" class="form-control">
+                                                                    <input type="hidden" id="id" name="id" class="form-control" />
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <label> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></label>
+                                                                    <input type="text" id="Date2" name="Date" readonly class="form-control datepicker">
+                                                                </div>
+
+                                                                <div class="form-group">
+                                                                    <label> <span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                    <input type="file" name="File1" id="file1" class="form-control" accept=".png,.jpg,.pdf,.jpeg">
+                                                                    <span id="File1"></span>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group">
+                                                                    <label> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></label>
+                                                                    <textarea id="Description" rows="5" name="Description" class="form-control"></textarea>
+                                                                </div>
+                                                                <button type="submit" class="btn btn-success" id="btnAddData"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>
+                                                            </div>
+                                                        </form>
+                                                    </div>
+                                                </div>
+                                                <div class="row" style="margin-top:30px;">
+                                                    <div class="col-sm-12">
+                                                        <table class="table table-striped table-bordered table-hover" id="ComHouseTbl" style="margin-top:20px;">
+                                                            <thead>
+                                                                <tr style="background-color:#001f6b; color:white">
+                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Title");}</span> </th>
+                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("View_Documents");}</span></th>
+                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody class="tbody">
+                                                                @{
+                                                                    int iii = 1;
+                                                                    foreach (var item in ViewBag.ComHouseData as IEnumerable<Generalate.Models.ComHouseDetails>)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>@iii</td>
+                                                                            <td>@item.other1</td>
+                                                                            <td>@item.Date</td>
+                                                                            <td>
+                                                                                @if (@item.Description.Length > 30)
+                                                                                {
+                                                                                    <span>@item.Description.ToString().Substring(0, 30)</span><span class="Mytooltip" style="color:blue; font:bold;" data-toggle="tooltip" data-placement="top" title="@item.Description.ToString()"> ...<span>@{@HomeController.GetControlTextByControlId("More");}</span></span>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    @item.Description
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                @{
+                                                                                    if (!string.IsNullOrWhiteSpace(@item.File1))
+                                                                                    {
+                                                                                        <a target="_blank" href="~/Image/Congation/@item.File1"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+
+                                                                                    }
+                                                                                    else
+                                                                                    {
+                                                                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("Not_Available");}</span></a>
+
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditComHouse"></i></button>
+                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash DeleteComHouseData"></i></button>
+                                                                            </td>
+                                                                        </tr>
+                                                                        iii++;
+                                                                    }
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*</div>*@
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+        {
+    <script src="~/Scripts/InstitutionJS.js"></script>
+    <script src="~/Scripts/additional/SociertJS.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#ComHouseTbl').DataTable();
+        });
+    </script>
+    <script>
+        $(".EditComHouse").on('click', function () {
+            $('#ComHouseForm').attr('action', '/Home/UpdateComHouse');
+            var id = $(this).attr("data-val");
+            $("#btnAddData").text("Update");
+            GetComHouseByID(id);
+        });
+        function GetComHouseByID(id) {
+            $.ajax({
+                url: "/Home/GetComHouseByID?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#id").val(result.id);
+                    $("#MyID").val(result.ComId);
+                    $("#ProvinceName").val(result.ProvinceName);
+                    $("#Tital").val(result.other1);
+                    $('#Date').val(result.Date);
+                    $("#Description").val(result.Description);
+                    $("#File1").text(result.File1);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        $(".DeleteComHouseData").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/Home/DeleteComHouseData?id=" + id;
+            }
+        });
+    </script>
+
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "200") {
+            $("#mymessage").html("<b>Data saved successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "204") {
+            $("#mymessage").html("<b>Some Error Occured !</b>");
+            $("#mymessage").css("color", "red");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "201") {
+            $("#mymessage").html("<b>Data Updated Successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "202") {
+            $("#mymessage").html("<b>Data Deleted Successfully !</b>");
+            $("#mymessage").css("color", "blue");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+}
+<style>    #Date2 {
+        color: black
+    }
+</style>
+

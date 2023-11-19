@@ -1,0 +1,213 @@
+﻿@model Generalate.Models.Tbl_UserLogins
+@using Generalate.Controllers;
+
+@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en" class="body-full-height">
+<head>
+    <title>@{@HomeController.GetControlTextByControlId("Copyright");}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <link rel="icon" href="img/fevicon.png" type="image/x-icon" />
+    @*<link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />*@
+    <link href="~/css/css1/theme-default.css" rel="stylesheet" />
+    @*<link href="~/bootstrap/css/bootstrap.css" rel="stylesheet" />*@
+    <script src="~/css/assets/vendor/fullcalendar/lib/jquery.min.js"></script>
+    <script src="~/bootstrap/js/bootstrap.js"></script>
+
+    @*New Login css*@
+    <link href="~/css/NewLogin/bootstrap.min.css" rel="stylesheet" />
+    @*<link href="~/css/NewLogin/theme-default.css" rel="stylesheet" />*@
+    <style>
+        .login-container .login-box .login-body .form-control {
+  border: 0px;
+  /*background: rgba(0, 0, 0, 0.2);*/
+  padding: 10px 15px;
+  color: #CCC;
+  line-height: 20px;
+  height: auto;
+}
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-box animated fadeInDown">
+            <div class="login-logo">
+                <img src="~/Image/Logo/dioconLogo.png" alt="logo" width="80" height="100" style="margin: 0 auto;display: block;" />
+                <h1 style="text-align:center;font-weight:bold;color:#f5f5f5;margin-top:5px;"><span>@{@HomeController.GetControlTextByControlId("SG");}</span></h1>
+            </div>
+
+            <div class="login-body">
+                <div class="login-title"><strong>Welcome</strong>, Please login</div>
+                <form class="form-horizontal" method="post">
+                    <div class="form-group">
+                        <div style="color:red;"> @Html.ValidationSummary(true)</div>
+                        <br />
+                        <div class="col-md-12">
+                               @*<input type="text" id="UserName" class="form-control" autocomplete="off" placeholder="Username or EmailId" @*style="color: rgba(0, 0, 0, 0.2);"/>*@
+                                @Html.TextBoxFor(model => model.UserName, new { @class = "form-control", autocomplete = "off", placeholder = "Username or EmailId" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-12">
+                                @*<input type="password" id="UserPassword" class="form-control" autocomplete="off" placeholder="Password"/>*@
+                               @Html.PasswordFor(model => model.UserPassword, new { @class = "form-control", autocomplete = "off", placeholder = "Password" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-6">
+                           @* <input type="button" id="loginCheckBtn" class="btn btn-default btn-block" @*style="background-color:#001f6b" value="Sign In">*@
+                        </div>
+                        <div class="col-md-6">
+                            <button type="button" id="loginCheckBtn" class="btn btn-default btn-block">Sign In</button>
+                        </div>
+                    </div>
+                </form>
+                @*<div class="row">
+                    <div @*class="col-sm-12 col-md-10 col-md-offset-1 ">
+                       
+                    </div>
+                </div>*@
+            </div>
+            <div class="login-footer">
+                <div class="" style="text-align:center;">
+                    Copyright &copy; @{@HomeController.GetControlTextByControlId("Copyright");}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*model popup for the view password*@
+    <div class="container">
+        <!-- Modal -->
+        <div class="modal fade" id="fileuploadmodelpopup" style="margin-top:200px;" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Secure Encrypted File</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                Secure Key :
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="file" class="form-control" accept=".key" id="encryptedFile" />
+                            </div>
+                        </div>
+                        <div class="row" style="display:none; margin-top:5px;" id="viewpasswordBox">
+                            <div class="col-sm-4">
+                                User Password :
+                            </div>
+                            <div class="col-sm-8">
+                                <input type="text" readonly class="form-control" id="viewpasswordTxt" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="loginBtn">Go</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*end popup*@
+
+    <script>
+        $("#loginCheckBtn").on("click", function () {
+           // debugger;
+            var username = $("#UserName").val();
+            var password = $("#UserPassword").val();
+            if (username == "" || password == "") {
+                alert("All Fields are required");
+                return false;
+            }
+
+            $.ajax({
+                url: "/Home/CheckLogin?username=" + username + "&password=" + password,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    //debugger;
+                    if (result == "200") {
+                        $('#fileuploadmodelpopup').modal('show');
+                    } else if (result == "201") {
+                        $('#fileuploadmodelpopup').modal('hide');
+                        alert("Invalid login credentials, Please try again");
+                    }
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+
+        });
+
+        // login code
+        $("#loginBtn").on("click", function () {
+            // Checking whether FormData is available in browser
+            if (window.FormData !== undefined) {
+
+                var fileUpload = $("#encryptedFile").get(0);
+                var files = fileUpload.files;
+                if (files.length <= 0) {
+                    alert("Please select key file");
+                    return false;
+                }
+                // Create FormData object
+                var fileData = new FormData();
+
+                // Looping over all files and add it to FormData object
+                for (var i = 0; i < files.length; i++) {
+                    fileData.append(files[i].name, files[i]);
+                }
+
+                var username = $("#UserName").val();
+                var password = $("#UserPassword").val();
+                var language = $("input[name='Spare3']:checked").val();
+
+                fileData.append("UserName", username);
+                fileData.append("UserPassword", password);
+                fileData.append("Spare3", language);
+
+                // Adding one more key to FormData object
+                //fileData.append('username', ‘Manas’);
+
+                $.ajax({
+                    url: '/Home/Login',
+                    type: "POST",
+                    contentType: false, // Not to set any content header
+                    processData: false, // Not to process data
+                    data: fileData,
+                    success: function (result) {
+                       // debugger;
+                        if (result == "200") {
+                            window.location.href = '/Home/Admin';
+                        } else {
+                            alert(result);                             
+                        }
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });
+            } else {
+                alert("FormData is not supported.");
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
+

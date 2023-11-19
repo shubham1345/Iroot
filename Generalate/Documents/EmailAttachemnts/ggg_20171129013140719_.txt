@@ -1,0 +1,4 @@
+﻿use [Test]	1	1	0	NULL	NULL	1	NULL	NULL	NULL	NULL	NULL	NULL	NULL	NULL	USE DATABASE	0	NULL
+
+select * from [dbo].[tb]	2	2	0	NULL	NULL	2	NULL	50	NULL	NULL	NULL	0.003337	NULL	NULL	SELECT	0	NULL
+  |--Clustered Index Scan(OBJECT:([Test].[dbo].[tb].[PK_tb]))	2	3	2	Clustered Index Scan	Clustered Index Scan	OBJECT:([Test].[dbo].[tb].[PK_tb])	[Test].[dbo].[tb].[Id], [Test].[dbo].[tb].[value]	50	0.003125	0.000212	19	0.003337	[Test].[dbo].[tb].[Id], [Test].[dbo].[tb].[value]	NULL	PLAN_ROW	0	1

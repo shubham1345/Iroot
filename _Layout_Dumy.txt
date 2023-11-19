@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Generalate | Dashboard</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link href="~/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    @*//TODO Rajesh*@
+    @*<link href="~/Plugins/datepicker/datepicker3.css" rel="stylesheet" />*@
+    <link href="~/Plugins/datatables/jquery.dataTables.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+
+    <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+    <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+
+    @*TODO Rajesh*@
+    @*<script src="../../Scripts/form.js" type="text/javascript"></script>*@
+    @*<script src="~/Scripts/ckeditor/plugins/forms/dialogs/form.js"></script>*@
+
+
+    <style>
+        .modal-header {
+            background-color: #009be1;
+            color: white;
+        }
+
+        /*set modal close symbol color*/
+        .close {
+            color: #fff;
+            opacity: 1;
+        }
+        /*set panel background color*/
+        .panel-primary {
+            background-color: #fff;
+        }
+
+
+        .modal-body {
+            background-color: #fff;
+            color: ##009be1;
+            font-weight: bold;
+        }
+
+
+
+        #btnAdd {
+            background-color: #001f6b;
+            color: white;
+            font-weight: bold;
+        }
+
+        #btnUpdate {
+            background-color: #001f6b;
+            color: white;
+            font-weight: bold;
+        }
+
+        #closebtn {
+            background-color: #001f6b;
+            color: white;
+            dropdown font-weight: bold;
+        }
+
+        .dropdown-ul {
+            list-style-type: none;
+            margin: 0;
+            padding-right: 150px !important;
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .dropdown-li {
+            float: left;
+        }
+
+        li a, .dropbtn {
+            display: inline-block;
+            color: white;
+            /*text-align: center;*/
+            padding: 14px 16px;
+            text-decoration: none;
+        }
+
+            li a:hover, .dropdown:hover .dropbtn {
+                background-color: seashell !important;
+                color: black;
+            }
+
+        li.dropdown {
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: black;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+            .dropdown-content a {
+                color: white;
+                padding: 12px 16px;
+                text-decoration: none;
+                display: block;
+                text-align: left;
+                background-color: #001f6b;
+            }
+
+                .dropdown-content a:hover {
+                    background-color: #009be1;
+                }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+
+    @*TODO Rajesh*@
+    @*<script src="~/Scripts/jquery-1.10.2.min.js"></script>*@
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('#userregistration').click(function () {
+                window.location.href = '../Home/UserRegistration'
+            });
+
+            $('#visitors').click(function () {
+                window.location.href = '../Visitors/VisitorsEntry'
+            });
+
+            $('#flatowner').click(function () {
+                window.location.href = '../FlatOwner/CreateFlatOwners'
+            });
+
+            $('#flatresident').click(function () {
+                window.location.href = '../FlatResident/CreateFlatResident'
+            });
+
+            $('#registerstaff').click(function () {
+                window.location.href = '../StaffRegistration/Staff'
+            });
+
+            $('#attendance').click(function () {
+                window.location.href = '../StaffRegistration/Staff'
+            });
+
+
+        });
+
+    </script>
+    @*<img src="~/obj/cssr.png" />*@
+</head>
+<body style="background-color:#fff">
+    <div style="float:left; margin-left:10px; margin-top:10px; margin-bottom:10px;">
+        @*<img src="~/Images/sislogo.png" style="height:88px; width:108px; padding-bottom:10px;" />*@
+        <img src="~/Images/rajesh/camillians.png" style="height:96px; width:80px; padding-bottom:16px;" />
+    </div>
+
+    <div style="background-color:#009be1; padding-top:20px;padding-bottom:20px;">
+
+        <ul align="right" style="margin-right:300px;">
+            <li class="dropdown"><a href="~/Home/Admin">Home</a></li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Primary Details</a>
+                <div class="dropdown-content">
+                    <a href="~/PersonalDetails/PersonalDetail">Personal Details</a>
+                    <a href="~/EmergencyContact/Contact">Emergency Contact</a>
+                    <a href="~/Entry/Entry">Sacraments</a>
+                    <a href="~/EntryLife/EntryLife">Formation</a>
+                    @*<a href="~/EntryLife/EntryLife1">OnGoingFormation</a>*@
+                    <a href="~/SecularEducation/Secular">Secular Education</a>
+                    <a href="~/ReligiousEducation/Religious">Religious Education</a>
+                    <a href="~/Seminar/Seminar">Seminar</a>
+                    <a href="~/KnownLanguages/Languages">Languages</a>
+
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Congregation</a>
+                <div class="dropdown-content">
+                    @* <a href="~/ServiceInTheCongregation/Service">Name of the Superior Under whom Confrere lived</a>*@
+                    <a href="~/HomeLiveAndHomeVisit/HomeLive">Appointments</a>
+                    @*<a href="~/ServiceInTheCongregation/Service">Service In the Congregation</a>*@
+                    <a href="~/LivingOutsideTheCongregation/LivingOutside">At the Service of other Organisms</a>
+                    @*<a href="~/LivingOutsideTheCongregation/LivingOutside">MemberOutsidetheProvince</a>*@
+                    <a href="~/SeperationFromTheCongregation/Seperation">Seperation from the Congregation</a>
+
+                    <a href="~/Retirement/Retirement">Retirement</a>
+                    <a href="~/Passed/Passed">Death</a>
+                    @*<a href="~/HomeLiveAndHomeVisit/HomeLive">HomeLiveAndHomeVisit</a>*@
+                    @*<a href="#">SearchServiceInTheCongregation</a>*@
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Records</a>
+                <div class="dropdown-content">
+                    <a href="~/TravelRecord/TravelRecord">Travel Record</a>
+                    <a href="~/Jubilee/Jubilee">Jubilee Record</a>
+                    <a href="~/Health/Health">Health Record</a>
+                    <a href="~/Complaint/Complaints">Complaints</a>
+                    <a href="~/AllReports/Report">View All Records</a>
+
+
+                    <a href="~/AllReports/ViewAllReport">All Birth Details</a>
+                    <a href="~/AllReports/ViewAllReport2">Ordination Days</a>
+                    <a href="~/AllReports/ViewAllReport1">Feast Days</a>
+                    <a href="~/AllReports/ViewAllReport3">Final Profession Days</a>
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Province Doc</a>
+                <div class="dropdown-content">
+                    <a href="~/ProvincialDoc/ProvincialDoc">Provincial</a>
+                    <a href="~/StCamillusProvincialateDoc/StCamillusProvincialateDoc">St Camillus Provincialate</a>
+                    <a href="~/GeneralateDoc/GeneralateDoc">Generalate</a>
+                    <a href="~/ConfreresDoc/ConfreresDoc">Confreres</a>
+                    <a href="~/SpiritualCommunityDoc/SpiritualCommunityDoc">Spiritual Community Life</a>
+                    <a href="~/FomDoc/FomDoc">Formation</a>
+                    <a href="~/VocationPromotionDoc/VocationPromotionDoc">Vocation Promotion</a>
+                    <a href="~/FormatorsMeetDoc/FormatorsMeetDoc">Formators Meet</a>
+                    <a href="~/OngoingFormationDoc/OngoingFormationDoc">Ongoing Formation</a>
+                    <a href="~/CandidatesInformationDoc/CandidatesInformationDoc">Candidates In formation</a>
+                    <a href="~/MinistryDoc/MinistryDoc">Ministry</a>
+                    <a href="~/SCTDoc/SCTDoc">SCT</a>
+                    <a href="~/OVCDoc/OVCDoc">OVC</a>
+                    <a href="~/FinancialGuidelineDoc/FinancialGuidelineDoc">Financial Guideline</a>
+                    <a href="~/BookOfAccountsDoc/BookOfAccountsDoc">Book Of Accounts</a>
+                    <a href="~/FinancialReportDoc/FinancialReportDoc">Financial Report</a>
+                    <a href="~/MissionDoc/MissionDoc">Mission</a>
+                    <a href="~/FundRaisingCommiteeDoc/FundRaisingCommiteeDoc">Fund Raising Commitee</a>
+
+
+                </div>
+            </li>
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Social Centres</a>
+                <div class="dropdown-content">
+                    <a href="~/CommunitiesSocialCentresDoc/CommunitiesSocialCentresDoc">Communities SocialCentres</a>
+                    <a href="~/SocialInstitutionDoc/SocialInstitutionDoc">Social Institution</a>
+                    <a href="~/VocationalTrainingDoc/VocationalTrainingDoc">Vocational Training</a>
+                    <a href="~/CommunicationOfficeDoc/CommunicationOfficeDoc">Communication Office</a>
+                    <a href="~/GeneralMattersDoc/GeneralMattersDoc">General Matters</a>
+
+
+
+                </div>
+            </li>
+
+
+            <li class="dropdown">
+                <a href="javascript:void(0)" class="dropbtn">Manage</a>
+                <div class="dropdown-content">
+                    <a href="~/CommonDataList/DataLists"> DataList </a>
+                    <a href="~/CommonDataListItems/DataListItems"> DataList Items </a>
+                    <a href="~/Home/ChangePassword"> Change Password </a>
+                </div>
+            </li>
+
+
+            <li class="dropdown">
+                <a href="~/Home/Login" class="dropbtn">Email</a>
+                <div class="dropdown-content">
+                    <a href="~/Inbox/Inbox">Inbox</a>
+                    @*<a href="~/DailySMS/DailySMS"> SMS </a>
+                    <a href="~/DailySMS/SMSContent"> SMS Content </a>*@
+                    @*<a href="~/Archive/Index">Archive </a>*@
+                    <a href="~/Email/EmailData">Emails </a>
+                    <a href="~/Email/SignInEmail">SignInEmail</a>
+                </div>
+            </li>
+
+            <li class="dropdown">
+                <a href="~/Home/Login" class="dropbtn">Logout</a>
+            </li>
+
+        </ul>
+        <div style="float:right; margin-left:10px; margin-top:10px; margin-bottom:10px;">
+            @*<img src="~/Images/images.jpg" style="height:88px; width:108px;;margin-top:-80px;margin-right:20px;" />*@
+            <img src="~/Images/rajesh/download.jpg" style="height:100px; width:77px;margin-top:-106px;margin-right:28px;" />
+
+        </div>
+    </div>
+
+
+    <!-- Content Wrapper. Contains page content -->
+    
+
+        @RenderBody()
+
+     
+
+
+
+
+    <hr />
+    <div style="">
+        <div align="right" style="margin-right:30px;margin-top:20px;">
+
+            <strong>Copyright &copy; @DateTime.Now.Year <a href="#" style="color:#009be1">iRoots</a>.</strong> All rights reserved.
+        </div>
+
+    </div>
+
+</body>
+
+</html>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<script src="~/Scripts/jquery-ui.js"></script>
+<script src="~/Plugins/datatables/jquery.dataTables.min.js"></script>
+@*<script src="~/Plugins/datepicker/bootstrap-datepicker.js"></script>*@
+<script src="~/Scripts/ckeditor/ckeditor.js"></script>
+
+@RenderSection("scripts", required: false);
+
+<script type="text/javascript">
+    //TODO Rajesh
+    // Set date picker
+    $(function () {
+        $('.datepicker').datepicker({
+            changeMonth: true,
+            changeYear: true,
+            dateFormat: "dd/mm/yy",
+            yearRange: '1800:2080'
+        });
+    });
+</script>

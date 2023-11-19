@@ -1,0 +1,231 @@
+﻿
+@{
+    ViewBag.Title = "VowsRenewal2";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<div class="page-content-wrap">
+    <div class="row" style="margin-right:-5px;margin-left:-5px;margin-top:89px;">
+        <div class="col-md-12">
+            <div class="panel panel-primary">
+
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="box box-info">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">VowsRenewal2</h3>
+                                </div>
+                                <div class="row">
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <div class="col-sm-6">
+                                                <select class="form-control" style="width:300px !important;" id="ProvinceName4Rene"></select>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="form-group">
+                                                    <button type="button" class="fa fa-print pull-right" style="height:30px;width:60px;" id="btnPrintVows">&times;</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-12" style="margin-top:20px;">
+                                                <div class="form-group">
+                                                    <label for="inputPassword3" class="col-sm-3 control-label" style="margin-left:20px;">
+                                                        <input type="checkbox" value="Novitiate2ndY" id="Novitiate"><span>Novitiate_2nd</span>
+                                                    </label>
+                                                    <label for="inputPassword3" class="col-sm-3 control-label">
+                                                        <input type="checkbox" value="1stProfession" id="FirstProfession"><span>Temprory _Profession</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div id="ArchiveDiv" class="row" style="margin-left:30px; margin-right:30px;">
+                                        <br />
+                                        <h4 style="color:#009be1"><span>Vows Reneval</span></h4>
+                                        <div class="col-sm-12">
+                                            <table class="table table-bordered" id="tblreneVows">
+                                                <thead>
+                                                    <tr>
+                                                        <th><span>S_No</span></th>
+                                                        <th><span>Name</span></th>
+                                                        <th><span>View</span></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="tbody" id="ViewreneData"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/Content/multiple-select.min.js"></script>
+    <script src="~/css/DropDownSelect2/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#Memdatatbl2").css("display", "none");
+            $("#Memdatatbl1").css("display", "none");
+            $("#Insttbl1").css("display", "none");
+            $("#Insttbl2").css("display", "none");
+            $("#tblParishes1").css("display", "none");
+            $("#tblParishes2").css("display", "none");
+            $("#tblcomdata1").css("display", "none");
+            $("#tblcomdata2").css("display", "none");
+            $("#tblSocData1").css("display", "none");
+            $("#tblSocData2").css("display", "none");
+            $("#tblOrdindata2").css("display", "none");
+            $("#tblRetire2").css("display", "none");
+            $("#deathdatatbl2").css("display", "none");
+            $("#departdatatbl2").css("display", "none");
+            $("#NovPPdatatbl2").css("display", "none");
+            $("#EnterToNovdatatbl2").css("display", "none");
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            GetAllProvinceRenewal();
+            GetRenewalsvowses("0");
+        });
+
+        function GetAllProvinceRenewal() {
+            $.ajax({
+                url: "/Home/GetAllProvinceRenewal",
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#ProvinceName4Rene').html('').select2({ data: [{ id: '', text: '' }] });
+                        allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                        }
+                        $("#ProvinceName4Rene").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+
+        $('#Novitiate').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#FirstProfession").attr("checked", false);
+            }
+        });
+        $('#FirstProfession').click(function () {
+            if ($(this).prop("checked") == true) {
+                $("#Novitiate").attr("checked", false);
+            }
+        });
+    </script>
+    <script>
+        $('#Novitiate').click(function () {
+            if ($(this).prop("checked") == true) {
+                var id = $("#Novitiate").val();
+                GetAllNovitiateById(id);
+            }
+        });
+
+        function GetAllNovitiateById(id) {
+            $.ajax({
+                url: "/Home/GetAllNovitiateById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewreneData').html("");
+                    if (response != null) {
+                        var i = 1;
+                        response.forEach(function (data) {
+                            if (data != null) {
+
+                                var url = "";
+                                var isView = "No Details";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/AllProvinceDataAdd/AllProvinceDataview?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Details";
+                                }
+                                var row = "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                $('#ViewreneData').append(row);
+                                i = i + 1;
+                            }
+
+                            //$("#myModal21").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+        $(function () {
+            $("#TotalVowsRenewal").on("click", function () {
+                var province = $("#ProvinceDrop1 option:selected").val();
+                GetRenewalsvowses(province);
+            });
+        });
+
+        $("#ProvinceName4Rene").on("change", function () {
+            var ProvinceName4Rene = $("#ProvinceName4Rene option:selected").val();
+            GetRenewalsvowses(ProvinceName4Rene);
+        });
+        function GetRenewalsvowses(province) {
+            $.ajax({
+                url: "/Home/GetRenewalsvowses?province=" + province,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (response) {
+                  //debugger;
+                    $('#ViewreneData').html("");
+                    if (response != null) {
+                        var i = 1;
+                        var html = "";
+                        response.forEach(function (data) {
+                            if (data != null) {
+                                var url = "";
+                                var isView = "No Details";
+                                if (data.MemberId != null && data.MemberId != "") {
+                                    url = "/AllProvinceDataAdd/AllProvinceDataview?id=" + data.MemberId;
+                                    isView = "View Details";
+                                } else {
+                                    url = "#";
+                                    isView = "No Details";
+                                }
+                                html += "<tr><td>" + i + "</td><td>" + data.Name + "</td><td><a href='" + url + "'>" + isView + "</a></td></tr>";
+                                //$('#ViewreneData').append(row);
+                                i = i + 1;
+                            }
+                            $('#tblreneVows').DataTable().destroy();
+                            $('#tblreneVows').find('tbody').html('');
+                            $('#tblreneVows').find('tbody').append(html);
+                            $('#tblreneVows').DataTable().draw();
+                            $("#myModal21").modal('show');
+                        });
+                    }
+                },
+                error: function (er) {
+                }
+            });
+        }
+    </script>
+}

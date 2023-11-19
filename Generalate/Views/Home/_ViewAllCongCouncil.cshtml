@@ -1,0 +1,51 @@
+﻿@model Generalate.Models.Tbl_ParisInstitutionDetails
+@using Generalate.Controllers;
+@{ 
+    var ListFor = ViewBag.ListForCong;
+}
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th class="hide-13" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Sr.No");}</span> </th>
+                <th style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Name");}</span> </th>
+                <th class="hide-12" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span> </th>
+                <th class="hide-14" style="background-color:#29b2e1;color:white"> <span>@{@HomeController.GetControlTextByControlId("Term");}</span></th>
+                <th  style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int i = 1;
+                var listitems = ViewBag.allinstitution;
+                foreach (var item in listitems)
+                {
+                    string values = Convert.ToString(item);
+                    var stringArray = values.Split(',');
+
+                    <tr>
+                        <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+
+                        <td class="hide-13">@i</td>
+                        <td >@stringArray[0].Substring(stringArray[0].IndexOf('=') + 1)</td>
+                        <td class="hide-12">@stringArray[1].Substring(stringArray[1].IndexOf('=') + 1)</td>
+                        <td class="hide-14">@stringArray[2].Substring(stringArray[2].IndexOf('=') + 1).Trim('}')</td>
+
+                        <td></td>
+
+                    </tr>
+                    i++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    $(document).ready(function () {
+
+
+    });
+
+</script>

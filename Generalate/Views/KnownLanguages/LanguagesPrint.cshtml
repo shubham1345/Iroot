@@ -1,0 +1,61 @@
+﻿@model Generalate.Models.tbl_KnownLanguages
+
+@{
+    Layout = null;
+}
+<head>
+
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/bootstrap/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="~/bootstrap/css/bootstrap.min.css">
+
+<script type="text/javascript">
+$(document).ready(function () {
+
+    $.getJSON("GetAll",
+    function (json) {
+        var tr;
+        //Append each row to html table
+        for (var i = 0; i < json.length; i++) {
+            tr = $('<tr />');
+            tr.append("<td hidden='hidden'>" + json[i].KnownLanguagesId + "</td>");
+            //tr.append('<td><a href=ViewProfile/' + json[i].KnownLanguagesId + '>' + json[i].MemberID + '</a></td>');
+            tr.append("<td>" + json[i].Name + "</td>");
+            tr.append("<td>" + json[i].Spare1 + "</td>");
+            tr.append("<td>" + json[i].LanguageName + "</td>");
+            tr.append("<td>" + json[i].ToRead + "</td>");
+            tr.append("<td>" + json[i].ToWrite + "</td>");
+            tr.append("<td>" + json[i].ToSpeak + "</td>");
+            $('table').append(tr);
+        }
+    });
+});
+
+</script>
+
+</head>
+
+
+<div class="form-horizontal">
+
+    <div class="container">
+        <div class="form-horizontal">
+            <br />
+            <table class="table table-striped  table-hover" id="EmpInfo">
+                <thead>
+                    <tr>
+                        <th hidden="hidden"> Id </th>
+                        <th> Sur Name </th>
+                        <th> Name </th>
+                        <th> Language </th>
+                        <th> ToRead </th>
+                        <th> ToWrite </th>
+                        <th> ToSpeak </th>
+                    </tr>
+                </thead>
+                <tbody class="tbody"> </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

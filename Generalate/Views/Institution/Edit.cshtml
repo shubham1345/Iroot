@@ -1,0 +1,22 @@
+﻿@model Generalate.Models.Tbl_ParisInstitutionDetails
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form class="form-horizontal" action="/Institution/Edit" method="post" id="InstitutiionForm" enctype="multipart/form-data">
+    <input type="hidden" name="Id" value="@Model.Id" />
+    @Html.Partial("_CreateOrUpdate", Model)
+    <div class="row">
+        <div class="form-group">
+            <div class="col-sm-8">
+                <button type="submit" class="btn btn-info pull-right" onclick="return SavebtnAddInstitution()" id="btnAddInstitution" style="margin-top:6px"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+}

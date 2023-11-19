@@ -1,0 +1,1069 @@
+﻿@using Generalate.Controllers;
+@{
+    ViewBag.Title = "ComOutSideList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>
+<style>
+    .Mytooltip:hover {
+        margin-bottom: 500px;
+        cursor: pointer;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
+
+<div class="page-content-wrap">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <div class="container-fluid">
+                    <div class="row" style="margin-top:20px;">
+                        <div class="col-md-12 col-sm-12 col-xs-12">
+                            <ul class="nav nav-tabs" id="myTab">
+                                <li class="active"><a data-toggle="tab" href="#COS" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></a></li>
+                                <li><a data-toggle="tab" href="#COSContact" class="sis_tab_a"><span>@{@HomeController.GetControlTextByControlId("Contact_Details");}</span></a></li>
+                                <li><a data-toggle="tab" href="#COSPovince" class="sis_tab_a"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></a></li>
+                                <li><a data-toggle="tab" href="#COSProContact" class="sis_tab_a"><span>@{@HomeController.GetControlTextByControlId("Provincecontact");}</span></a></li>
+                                <li><a data-toggle="tab" href="#COSCommunity" class="sis_tab_a"><span>@{@HomeController.GetControlTextByControlId("Community");}</span></a></li>
+                                <li><a data-toggle="tab" href="#COSInst" class="sis_tab_a"><span>@{@HomeController.GetControlTextByControlId("Institute");}</span></a></li>
+                            </ul>
+                            <div class="tab-content tab_sis">
+                                <div id="COS" class="tab-pane fade in active brd-panel">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top:20px;">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Community_Outside");}</span></div>
+                                                <div class="panel-body overflow-daily" style="height:500px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box box-info">
+                                                                <form id="ComOSForm" action="/Home/AddComOSData" method="post" enctype="multipart/form-data">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label> <span>@{@HomeController.GetControlTextByControlId("Title");}</span></label>
+                                                                            <input type="hidden" id="MyID" name="ComId" value="@ViewBag.ComOutSideId" />
+                                                                            <input type="hidden" id="ProvinceName" name="ProvinceName" value="@ViewBag.ProvinceName" />
+                                                                            <input type="text" id="Tital" name="other1" class="form-control">
+                                                                            <input type="hidden" id="id" name="id" class="form-control" />
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></label>
+                                                                            <input type="text" id="Date" name="Date" readonly class="form-control datepicker">
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label> <span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                            <input type="file" id="File12" name="File1" class="form-control" accept=".png,.jpg,.pdf,.jpeg">
+                                                                            <span id="File1234"></span>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></label>
+                                                                            <textarea id="Description" rows="5" name="Description" class="form-control"></textarea>
+                                                                        </div>
+                                                                        <button type="submit" class="btn btn-success pull-right" id="btnAddData"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>
+                                                                    </div>
+                                                                </form>
+
+                                                                <div class="row" style="margin-top:30px;">
+                                                                    <div class="col-sm-12" style="margin-top:30px;">
+                                                                        <table class="table table-striped table-bordered table-hover" id="ComOSTbl" style="margin-top:20px;">
+                                                                            <thead>
+                                                                                <tr style="background-color:#001f6b; color:white">
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span> </th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Title");}</span> </th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Description");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("View_Documents");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="tbody">
+                                                                                @{
+                                                                                    int iii = 1;
+                                                                                    foreach (var item in ViewBag.ComOutSideData as IEnumerable<Generalate.Models.ComOutSideDetails>)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td>@iii</td>
+                                                                                            <td>@item.other1</td>
+                                                                                            <td>@item.Date</td>
+                                                                                            <td>
+                                                                                                @if (@item.Description.Length > 30)
+                                                                                                {
+                                                                                                    <span>@item.Description.ToString().Substring(0, 30)</span><span class="Mytooltip" style="color:blue; font:bold;" data-toggle="tooltip" data-placement="top" title="@item.Description.ToString()"> ...<span>@{@HomeController.GetControlTextByControlId("More");}</span></span>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    @item.Description
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                @{
+                                                                                                    if (!string.IsNullOrWhiteSpace(@item.File1))
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/Congation/@item.File1"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("Not_Available");}</span></a>
+
+                                                                                                    }
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditComOs"></i></button>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash-o ComOsDelete"></i></button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        iii++;
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="COSContact" class="tab-pane fade brd-panel">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top:20px;">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Contact_Details");}</span></div>
+                                                <div class="panel-body overflow-daily" style="height:500px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box box-info">
+                                                                <div class="box-header with-border">
+                                                                    <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Contact_Details");}</span></h3>
+                                                                </div>
+                                                                <form class="form-horizontal" action="/EntryLife/AddComOSContact" method="post" id="ComOScontactform" enctype="multipart/form-data">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Select Member");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <select type="text" id="ComOScontactTypes" name="Types" class="form-control">
+                                                                                    <option value="0">--Select Member--</option>
+                                                                                    @foreach (var item in @ViewBag.DesignationType as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                    {
+                                                                                        <option value="@item.Name">@item.Name</option>
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Date");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOScontactDate" name="Date" class="form-control datepicker" readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOScontactName" name="MemberName" class="form-control">
+                                                                                <input type="hidden" id="ComOScontactId" name="id" />
+                                                                                <input type="hidden" id="IdComOScontact" value="@ViewBag.ComOutSideId" name="MyId" />
+                                                                                <input type="hidden" id="NameComOScontact" value="@ViewBag.ComOutSideName" name="DioName" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOScontactMobile" name="MobileNo" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOScontactEmail" name="Email" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-sm-8">
+                                                                                <button type="submit" class="btn btn-info pull-right" id="ComOScontactbtn"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-top:40px;">
+                                                        <div class="col-sm-12">
+                                                            <table class="table table-striped table-bordered table-hover" id="TblComOScontact" style="margin-top:20px;">
+                                                                <thead>
+                                                                    <tr style="background-color:#001f6b; color:white">
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Manage");}</span></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="tbody">
+                                                                    @{
+                                                                        int a = 1;
+                                                                        foreach (var item in @ViewBag.ComOSContact as IEnumerable<Generalate.Models.tbl_ComOSContact>)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>@a</td>
+                                                                                <td>@item.Date</td>
+                                                                                <td>@item.MemberName</td>
+                                                                                <td>@item.Types</td>
+                                                                                <td>@item.Email</td>
+                                                                                <td>@item.MobileNo</td>
+                                                                                <td>
+                                                                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditComOsCont"></i></button>
+                                                                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash-o DeleteComOSCont"></i></button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            a++;
+                                                                        }
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="COSPovince" class="tab-pane fade brd-panel">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top:20px;">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></div>
+                                                <div class="panel-body overflow-daily" style="height:500px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box box-info">
+                                                                <div class="box-header with-border">
+                                                                    <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></h3>
+                                                                </div>
+                                                                <form class="form-horizontal" action="/EntryLife/AddCOSProv" method="post" id="COSProvForm" enctype="multipart/form-data">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="COSProvName" name="ProvinceName" class="form-control">
+                                                                                <input type="hidden" id="COSProvId" name="id" />
+                                                                                <input type="hidden" id="ComOSProvId" value="@ViewBag.ComOutSideId" name="MyId" />
+                                                                                <input type="hidden" id="ComOSProvName" value="@ViewBag.ComOutSideName" name="DioName" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOSProvMobileNo" name="MobileNo" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOSProvEmail" name="Email" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Address");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <textarea type="text" rows="6" id="ComOSProvAddress" name="Address" class="form-control"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_File");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="file" id="FileComOSProv1" name="File" class="form-control">
+                                                                                <span id="FileComOSProv"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-sm-8">
+                                                                                <button type="submit" class="btn btn-info pull-right" id="ComOSProvbtn"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+
+                                                                <div class="row" style="margin-top:40px;">
+                                                                    <div class="col-sm-12">
+                                                                        <table class="table table-striped table-bordered table-hover" id="TblcommOutsideProv" style="margin-top:20px;">
+                                                                            <thead>
+                                                                                <tr style="background-color:#001f6b; color:white">
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Manage");}</span></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="tbody">
+                                                                                @{
+                                                                                    int s = 1;
+                                                                                    foreach (var item in @ViewBag.allCommOutsideProv as IEnumerable<Generalate.Models.ComOSProvince>)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td>@s</td>
+                                                                                            <td>@item.ProvinceName</td>
+                                                                                            <td>@item.Email</td>
+                                                                                            <td>@item.MobileNo</td>
+                                                                                            <td>
+                                                                                                @if (item.Address != null && item.Address.Length > 30)
+                                                                                                {
+                                                                                                    <span>@item.Address.ToString().Substring(0, 30)</span><span class="Mytooltip" style="color:blue; font:bold;" data-toggle="tooltip" data-placement="top" title="@item.Address.ToString()"> ...<span>@{@HomeController.GetControlTextByControlId("More");}</span></span>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    @item.Address
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                @{
+                                                                                                    if (!string.IsNullOrWhiteSpace(@item.File))
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/ComOSIns/"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("No File");}</span></a>
+                                                                                                    }
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditComOSProv"></i></button>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash-o DeleteComOSProv"></i></button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        s++;
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="COSProContact" class="tab-pane fade brd-panel">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top:20px;">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Contact_Details");}</span></div>
+                                                <div class="panel-body overflow-daily" style="height:500px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box box-info">
+                                                                <div class="box-header with-border">
+                                                                    <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Contact_Details");}</span></h3>
+                                                                </div>
+                                                                <form class="form-horizontal" action="/EntryLife/AddCOSProCont" method="post" id="COSProContform" enctype="multipart/form-data">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Select Member");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <select type="text" id="COSProContTypes" name="Types" class="form-control">
+                                                                                    <option value="0">--Select Member--</option>
+                                                                                    @foreach (var item in @ViewBag.DesignationType as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                    {
+                                                                                        <option value="@item.Name">@item.Name</option>
+                                                                                    }
+                                                                                </select>
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Date");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="COSProContDate" name="Date" class="form-control datepicker" readonly>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="COSProContName" name="MemberName" class="form-control">
+                                                                                <input type="hidden" id="COSProContId" name="id" />
+                                                                                <input type="hidden" id="IdCOSProCont" value="@ViewBag.ComOutSideId" name="MyId" />
+                                                                                <input type="hidden" id="NameCOSProCont" value="@ViewBag.ComOutSideName" name="DioName" />
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="COSProContMobile" name="MobileNo" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="COSProContEmail" name="Email" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-sm-8">
+                                                                                <button type="submit" class="btn btn-info pull-right" id="COSProContbtn"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-top:40px;">
+                                                        <div class="col-sm-12">
+                                                            <table class="table table-striped table-bordered table-hover" id="TblCOSProCont" style="margin-top:20px;">
+                                                                <thead>
+                                                                    <tr style="background-color:#001f6b; color:white">
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Date");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Name");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Designation");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                                                        <th> <span>@{@HomeController.GetControlTextByControlId("Manage");}</span></th>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody class="tbody">
+                                                                    @{
+                                                                        int si = 1;
+                                                                        foreach (var item in @ViewBag.allCOSProCont as IEnumerable<Generalate.Models.ComOSProContact>)
+                                                                        {
+                                                                            <tr>
+                                                                                <td>@si</td>
+                                                                                <td>@item.Date</td>
+                                                                                <td>@item.MemberName</td>
+                                                                                <td>@item.Types</td>
+                                                                                <td>@item.Email</td>
+                                                                                <td>@item.MobileNo</td>
+
+                                                                                <td>
+                                                                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditCOSProCont"></i></button>
+                                                                                    <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash-o DeleteCOSProCont"></i></button>
+                                                                                </td>
+                                                                            </tr>
+                                                                            si++;
+                                                                        }
+                                                                    }
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="COSInst" class="tab-pane fade brd-panel">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top:20px;">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Institute");}</span></div>
+                                                <div class="panel-body overflow-daily" style="height:500px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box box-info">
+                                                                <div class="box-header with-border">
+                                                                    <h3 class="box-title"><span>@{@HomeController.GetControlTextByControlId("Institute");}</span></h3>
+                                                                </div>
+                                                                <form class="form-horizontal" action="/IdGenerate/AddCOSInst" method="post" id="COSInstForm" enctype="multipart/form-data">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Institute_Name");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOSInstName" name="InstName" class="form-control">
+                                                                                <input type="hidden" id="COSInstId" name="id" />
+                                                                                <input type="hidden" id="ComOSInsId" value="@ViewBag.ComOutSideId" name="ComOsId" />
+                                                                                <input type="hidden" id="ComOSInsName" value="@ViewBag.ComOutSideName" name="ComOsName" />
+                                                                                <input type="hidden" id="ComOSInsProvinceName" value="@ViewBag.ProvinceName" name="ProvinceName" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOSInstMobileNo" name="MobileNo" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="ComOSInstEmail" name="Email" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Address");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <textarea type="text" rows="6" id="ComOSInstAddress" name="Address" class="form-control"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_File");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="file" id="FileComOSInst1" name="File" class="form-control">
+                                                                                <span id="FileComOSInst"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-sm-8">
+                                                                                <button type="submit" class="btn btn-info pull-right" id="ComOSInstbtn"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+
+                                                                <div class="row" style="margin-top:40px;">
+                                                                    <div class="col-sm-12">
+                                                                        <table class="table table-striped table-bordered table-hover" id="TblcommOutsideInst" style="margin-top:20px;">
+                                                                            <thead>
+                                                                                <tr style="background-color:#001f6b; color:white">
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Inst_Name");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Manage");}</span></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="tbody">
+                                                                                @{
+                                                                                    int jia = 1;
+                                                                                    foreach (var item in @ViewBag.allCommOutsideInst as IEnumerable<Generalate.Models.tbl_ComOSInstitute>)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td>@jia</td>
+                                                                                            <td>@item.InstName</td>
+                                                                                            <td>@item.Email</td>
+                                                                                            <td>@item.MobileNo</td>
+                                                                                            <td>
+                                                                                                @if (@item.Address.Length > 30)
+                                                                                                {
+                                                                                                    <span>@item.Address.ToString().Substring(0, 30)</span><span class="Mytooltip" style="color:blue; font:bold;" data-toggle="tooltip" data-placement="top" title="@item.Address.ToString()"> ...<span>@{@HomeController.GetControlTextByControlId("More");}</span></span>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    @item.Address
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                @{
+                                                                                                    if (!string.IsNullOrWhiteSpace(@item.File))
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/ComOSIns/"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("No File");}</span></a>
+                                                                                                    }
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditComOSInst"></i></button>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash-o DeleteComOSInst"></i></button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        jia++;
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="COSCommunity" class="tab-pane fade brd-panel">
+                                    <div class="row">
+                                        <div class="col-md-12" style="margin-top:20px;">
+                                            <div class="panel panel-primary">
+                                                <div class="panel-heading" style="background-color:#29b2e1"><span>@{@HomeController.GetControlTextByControlId("Community");}</span></div>
+                                                <div class="panel-body overflow-daily" style="height:500px;">
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <div class="box box-info">
+                                                                <form class="form-horizontal" action="/EntryLife/AddCOSCom" method="post" id="COSComForm1" enctype="multipart/form-data">
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Community_Name");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="COSCom12" name="ComName" class="form-control">
+                                                                                <input type="hidden" id="CongOSId" name="id" />
+                                                                                <input type="hidden" id="CongOSComId" value="@ViewBag.ComOutSideId" name="MyId" />
+                                                                                <input type="hidden" id="CongOSComName" value="@ViewBag.ComOutSideName" name="DioName" />
+                                                                            </div>
+                                                                        </div>
+
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="CongOSComMobileNo" name="MobileNo" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="text" id="CongOSComEmail" name="Email" class="form-control">
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-sm-6">
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Address");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <textarea type="text" rows="6" id="CongOSComAddress" name="Address" class="form-control"></textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_File");}</span></label>
+                                                                            <div class="col-sm-7">
+                                                                                <input type="file" id="FileCongOSCom1" name="File" class="form-control">
+                                                                                <span id="FileCongOSCom"></span>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <div class="col-sm-8">
+                                                                                <button type="submit" class="btn btn-info pull-right" id="CongOSCombtn"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+
+                                                                <div class="row" style="margin-top:40px;">
+                                                                    <div class="col-sm-12">
+                                                                        <table class="table table-striped table-bordered table-hover" id="TblCongOSCom" style="margin-top:20px;">
+                                                                            <thead>
+                                                                                <tr style="background-color:#001f6b; color:white">
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("S_No");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Community_Name");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Email");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Phone");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Address");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("File");}</span></th>
+                                                                                    <th> <span>@{@HomeController.GetControlTextByControlId("Manage");}</span></th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody class="tbody">
+                                                                                @{
+                                                                                    int a2 = 1;
+                                                                                    foreach (var item in @ViewBag.allComOSCommunity as IEnumerable<Generalate.Models.tbl_ComOSCommunity>)
+                                                                                    {
+                                                                                        <tr>
+                                                                                            <td>@a2</td>
+                                                                                            <td>@item.ComName</td>
+                                                                                            <td>@item.Email</td>
+                                                                                            <td>@item.MobileNo</td>
+                                                                                            <td>
+                                                                                                @if (@item.Address.Length > 30)
+                                                                                                {
+                                                                                                    <span>@item.Address.ToString().Substring(0, 30)</span><span class="Mytooltip" style="color:blue; font:bold;" data-toggle="tooltip" data-placement="top" title="@item.Address.ToString()"> ...<span>@{@HomeController.GetControlTextByControlId("More");}</span></span>
+                                                                                                }
+                                                                                                else
+                                                                                                {
+                                                                                                    @item.Address
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                @{
+                                                                                                    if (!string.IsNullOrWhiteSpace(@item.File))
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/ComOSIns/"><span>@{@HomeController.GetControlTextByControlId("View");}</span></a>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <a target="_blank" href="~/Image/No-data-found.png"><span>@{@HomeController.GetControlTextByControlId("No File");}</span></a>
+                                                                                                    }
+                                                                                                }
+                                                                                            </td>
+                                                                                            <td>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-edit EditCongOSCom"></i></button>
+                                                                                                <button><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.id" class="fa fa-trash-o DeleteCongOSCom"></i></button>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        a2++;
+                                                                                    }
+                                                                                }
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+        {
+    <script src="~/Scripts/InstitutionJS.js"></script>
+    <script src="~/Scripts/additional/SociertJS.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('#ComOSTbl').DataTable();
+            $('#TblcommOutsideInst').DataTable();
+            $('#TblComOScontact').DataTable();
+            $('#TblCOSProCont').DataTable();
+            $('#TblCongOSCom').DataTable();
+            $('#TblcommOutsideProv').DataTable();
+        });
+    </script>
+    <script>
+
+        $(".EditComOs").on('click', function () {
+            $('#ComOSForm').attr('action', '/Home/UpdateComOS');
+            var id = $(this).attr("data-val");
+            $("#btnAddData").text("Update");
+            $(".panel-body").scrollTop(0);
+            GetComOSDataById(id);
+        });
+        function GetComOSDataById(id) {
+            $.ajax({
+                url: "/Home/GetComOSDataById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#id").val(result.id);
+                    $("#MyID").val(result.ComId);
+                    $("#ProvinceName").val(result.ProvinceName);
+                    $("#Tital").val(result.other1);
+                    $('#Date').val(result.Date);
+                    $("#Description").val(result.Description);
+                    $("#File1234").text(result.File1);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            });
+        }
+        $(".ComOsDelete").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+
+                window.location.href = "/Home/DeleteComOSData?id=" + id;
+            }
+        });
+
+        $(".EditComOSInst").on('click', function () {
+            $('#COSInstForm').attr('action', '/IdGenerate/UpdateComOutSideInst');
+            var id = $(this).attr("data-val");
+            $("#ComOSInstbtn").text("Update");
+            $(".panel-body").scrollTop(0);
+            GetByIdComOutSideInst(id);
+        });
+        function GetByIdComOutSideInst(id) {
+            $.ajax({
+                url: "/IdGenerate/GetByIdComOutSideInst?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#COSInstId").val(result.id);
+                    $("#ComOSInsId").val(result.ComOsId);
+                    $("#ComOSInsName").val(result.ComOsName);
+                    $("#ComOSInsProvinceName").val(result.ProvinceName);
+                    $("#ComOSInstName").val(result.InstName);
+                    $("#ComOSInstMobileNo").val(result.MobileNo);
+                    $("#ComOSInstAddress").val(result.Address);
+                    $("#ComOSInstEmail").val(result.Email);
+                    $("#FileComOSInst").text(result.File);
+                    $('#ComOsNameInst opetion[value="' + result.ComOsName + '"]').attr("selected", "selected");
+                    $("#ComOsNameInst").val(result.ComOsName).change();
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        }
+        $(".DeleteComOSInst").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/IdGenerate/DeleteComOutSideInst?id=" + id;
+            }
+        });
+
+        $(".EditComOsCont").on('click', function () {
+            $('#ComOScontactform').attr('action', '/EntryLife/UpdateComOSContact');
+            var id = $(this).attr("data-val");
+            $("#ComOScontactbtn").text("Update");
+            $(".panel-body").scrollTop(0);
+            GetComOSContactById(id);
+        });
+        function GetComOSContactById(id) {
+            $.ajax({
+                url: "/EntryLife/GetComOSContactById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $('#ComOScontactTypes option[value="' + result.Types + '"]').attr("selected", "selected");
+                    $('#ComOScontactTypes').val(result.Types).change();
+
+                    $("#IdComOScontact").val(result.MyId);
+                    $("#NameComOScontact").val(result.DioName);
+                    $("#ComOScontactName").val(result.MemberName);
+                    $("#ComOScontactDate").val(result.Date);
+                    $("#ComOScontactId").val(result.id);
+                    $("#ComOScontactMobile").val(result.MobileNo);
+                    $("#ComOScontactEmail").val(result.Email);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        }
+        $(".DeleteComOSCont").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/EntryLife/ComOSContactDelete?id=" + id;
+            }
+        });
+
+        $(".EditComOSProv").on('click', function () {
+            $('#COSProvForm').attr('action', '/EntryLife/UpdateOSProvince');
+            var id = $(this).attr("data-val");
+            $("#ComOSProvbtn").text("Update");
+            $(".panel-body").scrollTop(0);
+            GetByIdOSProvince(id);
+        });
+        function GetByIdOSProvince(id) {
+            $.ajax({
+                url: "/EntryLife/GetByIdOSProvince?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#COSProvName").val(result.ProvinceName);
+                    $("#COSProvId").val(result.id);
+                    $("#ComOSProvId").val(result.MyId);
+                    $("#ComOSProvName").val(result.DioName);
+                    $("#ComOSProvMobileNo").val(result.MobileNo);
+                    $("#ComOSProvEmail").val(result.Email);
+                    $("#ComOSProvAddress").val(result.Address);
+                    $("#FileComOSProv").text(result.File);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        }
+        $(".DeleteComOSProv").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/EntryLife/DeleteOSProvince?id=" + id;
+            }
+        });
+
+        $(".EditCOSProCont").on('click', function () {
+            $('#COSProContform').attr('action', '/EntryLife/UpdateCOSProCont');
+            var id = $(this).attr("data-val");
+            $("#COSProContbtn").text("Update");
+            $(".panel-body").scrollTop(0);
+            GetCOSProContById(id);
+        });
+        function GetCOSProContById(id) {
+            $.ajax({
+                url: "/EntryLife/GetCOSProContById?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $('#COSProContTypes option[value="' + result.Types + '"]').attr("selected", "selected");
+                    $('#COSProContTypes').val(result.Types).change();
+                    $("#COSProContDate").val(result.Date);
+                    $("#COSProContName").val(result.MemberName);
+                    $("#COSProContId").val(result.id);
+
+                    $("#IdCOSProCont").val(result.MyId);
+                    $("#NameCOSProCont").val(result.DioName);
+                    $("#COSProContMobile").val(result.MobileNo);
+                    $("#COSProContEmail").val(result.Email);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        }
+        $(".DeleteCOSProCont").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/EntryLife/COSProContDelete?id=" + id;
+            }
+        });
+
+        //COSCommunity
+        $(".EditCongOSCom").on('click', function () {
+            $('#COSComForm1').attr('action', '/EntryLife/UpdateCOSCom');
+            var id = $(this).attr("data-val");
+            $("#CongOSCombtn").text("Update");
+            $(".panel-body").scrollTop(0);
+            GetByIdCOSCom(id);
+        });
+        function GetByIdCOSCom(id) {
+            $.ajax({
+                url: "/EntryLife/GetByIdCOSCom?id=" + id,
+                type: "GET",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                  //debugger;
+                    $("#COSCom12").val(result.ComName);
+                    $("#CongOSId").val(result.id);
+                    $("#CongOSComId").val(result.MyId);
+                    $("#CongOSComName").val(result.DioName);
+                    $("#CongOSComMobileNo").val(result.MobileNo);
+                    $("#CongOSComEmail").val(result.Email);
+                    $("#CongOSComAddress").val(result.Address);
+                    $("#FileCongOSCom").text(result.File);
+                },
+                error: function (errormessage) {
+                    alert(errormessage.responseText);
+                }
+            }); return false;
+        }
+        $(".DeleteCongOSCom").on('click', function () {
+            var id = $(this).attr("data-val");
+            if (confirm("Do you want to delete ?")) {
+                window.location.href = "/EntryLife/DeleteCOSCom?id=" + id;
+            }
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('a[data-toggle="tab"]').on('click', function (e) {
+                localStorage.setItem('activeTab', $(this).attr('href'));
+            });
+            var activeTab = localStorage.getItem('activeTab');
+            if (activeTab) {
+                $('#myTab a[href="' + activeTab + '"]').tab('show');
+            }
+        });
+    </script>
+
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "200") {
+            $("#mymessage").html("<b>Data saved successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "204") {
+            $("#mymessage").html("<b>Some Error Occured !</b>");
+            $("#mymessage").css("color", "red");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "201") {
+            $("#mymessage").html("<b>Data Updated Successfully !</b>");
+            $("#mymessage").css("color", "green");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+    <script>
+      //debugger;
+        var iscode = $.cookie("iscode");
+        if (iscode == "202") {
+            $("#mymessage").html("<b>Data Deleted Successfully !</b>");
+            $("#mymessage").css("color", "blue");
+            $('#myalertbox').modal({
+                backdrop: 'static'
+            });
+            $("#myalertbox").modal("show");
+            $.cookie('iscode', null, { path: '/' })
+        }
+        $(".closemodel").on("click", function () {
+            location.reload();
+        });
+    </script>
+}
+
+

@@ -1,0 +1,84 @@
+﻿
+ @*var messageUid = message.Uid;
+//                    var messageFrom = message.EmailContent.Headers.From.Address;
+//                    var messageTo = string.Join(",", message.EmailContent.Headers.To.Select(x => x.Address));
+//                    var messageCc = string.Join(",", message.EmailContent.Headers.Cc.Select(x => x.Address));
+//                    var messageBcc = string.Join(",", message.EmailContent.Headers.Bcc.Select(x => x.Address));
+//                    var messageSubject = message.EmailContent.Headers.Subject;
+//                    byte[] messageBody = null;
+//                    var body = message.EmailContent.FindFirstHtmlVersion();
+//                    if (body != null)
+//                        messageBody = body.Body;
+//                    else
+//                    {
+//                        body = message.EmailContent.FindFirstPlainTextVersion();
+//                        if (body != null)
+//                            messageBody = body.Body;
+//                    }
+//                    var messageDate = message.EmailContent.Headers.DateSent;
+
+//                    var id = new AddEmailTableAdapter().GetData(emailDetail.ID, messageUid, messageFrom, messageTo, messageCc, messageBcc, messageSubject, messageBody, messageDate, 1);
+//                    var eid = (int)id.First().EmailID;
+//                    message.Attachments.ForEach(x => new QueriesTableAdapter().AddEmailAttachment(eid, x.FileName, x.Body));*@
+
+ <script>
+        $(document).ready(function () {
+            $('#EmailInfo').DataTable({
+                "order": [[1, "asc"]], retrieve: true
+            });
+    });
+
+</script>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    <div class="form-horizontal">
+        <div class="" style="margin-left:20px; margin-right:20px;">
+            <div class="form-horizontal">
+                <br />
+                @*<button type="button" id="addbtnclickevent" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add PersonalDetail</button>
+                    <button type="button" class="btn btn-primary" id="printbtn">Print</button>*@
+                <div class="panel-group">
+                    <div class="panel panel-primary" style="margin-top:10px; background-color:#F4ECF7">
+                        <div class="tab panel-heading">
+                            <a style="color:white;">Email List</a>
+                        </div>
+
+                        <div class="" style="margin-left:20px; margin-right:20px;">
+                            <div class="form-horizontal">
+                                <br />
+                                <table class="table table-striped  table-hover" id="EmailInfo" style="border:solid; border-color:#044244">
+                                    <thead>
+                                        <tr style="background-color:#044244; color:white">
+                                            <th hidden="hidden"> EmailId </th>
+                                            <th> From </th>
+                                            <th> EmailSubject </th>
+                                            <th> Received date</th>
+                                            <th c> Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody">
+                                        @foreach (var message in ((List<EmailMessage>)ViewBag.messages))
+                                        {
+                                            <tr>
+                                                @Html.Hidden(@message.Uid);
+                                                <td>@message.EmailContent.Headers.From.Address</td>
+                                                <td>@message.EmailContent.Headers.Subject</td>                                                                              
+                                                <td>@message.EmailContent.Headers.DateSent</td>
+                                                <td><a href="#" onclick="return GetDataByMailId(' + json[i].EmailId + ')">View</a> | <a href="#" onclick="Delele(' + json[i].EmailId + ')">Delete</a></td>
+                                              
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+}

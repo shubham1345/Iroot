@@ -1,0 +1,79 @@
+﻿
+@using Generalate.Controllers;
+@using Generalate.Models
+
+@{
+    var fromAge = ViewBag.FromAge != null ? ViewBag.FromAge : "";
+    var toAge = ViewBag.ToAge != null ? ViewBag.ToAge : "";
+    var Count = 0;
+}
+
+
+<div style="text-align:right">
+    <button class="btn btn-success" type="button" id="Printthis">Print</button>
+</div>
+<table class="table table-condensed" style="border-collapse:collapse;margin-top:10px;" id="PrintTable">
+
+
+    <thead>
+        <tr>
+            <th style="background-color:#29b2e1;color:white">@{@HomeController.GetControlTextByControlId("S_No");}</th>
+            <th style="background-color:#29b2e1;color:white">@{@HomeController.GetControlTextByControlId("Province Name");} </th>
+            <th style="background-color:#29b2e1;color:white">@*@{HomeController.GetControlTextByControlId("No_of_communities");}*@ No Of Communities</th>
+
+        </tr>
+    </thead>
+
+
+    <tbody>
+
+
+        @if (ViewBag.StatisticCommunity != null)
+        {
+            int j = 1;
+
+            foreach (var i in ViewBag.StatisticCommunity.Rows)
+            {
+                var id = "demo" + j;
+                <tr class="provinceClass">
+                    <td>@j</td>
+                    <td>
+                        @i[1]
+                    </td>
+                    <td>
+                        <a href="#" class="openCommunityModal" id="@i[1]">@i[0]</a>
+
+                    </td>
+
+                </tr>
+                Count = Count + i[0];
+
+                j++;
+            }
+
+            <tr>
+                <td></td>
+                <td>
+                    @{@HomeController.GetControlTextByControlId("Total"); }
+                    :
+                </td>
+                <td>
+                    @Count
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>
+
+
+<script src="~/js/printThis.js"></script>
+<script>
+    $('#Printthis').on("click", function () {
+        $('#PrintTable').printThis();
+    });
+</script>
+
+
+
+

@@ -1,0 +1,70 @@
+﻿@model Generalate.Models.tbl_PersonalDetails
+@using Generalate.Controllers;
+
+<div class="table-responsive">
+    <table id="example" class="display table table-sm table-hover table-striped " style="width:100%">
+        <thead>
+            <tr>
+                <th style="background-color:#29b2e1;color:white"><input type="checkbox" id="checkedAll" class="custom-control-input"></th>
+                <th style="background-color:#29b2e1;color:white"><span>Sr No</span></th>
+                <th style="background-color:#29b2e1;color:white"><span>@{@HomeController.GetControlTextByControlId("Province");}</span></th>
+                <th style="background-color:#29b2e1;color:white"><span>MemberId</span></th>
+                <th style="background-color:#29b2e1;color:white"><span>@{@HomeController.GetControlTextByControlId("Member_Name");}</span></th>
+                <th style="background-color:#29b2e1;color:white"><span>@{@HomeController.GetControlTextByControlId("Surname");}</span></th>
+                <th style="background-color:#29b2e1;color:white"><span>@{@HomeController.GetControlTextByControlId("FileNo");}</span></th>
+                <th style="background-color:#29b2e1;color:white"><span>@{@HomeController.GetControlTextByControlId("Upload_Photo");}</span></th>
+                <th style="background-color:#29b2e1;color:white"><span>@{@HomeController.GetControlTextByControlId("Action");}</span></th>
+                <th style="width:2%;background-color:#29b2e1;color:white;cursor:pointer" id="opendivdots" class="notdivhide" onclick="openNav()">...</th>
+            </tr>
+        </thead>
+        <tbody>
+            @{
+                int ji = 1;
+                foreach (var item in ViewBag.allinstitution as IEnumerable<Generalate.Models.tbl_PersonalDetails>)
+                {
+            <tr>
+                <td><input type="checkbox" id="checkbox-76" class="checkSingle"></td>
+                <td>@ji</td>
+                <td class="hide-1">@item.ProvinceName</td>
+                <td>@item.MemberID</td>
+                <td class="hide-2">
+                    @if (item.MemberID != "" && item.MemberID != null)
+                    {
+                        <a href="/Member/MemberInfoById?memberId=@item.MemberID&Name=&SirName=">@item.Name</a>
+                    }
+                    else
+                    {
+                        <a target="_blank" href="/Image/No-data-found.png">View</a>
+                    }
+
+                </td>
+                <td class="hide-3">@item.SirName</td>
+                <td class="hide-3">@item.FileNo</td>
+
+                <td class="hide-3">
+                    @if (item.Spare1 != "" && item.Spare1 != null)
+                    {
+                        <a target="_blank" href="/Image/RenewalImages/@item.Spare1"><span>@HomeController.GetControlTextByControlId("View")</span></a>
+                    }
+                    else
+                    {
+                        <a target="_blank" href="/Image/No-data-found.png">View</a>
+                    }
+                </td>
+                <td>
+                    <button type="button"><a href="~/Member/Create?Id=@item.PersonalDetailsId"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.PersonalDetailsId" class="fa fa-edit EditInstitution"></i></a></button>
+                    <button type="button"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" data-val="@item.PersonalDetailsId" class="fa fa-trash-o btnmemdelete" onclick=deleteMember(@item.PersonalDetailsId)></i></button>
+                    @*<a onclick=" return confirm('Are you sure,you want to delete this record?')" href="/Member/DeleteParisInstitutionDetails?Id=@item.PersonalDetailsId"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" class="fa fa-trash-o InstitutionDelete"></i></a>*@
+                    <button type="button"><i style="font-size:12px; color:#29b2e1; cursor:pointer;" @*onclick="clickInstitutionView(@item.PersonalDetailsId);"*@ data-val="@item.PersonalDetailsId" class="fa fa-eye InstitutionView"></i></button>
+                </td>
+                <td></td>
+            </tr>
+                    ji++;
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<script>
+    
+</script>

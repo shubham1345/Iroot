@@ -1,0 +1,1021 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="EmailModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="ArchiveFields">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchiveFieldValues">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FieldId" Type="int" Nullable="false" />
+          <Property Name="FieldValue" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ParentFieldId" Type="int" />
+          <Property Name="Fieldname" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ArchiveUsers">
+          <Key>
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="IsAdmin" />
+          </Key>
+          <Property Name="Username" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Password" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IsAdmin" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CommunityId" Type="int" />
+          <Property Name="PlaceId" Type="int" />
+          <Property Name="StateId" Type="int" />
+          <Property Name="CityId" Type="int" />
+          <Property Name="DistrictId" Type="int" />
+          <Property Name="DocumentCategoryId" Type="int" />
+          <Property Name="DocumentSubCategoryId" Type="int" />
+          <Property Name="Year" Type="int" />
+          <Property Name="DocumentName" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DocumentContent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DocumentId" Type="int" />
+          <Property Name="Filename" Type="nvarchar" MaxLength="200" />
+          <Property Name="ArchivedFile" Type="uniqueidentifier" />
+          <Property Name="FileContent" Type="varbinary(max)" />
+          <Property Name="FileMIMEtype" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="FileExtension" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Filesendtime" Type="date" Nullable="false" />
+          <Property Name="CommunityName" Type="nvarchar(max)" />
+          <Property Name="Place" Type="nvarchar(max)" />
+          <Property Name="State" Type="nvarchar(max)" />
+          <Property Name="City" Type="nvarchar(max)" />
+          <Property Name="District" Type="nvarchar(max)" />
+          <Property Name="DocumentCategory" Type="nvarchar(max)" />
+          <Property Name="DocumentSubCategory" Type="nvarchar(max)" />
+          <Property Name="Year" Type="nvarchar" MaxLength="50" />
+          <Property Name="Filesentdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="DocumentFields">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CommunityName" Type="nvarchar" MaxLength="200" />
+          <Property Name="Place" Type="nvarchar" MaxLength="200" />
+          <Property Name="State" Type="nvarchar" MaxLength="200" />
+          <Property Name="City" Type="nvarchar" MaxLength="200" />
+          <Property Name="District" Type="nvarchar" MaxLength="200" />
+          <Property Name="DocumentCategory" Type="nvarchar" MaxLength="200" />
+          <Property Name="DocumentSubCategory" Type="nvarchar" MaxLength="200" />
+          <Property Name="Year" Type="int" />
+          <Property Name="DocumentName" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InboxEmail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="EmailUid" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="FromAddress" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ToAddress" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CCAddress" Type="nvarchar(max)" />
+          <Property Name="BCCAddress" Type="nvarchar(max)" />
+          <Property Name="EmailDate" Type="datetime" />
+          <Property Name="Subject" Type="nvarchar(max)" />
+          <Property Name="Body" Type="varbinary(max)" />
+          <Property Name="MailType" Type="int" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="asciiBody" Type="nvarchar(max)" />
+          <Property Name="utfBody" Type="nvarchar(max)" />
+          <Property Name="utfsBody" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="InboxEmailAttachment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="InboxEmailID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Filename" Type="nvarchar" MaxLength="250" />
+          <Property Name="Attachment" Type="varbinary(max)" />
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PArchiveFields">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FieldName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PArchiveFieldValues">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FieldId" Type="int" Nullable="false" />
+          <Property Name="FieldValue" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ParentFieldId" Type="int" />
+          <Property Name="Fieldname" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="PersonalDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserID" Type="nvarchar" MaxLength="200" Nullable="false" />
+          <Property Name="Username" Type="nvarchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonalDocumentContent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Filename" Type="nvarchar" MaxLength="200" />
+          <Property Name="ArchivedFile" Type="uniqueidentifier" />
+          <Property Name="FileContent" Type="varbinary(max)" />
+          <Property Name="FileMIMEtype" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="FileExtension" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Filesendtime" Type="date" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Adhar No" Type="nvarchar(max)" />
+          <Property Name="FileSentdate" Type="datetime" />
+          <Property Name="PANCopy" Type="nvarchar(max)" />
+          <Property Name="MemberID" Type="nchar" MaxLength="10" />
+          <Property Name="PDocumentCategory" Type="nvarchar" MaxLength="50" />
+          <Property Name="PDocumentSubCategory" Type="nvarchar" MaxLength="50" />
+          <Property Name="PYear" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="tbl_DailySms">
+          <Key>
+            <PropertyRef Name="SmsId" />
+          </Key>
+          <Property Name="SmsId" Type="bigint" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="200" />
+          <Property Name="BirthDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="OrdinationDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="FeastDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="Mobile" Type="nvarchar" MaxLength="15" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Spare1" Type="nvarchar" MaxLength="35" />
+          <Property Name="Spare2" Type="nvarchar" MaxLength="35" />
+          <Property Name="Spare3" Type="nvarchar" MaxLength="35" />
+        </EntityType>
+        <EntityType Name="tbl_EmailAttachement">
+          <Key>
+            <PropertyRef Name="FileUniqueId" />
+          </Key>
+          <Property Name="attchedfilename" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="FileContent" Type="varbinary(max)" />
+          <Property Name="FileMIMEtype" Type="varchar" MaxLength="2000" Nullable="false" />
+          <Property Name="FileExtension" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="Filesendtime" Type="date" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="FileUniqueId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="EmailUniqueId" Type="uniqueidentifier" />
+        </EntityType>
+        <EntityType Name="tbl_Emaildata">
+          <Key>
+            <PropertyRef Name="EmailUniqueId" />
+          </Key>
+          <Property Name="EmailSubject" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="EmailBody" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ToAddress" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Admin" Type="nvarchar" MaxLength="2000" Nullable="false" />
+          <Property Name="Emailsentdate" Type="datetime" Nullable="false" />
+          <Property Name="IsDeleted" Type="bit" Nullable="false" />
+          <Property Name="EmailUniqueId" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="CCAddress" Type="nvarchar" MaxLength="2000" />
+          <Property Name="BCCAddress" Type="nvarchar" MaxLength="2000" />
+          <Property Name="IsImportant" Type="bit" />
+        </EntityType>
+        <EntityType Name="tbl_SMSContent">
+          <Key>
+            <PropertyRef Name="ContentId" />
+          </Key>
+          <Property Name="ContentId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Feast" Type="nvarchar" MaxLength="100" />
+          <Property Name="Content" Type="nvarchar" MaxLength="256" />
+          <Property Name="Status" Type="nvarchar" MaxLength="10" />
+          <Property Name="Spare" Type="nvarchar" MaxLength="35" />
+        </EntityType>
+        <Association Name="FK_EmailAttachment_Email">
+          <End Role="InboxEmail" Type="Self.InboxEmail" Multiplicity="1" />
+          <End Role="InboxEmailAttachment" Type="Self.InboxEmailAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InboxEmail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InboxEmailAttachment">
+              <PropertyRef Name="InboxEmailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_EmailAttachement_tbl_EmailAttachement1">
+          <End Role="tbl_Emaildata" Type="Self.tbl_Emaildata" Multiplicity="0..1" />
+          <End Role="tbl_EmailAttachement" Type="Self.tbl_EmailAttachement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Emaildata">
+              <PropertyRef Name="EmailUniqueId" />
+            </Principal>
+            <Dependent Role="tbl_EmailAttachement">
+              <PropertyRef Name="EmailUniqueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="addAttachment" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FileName" Type="varchar" Mode="In" />
+          <Parameter Name="FileContent" Type="varbinary(max)" Mode="In" />
+          <Parameter Name="FileMIMEtype" Type="varchar" Mode="In" />
+          <Parameter Name="FileExtension" Type="varchar" Mode="In" />
+          <Parameter Name="EmailUniqueId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="AddEmailData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmailUniqueId" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="EmailSubject" Type="nvarchar" Mode="In" />
+          <Parameter Name="EmailBody" Type="nvarchar" Mode="In" />
+          <Parameter Name="ToAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="CCAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="BCCAddress" Type="nvarchar" Mode="In" />
+          <Parameter Name="Admin" Type="nvarchar" Mode="In" />
+          <Parameter Name="IsImportant" Type="bit" Mode="In" />
+        </Function>
+        <Function Name="addSMSContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Feast" Type="varchar" Mode="In" />
+          <Parameter Name="Content" Type="nvarchar" Mode="In" />
+          <Parameter Name="Status" Type="nvarchar" Mode="In" />
+          <Parameter Name="Spare" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="DeleteByEmailId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmailUniqueId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="deleteSMSContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentId" Type="int" Mode="In" />
+        </Function>
+        <Function Name="GetDataByMailId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="EmailUniqueId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="GetEmailWithFileCount" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <Function Name="GetFileDataByFileId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="FileUniqueId" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="GetInboxByMailId" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="InboxEmailID" Type="uniqueidentifier" Mode="In" />
+        </Function>
+        <Function Name="updateSMSContent" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="ContentId" Type="int" Mode="In" />
+          <Parameter Name="Feast" Type="varchar" Mode="In" />
+          <Parameter Name="Content" Type="nvarchar" Mode="In" />
+          <Parameter Name="Status" Type="nvarchar" Mode="In" />
+          <Parameter Name="Spare" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="EmailModelStoreContainer">
+          <EntitySet Name="ArchiveFields" EntityType="Self.ArchiveFields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArchiveFieldValues" EntityType="Self.ArchiveFieldValues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ArchiveUsers" EntityType="Self.ArchiveUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Document" EntityType="Self.Document" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentContent" EntityType="Self.DocumentContent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="DocumentFields" EntityType="Self.DocumentFields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InboxEmail" EntityType="Self.InboxEmail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="InboxEmailAttachment" EntityType="Self.InboxEmailAttachment" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PArchiveFields" EntityType="Self.PArchiveFields" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PArchiveFieldValues" EntityType="Self.PArchiveFieldValues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalDetail" EntityType="Self.PersonalDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PersonalDocumentContent" EntityType="Self.PersonalDocumentContent" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_DailySms" EntityType="Self.tbl_DailySms" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_EmailAttachement" EntityType="Self.tbl_EmailAttachement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Emaildata" EntityType="Self.tbl_Emaildata" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_SMSContent" EntityType="Self.tbl_SMSContent" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_EmailAttachment_Email" Association="Self.FK_EmailAttachment_Email">
+            <End Role="InboxEmail" EntitySet="InboxEmail" />
+            <End Role="InboxEmailAttachment" EntitySet="InboxEmailAttachment" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_EmailAttachement_tbl_EmailAttachement1" Association="Self.FK_tbl_EmailAttachement_tbl_EmailAttachement1">
+            <End Role="tbl_Emaildata" EntitySet="tbl_Emaildata" />
+            <End Role="tbl_EmailAttachement" EntitySet="tbl_EmailAttachement" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="EmailModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ArchiveField">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FieldName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DisplayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ArchiveFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FieldId" Type="Int32" Nullable="false" />
+          <Property Name="FieldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentFieldId" Type="Int32" />
+          <Property Name="Fieldname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ArchiveUser">
+          <Key>
+            <PropertyRef Name="Username" />
+            <PropertyRef Name="Password" />
+            <PropertyRef Name="IsAdmin" />
+          </Key>
+          <Property Name="Username" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsAdmin" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Document">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CommunityId" Type="Int32" />
+          <Property Name="PlaceId" Type="Int32" />
+          <Property Name="StateId" Type="Int32" />
+          <Property Name="CityId" Type="Int32" />
+          <Property Name="DistrictId" Type="Int32" />
+          <Property Name="DocumentCategoryId" Type="Int32" />
+          <Property Name="DocumentSubCategoryId" Type="Int32" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="DocumentName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="DocumentContent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DocumentId" Type="Int32" />
+          <Property Name="Filename" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivedFile" Type="Guid" />
+          <Property Name="FileContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileMIMEtype" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FileExtension" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Filesendtime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="CommunityName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Place" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentCategory" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentSubCategory" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Filesentdate" Type="DateTime" Precision="3" />
+        </EntityType>
+        <EntityType Name="DocumentField">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CommunityName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Place" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="District" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentCategory" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DocumentSubCategory" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Year" Type="Int32" />
+          <Property Name="DocumentName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="InboxEmail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="EmailUid" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="FromAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ToAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CCAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="BCCAddress" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="EmailDate" Type="DateTime" Precision="3" />
+          <Property Name="Subject" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Body" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="MailType" Type="Int32" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="asciiBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="utfBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="utfsBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="InboxEmailAttachments" Relationship="Self.FK_EmailAttachment_Email" FromRole="InboxEmail" ToRole="InboxEmailAttachment" />
+        </EntityType>
+        <EntityType Name="InboxEmailAttachment">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="InboxEmailID" Type="Guid" Nullable="false" />
+          <Property Name="Filename" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="Attachment" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="InboxEmail" Relationship="Self.FK_EmailAttachment_Email" FromRole="InboxEmailAttachment" ToRole="InboxEmail" />
+        </EntityType>
+        <EntityType Name="PArchiveField">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FieldName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="DisplayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PArchiveFieldValue">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FieldId" Type="Int32" Nullable="false" />
+          <Property Name="FieldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ParentFieldId" Type="Int32" />
+          <Property Name="Fieldname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="PersonalDetail">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Username" Type="String" MaxLength="200" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PersonalDocumentContent">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Filename" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ArchivedFile" Type="Guid" />
+          <Property Name="FileContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileMIMEtype" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FileExtension" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Filesendtime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Adhar_No" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="FileSentdate" Type="DateTime" Precision="3" />
+          <Property Name="PANCopy" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MemberID" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="PDocumentCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PDocumentSubCategory" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PYear" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_DailySms">
+          <Key>
+            <PropertyRef Name="SmsId" />
+          </Key>
+          <Property Name="SmsId" Type="Int64" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BirthDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="OrdinationDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="FeastDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" MaxLength="15" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Spare1" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="Spare2" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+          <Property Name="Spare3" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="tbl_EmailAttachement">
+          <Key>
+            <PropertyRef Name="FileUniqueId" />
+          </Key>
+          <Property Name="attchedfilename" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FileContent" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <Property Name="FileMIMEtype" Type="String" MaxLength="2000" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="FileExtension" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Filesendtime" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="FileUniqueId" Type="Guid" Nullable="false" />
+          <Property Name="EmailUniqueId" Type="Guid" />
+          <NavigationProperty Name="tbl_Emaildata" Relationship="Self.FK_tbl_EmailAttachement_tbl_EmailAttachement1" FromRole="tbl_EmailAttachement" ToRole="tbl_Emaildata" />
+        </EntityType>
+        <EntityType Name="tbl_Emaildata">
+          <Key>
+            <PropertyRef Name="EmailUniqueId" />
+          </Key>
+          <Property Name="EmailSubject" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="EmailBody" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ToAddress" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Admin" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Emailsentdate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="IsDeleted" Type="Boolean" Nullable="false" />
+          <Property Name="EmailUniqueId" Type="Guid" Nullable="false" />
+          <Property Name="CCAddress" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="BCCAddress" Type="String" MaxLength="2000" FixedLength="false" Unicode="true" />
+          <Property Name="IsImportant" Type="Boolean" />
+          <NavigationProperty Name="tbl_EmailAttachement" Relationship="Self.FK_tbl_EmailAttachement_tbl_EmailAttachement1" FromRole="tbl_Emaildata" ToRole="tbl_EmailAttachement" />
+        </EntityType>
+        <EntityType Name="tbl_SMSContent">
+          <Key>
+            <PropertyRef Name="ContentId" />
+          </Key>
+          <Property Name="ContentId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Feast" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Content" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Spare" Type="String" MaxLength="35" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_EmailAttachment_Email">
+          <End Role="InboxEmail" Type="Self.InboxEmail" Multiplicity="1" />
+          <End Role="InboxEmailAttachment" Type="Self.InboxEmailAttachment" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="InboxEmail">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="InboxEmailAttachment">
+              <PropertyRef Name="InboxEmailID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_EmailAttachement_tbl_EmailAttachement1">
+          <End Role="tbl_Emaildata" Type="Self.tbl_Emaildata" Multiplicity="0..1" />
+          <End Role="tbl_EmailAttachement" Type="Self.tbl_EmailAttachement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Emaildata">
+              <PropertyRef Name="EmailUniqueId" />
+            </Principal>
+            <Dependent Role="tbl_EmailAttachement">
+              <PropertyRef Name="EmailUniqueId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="EmailEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ArchiveFields" EntityType="Self.ArchiveField" />
+          <EntitySet Name="ArchiveFieldValues" EntityType="Self.ArchiveFieldValue" />
+          <EntitySet Name="ArchiveUsers" EntityType="Self.ArchiveUser" />
+          <EntitySet Name="Documents" EntityType="Self.Document" />
+          <EntitySet Name="DocumentContents" EntityType="Self.DocumentContent" />
+          <EntitySet Name="DocumentFields" EntityType="Self.DocumentField" />
+          <EntitySet Name="InboxEmails" EntityType="Self.InboxEmail" />
+          <EntitySet Name="InboxEmailAttachments" EntityType="Self.InboxEmailAttachment" />
+          <EntitySet Name="PArchiveFields" EntityType="Self.PArchiveField" />
+          <EntitySet Name="PArchiveFieldValues" EntityType="Self.PArchiveFieldValue" />
+          <EntitySet Name="PersonalDetails" EntityType="Self.PersonalDetail" />
+          <EntitySet Name="PersonalDocumentContents" EntityType="Self.PersonalDocumentContent" />
+          <EntitySet Name="tbl_DailySms" EntityType="Self.tbl_DailySms" />
+          <EntitySet Name="tbl_EmailAttachement" EntityType="Self.tbl_EmailAttachement" />
+          <EntitySet Name="tbl_Emaildata" EntityType="Self.tbl_Emaildata" />
+          <EntitySet Name="tbl_SMSContent" EntityType="Self.tbl_SMSContent" />
+          <AssociationSet Name="FK_EmailAttachment_Email" Association="Self.FK_EmailAttachment_Email">
+            <End Role="InboxEmail" EntitySet="InboxEmails" />
+            <End Role="InboxEmailAttachment" EntitySet="InboxEmailAttachments" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_EmailAttachement_tbl_EmailAttachement1" Association="Self.FK_tbl_EmailAttachement_tbl_EmailAttachement1">
+            <End Role="tbl_Emaildata" EntitySet="tbl_Emaildata" />
+            <End Role="tbl_EmailAttachement" EntitySet="tbl_EmailAttachement" />
+          </AssociationSet>
+          <FunctionImport Name="addAttachment">
+            <Parameter Name="FileName" Mode="In" Type="String" />
+            <Parameter Name="FileContent" Mode="In" Type="Binary" />
+            <Parameter Name="FileMIMEtype" Mode="In" Type="String" />
+            <Parameter Name="FileExtension" Mode="In" Type="String" />
+            <Parameter Name="EmailUniqueId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="AddEmailData">
+            <Parameter Name="EmailUniqueId" Mode="In" Type="Guid" />
+            <Parameter Name="EmailSubject" Mode="In" Type="String" />
+            <Parameter Name="EmailBody" Mode="In" Type="String" />
+            <Parameter Name="ToAddress" Mode="In" Type="String" />
+            <Parameter Name="CCAddress" Mode="In" Type="String" />
+            <Parameter Name="BCCAddress" Mode="In" Type="String" />
+            <Parameter Name="Admin" Mode="In" Type="String" />
+            <Parameter Name="IsImportant" Mode="In" Type="Boolean" />
+          </FunctionImport>
+          <FunctionImport Name="addSMSContent">
+            <Parameter Name="Feast" Mode="In" Type="String" />
+            <Parameter Name="Content" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="String" />
+            <Parameter Name="Spare" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="DeleteByEmailId">
+            <Parameter Name="EmailUniqueId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="deleteSMSContent">
+            <Parameter Name="ContentId" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="GetDataByMailId" ReturnType="Collection(EmailModel.GetDataByMailId_Result)">
+            <Parameter Name="EmailUniqueId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="GetEmailWithFileCount" ReturnType="Collection(EmailModel.GetEmailWithFileCount_Result)" />
+          <FunctionImport Name="GetFileDataByFileId" ReturnType="Collection(EmailModel.GetFileDataByFileId_Result)">
+            <Parameter Name="FileUniqueId" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="GetInboxByMailId" ReturnType="Collection(EmailModel.GetInboxByMailId_Result)">
+            <Parameter Name="InboxEmailID" Mode="In" Type="Guid" />
+          </FunctionImport>
+          <FunctionImport Name="updateSMSContent">
+            <Parameter Name="ContentId" Mode="In" Type="Int32" />
+            <Parameter Name="Feast" Mode="In" Type="String" />
+            <Parameter Name="Content" Mode="In" Type="String" />
+            <Parameter Name="Status" Mode="In" Type="String" />
+            <Parameter Name="Spare" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="GetDataByMailId_Result">
+          <Property Type="Int64" Name="Slno" Nullable="true" />
+          <Property Type="Guid" Name="EmailUniqueId" Nullable="false" />
+          <Property Type="Int64" Name="FileSlno" Nullable="true" />
+          <Property Type="Int32" Name="FileCount" Nullable="true" />
+          <Property Type="String" Name="EmailSubject" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="EmailBody" Nullable="false" />
+          <Property Type="String" Name="ToAddress" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="Admin" Nullable="false" MaxLength="2000" />
+          <Property Type="Guid" Name="FileUniqueId" Nullable="false" />
+          <Property Type="String" Name="attchedfilename" Nullable="false" MaxLength="2000" />
+          <Property Type="Binary" Name="FileContent" Nullable="true" />
+          <Property Type="String" Name="FileExtension" Nullable="false" MaxLength="5" />
+          <Property Type="String" Name="FileMIMEtype" Nullable="false" MaxLength="2000" />
+          <Property Type="DateTime" Name="Filesendtime" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="GetEmailWithFileCount_Result">
+          <Property Type="Int64" Name="Slno" Nullable="true" />
+          <Property Type="String" Name="EmailSubject" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="EmailBody" Nullable="false" />
+          <Property Type="String" Name="ToAddress" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="Admin" Nullable="false" MaxLength="2000" />
+          <Property Type="DateTime" Name="Emailsentdate" Nullable="false" Precision="23" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="Guid" Name="EmailUniqueId" Nullable="false" />
+          <Property Type="String" Name="CCAddress" Nullable="true" MaxLength="2000" />
+          <Property Type="String" Name="BCCAddress" Nullable="true" MaxLength="2000" />
+          <Property Type="Boolean" Name="IsImportant" Nullable="true" />
+          <Property Type="Int32" Name="FileCount" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetFileDataByFileId_Result">
+          <Property Type="String" Name="attchedfilename" Nullable="false" MaxLength="2000" />
+          <Property Type="Binary" Name="FileContent" Nullable="true" />
+          <Property Type="String" Name="FileMIMEtype" Nullable="false" MaxLength="2000" />
+          <Property Type="String" Name="FileExtension" Nullable="false" MaxLength="5" />
+          <Property Type="DateTime" Name="Filesendtime" Nullable="false" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="Guid" Name="FileUniqueId" Nullable="false" />
+          <Property Type="Guid" Name="EmailUniqueId" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="GetInboxByMailId_Result">
+          <Property Type="Int64" Name="Slno" Nullable="true" />
+          <Property Type="Int64" Name="FileSlno" Nullable="true" />
+          <Property Type="Int32" Name="FileCount" Nullable="true" />
+          <Property Type="String" Name="EmailUid" Nullable="false" />
+          <Property Type="String" Name="FromAddress" Nullable="false" />
+          <Property Type="String" Name="ToAddress" Nullable="false" />
+          <Property Type="String" Name="CCAddress" Nullable="true" />
+          <Property Type="String" Name="BCCAddress" Nullable="true" />
+          <Property Type="DateTime" Name="EmailDate" Nullable="true" Precision="23" />
+          <Property Type="String" Name="Subject" Nullable="true" />
+          <Property Type="Binary" Name="Body" Nullable="true" />
+          <Property Type="Int32" Name="MailType" Nullable="true" />
+          <Property Type="Boolean" Name="IsDeleted" Nullable="false" />
+          <Property Type="Guid" Name="ID" Nullable="false" />
+          <Property Type="String" Name="asciiBody" Nullable="true" />
+          <Property Type="String" Name="utfBody" Nullable="true" />
+          <Property Type="String" Name="utfsBody" Nullable="true" />
+          <Property Type="Guid" Name="InboxEmailID" Nullable="false" />
+          <Property Type="Binary" Name="Attachment" Nullable="true" />
+          <Property Type="String" Name="Filename" Nullable="true" MaxLength="250" />
+          <Property Type="Guid" Name="FileId" Nullable="false" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="EmailModelStoreContainer" CdmEntityContainer="EmailEntities">
+          <EntitySetMapping Name="ArchiveFields">
+            <EntityTypeMapping TypeName="EmailModel.ArchiveField">
+              <MappingFragment StoreEntitySet="ArchiveFields">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArchiveFieldValues">
+            <EntityTypeMapping TypeName="EmailModel.ArchiveFieldValue">
+              <MappingFragment StoreEntitySet="ArchiveFieldValues">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FieldId" ColumnName="FieldId" />
+                <ScalarProperty Name="FieldValue" ColumnName="FieldValue" />
+                <ScalarProperty Name="ParentFieldId" ColumnName="ParentFieldId" />
+                <ScalarProperty Name="Fieldname" ColumnName="Fieldname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ArchiveUsers">
+            <EntityTypeMapping TypeName="EmailModel.ArchiveUser">
+              <MappingFragment StoreEntitySet="ArchiveUsers">
+                <ScalarProperty Name="Username" ColumnName="Username" />
+                <ScalarProperty Name="Password" ColumnName="Password" />
+                <ScalarProperty Name="IsAdmin" ColumnName="IsAdmin" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Documents">
+            <EntityTypeMapping TypeName="EmailModel.Document">
+              <MappingFragment StoreEntitySet="Document">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CommunityId" ColumnName="CommunityId" />
+                <ScalarProperty Name="PlaceId" ColumnName="PlaceId" />
+                <ScalarProperty Name="StateId" ColumnName="StateId" />
+                <ScalarProperty Name="CityId" ColumnName="CityId" />
+                <ScalarProperty Name="DistrictId" ColumnName="DistrictId" />
+                <ScalarProperty Name="DocumentCategoryId" ColumnName="DocumentCategoryId" />
+                <ScalarProperty Name="DocumentSubCategoryId" ColumnName="DocumentSubCategoryId" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentContents">
+            <EntityTypeMapping TypeName="EmailModel.DocumentContent">
+              <MappingFragment StoreEntitySet="DocumentContent">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="DocumentId" ColumnName="DocumentId" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="ArchivedFile" ColumnName="ArchivedFile" />
+                <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+                <ScalarProperty Name="FileMIMEtype" ColumnName="FileMIMEtype" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="Filesendtime" ColumnName="Filesendtime" />
+                <ScalarProperty Name="CommunityName" ColumnName="CommunityName" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="DocumentCategory" ColumnName="DocumentCategory" />
+                <ScalarProperty Name="DocumentSubCategory" ColumnName="DocumentSubCategory" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="Filesentdate" ColumnName="Filesentdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="DocumentFields">
+            <EntityTypeMapping TypeName="EmailModel.DocumentField">
+              <MappingFragment StoreEntitySet="DocumentFields">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="CommunityName" ColumnName="CommunityName" />
+                <ScalarProperty Name="Place" ColumnName="Place" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="District" ColumnName="District" />
+                <ScalarProperty Name="DocumentCategory" ColumnName="DocumentCategory" />
+                <ScalarProperty Name="DocumentSubCategory" ColumnName="DocumentSubCategory" />
+                <ScalarProperty Name="Year" ColumnName="Year" />
+                <ScalarProperty Name="DocumentName" ColumnName="DocumentName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InboxEmails">
+            <EntityTypeMapping TypeName="EmailModel.InboxEmail">
+              <MappingFragment StoreEntitySet="InboxEmail">
+                <ScalarProperty Name="EmailUid" ColumnName="EmailUid" />
+                <ScalarProperty Name="FromAddress" ColumnName="FromAddress" />
+                <ScalarProperty Name="ToAddress" ColumnName="ToAddress" />
+                <ScalarProperty Name="CCAddress" ColumnName="CCAddress" />
+                <ScalarProperty Name="BCCAddress" ColumnName="BCCAddress" />
+                <ScalarProperty Name="EmailDate" ColumnName="EmailDate" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="MailType" ColumnName="MailType" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="asciiBody" ColumnName="asciiBody" />
+                <ScalarProperty Name="utfBody" ColumnName="utfBody" />
+                <ScalarProperty Name="utfsBody" ColumnName="utfsBody" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="InboxEmailAttachments">
+            <EntityTypeMapping TypeName="EmailModel.InboxEmailAttachment">
+              <MappingFragment StoreEntitySet="InboxEmailAttachment">
+                <ScalarProperty Name="InboxEmailID" ColumnName="InboxEmailID" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PArchiveFields">
+            <EntityTypeMapping TypeName="EmailModel.PArchiveField">
+              <MappingFragment StoreEntitySet="PArchiveFields">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FieldName" ColumnName="FieldName" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PArchiveFieldValues">
+            <EntityTypeMapping TypeName="EmailModel.PArchiveFieldValue">
+              <MappingFragment StoreEntitySet="PArchiveFieldValues">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="FieldId" ColumnName="FieldId" />
+                <ScalarProperty Name="FieldValue" ColumnName="FieldValue" />
+                <ScalarProperty Name="ParentFieldId" ColumnName="ParentFieldId" />
+                <ScalarProperty Name="Fieldname" ColumnName="Fieldname" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalDetails">
+            <EntityTypeMapping TypeName="EmailModel.PersonalDetail">
+              <MappingFragment StoreEntitySet="PersonalDetail">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="UserID" ColumnName="UserID" />
+                <ScalarProperty Name="Username" ColumnName="Username" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PersonalDocumentContents">
+            <EntityTypeMapping TypeName="EmailModel.PersonalDocumentContent">
+              <MappingFragment StoreEntitySet="PersonalDocumentContent">
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="ArchivedFile" ColumnName="ArchivedFile" />
+                <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+                <ScalarProperty Name="FileMIMEtype" ColumnName="FileMIMEtype" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="Filesendtime" ColumnName="Filesendtime" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Adhar_No" ColumnName="Adhar No" />
+                <ScalarProperty Name="FileSentdate" ColumnName="FileSentdate" />
+                <ScalarProperty Name="PANCopy" ColumnName="PANCopy" />
+                <ScalarProperty Name="MemberID" ColumnName="MemberID" />
+                <ScalarProperty Name="PDocumentCategory" ColumnName="PDocumentCategory" />
+                <ScalarProperty Name="PDocumentSubCategory" ColumnName="PDocumentSubCategory" />
+                <ScalarProperty Name="PYear" ColumnName="PYear" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_DailySms">
+            <EntityTypeMapping TypeName="EmailModel.tbl_DailySms">
+              <MappingFragment StoreEntitySet="tbl_DailySms">
+                <ScalarProperty Name="SmsId" ColumnName="SmsId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="BirthDate" ColumnName="BirthDate" />
+                <ScalarProperty Name="OrdinationDate" ColumnName="OrdinationDate" />
+                <ScalarProperty Name="FeastDate" ColumnName="FeastDate" />
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Spare1" ColumnName="Spare1" />
+                <ScalarProperty Name="Spare2" ColumnName="Spare2" />
+                <ScalarProperty Name="Spare3" ColumnName="Spare3" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_EmailAttachement">
+            <EntityTypeMapping TypeName="EmailModel.tbl_EmailAttachement">
+              <MappingFragment StoreEntitySet="tbl_EmailAttachement">
+                <ScalarProperty Name="attchedfilename" ColumnName="attchedfilename" />
+                <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+                <ScalarProperty Name="FileMIMEtype" ColumnName="FileMIMEtype" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="Filesendtime" ColumnName="Filesendtime" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="FileUniqueId" ColumnName="FileUniqueId" />
+                <ScalarProperty Name="EmailUniqueId" ColumnName="EmailUniqueId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Emaildata">
+            <EntityTypeMapping TypeName="EmailModel.tbl_Emaildata">
+              <MappingFragment StoreEntitySet="tbl_Emaildata">
+                <ScalarProperty Name="EmailSubject" ColumnName="EmailSubject" />
+                <ScalarProperty Name="EmailBody" ColumnName="EmailBody" />
+                <ScalarProperty Name="ToAddress" ColumnName="ToAddress" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="Emailsentdate" ColumnName="Emailsentdate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="EmailUniqueId" ColumnName="EmailUniqueId" />
+                <ScalarProperty Name="CCAddress" ColumnName="CCAddress" />
+                <ScalarProperty Name="BCCAddress" ColumnName="BCCAddress" />
+                <ScalarProperty Name="IsImportant" ColumnName="IsImportant" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_SMSContent">
+            <EntityTypeMapping TypeName="EmailModel.tbl_SMSContent">
+              <MappingFragment StoreEntitySet="tbl_SMSContent">
+                <ScalarProperty Name="ContentId" ColumnName="ContentId" />
+                <ScalarProperty Name="Feast" ColumnName="Feast" />
+                <ScalarProperty Name="Content" ColumnName="Content" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="Spare" ColumnName="Spare" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="addAttachment" FunctionName="EmailModel.Store.addAttachment" />
+          <FunctionImportMapping FunctionImportName="AddEmailData" FunctionName="EmailModel.Store.AddEmailData" />
+          <FunctionImportMapping FunctionImportName="addSMSContent" FunctionName="EmailModel.Store.addSMSContent" />
+          <FunctionImportMapping FunctionImportName="DeleteByEmailId" FunctionName="EmailModel.Store.DeleteByEmailId" />
+          <FunctionImportMapping FunctionImportName="deleteSMSContent" FunctionName="EmailModel.Store.deleteSMSContent" />
+          <FunctionImportMapping FunctionImportName="GetDataByMailId" FunctionName="EmailModel.Store.GetDataByMailId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmailModel.GetDataByMailId_Result">
+                <ScalarProperty Name="Slno" ColumnName="Slno" />
+                <ScalarProperty Name="EmailUniqueId" ColumnName="EmailUniqueId" />
+                <ScalarProperty Name="FileSlno" ColumnName="FileSlno" />
+                <ScalarProperty Name="FileCount" ColumnName="FileCount" />
+                <ScalarProperty Name="EmailSubject" ColumnName="EmailSubject" />
+                <ScalarProperty Name="EmailBody" ColumnName="EmailBody" />
+                <ScalarProperty Name="ToAddress" ColumnName="ToAddress" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="FileUniqueId" ColumnName="FileUniqueId" />
+                <ScalarProperty Name="attchedfilename" ColumnName="attchedfilename" />
+                <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="FileMIMEtype" ColumnName="FileMIMEtype" />
+                <ScalarProperty Name="Filesendtime" ColumnName="Filesendtime" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetEmailWithFileCount" FunctionName="EmailModel.Store.GetEmailWithFileCount">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmailModel.GetEmailWithFileCount_Result">
+                <ScalarProperty Name="Slno" ColumnName="Slno" />
+                <ScalarProperty Name="EmailSubject" ColumnName="EmailSubject" />
+                <ScalarProperty Name="EmailBody" ColumnName="EmailBody" />
+                <ScalarProperty Name="ToAddress" ColumnName="ToAddress" />
+                <ScalarProperty Name="Admin" ColumnName="Admin" />
+                <ScalarProperty Name="Emailsentdate" ColumnName="Emailsentdate" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="EmailUniqueId" ColumnName="EmailUniqueId" />
+                <ScalarProperty Name="CCAddress" ColumnName="CCAddress" />
+                <ScalarProperty Name="BCCAddress" ColumnName="BCCAddress" />
+                <ScalarProperty Name="IsImportant" ColumnName="IsImportant" />
+                <ScalarProperty Name="FileCount" ColumnName="FileCount" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetFileDataByFileId" FunctionName="EmailModel.Store.GetFileDataByFileId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmailModel.GetFileDataByFileId_Result">
+                <ScalarProperty Name="attchedfilename" ColumnName="attchedfilename" />
+                <ScalarProperty Name="FileContent" ColumnName="FileContent" />
+                <ScalarProperty Name="FileMIMEtype" ColumnName="FileMIMEtype" />
+                <ScalarProperty Name="FileExtension" ColumnName="FileExtension" />
+                <ScalarProperty Name="Filesendtime" ColumnName="Filesendtime" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="FileUniqueId" ColumnName="FileUniqueId" />
+                <ScalarProperty Name="EmailUniqueId" ColumnName="EmailUniqueId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="GetInboxByMailId" FunctionName="EmailModel.Store.GetInboxByMailId">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="EmailModel.GetInboxByMailId_Result">
+                <ScalarProperty Name="Slno" ColumnName="Slno" />
+                <ScalarProperty Name="FileSlno" ColumnName="FileSlno" />
+                <ScalarProperty Name="FileCount" ColumnName="FileCount" />
+                <ScalarProperty Name="EmailUid" ColumnName="EmailUid" />
+                <ScalarProperty Name="FromAddress" ColumnName="FromAddress" />
+                <ScalarProperty Name="ToAddress" ColumnName="ToAddress" />
+                <ScalarProperty Name="CCAddress" ColumnName="CCAddress" />
+                <ScalarProperty Name="BCCAddress" ColumnName="BCCAddress" />
+                <ScalarProperty Name="EmailDate" ColumnName="EmailDate" />
+                <ScalarProperty Name="Subject" ColumnName="Subject" />
+                <ScalarProperty Name="Body" ColumnName="Body" />
+                <ScalarProperty Name="MailType" ColumnName="MailType" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="asciiBody" ColumnName="asciiBody" />
+                <ScalarProperty Name="utfBody" ColumnName="utfBody" />
+                <ScalarProperty Name="utfsBody" ColumnName="utfsBody" />
+                <ScalarProperty Name="InboxEmailID" ColumnName="InboxEmailID" />
+                <ScalarProperty Name="Attachment" ColumnName="Attachment" />
+                <ScalarProperty Name="Filename" ColumnName="Filename" />
+                <ScalarProperty Name="FileId" ColumnName="FileId" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="updateSMSContent" FunctionName="EmailModel.Store.updateSMSContent" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

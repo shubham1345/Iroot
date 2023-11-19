@@ -1,0 +1,1568 @@
+﻿@using Generalate.Controllers;
+@model Generalate.Models.Tbl_ParisInstitutionDetails
+<link href="~/css/DropDownSelect2/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+@*<ul class="breadcrumb" style="margin-top:80px;">
+    <li class="pull-right"><a style="font-size: 25px; color:#2a6496;" class="fa fa-chevron-circle-left" href="/Home/Admin"></a></li>
+</ul>*@
+<style>
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: white;
+        background-color: #29b2e1;
+        border: 1px solid #dddddd;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+</style>
+
+<div class="page-content-wrap" style="margin-top:100px">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-12 col-sm-12 col-xs-12 jss_c">
+                                <ul style="display:none" class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a data-toggle="tab" href="#Generalate" class="sis_tab_a click"><span>@{@HomeController.GetControlTextByControlId("Official_Meeting");}</span></a></li>
+                                </ul>
+                                <div class="tab-content tab_sis">
+                                    <div id="Generalate" class="tab-pane fade in active">
+                                        <div>
+                                            <div class="modal fade" id="myModalDisSec" tabindex="-1" role="dialog" aria-labelledby="myModalLabelDS" aria-hidden="true">
+                                                <div class="modal-dialog" style="margin-top:60px;">
+                                                    <div class="modal-content" style="width:1050px;">
+                                                        <div class="modal-header">
+                                                            <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title" id="myModalLabelDS"><span>@{@HomeController.GetControlTextByControlId("DisSecReg");}</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row" style="margin-top:20px; margin-right:10px;">
+                                                                <div class="col-sm-12">
+
+                                                                    <div class="box box-info">
+                                                                        @*<div class="box-header with-border">
+                                                                                <h3 class="box-title"> <span>@{@HomeController.GetControlTextByControlId("DisSecReg");}</span>  </h3>
+                                                                            </div>*@
+                                                                        <div class="box-body" style="width:96%">
+                                                                            <div class="row">
+                                                                                <form class="form-horizontal" action="/IdGenerate/AddDistSec1" method="post" id="DistSecForm" enctype="multipart/form-data">
+                                                                                    <div class="col-sm-6">
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span><span class="mandatoryStar">*</span>  </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <select type="text" class="form-control" style="width:360px;" name="ProvinceName" id="DisSecRegProvinceName" required></select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Type");}</span> </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <select class="form-control" name="DisSec" id="DisSecType">
+                                                                                                    <option value="--Select Type--">--Select Type--</option>
+                                                                                                    @foreach (var item in @ViewBag.AllDataTypes as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                    {
+                                                                                                        <option value="@item.Name">@item.Name</option>
+                                                                                                    }
+                                                                                                </select>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("DisSecReg");}</span><span class="mandatoryStar">*</span> </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <input type="text" class="form-control" name="DistSecName" id="DisSecRegName" required placeholder="">
+                                                                                                <input type="hidden" id="DisSecRegId" name="Id" />
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("DisSecRegId");}</span> </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <input type="text" class="form-control" name="MyId" value="@ViewBag.DisSecId" id="MyIdDisSecReg" readonly>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span> </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <input type="email" class="form-control" name="EmailId" id="EmailIdDisSec">
+                                                                                            </div>
+                                                                                        </div>
+
+                                                                                    </div>
+                                                                                    <div class="col-sm-6">
+
+
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Country");}</span><span class="mandatoryStar">*</span> </label>
+
+                                                                                            <div class="col-sm-8">
+                                                                                                <div class="col-sm-7" style="width:360px;">
+
+                                                                                                    <select class="form-control" id="Country" name="CountryDisSec" style="width:360px !important;">
+                                                                                                        <option value="0">--@{@HomeController.GetControlTextByControlId("Select");}--</option>
+                                                                                                        @foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                        {
+                                                                                                            <option value="@item.Name">@item.Name</option>
+                                                                                                        }
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                @*<div class="col-sm-1">
+                                                                                                        <p id="AddCountryProv1" class="AddCountryProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                    </div>*@
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span><span class="mandatoryStar">*</span></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <div class="col-sm-7" style="width:360px;">
+                                                                                                    <select class="form-control" id="DioceseNameDisSec" style="width:350px !important;" name="Diocese" required></select>
+                                                                                                </div>
+                                                                                                @*<div class="col-sm-1">
+                                                                                                        <p id="AddDioDisSec" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                    </div>*@
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Activities");}</span><span class="mandatoryStar">*</span></label>
+                                                                                            <div class="col-sm-8">
+                                                                                                <div class="col-sm-7" style="width:360px;">
+                                                                                                    <select type="dropdown" multiple="multiple" id="ActivitiesDisSec1" name="Activities" required>
+                                                                                                        @foreach (var item in @ViewBag.AllActivities as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                        {
+                                                                                                            <option value="@item.Name">@item.Name</option>
+                                                                                                        }
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                @*<div class="col-sm-1">
+                                                                                                        <p id="AddActivitiesProv1" class="AddActivitiesProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                    </div>*@
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                                            <div class="col-sm-7">
+                                                                                                <input type="file" class="form-control" name="File" id="FileDisSec" accept=".jpg,.png,.jpeg,.doc,.pdf">
+                                                                                                <span id="FileDisSec12"></span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="form-group">
+                                                                                            <label for="inputPassword3" class="col-sm-6 control-label">
+                                                                                                <input type="checkbox" id="ActiveDisSec1" name="ActiveCkeck" value="Active"><span>@{@HomeController.GetControlTextByControlId("Active");}</span>
+                                                                                            </label>
+                                                                                            <label for="inputPassword3" class="col-sm-3 control-label">
+                                                                                                <input type="checkbox" id="ActiveDisSec2" name="ActiveCkeck" value="Inactive"><span>@{@HomeController.GetControlTextByControlId("Inactive");}</span>
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="form-group messageActivecheck">
+                                                                                            <label class="col-sm-10 control-label" id="ActiveInactiveDisErrorMessage" style="color:red;"></label>
+                                                                                        </div>
+
+
+                                                                                        <div class="form-group">
+                                                                                            <div class="col-sm-10">
+                                                                                                <button type="submit" class="btn btn-info pull-right" onclick="return DistrictValidation()" id="AddDisSec"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </form>
+                                                                            </div>
+
+
+                                                                        </div>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="MyModalCountry" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabelCountry" aria-hidden="true">
+                                                <div class="modal-dialog" style="margin-top:60px;">
+                                                    <div class="modal-content" style="width:900px;">
+                                                        <div class="modal-header">
+                                                            <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title" id="myModalLabelCountry"><span>@{@HomeController.GetControlTextByControlId("Country");}</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+
+                                                                    @*<form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">*@
+                                                                    <form class="form-horizontal" id="DataitemForm1">
+
+                                                                        <div class="col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <select class="form-control" name="DataListCountryName" id="DataListCountryName">
+                                                                                        @foreach (var item in @ViewBag.CoutryDataListItems)
+                                                                                        {
+                                                                                            <option value="@item.Name">@item.Name</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="text" class="form-control" name="CountryName" id="CountryName" required placeholder="Name">
+                                                                                    <input type="hidden" class="form-control" id="DataId" name="Id">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group" id="Continent">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <select type="text" class="form-control" name="CountryContinent" id="CountryContinent" placeholder="Continent">
+                                                                                        <option value="0">---Select Continent</option>
+                                                                                        <option value="Asia">Asia</option>
+                                                                                        <option value="Africa">Africa</option>
+                                                                                        <option value="North America">North America</option>
+                                                                                        <option value="South America">South America</option>
+                                                                                        <option value="Antarctica">Antarctica</option>
+                                                                                        <option value="Europe">Europe</option>
+                                                                                        <option value="Australia">Australia</option>
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="button" onclick="SaveCountyPopup();" class="btn btn-success pull-right btndatalistSave" value="Save" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                        <div class="modal fade" id="MyModal" style="z-index:  !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" style="margin-top:160px;">
+                                                <div class="modal-content" id="myModalContent" style="width:900px; margin-top:160px;">
+                                                    <div class="modal-header">
+                                                        <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                        <h4 class="modal-title" id="myModalLabel"><span>@{@HomeController.GetControlTextByControlId("Diocese");}</span></h4>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="row">
+                                                            <div class="col-sm-12">
+                                                                @*<form id="MyDioceseForm">*@
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span> </label>
+                                                                        <div class="col-sm-7">
+                                                                            <select class="form-control" id="DioProvince1" style="width:245px !important;" name="ProvinceName"></select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="form-group" style="display:none">
+                                                                        <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("State");}</span> </label>
+                                                                        <div class="col-sm-7">
+                                                                            <select type="text" class="form-control" id="DioState" style="width:250px !important;" name="State"></select>
+                                                                        </div>
+                                                                    </div>
+
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span> </label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control" name="DioceseName" id="DioceseName1" required>
+                                                                            <input type="hidden" id="IdDio1" name="Id" />
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="form-group">
+                                                                        <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Diocese_ID");}</span> </label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control" name="DioId" id="DioId1" value="@ViewBag.DioceseId" readonly>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span> </label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="email" class="form-control" name="EmailId" id="EmailIdDio1">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" class="col-sm-4 control-label">@{@HomeController.GetControlTextByControlId("Status");}</label>
+                                                                        <div class="col-sm-7">
+                                                                            <select id="ActiveCheckDio1" name="ActiveCkeck" class="form-control">
+
+                                                                                <option value="Active">Active</option>
+                                                                                <option value="Inactive">Inactive</option>
+                                                                            </select>
+                                                                        </div>
+
+                                                                    </div>
+                                                                    @*<div class="form-group">
+                                                                            <label for="inputPassword3" class="col-sm-5 control-label">
+                                                                                <input type="checkbox" id="ActiveCheckDio1" name="ActiveCkeck" value="Active"><span>@{@HomeController.GetControlTextByControlId("Active");}</span>
+                                                                            </label>
+                                                                            <label for="inputPassword3" class="col-sm-3 control-label">
+                                                                                <input type="checkbox" id="ActiveCheckDio2" name="ActiveCkeck" value="Inactive"><span>@{@HomeController.GetControlTextByControlId("Inactive");}</span>
+                                                                            </label>
+                                                                        </div>
+                                                                        <div class="form-group messageActivecheck">
+                                                                            <label class="col-sm-8 control-label" style="color:blue"><b>Check Active or Inactive !</b></label>
+                                                                        </div>*@
+                                                                </div>
+
+                                                                <div class="col-sm-6">
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Country");}</span> </label>
+                                                                        <div class="col-sm-7">
+                                                                            <input type="text" class="form-control" name="Country" id="CountryOfDiocese1">
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Address");}</span> </label>
+                                                                        <div class="col-sm-7">
+                                                                            <textarea type="text" rows="6" class="form-control" name="Address" id="AddressDio1"></textarea>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="form-group">
+                                                                        <label for="inputPassword3" style="margin-top:20px;" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                        <div class="col-sm-7" style="margin-top:20px;">
+                                                                            <input type="file" class="form-control" name="FileDio" id="FileDio1">
+                                                                            <span id="FileDio123"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <br />
+                                                                    <br />
+                                                                    <div class="form-group">
+                                                                        <div class="col-sm-10" style="margin-top:20px;">
+                                                                            <button type="submit" class="btn btn-info pull-right" id="btnAddingDiocese123"><span>@{@HomeController.GetControlTextByControlId("Save");}</span> </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                @*</form>*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <div class="modal fade" id="MyModalMaster" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabelMaster" aria-hidden="true">
+                                                <div class="modal-dialog" style="margin-top:60px;">
+                                                    <div class="modal-content" style="width:900px;">
+                                                        <div class="modal-header">
+                                                            <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title" id="myModalLabelMaster"><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+
+                                                                    @*<form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">*@
+                                                                    <form class="form-horizontal" id="DataitemForm2">
+
+                                                                        <div class="col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <select class="form-control" name="DataListName1" id="DataListName1">
+                                                                                        @foreach (var item in @ViewBag.ActivitiesDataListItems)
+                                                                                        {
+                                                                                            <option value="@item.Name">@item.Name</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="text" class="form-control" name="Name1" id="Name1" required placeholder="Enter the Name">
+                                                                                    <input type="hidden" class="form-control" id="DataId" name="Id">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="button" onclick="SaveActivitiesPopup();" class="btn btn-success pull-right btndatalistSave" value="Save" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="MyModalMaster" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabelMaster" aria-hidden="true">
+                                                <div class="modal-dialog" style="margin-top:60px;">
+                                                    <div class="modal-content" style="width:900px;">
+                                                        <div class="modal-header">
+                                                            <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title" id="myModalLabelMaster"><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+
+                                                                    @*<form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">*@
+                                                                    <form class="form-horizontal" id="DataitemForm2">
+
+                                                                        <div class="col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <select class="form-control" name="DataListName1" id="DataListName1">
+                                                                                        @foreach (var item in @ViewBag.ActivitiesDataListItems)
+                                                                                        {
+                                                                                            <option value="@item.Name">@item.Name</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="text" class="form-control" name="Name1" id="Name1" required placeholder="Enter the Name">
+                                                                                    <input type="hidden" class="form-control" id="DataId" name="Id">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="button" onclick="SaveActivitiesPopup();" class="btn btn-success pull-right btndatalistSave" value="Save" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="modal fade" id="MyModalMaster1" style="margin-left:-200px;margin-top:130px; z-index: !important;" tabindex="-1" role="dialog" aria-labelledby="myModalLabelMaster1" aria-hidden="true">
+                                                <div class="modal-dialog" style="margin-top:60px;">
+                                                    <div class="modal-content" style="width:900px;">
+                                                        <div class="modal-header">
+                                                            <button type="button" id="manageClose" class="close" data-dismiss="modal">&times;</button>
+                                                            <h4 class="modal-title" id="myModalLabelMaster1"><span>@{@HomeController.GetControlTextByControlId("Institution");}</span></h4>
+                                                        </div>
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-sm-12">
+
+                                                                    @*<form class="form-horizontal" action="/Data/DataItemDetailSave" id="DataitemForm" method="post" enctype="multipart/form-data">*@
+                                                                    <form class="form-horizontal" id="DataitemForm2">
+
+                                                                        <div class="col-sm-12">
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("SelectDataItem");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <select class="form-control" name="InsDataListName1" id="InsDataListName1">
+                                                                                        @foreach (var item in @ViewBag.InstitutionDataListItems)
+                                                                                        {
+                                                                                            <option value="@item.Name">@item.Name</option>
+                                                                                        }
+                                                                                    </select>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <label for="inputPassword3" class="col-sm-3 control-label"><span>@{@HomeController.GetControlTextByControlId("Name");}</span></label>
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="text" class="form-control" name="InsName1" id="InsName1" required placeholder="Enter the Name">
+                                                                                    <input type="hidden" class="form-control" id="DataId" name="Id">
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-group">
+                                                                                <div class="col-sm-6">
+                                                                                    <input type="button" onclick="SaveInsPopup();" class="btn btn-success pull-right btndatalistSave" value="Save" />
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </form>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <form class="form-horizontal" action="/Institution/Create" method="post" id="InstitutiionForm" enctype="multipart/form-data">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="panel panel-primary">
+                                                        <div class="panel-heading" style="background-color:#29b2e1">
+                                                            <span>Institution</span><span class="pull-right"><a style="font-size: 25px; color:#e6edf3;" class="fa fa-chevron-circle-left" href="/Home/ViewCongrationList2_MeetingMin" id="circleimage"></a></span>
+                                                        </div>
+                                                        <div class="panel-body" style="height:auto;">
+
+                                                            <div class="container">
+
+                                                                <div id="exTab1" class="">
+                                                                    <ul class="nav nav-tabs">
+                                                                        <li class="active">
+                                                                            <a href="#6a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("Details");}</a>
+                                                                        </li>
+                                                                        <li class="">
+                                                                            <a href="#1a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("History");}</a>
+                                                                        </li>
+
+                                                                        <li>
+                                                                            <a href="#3a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("Important_Dates");}</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#2a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("Members");}</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#4a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("Gallery");}</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="#5a" data-toggle="tab">@{@HomeController.GetControlTextByControlId("Remarks");}</a>
+                                                                        </li>
+                                                                    </ul>
+
+                                                                    <div class="tab-content clearfix mt-sm" style="">
+                                                                        <div class="tab-pane active" id="6a">
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="box box-info">
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label">
+                                                                                                    <span>@{@HomeController.GetControlTextByControlId("Province_Name");}</span>
+                                                                                                </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    @Html.HiddenFor(model => model.Id)
+                                                                                                    @Html.HiddenFor(model => model.FileName)
+                                                                                                    @Html.HiddenFor(model => model.CreatedDate)
+                                                                                                    @Html.HiddenFor(model => model.CreatedBy)
+                                                                                                    <select class="form-control" id="InstitutionProvince" name="ProvinceName">
+                                                                                                        <option value="---Select Types---">---@{@HomeController.GetControlTextByControlId("Select");}---</option>
+                                                                                                        @foreach (var item in ViewBag.ProvinceList as IEnumerable<Generalate.Models.tbl_Province>)
+                                                                                                        {
+                                                                                                            if (item.ProvinceName == Model.ProvinceName)
+                                                                                                            {
+                                                                                                                <option selected value="@item.ProvinceName">@item.ProvinceName</option>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <option value="@item.ProvinceName">@item.ProvinceName</option>
+                                                                                                            }
+                                                                                                        }
+
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <div class="col-sm-1">
+
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("District/Sector");}</span></label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <select class="form-control" id="InstDisSec123" name="DisSec"></select>
+                                                                                                </div>
+                                                                                                <div class="col-sm-1">
+                                                                                                    <p id="AddDisSecInst" class="AddDisSecInst" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Institution_Type");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <select class="form-control" id="InstitutionType" name="InstitutionType">
+                                                                                                        <option value="---Select Types---">---@{@HomeController.GetControlTextByControlId("Select");}---</option>
+                                                                                                        @foreach (var item in @ViewBag.InstitutionType as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                        {
+                                                                                                            if (item.Name == Model.InstitutionType)
+                                                                                                            {
+                                                                                                                <option selected value="@item.Name">@item.Name</option>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <option value="@item.Name">@item.Name</option>
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <div class="col-sm-1">
+                                                                                                    <p id="AddInsTypeInst" class="AddInsTypeInst" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Institution_Name");}</span> <span class="mandatoryStar"> *</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="text" value="@Model.Name" class="form-control" name="Name" id="InstName123" required placeholder="">
+                                                                                                    <input type="hidden" id="GenIdInst" name="EnterbyId" value="@ViewBag.MyId" />
+                                                                                                    <input type="hidden" id="GenProvinceInst" name="ProvinceName" value="@ViewBag.Id" />
+                                                                                                    <input type="hidden" id="EnterbyGenInst" name="Enterby" value="Province" />
+                                                                                                    <input type="hidden" id="EnterbyNameInst" name="EnterbyName" value="@ViewBag.Provincename" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Place");}</span> </label>
+                                                                                                <div class="col-sm-7">
+
+                                                                                                    <input type="text" class="form-control" value="@Model.Place" name="Place" id="InstPlace123" />
+
+                                                                                                    <input type="hidden" class="form-control" name="Type" id="InsType" value="Institution" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Institution_ID");}</span></label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    @if (Model.Id != 0)
+                                                                                                    {
+                                                                                                        <input type="text" class="form-control" name="MyId" style="color:black" value="@Model.MyId" id="InstitutionId123" readonly>
+                                                                                                    }
+                                                                                                    else
+                                                                                                    {
+                                                                                                        <input type="text" class="form-control" name="MyId" style="color:black" value="@ViewBag.InstitutionId" id="InstitutionId123" readonly>
+                                                                                                    }
+                                                                                                    <input type="hidden" id="InstId" name="Id" class="form-control" />
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group" style="display:none">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Establishment");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="text" class="form-control" name="YearOfEstablacement" @Model.YearOfEstablacement value="@Model.YearOfEstablacement" id="InstYearOfEstablacement">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Phone");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="text" class="form-control" name="Telephone" value="@Model.Telephone" id="InstTelephone">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Email");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="text" class="form-control" value="@Model.EmailId" name="EmailId" id="EmailIdEdit">
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Country");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    @*<input type="text" class="form-control" name="Country" id="CountryEdit">*@
+                                                                                                    <select class="form-control" id="CountryEdit" name="Country" style="">
+                                                                                                        <option value="0">--Select Country--</option>
+                                                                                                        @foreach (var item in @ViewBag.Country as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                        {
+                                                                                                            if (item.Name == Model.Country)
+                                                                                                            {
+                                                                                                                <option selected value="@item.Name">@item.Name</option>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <option value="@item.Name">@item.Name</option>
+                                                                                                            }
+                                                                                                        }
+                                                                                                    </select>
+                                                                                                </div>
+
+                                                                                                <div class="col-sm-1">
+                                                                                                    <p id="AddCountryProv1" class="AddCountryProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Continent");}</span></label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    @Html.TextBoxFor(model => model.Continent, new { @type = "text", @id = "Continent123", @name = "Continent", @class = "form-control" })
+                                                                                                    @*<input type="text" id="Continent123" name="Continent" class="form-control">*@
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Address");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <textarea type="text" rows="3" class="form-control" name="Address" id="InstAddress">@Model.Address</textarea>
+                                                                                                </div>
+                                                                                            </div>
+
+
+
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Upload_Doccument");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <input type="file" class="form-control" name="File" id="Instfile" accept=".jpg,.png,.jpeg,.doc,.pdf">
+                                                                                                    @if (Model.Id != 0 && Model.Id != null)
+                                                                                                    {
+                                                                                                        <span id="TempFileshow">Previous Document Submitted:@Model.FileName</span>
+                                                                                                    }
+                                                                                                    <span id="Instfile12"></span>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group" style="display:none">
+                                                                                                <label for="inputPassword3" class="col-sm-6 control-label">
+                                                                                                    <input type="radio" id="ActiveCheck3" name="ActiveCkeck11" value="Active"><span>@{@HomeController.GetControlTextByControlId("Active");}</span>
+                                                                                                </label>
+                                                                                                <label for="inputPassword3" class="col-sm-3 control-label">
+                                                                                                    <input type="radio" id="ActiveCheck4" name="ActiveCkeck11" value="Inactive"><span>@{@HomeController.GetControlTextByControlId("Inactive");}</span>
+                                                                                                </label>
+
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Status");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <select class="form-control" id="Status" name="ActiveCkeck">
+                                                                                                        <option value="Active">@{@HomeController.GetControlTextByControlId("Active");}</option>
+                                                                                                        <option value="Inactive">@{@HomeController.GetControlTextByControlId("Inactive");}</option>
+                                                                                                    </select>
+                                                                                                </div>
+
+                                                                                            </div>
+                                                                                            <div class="form-group messageActivecheck" style="display:none">
+                                                                                                <label class="col-sm-8 control-label" style="color:blue"><b>Check Active or Inactive !</b></label>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="col-md-6">
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Diocese_Name");}</span></label>
+                                                                                                <div class="">
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <select class="form-control" id="DioceseNameInst" style="" name="Diocese"></select>
+                                                                                                    </div>
+                                                                                                    <div class="col-sm-1">
+                                                                                                        <p id="AddDioInst" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputEmail3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Activities");}</span></label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <select type="dropdown" multiple="multiple" style="width:100%" id="ActivitiesInst" name="Activities">
+                                                                                                        @foreach (var item in @ViewBag.AllActivities as IEnumerable<Generalate.Models.DataListItems>)
+                                                                                                        {
+                                                                                                            string[] Activities = null;
+                                                                                                            if (Model.Activities != null)
+                                                                                                            {
+                                                                                                                Activities = Model.Activities.Split(',');
+                                                                                                            }
+
+
+                                                                                                            if (Model.Activities != null && Activities.Contains(item.Name))
+                                                                                                            {
+                                                                                                                <option selected value="@item.Name">@item.Name</option>
+                                                                                                            }
+                                                                                                            else
+                                                                                                            {
+                                                                                                                <option value="@item.Name">@item.Name</option>
+                                                                                                            }
+
+                                                                                                        }
+
+                                                                                                    </select>
+                                                                                                </div>
+                                                                                                <div class="col-sm-1">
+                                                                                                    <p id="AddActivitiesInst" class="AddActivitiesProv" style="cursor:pointer; font-size:25px;" />&#43;
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div class="form-group">
+                                                                                                <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Legal_Registration");}</span> </label>
+                                                                                                <div class="col-sm-7">
+                                                                                                    <select class="form-control" id="SocietyIdinst" name="SocietyId"></select>
+                                                                                                </div>
+                                                                                            </div>
+
+                                                                                            <div id="schoolcollageDiv">
+                                                                                                <div class="form-group">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Registration_No");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="text" class="form-control" name="RegistrationNo" value="@Model.RegistrationNo" id="EditRegistrationNo">
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>Vision</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <textarea type="text" rows="3" class="form-control" name="Vission" id="VissionInst">@Model.Vission</textarea>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <label for="" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Mission");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <textarea type="text" rows="3" class="form-control" name="Mission" id="MissionInst">@Model.Mission</textarea>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group" style="display:none">
+                                                                                                    <label for="" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Name_of_the_foundress");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="text" rows="3" class="form-control" name="NameOfFoundress" value="@Model.NameOfFoundress" id="Name_of_the_foundress"></input>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group" style="display:none">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Name_of_the_Founder");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="text" rows="3" class="form-control" name="NameOfFounder" value="@Model.NameOfFounder" id="Name_of_the_Founder"></input>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Foundation_Date");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="date" rows="3" class="form-control" name="FoundationDate" value="@Model.FoundationDate" id="Foundation_Date"></input>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Foundation_day");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="text" rows="3" class="form-control" name="Foundationday" value="@Model.Foundationday" id="Foundation_day"></input>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group" style="display:none">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Date_of_the_diocesan_decree");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="date" rows="3" class="form-control" name="DiocesanDecreeDate" value="@Model.DiocesanDecreeDate" id="Date_of_the_diocesan_decree"></input>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group" style="display:none">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Date_of_pontifical_decree");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="date" rows="3" class="form-control" name="PontificalDecreeDate" value="@Model.PontificalDecreeDate" id="Date_of_pontifical_decree"></input>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group" style="display:none">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Date_of_the_official_gouvernemental_decree_in_France");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <input type="date" rows="3" class="form-control" name="GouvernementalDecreeDate" value="@Model.GouvernementalDecreeDate" id="Date_of_the_official_gouvernemental_decree_in_France"></input>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                                <div class="form-group" style="display:none">
+                                                                                                    <label for="inputPassword3" class="col-sm-4 control-label"><span>@{@HomeController.GetControlTextByControlId("Dependent _on_the_CIVCSVA");}</span> </label>
+                                                                                                    <div class="col-sm-7">
+                                                                                                        <select class="form-control" id="CIVCSVA" name="DepCIVCSVA">
+                                                                                                            <option value="Yes">Yes</option>
+                                                                                                            <option value="No">No</option>
+                                                                                                        </select>
+                                                                                                    </div>
+                                                                                                </div>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="tab-pane" id="1a">
+                                                                            @*<textarea name="History" class="ckeditor form-control"></textarea>*@
+                                                                            @Html.TextAreaFor(model => model.History, new { @name = "History", @class = "ckeditor form-control" })
+                                                                        </div>
+
+                                                                        <div class="tab-pane" id="3a">
+                                                                            <table id="example" class="display" style="width:100%">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>@{@HomeController.GetControlTextByControlId("Name");}</th>
+                                                                                        <th>@{@HomeController.GetControlTextByControlId("Day");}</th>
+                                                                                        <th>@{@HomeController.GetControlTextByControlId("Month");}</th>
+                                                                                        <th></th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tfoot>
+                                                                                    <tr>
+                                                                                        <td colspan="4"><p id="addRow">@{@HomeController.GetControlTextByControlId("Add_new_row");}</p></td>
+
+                                                                                    </tr>
+                                                                                </tfoot>
+                                                                            </table>
+                                                                        </div>
+                                                                        <div class="tab-pane" id="4a">
+                                                                            <table id="tableImage" class="display" style="width:100%">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>@{@HomeController.GetControlTextByControlId("Title");}</th>
+                                                                                        <th>@{@HomeController.GetControlTextByControlId("File");}</th>
+                                                                                        <th>@{@HomeController.GetControlTextByControlId("Image");}</th>
+                                                                                        <th>@{@HomeController.GetControlTextByControlId("Remove");}</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tfoot>
+                                                                                    <tr>
+                                                                                        <td colspan="4"><p id="addImage">@{@HomeController.GetControlTextByControlId("Add_Image");}</p></td>
+                                                                                    </tr>
+                                                                                </tfoot>
+                                                                            </table>
+
+                                                                        </div>
+                                                                        <div class="tab-pane" id="2a">
+                                                                            <table class="table table-bordered" id="TblPersionalDetails">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th>Member</th>
+                                                                                        <th>From</th>
+                                                                                        <th>To</th>
+                                                                                        <th>Roles</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    @if (ViewBag.Appointments != null)
+                                                                                    {
+                                                                                        foreach (var item in ViewBag.Appointments as IEnumerable<Generalate.Models.Appointments>)
+                                                                                        {
+                                                                                            <tr id="append">
+                                                                                                <td>@item.Name</td>
+                                                                                                <td>@item.FromDate</td>
+                                                                                                <td>@item.ToDate</td>
+                                                                                                <td>@item.DesignationType</td>
+                                                                                            </tr>
+                                                                                        }
+                                                                                    }
+
+                                                                                </tbody>
+                                                                            </table>
+
+                                                                        </div>
+                                                                        <div class="tab-pane" id="5a">
+                                                                            @*<textarea name="Remarks"></textarea>*@
+                                                                            @Html.TextAreaFor(model => model.Remarks, new { @name = "Remarks" })
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-sm-6">
+                                                                    <div class="" style="text-align:center">
+                                                                        <button type="submit" class="btn btn-info pull-right" id="btnAddInstitution" style="margin-top:6px"><span>@{@HomeController.GetControlTextByControlId("Save");}</span></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .nav-pills > li > a {
+        color: black;
+    }
+
+    .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+        color: #ffffff;
+        background-color: #29b2e1;
+        border: 1px solid #004778;
+        border-bottom-color: transparent;
+        cursor: default;
+    }
+
+    .nav-tabs {
+        border-bottom: 1px solid #004778;
+    }
+
+        .nav-tabs .nav-item {
+            margin-bottom: -1px;
+        }
+
+    .tab-content {
+        margin-top: 10px;
+    }
+
+    textarea {
+        overflow-y: hidden;
+        height: 50px;
+        resize: none;
+        width: 100%;
+    }
+
+    .imgUpload {
+        padding-top: 44px;
+        padding-left: 60px;
+    }
+
+    th {
+        background-color: #29b2e1;
+        color: white;
+    }
+
+    .dataTables_empty {
+        display: none;
+    }
+
+    #addRow {
+        cursor: pointer;
+    }
+
+    #addImage {
+        cursor: pointer;
+    }
+
+    img {
+        max-width: 70px;
+    }
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    $("#circleimage").mouseover(function () {
+        $("#circleimage").text("Back");
+    });
+    $("#circleimage").mouseout(function () {
+        $("#circleimage").text("");
+    });
+
+    $(document).ready(function () {
+        $('#ActivitiesInst').select2();
+        var t = $('#example').DataTable({
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "order": [],
+            "bSort": false,
+        });
+        var u = $('#tableImage').DataTable({
+            "bPaginate": false,
+            "bFilter": false,
+            "bInfo": false,
+            "order": [],
+            "bSort": false,
+        });
+        var counter = 1;
+        var Imgcounter = 1;
+        if ('@Model.DepCIVCSVA' != '') {
+            $("#CIVCSVA").val('@Model.DepCIVCSVA').trigger('change');
+        }
+        $('#addRow').on('click', function () {
+            $('#example').append('<tr id = "tr_' + counter + '"><td id = "td_' + counter + '"><input style="  width: 100%;   border: none; padding: .15rem;" name ="Names" type="text" id="' + counter + '_1"></input></td><td><select style="padding: .25rem 0; width: 100%;border: none;" class="o_input o_field_widget o_required_modifier" id="' + counter + '_2" name="Days"><option value="false" style="display: none"></option><option value="1" style="">1</option><option value="2" style="">2</option><option value="3" style="">3</option><option value="4" style="">4</option><option value="5" style="">5</option><option value="6" style="">6</option><option value="7" style="">7</option><option value="8" style="">8</option><option value="9" style="">9</option><option value="10" style="">10</option><option value="11" style="">11</option><option value="12" style="">12</option><option value="13" style="">13</option><option value="14" style="">14</option><option value="15" style="">15</option><option value="16" style="">16</option><option value="17" style="">17</option><option value="18" style="">18</option><option value="19" style="">19</option><option value="20" style="">20</option><option value="21" style="">21</option><option value="22" style="">22</option><option value="23" style="">23</option><option value="24" style="">24</option><option value="25" style="">25</option><option value="26" style="">26</option><option value="27" style="">27</option><option value="28" style="">28</option><option value="29" style="">29</option><option value="30" style="">30</option><option value="31" style="">31</option></select></td><td><select style="padding: .25rem 0; width: 100%;border: none;" class="o_input o_field_widget o_required_modifier" id="' + counter + '_3" name="Months"><option value="false" style="display: none"></option><option value="&quot;1&quot;" style="">January</option><option value="&quot;2&quot;" style="">February</option><option value="&quot;3&quot;" style="">March</option><option value="&quot;4&quot;" style="">April</option><option value="&quot;5&quot;" style="">May</option><option value="&quot;6&quot;" style="">June</option><option value="&quot;7&quot;" style="">July</option><option value="&quot;8&quot;" style="">August</option><option value="&quot;9&quot;" style="">September</option><option value="&quot;10&quot;" style="">October</option><option value="&quot;11&quot;" style="">November</option><option value="&quot;12&quot;" style="">December</option></select></td><td><button onclick="DeleteDiv(' + counter + ')" class="fa fa-trash-o" id="' + counter + '_4" name="delete" aria-label="Delete row 1"></button></td></tr>');
+            counter++;
+        });
+        $('#addImage').on('click', function () {
+            $('#tableImage').append('<tr id = "Imgtr_' + Imgcounter + '"><td id = "Imgtd_' + Imgcounter + '"><input style="  width: 100%;  border: none; padding: .15rem;" name="Title" type="text" id="' + Imgcounter + '_1Img"></input></td><td><input type="file" onchange="readURL(this,' + Imgcounter + ');" class="form-control" name="Files" id="Img_' + Imgcounter + '" accept=".jpg,.png,.jpeg,.doc,.pdf"><input name = "spanImgName" id="spanImgName_' + Imgcounter +'"  style="display:none"></input><span  id="spanImg_' + Imgcounter +'"></span></td><td><img id="Img_show_' + Imgcounter + '" src="http://placehold.it/180" alt="your image" /></td><td><button onclick="DeleteDivImg(' + Imgcounter + ')" class="fa fa-trash-o" id="' + Imgcounter + '_4Img" name="delete" aria-label="Delete row 1"></button></td></tr>');
+            Imgcounter++;
+        });
+        GetAllSociety();
+        GetAllDisSec1();
+        GetAllDioceseNameCong1();
+        GetAllProvinceTrans();
+        DioceseNameDisSec();
+        GetAllProvince();
+        //GetAllStates();
+        // Automatically add a first row of data
+        //$('#addRow').click();
+        $('#ActivitiesDisSec1').multipleSelect({
+            width: 350,
+            allSelectedText: 'All'
+        });
+        $('#InstDisSec123').on('change', function () {
+            //alert($('#InstDisSec123').val());
+        });
+        $('.AddDisSecInst').on("click", function () {
+            $('#myModalDisSec').modal('show');
+        });
+        $(".AddInsTypeInst").on('click', function () {
+            $("#MyModalMaster1").modal('show');
+        });
+        $(".AddCountryProv").on('click', function () {
+            $("#MyModalCountry").modal('show');
+        });
+        $("#AddDioInst").on('click', function () {
+            //debugger;
+            $("#MyModal").modal('show');
+        });
+        $(".AddActivitiesProv").on('click', function () {
+            $("#MyModalMaster").modal('show');
+        });
+        $("#DisSecRegName").on("change", function () {
+            //debugger;
+            if (myid == "") {
+                myid = $("#MyIdDisSecReg").val();
+            }
+            var name = $("#DisSecRegName").val();
+            if (name.length > 3) {
+                name = name.substring(0, 4);
+            }
+            $("#MyIdDisSecReg").val(name + "/" + myid);
+        });
+
+        if (@Model.Id != 0 && @Model.Id != null) {
+            if ('@Model.ActiveCkeck' == 'Active') {
+                $('#ActiveCheck3').prop('checked', true);
+                $('#ActiveCheck4').prop('checked', false);
+            }
+            else {
+                $('#ActiveCheck4').prop('checked', true);
+            }
+        }
+        //SetDataForEdit();
+        CheckRow();
+
+    });
+    //function SetDataForEdit(){
+
+    //}
+    //function GetAllStates() {
+    //    $.ajax({
+    //        url: "/Home/GetAllStates",
+    //        type: "GET",
+    //        contentType: "application/json;charset=utf-8",
+    //        dataType: "json",
+    //        success: function (response2) {
+    //            if (response2.length > 0) {
+    //                var allDate2 = [];
+    //                var omObj2 = {};
+    //                $('#DioState').html('').select2({ data: [{ id: '', text: '' }] });
+    //                allDate2.push({ id: '0', text: '-- Select State Name --' });
+    //                for (var i = 0; i < response2.length; i++) {
+    //                    allDate2.push({ id: response2[i].Name, text: response2[i].Name });
+    //                }
+    //                $("#DioState").html('').select2({
+    //                    data: allDate2
+    //                });
+    //            }
+    //        },
+    //        error: function (er) {
+    //        }
+    //    });
+    //}
+    function DioceseNameDisSec() {
+        $.ajax({
+            url: "/IdGenerate/DioceseNameDisSec",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response2) {
+                if (response2.length > 0) {
+                    var allDate2 = [];
+                    var omObj2 = {};
+                    $('#DioceseNameDisSec').html('').select2({ data: [{ id: '', text: '' }] });
+                    allDate2.push({ id: '0', text: '-- Select Diocese Name --' });
+                    for (var i = 0; i < response2.length; i++) {
+                        allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                    }
+                    $("#DioceseNameDisSec").html('').select2({
+                        data: allDate2
+                    });
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+    function GetAllProvinceTrans() {
+        $.ajax({
+            url: "/Home/GetAllProvinceTrans",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response2) {
+                if (response2.length > 0) {
+                    var allDate2 = [];
+                    var omObj2 = {};
+                    $('#DisSecRegProvinceName').html('').select2({ data: [{ id: '', text: '' }] });
+                    allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                    for (var i = 0; i < response2.length; i++) {
+                        allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                    }
+                    $("#DisSecRegProvinceName").html('').select2({
+                        data: allDate2
+                    });
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+    function CheckRow() {
+
+        var tbl_ProvinceGallery = @Html.Raw(ViewBag.tbl_ProvinceGallery);
+        //alert(tbl_ProvinceGallery);
+        $.each(tbl_ProvinceGallery, function (value) {
+            $("#addImage").click();
+            //alert('#' + (value+1) + "_1Img");
+            $('#' + (value + 1) + "_1Img").val(tbl_ProvinceGallery[value].Title);
+            $('#spanImg_' + (value + 1)).text("Previous Image :" + tbl_ProvinceGallery[value].FileName);
+            $('#Img_' + (value + 1)).hide();
+            $('#spanImgName_' + (value + 1)).val(tbl_ProvinceGallery[value].FileName);
+            $("#Img_show_" + (value + 1)).attr("src", "../Image/ProvinceInstitutionGallery/" + tbl_ProvinceGallery[value].FileName).load();
+            debugger;
+            //console.log(value);
+        });
+        var tblProvienceImportantDates = @Html.Raw(ViewBag.tblProvienceImportantDates);
+        //alert(tbl_ProvinceGallery);
+        $.each(tblProvienceImportantDates, function (value) {
+            $("#addRow").click();
+            //alert(tblProvienceImportantDates[value].Day);
+            //alert('#' + (value + 1) + "_2");
+            $('#' + (value + 1) + "_1").val(tblProvienceImportantDates[value].Name);
+            $('#' + (value + 1) + "_2").val(tblProvienceImportantDates[value].Day);
+            $('#' + (value + 1) + "_3").val('"' + tblProvienceImportantDates[value].Month +'"').trigger('change');
+            debugger;
+            //console.log(value);
+        })
+        //var rowCount = ViewBag.tbl_ProvinceGallery.Count();
+    }
+    function GetAllProvince() {
+        $.ajax({
+            url: "/Home/GetAllProvince",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response2) {
+                if (response2.length > 0) {
+                    var allDate2 = [];
+                    var omObj2 = {};
+                    $('#DioProvince1').html('').select2({ data: [{ id: '', text: '' }] });
+                    allDate2.push({ id: '0', text: '-- Select Province Name --' });
+                    for (var i = 0; i < response2.length; i++) {
+                        allDate2.push({ id: response2[i].Id, text: response2[i].ProvinceName + " " + response2[i].Place });
+                    }
+                    $("#DioProvince1").html('').select2({
+                        data: allDate2
+                    });
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+    function GetAllSociety() {
+        $.ajax({
+            url: "/IdGenerate/GetAllSociety",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response2) {
+                if (response2.length > 0) {
+                    var allDate2 = [];
+                    var omObj2 = {};
+                    $('#SocietyIdinst').html('').select2({ data: [{ id: '', text: '' }] });
+                    allDate2.push({ id: '0', text: '-- @{@HomeController.GetControlTextByControlId("Items_Name");}--' });
+                    for (var i = 0; i < response2.length; i++) {
+                        allDate2.push({ id: response2[i].Id, text: response2[i].NameOfTheSocity });
+                    }
+                    $("#SocietyIdinst").html('').select2({
+                        data: allDate2
+                    });
+                }
+                if (@Model.Id != 0 && @Model.Id != null) {
+                    $('#SocietyIdinst').val('@Model.SocietyId').trigger('change');
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+    function GetAllDioceseNameCong1() {
+        $.ajax({
+            url: "/IdGenerate/GetAllDioceseNameCong1",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response2) {
+                if (response2.length > 0) {
+                    var allDate2 = [];
+                    var omObj2 = {};
+                    $('#DioceseNameInst').html('').select2({ data: [{ id: '', text: '' }] });
+                    allDate2.push({ id: '0', text: '-- @{@HomeController.GetControlTextByControlId("Diosece_Name");}  --' });
+                    for (var i = 0; i < response2.length; i++) {
+                        allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                    }
+                    $("#DioceseNameInst").html('').select2({
+                        data: allDate2
+                    });
+                }
+                if (@Model.Id != 0 && @Model.Id != null) {
+                    $('#DioceseNameInst').val('@Model.Diocese').trigger('change');
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+    function GetAllDisSec1() {
+        $.ajax({
+            url: "/IdGenerate/GetAllDisSec1",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response2) {
+                debugger;
+                if (response2.length > 0) {
+                    var allDate2 = [];
+                    var omObj2 = {};
+                    $('#InstDisSec123').html('').select2({ data: [{ id: '', text: '' }] });
+                    allDate2.push({ id: '0', text: '-- @{@HomeController.GetControlTextByControlId("Items_Name");}--' });
+                    for (var i = 0; i < response2.length; i++) {
+                        allDate2.push({ id: response2[i].Id, text: response2[i].DistSecName });
+                    }
+                    $("#InstDisSec123").html('').select2({
+                        data: allDate2
+                    });
+                }
+                if (@Model.Id != 0 && @Model.Id != null) {
+                $('#InstDisSec123').val('@Model.DisSec').trigger('change');
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+    function DeleteDiv(id) {
+        $("#tr_" + id).remove();
+    }
+    function DeleteDivImg(id) {
+        $("#Imgtr_" + id).remove();
+    }
+    function readURL(input, id) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#Img_show_' + id).attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    function SaveCountyPopup() {
+        var name = $('#CountryName').val();
+        if (name == "") {
+            alert("@{@HomeController.GetControlTextByControlId("Please enter the Name!");}");
+            return false;
+        }
+        if ($('#CountryContinent').val() == "0") {
+            alert("@{@HomeController.GetControlTextByControlId("Please enter the Continent!");}");
+            return false;
+        }
+
+        var option = '<option value="' + name + '">' + name + '</option>';
+        $('#Country12inst,#Country123com').append(option);
+        //  $('#CongregationCountriesofMission,#ProvinceCountriesofMission').append(option);
+
+        //$('#ProvinceCountriesofMission,#CongregationCountriesofMission').multipleSelect({
+        //    width: 355,
+        //    allSelectedText: 'All'
+        //})
+
+        $("#MyModalCountry").modal('hide');
+        SaveDataList($('#DataListCountryName').val(), $('#CountryName').val(), $('#CountryContinent').val());
+        $('#CountryName,#CountryContinent').val('');
+    }
+    function SaveDataList(DataListName, Name, Continent) {
+
+        $.ajax({
+            url: "/Data/DataItemCountryDetailSave",
+            type: "POST",
+            data: { DataListName: DataListName, Name: Name, Continent: Continent },
+            dataType: "json",
+            success: function (result) {
+                alert(result);
+            }
+        });
+    }
+    function SaveActivitiesPopup() {
+        if ($('#Name1').val() == "") {
+            alert("@{@HomeController.GetControlTextByControlId("Please enter the Name!");}");
+            return false;
+        }
+        var name = $('#Name1').val();
+        var option = '<option value="' + name + '">' + name + '</option>';
+        $('#ActivitiesInst,#ActivitiesCom').append(option);
+        $('#ActivitiesInst').multipleSelect({
+            width: 355,
+            allSelectedText: 'All'
+        })
+        $('#ActivitiesCom').multipleSelect({
+            width: 355,
+            allSelectedText: 'All'
+        })
+
+        $("#MyModalMaster").modal('hide');
+        SaveDataList($('#DataListName1').val(), $('#Name1').val(), "", "Activities created successfully!");
+        $('#Name1').val('');
+    }
+    function SaveInsPopup() {
+        if ($('#InsName1').val() == "") {
+            alert("@{@HomeController.GetControlTextByControlId("Please enter the Name!");}");
+            return false;
+        }
+        var name = $('#InsName1').val();
+        var option = '<option value="' + name + '">' + name + '</option>';
+        $('#InstitutionType,#InstitutionTypeE').append(option);
+
+        $("#MyModalMaster,#MyModalMaster1").modal('hide');
+
+        SaveDataList($('#InsDataListName1').val(), $('#InsName1').val(), "", "Institution created successfully!");
+        $('#Name1').val('');
+    }
+    function SaveDataList(DataListName, Name, Continent, msg) {
+
+        $.ajax({
+            url: "/Data/DataItemCountryDetailSave",
+            type: "POST",
+            data: { DataListName: DataListName, Name: Name, Continent: Continent },
+            dataType: "json",
+            success: function (result) {
+                if (msg != undefined && msg != "")
+                    alert(msg);
+                else
+                    alert(result);
+            }
+        });
+    }
+</script>
+<script>
+        $("#btnAddingDiocese123").on("click", function () {
+            //debugger;
+            var data = {};
+
+            data.ProvinceName = $("#DioProvince1 option:selected").text();
+            data.State = $("#DioState option:selected").val();
+            data.DioceseName = $("#DioceseName1").val();
+            data.DioId = $("#DioId1").val();
+            data.EmailId = $("#EmailIdDio1").val();
+            data.Country = $("#CountryOfDiocese1").val();
+            data.Address = $("#AddressDio1").val();
+            data.ActiveCkeck = ("Active");
+
+            if (data.ProvinceName == "0") {
+                alert("@{@HomeController.GetControlTextByControlId("Please_Select_Province_Name");} ");
+                return false;
+            }
+            @*if (data.State == "0") {
+                alert("@{@HomeController.GetControlTextByControlId("Please_Select_State_Name");} ");
+                return false;
+            }*@
+            $.ajax({
+                url: "/IdGenerate/SaveDioceseData",
+                type: "POST",
+                contentType: "application/json;charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(data),
+                success: function (response2) {
+                    if (response2.length > 0) {
+                        var allDate2 = [];
+                        var omObj2 = {};
+                        $('#DioceseNameCom12').html('').select2({ data: [{ id: '', text: '' }] });
+                        $('#DioceseNameInst').html('').select2({ data: [{ id: '', text: '' }] });
+                        $('#DioceseNameSoc').html('').select2({ data: [{ id: '', text: '' }] });
+                        $('#DioceseNameTrust').html('').select2({ data: [{ id: '', text: '' }] });
+
+                        allDate2.push({ id: '0', text: '-- Select Diocese Name --' });
+                        for (var i = 0; i < response2.length; i++) {
+                            allDate2.push({ id: response2[i].Id, text: response2[i].DioceseName });
+                        }
+                        $("#DioceseNameCom12").html('').select2({
+                            data: allDate2
+                        });
+                        $("#DioceseNameInst").html('').select2({
+                            data: allDate2
+                        });
+                        $("#DioceseNameSoc").html('').select2({
+                            data: allDate2
+                        });
+                        $("#DioceseNameTrust").html('').select2({
+                            data: allDate2
+                        });
+                    }
+                    // $("#MyDioceseForm").clearForm();
+                    $('#MyModal').modal('hide');
+                },
+                error: function (er) {
+                }
+            });
+        });
+</script>
+<script>
+    var myid = "";
+    $("#DioceseName1").on("change", function () {
+        //debugger;
+        if (myid == "") {
+            myid = $("#DioId1").val();
+        }
+        var name = $("#DioceseName1").val();
+        if (name.length > 3) {
+            name = name.substring(0, 4);
+        }
+        $("#DioId1").val(name + "/" + myid);
+    });
+    $("#CountryEdit").on("change", function () {
+        //debugger;
+        var name = $("#CountryEdit option:selected").text();
+        var value = $("#CountryEdit option:selected").val();
+        //  $("#Continent").val(value);
+        //$("#CountryName12").val(name);
+
+        $.ajax({
+            url: "/Member/GetContinent?Name=" + name,
+            type: "POST",
+            dataType: "json",
+            async: false,
+            success: function (result) {
+                $("#Continent123").val(result);
+            },
+            error: function (errormessage) {
+                alert(errormessage.responseText);
+            }
+        });
+        //  alert($("#CountryName12").val())
+    });
+</script>
+<script>
+    $(document).ready(function () {
+        GetAllStates();
+    });
+
+    function GetAllStates() {
+        $.ajax({
+            url: "/Home/GetAllStates",
+            type: "GET",
+            contentType: "application/json;charset=utf-8",
+            dataType: "json",
+            success: function (response2) {
+                if (response2.length > 0) {
+                    var allDate2 = [];
+                    var omObj2 = {};
+                    $('#DioState').html('').select2({ data: [{ id: '', text: '' }] });
+                    allDate2.push({ id: '0', text: '-- Select State Name --' });
+                    for (var i = 0; i < response2.length; i++) {
+                        allDate2.push({ id: response2[i].Name, text: response2[i].Name });
+                    }
+                    $("#DioState").html('').select2({
+                        data: allDate2
+                    });
+                }
+            },
+            error: function (er) {
+            }
+        });
+    }
+
+
+</script>

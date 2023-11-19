@@ -1,0 +1,51 @@
+﻿@model Generalate.Models.tbl_EmergencyContact
+
+@{
+    ViewBag.Title = "EmergencyContact";
+    Layout = "~/Views/UserModule/_LayoutUser.cshtml";
+}
+
+<head>
+    <script src="~/Scripts/additional/User_EmergencyContacts.js"></script>
+</head>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+
+        <div class="" style="margin-left:20px; margin-right:20px;">
+            <div class="form-horizontal">
+                <br />
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal" onclick="clearTextBox();">Add</button>
+                @*<button type="button" class="btn btn-primary" id="printbtn">Print</button>*@
+                <div class="panel-group">
+                    <div class="panel panel-primary" style="margin-top:10px; background-color:#F4ECF7">
+                        <div class="tab panel-heading">
+                            <a style="color:white;">Emergency Contact</a>
+                        </div>
+
+                        <div class="" style="margin-left:20px; margin-right:20px;">
+                            <div class="form-horizontal">
+                                <br />
+                                <table class="table table-striped  table-hover" id="EmpInfo" style="border:solid; border-color:#044244">
+                                    <thead>
+                                        <tr style="background-color:#044244; color:white">
+                                            <th hidden="hidden"> Id </th>
+                                            <th> Member ID </th>
+                                            <th>Name</th>
+                                            
+                                            <th> Action </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tbody"> </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

@@ -1,0 +1,760 @@
+﻿@using Generalate.Models
+@model Generalate.Models.Emaildata
+@{
+    /**/
+
+    //ViewBag.Title = "Inbox";
+}
+
+<head>
+    <link rel="stylesheet" type="text/css" href="~/css/Inbox.css">
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <link href="~/css/jquery-ui.css" rel="stylesheet" />
+</head>
+
+<style>
+    a,
+    a label {
+        cursor: pointer;
+    }
+</style>
+
+<script>
+    $("document").ready(function () {
+
+        $("#EmpInfo").DataTable();
+        $("#composemail").click(function () {
+            $('#myModalForm').modal('show');
+            //$('#result').css("display", "block");
+            //$('#mailbox').css("z-index","-1");
+        });
+
+        $.ajax({
+            type: "GET",
+            url: '@Url.Action("GetPersonaldetails","Email")',
+            dataType: "json",
+            async: true,
+            success: function (data, status) {
+                var items = data.toString().split(",");
+
+                $('#PersonalDetails').autocomplete({
+                    minLength: 1,
+                    source: function (request, response) {
+                        
+                        var term = request.term;
+                        // substring of new string (only when a comma is in string)
+                        if (term.indexOf(', ') > 0) {
+                            var index = term.lastIndexOf(', ');
+                            term = term.substring(index + 2);
+                        }
+
+                        // regex to match string entered with start of suggestion strings
+                        var re = $.ui.autocomplete.escapeRegex(term);
+                        var matcher = new RegExp('^' + re, 'i');
+                        var regex_validated_array = $.grep(items, function (item, index) {
+                            return matcher.test(item);
+                        });
+
+                        // pass array `regex_validated_array ` to the response and
+                        // `extractLast()` which takes care of the comma separation
+                        var data = $.ui.autocomplete.filter(regex_validated_array,
+                             extractLast(term));
+
+                        response($.ui.autocomplete.filter(regex_validated_array,
+                             extractLast(term)));
+                        //$.each(data, function (key, value) {
+                        //    $("ul.result").append('<li class="ui-menu-item"><div tabindex="-1" class="ui-menu-item-wrapper">' + value + '</div></li>');
+
+                        //});
+                        //-- <li class="ui-menu-item"><div id="ui-id-2" tabindex="-1" class="ui-menu-item-wrapper">nanduconquer@gmail.com </div></li><li class="ui-menu-item"><div id="ui-id-3" tabindex="-1" class="ui-menu-item-wrapper">netproworld@gmail.com </div></li>
+                    },
+                    focus: function () {
+                        return false;
+                    },
+                    select: function (event, ui) {
+                        var terms = split(this.value);
+                        terms.pop();
+                        terms.push(ui.item.value);
+                        terms.push('');
+                        this.value = terms.join(', ');
+                        return false;
+                    },
+                    messages: {
+                        noResults: '',
+                        results: function () { }
+                    }
+                });
+
+                function split(val) {
+                    return val.split(/,\s*/);
+                }
+
+                function extractLast(term) {
+                    return split(term).pop();
+                }
+            }
+        });
+
+        $("a.sentclass").click(function () {
+            if (!$("a.sentclass").hasClass("clsExist")) {
+
+                sentData();
+                $("a.sentclass").addClass("clsExist");
+                $("#Inbox").css("display", "none");
+                $('#sentbox').css("display", "block");
+            }
+        });
+
+        function GetDataByFileId(id) {
+           // tr.append('<td><a href="#" id="' + json[i].EmailUniqueId + '"onclick="return GetDataByMailId(\'' + json[i].EmailUniqueId + '\')">View</a> | <a href="#"  onclick="return Delele(\'' + json[i].EmailUniqueId + '\')">Delete</a></td>')
+            var url = '/Email/GetFileDataByFileIdMethod/' + id;
+            $.ajax({
+                url: url,
+                contentType: 'application/json; charset=utf-8',
+                datatype: 'json',
+                type: "GET",
+                success: function () {
+                    window.location = url;
+                }, error: function (xhr, ajaxOptions, thrownError) {
+
+                    //alert(thrownError);
+
+                }
+            });
+        }
+    });
+
+
+    function GetDataByMailId(FileUniqueId) {
+
+        $('table#FileInfo').html("");
+        var url = '/Email/GetDataByMailId/' + FileUniqueId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            success: function (json) {
+                
+                var html = '';
+                if (json[0].attchedfilename != null) {
+
+                    html += "<tr><td  width='20%'>" + 'EmailSubject' + "</td><td colspan='2'>" + json[0].EmailSubject + "</td><td></td></tr>";
+                    html += "<tr><td  width='20%'>" + 'EmailBody' + "</td><td td colspan='2'>" + json[0].EmailBody + "</td><td></td></tr>";
+                    html += "<tr ><td colspan='3' class='text-center'>" + 'Attachements' + "</td></tr>";
+
+                    var tab = "<tr><td width='10%'>" + 'FileSlno' + "</td><td width='45%'>" + 'attchedfilename' + "</td><td width='45%'>" + 'Action' + "</td></tr>";
+                    html += tab;
+                    for (var i = 0; i < json.length; i++) {
+                        html += "<tr><td width='10%'>" + json[i].FileSlno + "</td><td width='45%'>" + json[i].attchedfilename + "</td><td width='45%'><a href='#' onclick='return GetDataByFileId(\"" + json[i].FileUniqueId + "\")'>Download</a></td></tr>";
+                        //alert(json[i].attchedfilename);
+                    }
+
+                }
+                else if (json[0].attchedfilename == null) {
+
+                    html += "<tr><td>" + 'EmailSubject' + "</td><td>" + json[0].EmailSubject + "</td></tr>";
+                    html += "<tr><td>" + 'EmailBody' + "</td><td>" + json[0].EmailBody + "</td></tr>";
+                }
+
+                $('#FileInfo').append(html);
+                $('#myModal').modal('show');
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.status == 404) {
+
+                }
+            }
+
+        });
+
+
+    }
+    function GetDataByFileId(id) {
+        //alert(id);
+        var url = '/Inbox/GetFileDataByFileIdMethod/' + id;
+        $.ajax({
+            url: url,
+            contentType: 'application/json; charset=utf-8',
+            datatype: 'json',
+            type: "GET",
+            success: function () {
+                window.location = url;
+            }, error: function (xhr, ajaxOptions, thrownError) {
+                //alert(thrownError);
+            }
+        });
+    }
+    function sentData() {
+        //var tb = document.getElementById('EmailInfo');
+        //while (tb.rows.length > 1) {
+        //    tb.deleteRow(1);
+        //}
+        //    ,[FileUniqueId]
+        //,[EmailUniqueId]
+        $.getJSON("/Email/GetEmailWithFileCount",
+            function (json) {
+                //var data;
+
+                ////Append each row to html table
+                for (var i = 0; i < json.length; i++) {
+                    var result = new Date(+json[i].Emailsentdate.replace(/\/Date\((-?\d+)\)\//gi, "$1"));
+                     //var s = result.format("dd-MM-yyyy");
+                    // alert(json[i].EmailSubject);
+                   // $("#sentboxbody").append('<a href="#" class="list-group-item"> <span class="glyphicon glyphicon-star-empty"></span><span class="name" style="min-width: 120px; display: inline-block;">' + json[i].ToAddress.replace(',', '  ') + '</span><span>   ' + json[i].EmailSubject + '</span><span class="text-muted" style="font-size: 11px;">-' + "" + '</span><span class="badge" onclick="return GetDataByMailId(\'' + json[i].EmailUniqueId + '\')" >' + result.toDateString() + '</span> <span class="pull-right"> <span class="glyphicon glyphicon-paperclip"></span></span></a>');
+                    $("#sentboxbody").append("<tr><td>" + json[i].ToAddress.replace(',', '  ') + "</td><td>" + json[i].EmailSubject + "</td><td>" + result + "</td></tr>");
+                }
+                var tr;
+
+                //Append each row to html table
+                for (var i = 0; i < json.length; i++) {
+
+                    tr = $('<tr />');
+                    //tr.append("<td >" + json[i].EmailUniqueId + "</td>");
+                    tr.append("<td>" + json[i].ToAddress.replace(',', '  ') + "</td>");
+                    tr.append("<td>" + json[i].EmailSubject + "</td>");
+                    //tr.append('<td><a href=ViewProfile/' + json[i].EmailId + '>' + json[i].EmailSubject + '</a></td>');
+                    //tr.append("<td>" + json[i].Emailsenddate + "</td>");
+                    tr.append("<td>" + json[i].FileCount + "</td>");
+                    tr.append('<td><a href="#" id="' + json[i].EmailUniqueId + '"onclick="return GetDataByMailId(\'' + json[i].EmailUniqueId + '\')">View</a> | <a href="#"  onclick="return Delele(\'' + json[i].EmailUniqueId + '\')">Delete</a></td>')
+                    //tr.append('<td><a href="#" onclick="return GetDataByMailId((\'' + json[i].EmailUniqueId + '\')">View</a> | <a href="#" onclick="Delele(\'' + json[i].EmailUniqueId + '\')">Delete</a></td>')
+                    $('#sentboxbody').append(tr);
+
+                }
+                $('#EmpInfosent').DataTable({
+                    "order": [[1, "asc"]],
+                    retrieve: true
+                });
+            });
+    }
+    function GetInboxDataByMailId(ID) {
+
+        $('table#FileInfoInbox').html("");
+        var url = '/Inbox/GetInboxDataByMailId/' + ID;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            success: function (json) {
+                
+                var html = '';
+                if (json[0].Filename != null) {
+
+                    html += "<tr><td colspan='2'>" + json[0].FromAddress + "</td><td></td></tr>";
+                    html += "<tr><td colspan='2'>" + json[0].CCAddress + "</td><td></td></tr>";
+                    html += "<tr><td colspan='2'>" + json[0].BCCAddress + "</td><td></td></tr>";
+                    html += "<tr><td td colspan='2'>" + json[0].Subject + "</td><td></td></tr>";
+                    html += "<tr><td td colspan='2'>" + json[0].asciiBody + "</td><td></td></tr>";
+                    html += "<tr ><td colspan='3' class='text-center'>" + 'Attachements' + "</td></tr>";
+
+                    var tab = "<tr><td width='10%'>" + 'FileSlno' + "</td><td width='45%'>" + 'Filename' + "</td><td width='45%'>" + 'Action' + "</td></tr>";
+                    html += tab;
+                    for (var i = 0; i < json.length; i++) {
+                        html += "<tr><td width='10%'>" + json[i].FileSlno + "</td><td width='45%'>" + json[i].Filename + "</td><td width='45%'><a href='#' onclick='return GetDataByFileId(" + json[i].FileId + ")'>Download</a></td></tr>";
+                        //alert(json[i].attchedfilename);
+                    }
+                }
+                else if (json[0].Filename == null) {
+                    html += "<tr><td colspan='2'>" + json[0].FromAddress + "</td><td></td></tr>";
+                    html += "<tr><td colspan='2'>" + json[0].CCAddress + "</td><td></td></tr>";
+                    html += "<tr><td colspan='2'>" + json[0].BCCAddress + "</td><td></td></tr>";
+                    html += "<tr><td>" + json[0].Subject + "</td></tr>";
+                    html += "<tr><td>" + json[0].asciiBody + "</td></tr>";
+                }
+
+                for (var i = 0; i < json.length; i++) {
+                    //alert(json[i].attchedfilename);
+                   // alert(json[i].attchedfilename);
+                    //if (json[i].attchedfilename==null) {
+                    //    alert('no File');
+                    //}
+                    //if (i == 0)
+                    //{
+                    //    html += "<tr><td>" + 'EmailSubject' + "</td><td>" + json[i].EmailSubject + "</td></tr>";
+                    //    html += "<tr><td>" + 'EmailBody' + "</td><td>" + json[i].EmailBody + "</td></tr>";
+                    //}
+                    //else
+                    //{
+
+                    //}
+                    if(i==0){
+                    tr = $('<tr />');
+                    tr.append("<td hidden='hidden'>" + json[i].EmailUniqueId + "</td>");
+                    tr.append('<td><td>Subject</td>' + json[i].EmailSubject + '</td>');
+                    tr.append("<td>Body</td><td>" + json[i].EmailBody + "</td>");
+                    tr.append("<td>" + json[i].FileCount + "</td>");
+                    tr.append('<td><a href="#" onclick="return GetDataByMailId(\'' + json[i].EmailUniqueId + '\')">Edit</a> | <a href="#" onclick="Delele(' + json[i].EmailId + ')">Delete</a></td>')
+                    }
+                    else
+                    {
+                        //tr.append("<td>" + json[i].attchedfilename + "</td>");
+                    }
+                    $('table#FileInfo').append(tr);
+
+                }
+                alert(html);
+                $('#FileInfoInbox').append(html);
+
+                //$('table#FileInfoInbox').DataTable();
+                $('#myModalInbox').modal('show');
+                //$('#btnUpdate').show();
+                //$('#btnAdd').hide();
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.status == 404) {
+                    alert(thrownError);
+                }
+            }
+
+        });
+    };
+
+    function DeleteInboxDataByMailId(ID){
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            $.ajax({
+                url: "../Inbox/delete/" + ID,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    //alert("deleted");
+                    //$(this).closest('tr').remove()
+                    //loadData();
+                    location.reload();
+                    //window.location.href = "~/Inbox/Inbox"
+
+                },
+                error: function (errormessage) {
+                    //alert(errormessage.responseText);
+                }
+            });
+        }
+    };
+    function Delele(id) {
+
+        var ans = confirm("Are you sure you want to delete this Record?");
+        if (ans) {
+            $.ajax({
+                url: "../Email/delete/" + id,
+                type: "POST",
+                contentType: "application/json;charset=UTF-8",
+                dataType: "json",
+                success: function (result) {
+                    $(this).closest('tr').remove()
+                    loadData();
+
+                },
+                error: function (errormessage) {
+                    //alert(errormessage.responseText);
+                }
+            });
+        }
+    }
+
+    function GetDataByMailId(EmailUniqueId) {
+         //alert(EmailUniqueId);
+        $('table#FileInfo').html("");
+        var url = '/Email/GetDataByMailId/' + EmailUniqueId;
+        $.ajax({
+            url: url,
+            type: 'GET',
+            contentType: 'application/json;charset=UTF-8',
+            dataType: "json",
+            success: function (json) {
+                
+                var html = '';
+                if (json[0].attchedfilename != null) {
+
+                    html += "<tr><td  width='20%'>" + 'EmailSubject' + "</td><td colspan='2'>" + json[0].EmailSubject + "</td><td></td></tr>";
+                    html += "<tr><td  width='20%'>" + 'EmailBody' + "</td><td td colspan='2'>" + json[0].EmailBody + "</td><td></td></tr>";
+                    html += "<tr ><td colspan='3' class='text-center'>" + 'Attachements' + "</td></tr>";
+
+                    var tab = "<tr><td width='10%'>" + 'FileSlno' + "</td><td width='45%'>" + 'attchedfilename' + "</td><td width='45%'>" + 'Action' + "</td></tr>";
+                    html += tab;
+                    for (var i = 0; i < json.length; i++)
+                    {
+                        html += "<tr><td width='10%'>" + json[i].FileSlno + "</td><td width='45%'>" + json[i].attchedfilename + "</td><td width='45%'><a href='#' onclick='return GetDataByFileId(\"" + json[i].FileUniqueId + "\")'>Download</a></td></tr>";
+
+                        //alert(json[i].attchedfilename);
+                    }
+
+                }
+                else if (json[0].attchedfilename == null) {
+
+                    html += "<tr><td>" + 'EmailSubject' + "</td><td>" + json[0].EmailSubject + "</td></tr>";
+                    html += "<tr><td>" + 'EmailBody' + "</td><td>" + json[0].EmailBody + "</td></tr>";
+                }
+                for (var i = 0; i < json.length; i++) {
+                    alert(json[i].attchedfilename);
+                    alert(json[i].attchedfilename);
+                    if (json[i].attchedfilename==null) {
+                        alert('no File');
+                    }
+                    if (i == 0)
+                    {
+                        html += "<tr><td>" + 'EmailSubject' + "</td><td>" + json[i].EmailSubject + "</td></tr>";
+                        html += "<tr><td>" + 'EmailBody' + "</td><td>" + json[i].EmailBody + "</td></tr>";
+                    }
+                    else
+                    {
+
+                    }
+                    if(i==0){
+                    tr = $('<tr />');
+                    tr.append("<td hidden='hidden'>" + json[i].EmailUniqueId + "</td>");
+                    tr.append('<td><td>Subject</td>' + json[i].EmailSubject + '</td>');
+                    tr.append("<td>Body</td><td>" + json[i].EmailBody + "</td>");
+                    tr.append("<td>" + json[i].FileCount + "</td>");
+                    tr.append('<td><a href="#" onclick="return GetDataByMailId(\'' + json[i].EmailUniqueId + '\')">Edit</a> | <a href="#" onclick="Delele(' + json[i].EmailId + ')">Delete</a></td>')
+                    }
+                    else
+                    {
+                        //tr.append("<td>" + json[i].attchedfilename + "</td>");
+                    }
+                    $('table#FileInfo').append(tr);
+
+                }
+               // alert(html);
+                $('#FileInfo').append(html);
+
+                //  $('table#FileInfo').DataTable();
+                $('#myModal').modal('show');
+                //$('#btnUpdate').show();
+                //$('#btnAdd').hide();
+            },
+
+            error: function (xhr, ajaxOptions, thrownError) {
+                if (xhr.status == 404) {
+                    //alert(thrownError);
+                }
+            }
+
+        });
+
+    }
+
+
+
+</script>
+
+<div class="container">
+    <h2>Inbox</h2>
+    <div class="panel panel-default">
+         
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-3 col-md-2">
+                    <div class="btn-group">
+                    </div>
+                </div>
+                <div class="col-sm-9 col-md-10">
+                    <!-- Split button -->
+                    <div class="btn-group">
+
+                    </div>
+                    <button type="button" class="btn btn-default" data-toggle="tooltip" title="Refresh">
+                        <span class="glyphicon glyphicon-refresh"></span>
+                    </button>
+                    <!-- Single button -->
+                    <div class="btn-group">
+
+                    </div>
+                    <div class="pull-right">
+                        <span class="text-muted"><b>1</b>–<b>50</b> of <b>277</b></span>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                            </button>
+                            <button type="button" class="btn btn-default">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <div class="col-sm-3 col-md-2">
+                    <a href="#" class="btn btn-danger btn-sm btn-block" role="button" id="composemail">COMPOSE</a>
+                    <hr />
+                    <ul class="nav nav-pills nav-stacked">
+                        <li class="active">
+                            <a href="#" onclick="location.href='@Url.Action("Inbox", "Inbox")'"><span class="badge pull-right">@ViewBag.messagesCount</span> Inbox </a>
+                        </li>
+                        @*<li><a href="~/Inbox/Important">Important</a></li>*@
+                        <li><a class="sentclass" href="#">Sent Mail</a></li>
+                    </ul>
+                </div>
+                <div class="col-sm-9 col-md-10">
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#home" data-toggle="tab">
+                                <span class="glyphicon glyphicon-inbox">
+                                </span>Primary
+                            </a>
+                        </li>
+
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <div class="tab-pane fade in active" id="home">
+                            <div class="list-group" id="sentbox" style="display:none">
+                                <div class="form-horizontal">
+                                    <br />
+                                    <table class="table table-striped  table-hover" id="EmpInfosent">
+                                        <thead>
+                                            <tr style="background-color:#044244; color:white">
+
+                                                <th style="display:none"> FromAddress</th>
+                                                <th style="display:none"> Subject </th>
+                                                <th style="display:none"> Date </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tbody" id="sentboxbody">
+                                            @*@foreach (InboxEmail message in ((List<InboxEmail>)ViewBag.messages))
+                                        {
+                                            string value = @message.EmailDate.ToString();
+                                            DateTime oDate = DateTime.Parse(value);
+                                            <tr><td>@message.FromAddress</td><td><b>@message.Subject</b></td><td>@oDate.Month/@oDate.Day</td></tr>
+                                        }*@
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            @if ((@ViewBag.messages != null))
+                            {
+                                <div class="list-group" id="Inbox">
+                                    <div class="form-horizontal">
+                                        <br />
+                                        <table class="table table-striped  table-hover" id="EmpInfo">
+                                            <thead>
+                                                <tr style="background-color:#044244; color:white">
+
+                                                    <th style="display:none"> FromAddress</th>
+                                                    <th style="display:none"> Subject </th>
+                                                    <th style="display:none"> Date </th>
+                                                    <th style="display:none">Action</th>
+                                                    <th style="display:none"></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="tbody">
+                                                @foreach (var message in ViewBag.messages)
+                                                {
+                                                    string value = @message.EmailDate.ToString();
+                                                    DateTime oDate = DateTime.Parse(value);
+                                                    <tr><td>@message.FromAddress</td><td><b>@message.Subject</b></td><td>@oDate.Month/@oDate.Day</td><td><a onclick="return GetInboxDataByMailId('@message.ID')">View</a></td><td><a onclick="return DeleteInboxDataByMailId('@message.ID')">Delete</a></td></tr>
+                                                }
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+       
+    </div>
+   
+
+    @*public string FromAddress { get; set; }
+        public string ToAddress { get; set; }
+        public string CCAddress { get; set; }
+        public string BCCAddress { get; set; }
+        public Nullable<system.datetime>
+            EmailDate { get; set; }
+            public string Subject { get; set; }
+            public byte[] Body { get; set; }
+            public Nullable<int>
+                MailType { get; set; }
+                public bool IsDeleted { get; set; }
+                public System.Guid ID { get; set; }*@
+    <div class="row">
+
+        <div class="col-md-12">
+            <div class="modal" id="myModalForm" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Email</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+
+                                <br />
+                                @using (Html.BeginForm("UploadFiles", "Email", FormMethod.Post, new { id = "emailform", enctype = "multipart/form-data" }))
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    <div class="form-horizontal">
+                                        <hr />
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                        <div class="form-group" style="padding-bottom:100px;">
+                                            @Html.LabelFor(model => model.PersonalDetails, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.PersonalDetails, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.PersonalDetails, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.CCAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.CCAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.CCAddress, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.BCCAddress, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.BCCAddress, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.BCCAddress, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Subject, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.EditorFor(model => model.Subject, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.Body, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextArea("Body", null, new { @class = "form-control ckeditor" })
+                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                        <div class="form-group">
+                                            @Html.LabelFor(model => model.files, htmlAttributes: new { @class = "control-label col-md-2" })
+                                            <div class="col-md-10">
+                                                @Html.TextBoxFor(model => model.files, "", new { @id = "filles", @type = "file", @multiple = "multiple" })
+                                                @Html.ValidationMessageFor(model => model.files, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-md-offset-2 col-md-10">
+                                                <input type="submit" id="idMyForm" value="Compose Email" class="btn btn-success" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="form-horizontal">
+        <div class="" style="margin-left:20px; margin-right:20px;">
+            <div class="form-horizontal">
+                <div class="panel-group">
+                    <div class="" style="margin-left:20px; margin-right:20px;">
+
+                        <div class="modal fade" id="myModal" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Email</h4>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <br />
+                                                <table id="FileInfo"></table>
+                                                @*---<button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>*@
+                                                <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                                                <button type="button" class="btn btn-success" id="closebtn" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-horizontal">
+        <div class="" style="margin-left:20px; margin-right:20px;">
+            <div class="form-horizontal">
+                <div class="panel-group">
+
+
+
+                    <div class="" style="margin-left:2px; margin-right:20px;">
+
+                        <div class="modal fade" id="myModalInbox" tabindex="-1">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+
+                                    <div class="modal-body" style="background-color:white">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <br />
+                                                <table id="FileInfoInbox"></table>
+                                                @*---<button type="button" class="btn btn-primary" id="btnAdd" onclick="return Add();">Add</button>*@
+                                                <button type="button" class="btn btn-primary" id="btnUpdate" style="display:none;" onclick="Update();">Update</button>
+                                                <button type="button" class="btn btn-success" id="closebtn" data-dismiss="modal">Close</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .ui-autocomplete {
+        z-index: 10000000 !important;
+    }
+</style>
+
+
+
+
+
+
+
+
+
